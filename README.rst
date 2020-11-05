@@ -1,4 +1,4 @@
 parKVFinder in Python v3
 ========================
 
-This is pyKVFinder repository.
+This is pyKVFinder Python3 library.
