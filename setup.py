@@ -18,10 +18,10 @@ except AttributeError:
 _grid = Extension(
     name="_gridprocessing",
     sources=["src/grid.i", "src/grid.c"],
-    include_dirs=[numpy_include]
-    # extra_compile_args=['-fopenmp'],
-    # extra_link_args=['-lgomp'],
-    # swig_opts=['-threads']
+    include_dirs=[numpy_include],
+    extra_compile_args=['-fopenmp', '-lm'],
+    extra_link_args=['-lgomp'],
+    swig_opts=['-threads']
 )
 
 # Prepare reqs from requirements.txt
