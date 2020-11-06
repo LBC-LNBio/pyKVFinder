@@ -22,9 +22,11 @@
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* grid, int dx, int dy, int dz)}
 
 /* Box coordinates */
-%apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *reference, int ndims, int npoints)}
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims
+)}
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *sincos, int nvalues)}
 
 /* Atom coordinates */
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double *atom, int xyz)}
+%apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *atoms, int natoms, int xyzr)}
 
 %include "grid.h"
