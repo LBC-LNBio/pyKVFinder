@@ -3,14 +3,34 @@ import sys
 import numpy as np
 
 here = os.path.abspath(os.path.dirname(__file__))
-print(here)
+# print(here)
 
+def read_pdb(fn: str, vdw: dict) -> dict:
+    pdb = []
+    coords = []
+    with open(fn, "r") as f:
+        for line in f.readlines():
+            if line[:4] == 'ATOM' or line[:6] == 'HETATM':
+                atom, xyzr = process_pdb_line(line, vdw)
+                pdb.append(atom)
+                coords.append(xyzr)
+    return np.asarray(pdb), np.asarray(coords)
 
-def read_pdb(fn: str):
-    pass
+def process_pdb_line(line: str, vdw: dict) -> tuple:
+    atom = line[12:16].strip()
+    resname = line[17:20].strip()
+    resnum = int(line[22:26])
+    x = float(line[30:38])
+    y = float(line[38:46])
+    z = float(line[46:54])
+    atom_symbol = line[76:78].strip()
+    if atom in vdw[resname].keys():
+        radius = vdw[resname][atom]
+    else:
+        radius = vdw['GEN'][atom_symbol]
+    return [resnum, resname, atom], [x, y, z, radius]
 
-
-def read_vdw_dat(fn: str):
+def read_vdw_dat(fn: str) -> dict:
     """
     Read van der Waals radii from .dat format
     """
@@ -31,7 +51,7 @@ def read_vdw_dat(fn: str):
     return vdw
 
 
-def read_vdw_json(fn: str):
+def read_vdw_json(fn: str) -> dict:
     """
     Read van der Waals radii from .json format
     """
@@ -40,7 +60,7 @@ def read_vdw_json(fn: str):
         return json.load(f)
 
 
-def read_vdw_toml(fn: str):
+def read_vdw_toml(fn: str) -> dict:
     """
     Read van der Waals radii from .toml format
     """
