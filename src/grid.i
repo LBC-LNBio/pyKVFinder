@@ -11,6 +11,8 @@
     import_array();
 %}
 
+// %include "typemaps.i"
+
 /* **** GRID **** */
 
 /* Creating grids */
@@ -20,6 +22,7 @@
 
 /* 3D integer grid coordinates */
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* grid, int dx, int dy, int dz)}
+%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* grid2, int dx2, int dy2, int dz2)}
 
 /* Box coordinates */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims
