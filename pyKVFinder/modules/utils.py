@@ -5,7 +5,19 @@ import numpy as np
 here = os.path.abspath(os.path.dirname(__file__))
 # print(here)
 
-def read_pdb(fn: str, vdw: dict) -> dict:
+
+def read_pdb(fn: str, vdw: dict):
+    """
+    Create a C function to read pdb and return a numpy array
+    """
+    # # C reading function
+    # numpy_char_vector = _read_pdb(fn: str)
+    # Split strings by ,
+    # np.char.split(numpy_char_vector, sep=' ')
+    # return pdb, coords
+
+
+def read_pdb(fn: str, vdw: dict) -> tuple:
     pdb = []
     coords = []
     with open(fn, "r") as f:
@@ -15,6 +27,7 @@ def read_pdb(fn: str, vdw: dict) -> dict:
                 pdb.append(atom)
                 coords.append(xyzr)
     return np.asarray(pdb), np.asarray(coords)
+
 
 def process_pdb_line(line: str, vdw: dict) -> tuple:
     atom = line[12:16].strip()
@@ -29,6 +42,7 @@ def process_pdb_line(line: str, vdw: dict) -> tuple:
     else:
         radius = vdw['GEN'][atom_symbol]
     return [resnum, resname, atom], [x, y, z, radius]
+
 
 def read_vdw_dat(fn: str) -> dict:
     """
@@ -67,3 +81,24 @@ def read_vdw_toml(fn: str) -> dict:
     import toml
     with open(fn, "r") as f:
         return toml.load(f)
+
+if __name__ == "__main__":
+    from time import time
+
+    vdw = read_vdw_dat("data/vdw.dat")
+
+    start = time()
+    pdb = read_pdb("tests/1FMO.pdb", vdw)
+    end = time()
+    total = end-start
+
+    start = time()
+    # reference = np.array([np.min(coords[:, 0:2], axis=0), np.max(coords[:, 0:2], axis=0)])
+    end = time()
+    ref = end-start
+
+    print(pdb)
+    # print(coords)
+    # print(reference)
+    print(f"Time read_pdb:\t{total:.6f}")
+    # print(f"Time reference:\t{ref:.6f}")

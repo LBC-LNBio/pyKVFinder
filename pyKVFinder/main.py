@@ -6,7 +6,7 @@ import numpy as np
 
 from argparser import argparser
 from modules.utils import read_vdw_dat, read_pdb
-from _gridprocessing import igrid, fgrid, dgrid, fill_grid
+from _gridprocessing import igrid, fgrid, dgrid, fill_grid, subtract, export
 
 def run(args):
     
@@ -54,15 +54,47 @@ def run(args):
 
     if args.verbose: 
         print("> Creating 3D grid")
-    S = A = igrid(dx * dy * dz).reshape(dx, dy, dz)
+    A = igrid(dx * dy * dz).reshape(dx, dy, dz)
+    S = igrid(dx * dy * dz).reshape(dx, dy, dz)
+
+    # if args.verbose:
+    #     print ("> Filling 3D grid with Probe In")
+    # fill_grid(A, xyzr, P1, sincos, args.step, args.probe_in, 15)
+    # if args.surface == 'SES':
+    #     if args.verbose:
+    #         print ("> Surface representation: Solvent Excluded Surface (SES)") 
+    #         ses(A, args.step, args.probe_in, 15) 
 
     if args.verbose:
-        print ("> Filling 3D grid with Probe In")
-    fill_grid(A, xyzr, P1, sincos, args.step, args.probe_in, 15)
+        print ("> Filling 3D grid with Probe In, ", end="")
+    if args.surface == 'SES':
+        args.surface = True
+        if args.verbose:
+            print ("using Solvent Excluded Surface (SES) representation")
+    else:
+        args.surface = False
+        if args.verbose:
+            print ("using Solvent Accessible Surface (SAS) representation")
+    fill_grid(A, xyzr, P1, sincos, args.step, args.probe_in, 15, args.surface)
 
     if args.verbose:
         print ("> Filling 3D grid with Probe Out")
-    fill_grid(S, xyzr, P1, sincos, args.step, args.probe_out, 15)
+    fill_grid(S, xyzr, P1, sincos, args.step, args.probe_out, 15, False)
+
+    if args.verbose:
+        print ("> Defining biomolecular cavities")
+        subtract(A, S, args.step, args.removal_distance, 15)
+
+    # print(np.max(A), np.min(A), np.sum(A)*0.6*0.6*0.6)
+    export(A, S, args.step, "tests/cavity.pdb", P1, sincos, args.filled)
+    # from sklearn.cluster import DBSCAN
+    # from sklearn.cluster import AgglomerativeClustering
+    # model = DBSCAN(eps=args.step, min_samples=round(args.volume_cutoff/0.6), n_jobs=15)
+    # pred = model.fit_predict()
+    
+    # print(A.shape)
+
+    return True
     
 
 

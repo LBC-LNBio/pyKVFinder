@@ -103,8 +103,8 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                              (default: %(default).1lf)")
     parameters.add_argument("-S", "--surface",
                              metavar="<enum>",
-                             default="VdW",
-                             choices=["VdW", "SAS"],
+                             default="SES",
+                             choices=["SES", "SAS"],
                              help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible \
                                   surface. VdW specifies van der Waals molecular surface. (default: %(default)s)")
     parameters.add_argument("--filled",
