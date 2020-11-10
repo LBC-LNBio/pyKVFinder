@@ -64,7 +64,7 @@ filter (int *grid, int dx, int dy, int dz)
 *********************/
 // TODO: Improve parallization in OpenMP
 void 
-fill_grid (int *grid, int dx, int dy, int dz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int ncores, int is_sas)
+fill (int *grid, int dx, int dy, int dz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int ncores, int is_sas)
 {
     int i, j, k, imax, jmax, kmax, atom;
     double distance, H, x, y, z, xaux, yaux, zaux;
@@ -80,9 +80,9 @@ fill_grid (int *grid, int dx, int dy, int dz, double *atoms, int natoms, int xyz
         for (atom=0; atom<natoms; atom++) 
         {
             // Convert atom coordinates in 3D grid coordinates
-            x = atoms[atom * 4] / step; 
-            y = atoms[1 + (atom * 4)] / step; 
-            z = atoms[2 + (atom * 4)] / step;
+            x = ( atoms[atom * 4] - reference[0]) / step; 
+            y = ( atoms[1 + (atom * 4)] - reference[1])  / step; 
+            z = ( atoms[2 + (atom * 4)] - reference[2])  / step;
 
             xaux = x * sincos[3] + z * sincos[2];
             yaux = y;
@@ -225,7 +225,7 @@ ses (int *grid, int dx, int dy, int dz, double step, double sas, int ncores)
                 for (k=0; k<dz; k++) 
                 {
                     // Check if a cavity point
-                    if (grid[ k + dz * (j + ( dy * i ) ) ] == 1)
+                    if (grid[ k + dz * (j + ( dy * i ) ) ] == 0)
                     {
                         if (check_protein_neighbours(grid, dx, dy, dz, i, j, k))
                         {

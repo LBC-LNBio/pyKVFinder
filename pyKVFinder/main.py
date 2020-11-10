@@ -6,7 +6,7 @@ import numpy as np
 
 from argparser import argparser
 from modules.utils import read_vdw_dat, read_pdb
-from _gridprocessing import igrid, fgrid, dgrid, fill_grid, subtract, export
+from _gridprocessing import igrid, fgrid, dgrid, fill, subtract, export
 
 def run(args):
     
@@ -75,11 +75,11 @@ def run(args):
         args.surface = False
         if args.verbose:
             print ("using Solvent Accessible Surface (SAS) representation")
-    fill_grid(A, xyzr, P1, sincos, args.step, args.probe_in, 15, args.surface)
+    fill (A, xyzr, P1, sincos, args.step, args.probe_in, 15, args.surface)
 
     if args.verbose:
         print ("> Filling 3D grid with Probe Out")
-    fill_grid(S, xyzr, P1, sincos, args.step, args.probe_out, 15, False)
+    fill (S, xyzr, P1, sincos, args.step, args.probe_out, 15, False)
 
     if args.verbose:
         print ("> Defining biomolecular cavities")

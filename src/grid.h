@@ -5,7 +5,7 @@ void dgrid (double *grid, int size);
 void cgrid (int *grid, int size);
 
 /* Grid filling */
-void fill_grid (int *grid, int dx, int dy, int dz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int ncores, int is_sas);
+void fill (int *grid, int dx, int dy, int dz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int ncores, int is_sas);
 
 /* Grid subtract */
 void subtract (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2, double step, double removal_threshold, int ncores);
