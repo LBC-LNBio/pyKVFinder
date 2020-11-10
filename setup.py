@@ -21,7 +21,7 @@ _grid = Extension(
     include_dirs=[numpy_include],
     extra_compile_args=['-fopenmp', '-lm'],
     extra_link_args=['-lgomp'],
-    swig_opts=['-threads']
+    # swig_opts=['-c']
 )
 
 # Prepare reqs from requirements.txt
