@@ -64,7 +64,8 @@ def run(args):
 
     nvoxels = nx * ny * nz
     cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.surface, 15).reshape(nx, ny, nz)
-    print (cavities.sum(), nvoxels)
+    # print(cavities)
+    # print (cavities.sum(), nvoxels)
 
     # if args.verbose: 
     #     print("> Creating 3D grid")
