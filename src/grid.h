@@ -1,10 +1,7 @@
-/* Write cavity */
-void export (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2, double step, char *fn, double *reference, int ndims, double *sincos, int nvalues, int cavity_representation);
-
 /* Current implementation */
 
 /* Cavity detection */
-void detect (int *PI, int size, 
+void detect (int *PI, int size,
     int nx, int ny, int nz,
     double *atoms, int natoms, int xyzr, 
     double *reference, int ndims, 
@@ -30,6 +27,10 @@ void check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, 
 void ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores);
 
 /* Grid subtract (Probe In - Probe Out) */;
+void subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int ncores);
+
+/* Export cavity PDB */
+void export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int is_filled);
 
 /* Debug */
 void count (int *grid, int nx, int ny, int nz);

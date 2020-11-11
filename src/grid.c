@@ -3,7 +3,7 @@
 #include <math.h>
 #include <omp.h>
 
-#define DEBUG 0
+#define DEBUG 1
 
 /******* sincos ******
 * sincos[0] = sin a  *
@@ -42,20 +42,21 @@ detect (
             igrid(PO, size);
             fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, ncores);
         }
-
-    }
-
-    
-    if (DEBUG)
-    {
-        count(PI, nx, ny, nz);
-        count(PO, nx, ny, nz);
     }
 
     if (is_ses)
         ses(PI, nx, ny, nz, step, probe_in, 15);
+    // ses(PO, nx, ny, nz, step, probe_in, 15);
 
-    // subtract();
+    subtract(PI, PO, nx, ny, nz, step, removal_threshold, 15);
+
+    if (DEBUG)
+    {
+        export ("tests/cavity.pdb", PI, nx, ny, nz, reference, ndims, sincos, nvalues, step, 1);
+    }
+
+    // Free PO
+    free(PO);
     
 }
 
@@ -72,8 +73,8 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
     #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, ncores), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
     {
     #pragma omp for schedule(dynamic) nowait
-        for (atom=0; atom<natoms; atom++) {
-
+        for (atom=0; atom<natoms; atom++)
+        {
             // Convert atom coordinates in 3D grid coordinates
             x = ( atoms[atom * 4] - reference[0] ) / step; 
             y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
@@ -81,14 +82,14 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
 
             xaux = x * sincos[3] + z * sincos[2];
             yaux = y;
-            zaux = -x * sincos[2] + z * sincos[3];
+            zaux = (-x) * sincos[2] + z * sincos[3];
 
             x = xaux;
             y = yaux * sincos[1] - zaux * sincos[0];
             z = yaux * sincos[0] + zaux * sincos[1];
 
             // Create a radius (H) for space occupied by probe and atom
-            H = ( probe + atoms[4 + (atom * 4)] ) / step;
+            H = ( probe + atoms[3 + (atom * 4)] ) / step;
         
             // Loop around radius from atom center
             for (i=floor(x - H); i<ceil(x + H); i++)
@@ -132,18 +133,14 @@ check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k
         for (y=j-1; y<=j+1; y++)
 			for (z=k-1; z<=k+1; z++) 
             {
-
 			    // Check if point is inside 3D grid
-				if (x < 0 || y < 0 || z < 0 || x >= nx || y >= ny || z >= nz);
-				else
-				    // Check if point is a protein protein
+				if (x >= 0 || y >= 0 || z >= 0 || x < nx || y < ny || z < nz)
+                {
 				    if (grid[ z + nz * (y + ( ny * x ) ) ] == 0 || grid[ z + nz * (y + ( ny * x ) ) ] == -2)
-				        return 1;
-
+                        return 1;
+                }
 			}
-
 	return 0;
-
 }
 
 void 
@@ -159,9 +156,9 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores
     // Calculate sas limit in 3D grid units
     aux = (int) (probe_in / step) + 1;
 
-    #pragma omp parallel default(none), shared(grid,step,probe_in,aux), private(i,j,k,i2,j2,k2,distance,nx,ny,nz)
+    #pragma omp parallel default(none), shared(grid,step,probe_in,aux,nx,ny,nz), private(i,j,k,i2,j2,k2,distance)
     {   
-        #pragma omp for collapse(3)
+        #pragma omp for schedule(dynamic) collapse(3) nowait
         // Loop around 3D grid
         for (i=0; i<nx; i++)
             for (j=0; j<ny; j++)
@@ -176,14 +173,15 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores
                                 for (j2=j-aux; j2<=j+aux; j2++)
                                     for (k2=k-aux; k2<=k+aux; k2++)
                                     { 
-                                        if (i2>0 && j2>0 && k2>0 && i2<=nx && j2<=ny && k2<=nz)
+                                        if (i2>0 && j2>0 && k2>0 && i2<nx-1 && j2<ny-1 && k2<nz-1)
                                         {
                                             // Get distance between point inspected and cavity point
                                             distance = sqrt ( pow(i - i2, 2) + pow(j - j2, 2) + pow(k - k2, 2));
                                             // Check if inspected point is inside sas limit
-                                            if ( distance < probe_in / step )
-                                                // Mark cavity point
-                                                grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] = -2;
+                                            if ( distance < (probe_in / step) )
+                                                if (grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] == 0)
+                                                    // Mark cavity point
+                                                    grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] = -2;
                                         }
                                     }
                         }
@@ -204,7 +202,44 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores
 
 }
 
-void igrid (int *grid, int size)
+void
+subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int ncores)
+{
+	int i, j, k, i2, j2, k2, rt;
+    
+    rt = ceil (removal_threshold / step);
+
+    // Set number of processes in OpenMP
+	omp_set_num_threads (ncores);
+    omp_set_nested (1);
+
+    /* Create a parallel region */
+    #pragma omp parallel default(none), shared(PI, PO, nx, ny, nz, i, j, k, step, rt, removal_threshold), private(j2,i2,k2)
+    {
+        #pragma omp for schedule(dynamic) collapse(3)
+            // Loop around the search box
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++) 
+                    {
+                        // Check if point is a cavity point in grid filled with PO
+                        if ( PO[ k + nz * (j + ( ny * i ) ) ] ) 
+                        {
+                            // Loops around space occupied by probe from atom position
+                            for(i2=i-rt; i2<=i+rt; i2++)
+                                for(j2=j-rt; j2<=j+rt; j2++)
+                                    for(k2=k-rt; k2<=k+rt; k2++)
+                                        // Check if inside 3D grid
+                                        if(i2>=0 && i2<nx && j2>=0 && j2<ny && k2>=0 && k2<nz)
+                                            // Mark points in grid filled with Probe In, where Probe Out reached
+                                            PI[ k2 + nz * (j2 + ( ny * i2 ) ) ] = -1;
+                        }
+                    }
+    }
+}
+
+void
+igrid (int *grid, int size)
 {
     int i;
 
@@ -213,7 +248,8 @@ void igrid (int *grid, int size)
 
 }
 
-void fgrid (float *grid, int size)
+void
+fgrid (float *grid, int size)
 {
     int i;
 
@@ -222,7 +258,8 @@ void fgrid (float *grid, int size)
                
 }
 
-void dgrid (double *grid, int size)
+void 
+dgrid (double *grid, int size)
 {
     int i;
 
@@ -231,7 +268,8 @@ void dgrid (double *grid, int size)
                
 }
 
-void cgrid (int *grid, int size)
+void 
+cgrid (int *grid, int size)
 {
     int i;
 
@@ -240,7 +278,8 @@ void cgrid (int *grid, int size)
                
 }
 
-void filter (int *grid, int dx, int dy, int dz)
+void 
+filter (int *grid, int dx, int dy, int dz)
 {
     int i, j, k;
 
@@ -251,50 +290,8 @@ void filter (int *grid, int dx, int dy, int dz)
 
 }
 
-// void
-// subtract (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2, double step, double removal_threshold, int ncores)
-// {
-// 	int i, j, k, i2, j2, k2, removal;
-    
-//     removal = ceil (removal_threshold / step);
-
-//     // Set number of processes in OpenMP
-// 	omp_set_num_threads (ncores);
-//     omp_set_nested (1);
-
-//     /* Create a parallel region */
-//     #pragma omp parallel default(none), shared(grid,grid2,removal,dx,dy,dz,dx2,dy2,dz2,i,j,k), private(j2,i2,k2)
-//     {
-//         #pragma omp for schedule(dynamic) collapse(3)
-//             // Loop around the search box
-//             for (i=0; i<dx; i++)
-//                 for (j=0; j<dy; j++)
-//                     for (k=0; k<dz; k++) 
-//                     {
-//                         // Check if point is a cavity point
-//                         if (grid[ k + dz * (j + ( dy * i ) ) ]) 
-//                         {
-
-//                             // Loops around space occupied by probe from atom position
-//                             for(i2=i-removal; i2<=i+removal; i2++)
-//                                 for(j2=j-removal; j2<=j+removal; j2++)
-//                                     for(k2=k-removal; k2<=k+removal; k2++)
-//                                         // Check if inside 3D grid
-//                                         if(i2 >= 0 && i2 < dx2 && j2 >= 0 && j2 < dy2 && k2 >= 0 && k2 < dz2)
-//                                             // Mark points where big probe passed in cavities in A
-//                                             grid2[ k2 + dz2 * (j2 + ( dy2 * i2 ) ) ] = -1;
-
-//                         }
-
-//                     }
-
-//     }
-
-// }
-
-
 void
-export (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2, double step, char *fn, double *reference, int ndims, double *sincos, int nvalues, int cavity_representation)
+export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int is_filled)
 {
 	int i, j, k, count = 1, control = 1, tag = 1;
 	double x, y, z, xaux, yaux, zaux;
@@ -303,21 +300,13 @@ export (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2
 	// Open cavity PDB file
 	output = fopen (fn, "w");
 
-	while (control == 1) 
-    {
-	    control = 0;
-
-		// Loop around grid
-		for (i=0; i<dx; i++)
-			for (j=0; j<dy; j++)
-				for (k=0; k<dz; k++) 
-                {
+	for (i=0; i<nx; i++)
+        for (j=0; j<ny; j++)
+			for (k=0; k<nz; k++) 
+            {
                     // Check if cavity point with value tag
-					if (grid[k + dz * (j + ( dy * i ) )] == tag) 
+					if ( cavities[k + nz * (j + ( ny * i ) )] == 1 ) 
                     {
-
-						control = 1;
-
 						// Convert 3D grid coordinates to real coordinates
 						x = i * step; 
                         y = j * step; 
@@ -327,13 +316,13 @@ export (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2
 						yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
 						zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
 
-						/* Write each cavity point */
+						// Write each cavity point
 						fprintf (
                             output, 
-                            "ATOM  %5.d  HS  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
+                            "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
                             count,
-                            65+(((grid[k + dz * (j + ( dy * i ) )]-2)/26)%26),
-                            65+((grid[k + dz * (j + ( dy * i ) )]-2)%26),
+                            65+(((cavities[k + nz * (j + ( ny * i ) )]-2)/26)%26),
+                            65+((cavities[k + nz * (j + ( ny * i ) )]-2)%26),
                             xaux,
                             yaux,
                             zaux,
@@ -342,23 +331,14 @@ export (int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2
 
 						count++;
 
-						/* If count equal to 100,000, restart count */
+						// If count equal to 100,000, restart count
 						if (count == 100000)
 						    count = 1;
-
 					}
-				}
-
-				/* Next cavity tag */
-				tag++;
-
-	}
-
-    /* Close output PDB file */
+			}
+    // Close cavities pdb
 	fclose (output);
-
 }
-
 
 void 
 count (int *grid, int nx, int ny, int nz)
