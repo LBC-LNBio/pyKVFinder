@@ -19,7 +19,7 @@ def restricted_step_size(x):
     except ValueError:
         raise argparse.ArgumentTypeError("%r not a floating-point literal" % (x,))
 
-    if 0.0 < x <= 2.0:
+    if not 0.0 < x <= 2.0:
         raise argparse.ArgumentTypeError("%r not in range (0.0, 2.0]"%(x,))
     return x
 
