@@ -6,7 +6,7 @@ import numpy as np
 
 from argparser import argparser
 from modules.utils import read_vdw_dat, read_pdb
-from _gridprocessing import igrid, fgrid, dgrid, fill, subtract, export
+from _gridprocessing import detect
 
 def run(args):
     
@@ -35,11 +35,11 @@ def run(args):
     norm3 = np.linalg.norm(P4-P1)
 
     # Calculate grid dimensions
-    dx = int ( norm1 / args.step ) + 1
-    dy = int ( norm2 / args.step ) + 1
-    dz = int ( norm3 / args.step ) + 1
+    nx = int ( norm1 / args.step ) + 1
+    ny = int ( norm2 / args.step ) + 1
+    nz = int ( norm3 / args.step ) + 1
     if args.verbose:
-        print(f"dx: {dx}\tdy: {dy}\tdz: {dz}")
+        print(f"nx: {nz}\tny: {ny}\tnz: {nz}")
 
     # Calculate sin and cos of angles a and b
     sincos = np.array([
@@ -52,10 +52,24 @@ def run(args):
         print(f"sina: {sincos[0]}\tsinb: {sincos[2]}")
         print(f"cosa: {sincos[1]}\tcosb: {sincos[3]}")
 
-    if args.verbose: 
-        print("> Creating 3D grid")
-    A = igrid(dx * dy * dz).reshape(dx, dy, dz)
-    S = igrid(dx * dy * dz).reshape(dx, dy, dz)
+    
+    if args.surface == 'SES':
+        args.surface = True
+        if args.verbose:
+            print ("> Surface representation: Solvent Excluded Surface (SES)") 
+    else:
+        args.surface = False
+        if args.verbose:
+            print ("> Surface representation: Solvent Accessible Surface (SAS)")
+
+    nvoxels = nx * ny * nz
+    cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.surface, 15).reshape(nx, ny, nz)
+    print (cavities.sum(), nvoxels)
+
+    # if args.verbose: 
+    #     print("> Creating 3D grid")
+    # A = igrid(dx * dy * dz).reshape(dx, dy, dz)
+    # S = igrid(dx * dy * dz).reshape(dx, dy, dz)
 
     # if args.verbose:
     #     print ("> Filling 3D grid with Probe In")
@@ -65,28 +79,28 @@ def run(args):
     #         print ("> Surface representation: Solvent Excluded Surface (SES)") 
     #         ses(A, args.step, args.probe_in, 15) 
 
-    if args.verbose:
-        print ("> Filling 3D grid with Probe In, ", end="")
-    if args.surface == 'SES':
-        args.surface = True
-        if args.verbose:
-            print ("using Solvent Excluded Surface (SES) representation")
-    else:
-        args.surface = False
-        if args.verbose:
-            print ("using Solvent Accessible Surface (SAS) representation")
-    fill (A, xyzr, P1, sincos, args.step, args.probe_in, 15, args.surface)
+    # if args.verbose:
+    #     print ("> Filling 3D grid with Probe In, ", end="")
+    # if args.surface == 'SES':
+    #     args.surface = True
+    #     if args.verbose:
+    #         print ("using Solvent Excluded Surface (SES) representation")
+    # else:
+    #     args.surface = False
+    #     if args.verbose:
+    #         print ("using Solvent Accessible Surface (SAS) representation")
+    # fill (A, xyzr, P1, sincos, args.step, args.probe_in, 15, args.surface)
 
-    if args.verbose:
-        print ("> Filling 3D grid with Probe Out")
-    fill (S, xyzr, P1, sincos, args.step, args.probe_out, 15, False)
+    # if args.verbose:
+    #     print ("> Filling 3D grid with Probe Out")
+    # fill (S, xyzr, P1, sincos, args.step, args.probe_out, 15, False)
 
-    if args.verbose:
-        print ("> Defining biomolecular cavities")
-        subtract(A, S, args.step, args.removal_distance, 15)
+    # if args.verbose:
+    #     print ("> Defining biomolecular cavities")
+    #     subtract(A, S, args.step, args.removal_distance, 15)
 
     # print(np.max(A), np.min(A), np.sum(A)*0.6*0.6*0.6)
-    export(A, S, args.step, "tests/cavity.pdb", P1, sincos, args.filled)
+    # export(A, S, args.step, "tests/cavity.pdb", P1, sincos, args.filled)
     # from sklearn.cluster import DBSCAN
     # from sklearn.cluster import AgglomerativeClustering
     # model = DBSCAN(eps=args.step, min_samples=round(args.volume_cutoff/0.6), n_jobs=15)
