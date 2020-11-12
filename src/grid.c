@@ -283,7 +283,7 @@ filter_noise (int *grid, int nx, int ny, int nz, int ncores)
             }
 }
 
-int volume;
+int volume; /* FIXME: ! remove from global environment */
 
 int
 cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int ncores)
@@ -299,9 +299,13 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                 {
                     tag++;
                     volume = 0;
+                    // Clustering procedure
                     DFS(grid, nx, ny, nz, i, j, k, tag);
-                    // if (DEBUG)
-                        // printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+                    
+                    if (DEBUG)
+                        printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+
+                    // Check if cavity reached cutoff
                     if ( (double) volume * pow(step, 3) < volume_cutoff )
                     {
                         remove_cavity(grid, nx, ny, nz, tag, ncores);
@@ -323,12 +327,12 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
     {
         grid[ k + nz * (j + ( ny * i ) ) ] = tag;
         volume++;
+        #pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
         for (x=i-1 ; x<=i+1 ; x++)
             for (y=j-1 ; y<=j+1 ; y++)
                 for (z = k-1; z<=k+1; z++)
                     DFS(grid, nx, ny, nz, x, y, z, tag);
     }
-
 }
 
 void
