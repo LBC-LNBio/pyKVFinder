@@ -11,7 +11,8 @@ void detect (int *PI, int size,
     double probe_out,
     double removal_threshold,
     int is_ses,
-    int ncores);
+    int ncores,
+    int verbose);
 
 /* Grid initialization */
 void igrid (int *grid, int size);
@@ -24,7 +25,7 @@ void fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyz
 
 /* Surface representation */
 void check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k);
-void ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores);
+void ses (int *grid, int nx, int ny, int nz, double step, double probe, int ncores);
 
 /* Grid subtract (Probe In - Probe Out) */;
 void subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int ncores);

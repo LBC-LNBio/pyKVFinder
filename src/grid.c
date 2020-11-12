@@ -3,7 +3,7 @@
 #include <math.h>
 #include <omp.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 /******* sincos ******
 * sincos[0] = sin a  *
@@ -24,20 +24,25 @@ detect (
     double probe_out,
     double removal_threshold,
     int is_ses,
-    int ncores)
+    int ncores,
+    int verbose)
 {
     int *PO;
 
     #pragma omp parallel sections num_threads(2)
     {
         #pragma omp section
-        {
+        {   
+            if (verbose)
+                fprintf(stdout, "> Filling grid with Probe In\n");
             igrid(PI, size);
             fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncores);
         }
 
         #pragma omp section
         {
+            if (verbose)
+                fprintf(stdout, "> Filling grid with Probe Out\n");
             PO = (int *) calloc (size, sizeof (int));
             igrid(PO, size);
             fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, ncores);
@@ -46,8 +51,10 @@ detect (
 
     if (is_ses)
         ses(PI, nx, ny, nz, step, probe_in, 15);
-    // ses(PO, nx, ny, nz, step, probe_in, 15);
+    ses(PO, nx, ny, nz, step, probe_out, 15);
 
+    if (verbose)
+        fprintf(stdout, "> Defining biomolecular cavities\n");
     subtract(PI, PO, nx, ny, nz, step, removal_threshold, 15);
 
     if (DEBUG)
@@ -57,7 +64,6 @@ detect (
 
     // Free PO
     free(PO);
-    
 }
 
 void 
@@ -127,36 +133,35 @@ int
 check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k)
 {
 	int x, y, z;
-
-	// Loop around neighboring points
+	
+    // Loop around neighboring points
 	for (x=i-1; x<=i+1; x++)
         for (y=j-1; y<=j+1; y++)
 			for (z=k-1; z<=k+1; z++) 
             {
 			    // Check if point is inside 3D grid
-				if (x >= 0 || y >= 0 || z >= 0 || x < nx || y < ny || z < nz)
-                {
-				    if (grid[ z + nz * (y + ( ny * x ) ) ] == 0 || grid[ z + nz * (y + ( ny * x ) ) ] == -2)
+				if (x < 0 || y < 0 || z < 0 || x > nx-1 || y > ny-1 || z > nz-1);
+                else
+    			    if (grid[ z + nz * (y + ( ny * x ) ) ] == 0 || grid[ z + nz * (y + ( ny * x ) ) ] == -2)
                         return 1;
-                }
 			}
 	return 0;
 }
 
 void 
-ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores)
+ses (int *grid, int nx, int ny, int nz, double step, double probe, int ncores)
 {
     int i, j, k, i2, j2, k2, aux;
     double distance;    
-    
+
+    // Calculate sas limit in 3D grid units
+    aux = ceil(probe / step);
+
     // Set number of processes in OpenMP
 	omp_set_num_threads (ncores);
     omp_set_nested (1);
     
-    // Calculate sas limit in 3D grid units
-    aux = (int) (probe_in / step) + 1;
-
-    #pragma omp parallel default(none), shared(grid,step,probe_in,aux,nx,ny,nz), private(i,j,k,i2,j2,k2,distance)
+    #pragma omp parallel default(none), shared(grid,step,probe,aux,nx,ny,nz), private(i,j,k,i2,j2,k2,distance)
     {   
         #pragma omp for schedule(dynamic) collapse(3) nowait
         // Loop around 3D grid
@@ -178,7 +183,7 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores
                                             // Get distance between point inspected and cavity point
                                             distance = sqrt ( pow(i - i2, 2) + pow(j - j2, 2) + pow(k - k2, 2));
                                             // Check if inspected point is inside sas limit
-                                            if ( distance < (probe_in / step) )
+                                            if ( distance < (probe / step) )
                                                 if (grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] == 0)
                                                     // Mark cavity point
                                                     grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] = -2;
@@ -196,10 +201,8 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe_in, int ncores
                         // Mark space occupied by sas limit from protein surface
                         if (grid[ k + nz * (j + ( ny * i ) ) ] == -2)
                             grid[ k + nz * (j + ( ny * i ) ) ] = 1;
-
                     }
     }
-
 }
 
 void
