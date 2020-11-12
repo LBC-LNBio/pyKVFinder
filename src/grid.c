@@ -61,7 +61,7 @@ detect (
 
     if (verbose)
         fprintf (stdout, "> Clustering cavity points\n");
-    int ncav = cluster(PI, nx, ny, nz, step, volume_cutoff);
+    int ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, ncores);
 
     if (verbose)
         fprintf (stdout, "> Writing cavities to PDB\n");
@@ -283,10 +283,10 @@ filter_noise (int *grid, int nx, int ny, int nz, int ncores)
             }
 }
 
-// int volume;
+int volume;
 
 int
-cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff)
+cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int ncores)
 {
     int i, j, k, tag;
 
@@ -298,10 +298,15 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff)
                 if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
                 {
                     tag++;
-                    // volume = 0;
+                    volume = 0;
                     DFS(grid, nx, ny, nz, i, j, k, tag);
                     // if (DEBUG)
-                    //     printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+                        // printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+                    if ( (double) volume * pow(step, 3) < volume_cutoff )
+                    {
+                        remove_cavity(grid, nx, ny, nz, tag, ncores);
+                        tag--;
+                    }
                 }
     return tag-2;
 }
@@ -317,14 +322,32 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
     if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
     {
         grid[ k + nz * (j + ( ny * i ) ) ] = tag;
-        // volume++;
+        volume++;
         for (x=i-1 ; x<=i+1 ; x++)
             for (y=j-1 ; y<=j+1 ; y++)
                 for (z = k-1; z<=k+1; z++)
-                    /* Recursive call */
                     DFS(grid, nx, ny, nz, x, y, z, tag);
     }
 
+}
+
+void
+remove_cavity (int *grid, int nx, int ny, int nz, int tag, int ncores)
+{
+    int i, j, k;
+
+    // Set number of threads in OpenMP
+	omp_set_num_threads (ncores);
+    omp_set_nested(1);
+
+    #pragma omp parallel default(shared)
+        #pragma omp for schedule(static) collapse(3) nowait
+            for (i = 0; i < nx; i++)
+                for (j = 0; j < ny; j++)
+                    for (k = 0; k < nz; k++)
+                        // Remove points based on tag
+                        if (grid[ k + nz * (j + ( ny * i ) ) ] == tag)
+                            grid[ k + nz * (j + ( ny * i ) ) ] = 0;
 }
 
 void

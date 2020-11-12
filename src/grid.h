@@ -35,8 +35,9 @@ void subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double rem
 void filter_noise (int *grid, int nx, int ny, int nz, int ncores);
 
 /* Cavity clustering */
-int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff);
-void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag, int *volume);
+int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int ncores);
+void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag);
+void remove_cavity (int *grid, int nx, int ny, int nz, int tag, int ncores);
 
 /* Export cavity PDB */
 void export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);
