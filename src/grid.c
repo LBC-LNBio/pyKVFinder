@@ -34,12 +34,13 @@ detect (
     {
         #pragma omp section
         {   
+
             if (verbose)
                 fprintf(stdout, "> Filling grid with Probe In\n");
             igrid(PI, size);
             fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncores);
-        }
 
+        }
         #pragma omp section
         {
             if (verbose)
@@ -83,39 +84,38 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
 
     #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, ncores), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
     {
-    #pragma omp for schedule(dynamic) nowait
-        for (atom=0; atom<natoms; atom++)
-        {
-            // Convert atom coordinates in 3D grid coordinates
-            x = ( atoms[atom * 4] - reference[0] ) / step; 
-            y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
-            z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+        #pragma omp for schedule(dynamic) nowait
+            for (atom=0; atom<natoms; atom++)
+            {
+                // Convert atom coordinates in 3D grid coordinates
+                x = ( atoms[atom * 4] - reference[0] ) / step; 
+                y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
+                z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
 
-            xaux = x * sincos[3] + z * sincos[2];
-            yaux = y;
-            zaux = (-x) * sincos[2] + z * sincos[3];
+                xaux = x * sincos[3] + z * sincos[2];
+                yaux = y;
+                zaux = (-x) * sincos[2] + z * sincos[3];
 
-            x = xaux;
-            y = yaux * sincos[1] - zaux * sincos[0];
-            z = yaux * sincos[0] + zaux * sincos[1];
+                x = xaux;
+                y = yaux * sincos[1] - zaux * sincos[0];
+                z = yaux * sincos[0] + zaux * sincos[1];
 
-            // Create a radius (H) for space occupied by probe and atom
-            H = ( probe + atoms[3 + (atom * 4)] ) / step;
-        
-            // Loop around radius from atom center
-            for (i=floor(x - H); i<ceil(x + H); i++)
-                for (j=floor(y - H); j<ceil(y + H); j++)
-                    for (k=floor(z - H); k<ceil(z + H); k++) {
-
-                        // Get distance between atom center and point inspected
-                        distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
-                        if (distance < H)
-                            if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && i < nz)
-                                grid[ k + nz * (j + ( ny * i ) ) ] = 0;
-
-                    }
+                // Create a radius (H) for space occupied by probe and atom
+                H = ( probe + atoms[3 + (atom * 4)] ) / step;
+            
+                // Loop around radius from atom center
+                for (i=floor(x - H); i<ceil(x + H); i++)
+                    for (j=floor(y - H); j<ceil(y + H); j++)
+                        for (k=floor(z - H); k<ceil(z + H); k++) 
+                        {
+                            // Get distance between atom center and point inspected
+                            distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
+                            if (distance < H)
+                                if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && i < nz)
+                                    grid[ k + nz * (j + ( ny * i ) ) ] = 0;
+                        }
+            }
         }
-    }
 }
 
 /*
@@ -302,8 +302,8 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                     // Clustering procedure
                     DFS(grid, nx, ny, nz, i, j, k, tag);
                     
-                    if (DEBUG)
-                        printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+                    // if (DEBUG)
+                    //     printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
 
                     // Check if cavity reached cutoff
                     if ( (double) volume * pow(step, 3) < volume_cutoff )
