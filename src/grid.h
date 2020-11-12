@@ -10,6 +10,7 @@ void detect (int *PI, int size,
     double probe_in,
     double probe_out,
     double removal_threshold,
+    double volume_cutoff,
     int is_ses,
     int ncores,
     int verbose);
@@ -30,9 +31,16 @@ void ses (int *grid, int nx, int ny, int nz, double step, double probe, int ncor
 /* Grid subtract (Probe In - Probe Out) */;
 void subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int ncores);
 
+/* Filter noise from Grid */
+void filter_noise (int *grid, int nx, int ny, int nz, int ncores);
+
+/* Cavity clustering */
+int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff);
+void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag, int *volume);
+
 /* Export cavity PDB */
-void export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int is_filled);
+void export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav);
 
 /* Debug */
-void count (int *grid, int nx, int ny, int nz);
+// void count (int *grid, int nx, int ny, int nz);
 void filter (int *grid, int dx, int dy, int dz);

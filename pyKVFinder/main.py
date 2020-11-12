@@ -63,7 +63,7 @@ def run(args):
             print ("> Surface representation: Solvent Accessible Surface (SAS)")
 
     nvoxels = nx * ny * nz
-    cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.surface, 15, args.verbose).reshape(nx, ny, nz)
+    cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose).reshape(nx, ny, nz)
 
     return True
     

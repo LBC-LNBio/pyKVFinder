@@ -3,7 +3,7 @@
 #include <math.h>
 #include <omp.h>
 
-#define DEBUG 0
+#define DEBUG 1
 
 /******* sincos ******
 * sincos[0] = sin a  *
@@ -23,6 +23,7 @@ detect (
     double probe_in,
     double probe_out,
     double removal_threshold,
+    double volume_cutoff,
     int is_ses,
     int ncores,
     int verbose)
@@ -50,17 +51,22 @@ detect (
     }
 
     if (is_ses)
-        ses(PI, nx, ny, nz, step, probe_in, 15);
-    ses(PO, nx, ny, nz, step, probe_out, 15);
+        ses(PI, nx, ny, nz, step, probe_in, ncores);
+    ses(PO, nx, ny, nz, step, probe_out, ncores);
 
     if (verbose)
-        fprintf(stdout, "> Defining biomolecular cavities\n");
-    subtract(PI, PO, nx, ny, nz, step, removal_threshold, 15);
+        fprintf (stdout, "> Defining biomolecular cavities\n");
+    subtract(PI, PO, nx, ny, nz, step, removal_threshold, ncores);
+    filter_noise(PI, nx, ny, nz, ncores);
 
-    if (DEBUG)
-    {
-        export ("tests/cavity.pdb", PI, nx, ny, nz, reference, ndims, sincos, nvalues, step, 1);
-    }
+    if (verbose)
+        fprintf (stdout, "> Clustering cavity points\n");
+    int ncav = cluster(PI, nx, ny, nz, step, volume_cutoff);
+
+    if (verbose)
+        fprintf (stdout, "> Exporting cavities to PDB\n");
+    export ("tests/cavity.pdb", PI, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav);
+
 
     // Free PO
     free(PO);
@@ -242,6 +248,87 @@ subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_
 }
 
 void
+filter_noise (int *grid, int nx, int ny, int nz, int ncores)
+{
+    int i, j, k, contacts;
+
+    for (i=0; i<nx; i++)
+        for (j=0; j<ny; j++)
+            for (k=0; k<nz; k++)
+            {
+                if (grid[ k + nz * (j + ( ny * i ) ) ] == 1) 
+                {
+                    contacts = 0;
+                    
+                    // Check if a protein point (0) or a medium point (-1) is next to a cavity point (==1)
+                    if (i-1>=0 && i+1<nx && j-1>=0 && j+1<ny && k-1>=0 && k+1<nz)
+                    {
+                        if (grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0 || grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == -1)
+                            contacts++;
+                        if (grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0 || grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == -1)
+                            contacts++;
+                        if (grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0 || grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == -1)
+                            contacts++;
+                        if (grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0 || grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == -1)
+                            contacts++;
+                        if (grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0 || grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == -1)
+                            contacts++;
+                        if (grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0 || grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == -1)
+                            contacts++;
+
+                        // Cavity point is a medium point
+                        if (contacts == 6)
+                            grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+                    }
+                }
+            }
+}
+
+// int volume;
+
+int
+cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff)
+{
+    int i, j, k, tag;
+
+    tag = 1;
+
+    for (i=0; i<nx; i++)
+        for (j=0; j<ny; j++)
+            for (k=0; k<nz; k++)
+                if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
+                {
+                    tag++;
+                    // volume = 0;
+                    DFS(grid, nx, ny, nz, i, j, k, tag);
+                    // if (DEBUG)
+                    //     printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+                }
+    return tag-2;
+}
+
+int 
+DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
+{
+    int x, y, z;
+
+    if (i == 0 || i == nx-1 || j == 0 || j == ny-1 || k == 0 || k == nz-1)
+        return;
+
+    if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
+    {
+        grid[ k + nz * (j + ( ny * i ) ) ] = tag;
+        // volume++;
+        for (x=i-1 ; x<=i+1 ; x++)
+            for (y=j-1 ; y<=j+1 ; y++)
+                for (z = k-1; z<=k+1; z++)
+                    /* Recursive call */
+                    DFS(grid, nx, ny, nz, x, y, z, tag);
+    }
+
+}
+
+void
 igrid (int *grid, int size)
 {
     int i;
@@ -294,69 +381,70 @@ filter (int *grid, int dx, int dy, int dz)
 }
 
 void
-export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int is_filled)
+export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav)
 {
-	int i, j, k, count = 1, control = 1, tag = 1;
+	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
 	FILE *output;
 
 	// Open cavity PDB file
 	output = fopen (fn, "w");
 
-	for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-			for (k=0; k<nz; k++) 
-            {
-                    // Check if cavity point with value tag
-					if ( cavities[k + nz * (j + ( ny * i ) )] == 1 ) 
-                    {
-						// Convert 3D grid coordinates to real coordinates
-						x = i * step; 
-                        y = j * step; 
-                        z = k * step;
-						
-                        xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
-						yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
-						zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+    for (count=0, tag=2; tag<=ncav+2; tag++)
+        for (i=0; i<nx; i++)
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++) 
+                {
+                        // Check if cavity point with value tag
+                        if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
+                        {
+                            // Convert 3D grid coordinates to real coordinates
+                            x = i * step; 
+                            y = j * step; 
+                            z = k * step;
+                            
+                            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                            yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
 
-						// Write each cavity point
-						fprintf (
-                            output, 
-                            "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
-                            count,
-                            65+(((cavities[k + nz * (j + ( ny * i ) )]-2)/26)%26),
-                            65+((cavities[k + nz * (j + ( ny * i ) )]-2)%26),
-                            xaux,
-                            yaux,
-                            zaux,
-                            0.0
-                            );
+                            // Write each cavity point
+                            fprintf (
+                                output, 
+                                "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
+                                count,
+                                65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26),
+                                65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26),
+                                xaux,
+                                yaux,
+                                zaux,
+                                0.0
+                                );
 
-						count++;
+                            count++;
 
-						// If count equal to 100,000, restart count
-						if (count == 100000)
-						    count = 1;
-					}
-			}
-    // Close cavities pdb
-	fclose (output);
+                            // If count equal to 100,000, restart count
+                            if (count == 100000)
+                                count = 1;
+                        }
+                }
+        // Close cavities pdb
+        fclose (output);
 }
 
-void 
-count (int *grid, int nx, int ny, int nz)
-{
-    int i, j, k, count;
+// void 
+// count (int *grid, int nx, int ny, int nz)
+// {
+//     int i, j, k, count;
 
-    count = 0;
+//     count = 0;
 
-    for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-            for (k=0; k<nz; k++)
-            {
-                if (grid[k + nz * (j + ( ny * i ) )] == 0)
-                    count++;
-            }
-    printf("%d\n", count);
+//     for (i=0; i<nx; i++)
+//         for (j=0; j<ny; j++)
+//             for (k=0; k<nz; k++)
+//             {
+//                 if (grid[k + nz * (j + ( ny * i ) )] == 0)
+//                     count++;
+//             }
+//     printf("%d\n", count);
 
-}
+// }
