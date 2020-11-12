@@ -64,9 +64,8 @@ detect (
     int ncav = cluster(PI, nx, ny, nz, step, volume_cutoff);
 
     if (verbose)
-        fprintf (stdout, "> Exporting cavities to PDB\n");
-    export ("tests/cavity.pdb", PI, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav);
-
+        fprintf (stdout, "> Writing cavities to PDB\n");
+    export ("tests/cavity.pdb", PI, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav, ncores);
 
     // Free PO
     free(PO);
@@ -381,20 +380,27 @@ filter (int *grid, int dx, int dy, int dz)
 }
 
 void
-export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav)
+export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
 	FILE *output;
 
+    // Set number of threads in OpenMP
+    omp_set_num_threads(ncores);
+    omp_set_nested(1);
+
 	// Open cavity PDB file
 	output = fopen (fn, "w");
 
-    for (count=0, tag=2; tag<=ncav+2; tag++)
-        for (i=0; i<nx; i++)
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++) 
-                {
+    for (count=1, tag=2; tag<=ncav+2; tag++)
+        #pragma omp parallel default(none) shared(cavities, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+        {
+            #pragma omp for schedule(static) collapse(3) ordered nowait
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++) 
+                    {
                         // Check if cavity point with value tag
                         if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
                         {
@@ -408,10 +414,11 @@ export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int 
                             zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
 
                             // Write each cavity point
+                            #pragma omp critical
                             fprintf (
                                 output, 
                                 "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
-                                count,
+                                count % 100000,
                                 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26),
                                 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26),
                                 xaux,
@@ -419,15 +426,10 @@ export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int 
                                 zaux,
                                 0.0
                                 );
-
                             count++;
-
-                            // If count equal to 100,000, restart count
-                            if (count == 100000)
-                                count = 1;
                         }
-                }
-        // Close cavities pdb
+                    }
+        }
         fclose (output);
 }
 

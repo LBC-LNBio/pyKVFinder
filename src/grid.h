@@ -39,7 +39,7 @@ int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutof
 void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag, int *volume);
 
 /* Export cavity PDB */
-void export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav);
+void export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);
 
 /* Debug */
 // void count (int *grid, int nx, int ny, int nz);
