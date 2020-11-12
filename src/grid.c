@@ -292,6 +292,7 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
 
     tag = 1;
 
+    #pragma omp taskloop
     for (i=0; i<nx; i++)
         for (j=0; j<ny; j++)
             for (k=0; k<nz; k++)
