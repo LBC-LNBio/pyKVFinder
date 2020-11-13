@@ -6,7 +6,7 @@ import numpy as np
 
 from argparser import argparser
 from modules.utils import read_vdw_dat, read_pdb
-from _gridprocessing import detect, characterize
+from _gridprocessing import detect, characterize, export
 
 def run(args):
     
@@ -74,14 +74,15 @@ def run(args):
         return True
 
     # Characterization
-    surface = characterize(cavities, nvoxels, P1, sincos, args.step, args.probe_in, args.probe_out, ncav, 15, args.verbose)
-    print(surface)
+    surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
+    print(surface.reshape(nx, ny, nz))
+    print(volume.tolist())
+    print(area.tolist())
+    
 
     # Export cavities
 
     return True
-    
-
 
 if __name__ == "__main__":
     # Start time

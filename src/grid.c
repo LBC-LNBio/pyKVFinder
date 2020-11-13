@@ -394,17 +394,17 @@ void
 characterize (
     int *cavities, int nx, int ny, int nz,
     int *surface, int size,
+    double *volumes, int nvol,
+    double *areas, int narea,
     double *reference, int ndims,
     double *sincos, int nvalues,
     double step,
     double probe_in,
     double probe_out,
-    int ncav,
     int ncores,
     int verbose
     )
 {
-    double *volumes, *areas;
 
     if (verbose)
         fprintf (stdout, "> Defining surface points\n");
@@ -416,9 +416,9 @@ characterize (
         {
             if (verbose)
                 fprintf (stdout, "> Estimating volume\n");
-            volume (cavities, nx, ny, nz, ncav, step, &volumes, ncores);
+            volume (cavities, nx, ny, nz, nvol, step, volumes, ncores);
             if (DEBUG) 
-                for (int i=0; i<ncav; i++) 
+                for (int i=0; i<nvol; i++) 
                     printf("%d: %lf\n", i, volumes[i]);
         }
 
@@ -426,9 +426,9 @@ characterize (
         {
             if (verbose)
                 fprintf (stdout, "> Estimating area\n");
-            area (surface, nx, ny, nz, ncav, step, &areas, ncores);
+            area (surface, nx, ny, nz, narea, step, areas, ncores);
             if (DEBUG) 
-                for (int i=0; i<ncav; i++) 
+                for (int i=0; i<narea; i++) 
                     printf("%d: %lf\n", i, areas[i]);
         }
 
@@ -442,7 +442,7 @@ characterize (
         {
             if (verbose)
                 fprintf (stdout, "> Writing cavities to PDB\n");
-            export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav, ncores);
+            export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, nvol, ncores);
         }
     }
 }
@@ -547,26 +547,25 @@ export (char *fn, int *cavities, int *surface, int nx, int ny, int nz, double *r
 }
 
 void
-volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes, int ncores) 
+volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int ncores) 
 {
     int i, j, k;
-    *volumes = calloc (ncav, sizeof (**volumes));
 
     // Set number of threads in OpenMP
     omp_set_num_threads(ncores);
     omp_set_nested(1);
 
     for (i=0; i<ncav; i++)
-        (*volumes)[i] = 0.0;
+        volumes[i] = 0.0;
 
-    #pragma omp parallel default(none), shared(cavities, volumes, step, nx, ny, nz), private(i, j, k)
+    #pragma omp parallel default(none), shared(volumes, cavities, ncav, step, nx, ny, nz), private(i, j, k)
     {
-        #pragma omp for collapse(3)
+        #pragma omp for collapse(3) reduction(+:volumes[:ncav])
             for (i=0; i<nx; i++)
                 for (j=0; j<ny; j++)
                     for (k=0; k<nz; k++)
                         if (cavities[k + nz * (j + ( ny * i ) )] > 1)
-                            (*volumes)[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
+                            volumes[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
     }
 }
 
@@ -621,21 +620,20 @@ check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k)
 }
 
 void
-area (int *surface, int nx, int ny, int nz, int ncav, double step, double **areas, int ncores)
+area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int ncores)
 {
     int i, j, k;
-    *areas = calloc (ncav, sizeof (**areas));
 
     // Set number of threads in OpenMP
     omp_set_num_threads (ncores);
     omp_set_nested (1);
 
     for (i=0; i<ncav; i++)
-        (*areas)[i] = 0.0;
+        areas[i] = 0.0;
 
     for (i=0; i<nx; i++)
         for (j=0; j<ny; j++)
             for (k=0; k<nz; k++)
                 if (surface[k + nz * (j + ( ny * i ) )] > 1)
-                    (*areas)[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
+                    areas[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
 }

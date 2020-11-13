@@ -32,12 +32,13 @@ void
 characterize (
     int *cavities, int nx, int ny, int nz,
     int *surface, int size,
+    double *volumes, int nvol,
+    double *areas, int narea,
     double *reference, int ndims,
     double *sincos, int nvalues,
     double step,
     double probe_in,
     double probe_out,
-    int ncav,
     int ncores,
     int verbose
     );
@@ -47,10 +48,10 @@ void filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nc
 int define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
 /* Estimate volume */
-void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes, int ncores);
+void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int ncores);
 
 /* Estimate area */
-void area (int *surface, int nx, int ny, int nz, int ncav, double step, double **areas, int ncores);
+void area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int ncores);
 double check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
 /* Retrieve interface residues */
