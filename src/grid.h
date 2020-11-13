@@ -46,11 +46,15 @@ void filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nc
 int define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
 /* Estimate volume */
-void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes);
+void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes, int ncores);
+
+/* Estimate area */
+void area (int *surface, int nx, int ny, int nz, int ncav, double step, double **areas, int ncores);
+double check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k);
+
 
 /* Export cavity PDB */
 void export (char *fn, int *cavities, int *surface, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);
 
 /* Debug */
-// void count (int *grid, int nx, int ny, int nz);
 void filter (int *grid, int dx, int dy, int dz);

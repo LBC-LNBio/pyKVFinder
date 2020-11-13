@@ -404,7 +404,7 @@ characterize (
     int verbose
     )
 {
-    double *volumes;
+    double *volumes, *areas;
 
     if (verbose)
         fprintf (stdout, "> Defining surface points\n");
@@ -416,14 +416,15 @@ characterize (
         {
             if (verbose)
                 fprintf (stdout, "> Estimating volume\n");
-            volume (cavities, nx, ny, nz, ncav, step, &volumes);
+            volume (cavities, nx, ny, nz, ncav, step, &volumes, ncores);
         }
 
-        // #pragma omp section
-        // {
-        //     if (verbose)
-        //         fprintf (stdout, "> Estimating area\n");
-        // }
+        #pragma omp section
+        {
+            if (verbose)
+                fprintf (stdout, "> Estimating area\n");
+            area (surface, nx, ny, nz, ncav, step, &areas, ncores);
+        }
 
         // #pragma omp section
         // {
@@ -438,6 +439,27 @@ characterize (
             export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav, ncores);
         }
     }
+}
+
+int
+define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k)
+{
+    if (i-1>=0 && i+1<nx && j-1>=0 && j+1<ny && k-1>=0 && k+1<nz)
+    {
+        if (grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+    }
+	return -1;
 }
 
 void 
@@ -469,27 +491,6 @@ filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores)
                     }
     }
 
-}
-
-int
-define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k)
-{
-    if (i-1>=0 && i+1<nx && j-1>=0 && j+1<ny && k-1>=0 && k+1<nz)
-    {
-        if (grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
-            return grid[k + nz * (j + ( ny * i ) )];
-        if (grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
-            return grid[k + nz * (j + ( ny * i ) )];
-        if (grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
-            return grid[k + nz * (j + ( ny * i ) )];
-        if (grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
-            return grid[k + nz * (j + ( ny * i ) )];
-        if (grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
-            return grid[k + nz * (j + ( ny * i ) )];
-        if (grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
-            return grid[k + nz * (j + ( ny * i ) )];
-    }
-	return -1;
 }
 
 void
@@ -540,35 +541,99 @@ export (char *fn, int *cavities, int *surface, int nx, int ny, int nz, double *r
 }
 
 void
-volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes) 
+volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes, int ncores) 
 {
     int i, j, k;
-    *volumes = malloc (ncav * sizeof(**volumes));
+    *volumes = calloc (ncav, sizeof (**volumes));
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(ncores);
+    omp_set_nested(1);
 
     for (i=0; i<ncav; i++)
         (*volumes)[i] = 0.0;
 
-    for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-            for (k=0; k<nz; k++)
-                if (cavities[k + nz * (j + ( ny * i ) )] > 1)
-                    (*volumes)[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
+    #pragma omp parallel default(none), shared(cavities, volumes, step, nx, ny, nz), private(i, j, k)
+    {
+        #pragma omp for collapse(3)
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++)
+                        if (cavities[k + nz * (j + ( ny * i ) )] > 1)
+                            (*volumes)[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
+    }
 }
 
-// void 
-// count (int *grid, int nx, int ny, int nz)
-// {
-//     int i, j, k, count;
+double 
+check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k)
+{
+    int contacts = 0;
+    double weight = 1.0;
 
-//     count = 0;
+    // Count face contacts
+    if (grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
+        contacts++;
+    if (grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
+        contacts++;
+    if (grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
+        contacts++;
+    if (grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
+        contacts++;
+    if (grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
+        contacts++;
+    if (grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
+        contacts++;
 
-//     for (i=0; i<nx; i++)
-//         for (j=0; j<ny; j++)
-//             for (k=0; k<nz; k++)
-//             {
-//                 if (grid[k + nz * (j + ( ny * i ) )] == 0)
-//                     count++;
-//             }
-//     printf("%d\n", count);
+    // Get weight
+    switch (contacts)
+    {
+        // One face in contact with biomolecule
+        case 1:
+			weight = 0.894;
+			break;
+        // Two faces in contact with biomolecule
+		case 2:
+			weight = 1.3409;
+			break;
+		// Three faces in contact with biomolecule
+		case 3:
+			if ( ( grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0 && grid[ k + nz * (j + ( ny * (i - 1) ) ) ] ) || ( grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0 && grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0 ) || ( grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0 && grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0 ) )
+			    weight = 2;
+			else
+			    weight = 1.5879;
+			break;
+	    // Four faces in contact with biomolecule
+		case 4:
+			weight = 2.6667;
+			break;
+        // Five in contact with biomolecule
+		case 5:
+			weight = 3.3333;
+			break;
+    }
+    return weight;
+}
 
-// }
+void
+area (int *surface, int nx, int ny, int nz, int ncav, double step, double **areas, int ncores)
+{
+    int i, j, k;
+    *areas = calloc (ncav, sizeof (**areas));
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads (ncores);
+    omp_set_nested (1);
+
+    for (i=0; i<ncav; i++)
+        (*areas)[i] = 0.0;
+    
+    #pragma omp parallel default(none), shared(surface, nx, ny, nz, step, areas), private(i, j, k)
+    {
+        #pragma omp for schedule(dynamic)
+        for (i=0; i<nx; i++)
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++)
+                    if (surface[k + nz * (j + ( ny * i ) )] > 1)
+                        (*areas)[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
+    }
+}

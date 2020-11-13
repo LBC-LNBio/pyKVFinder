@@ -16,7 +16,6 @@
 /* **** GRID **** */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* PI, int size)}
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
-%apply (char* ARGOUT_ARRAY1, int DIM1) {(char* properties, int ncav)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
 
 /* Box coordinates */
