@@ -6,7 +6,7 @@ import numpy as np
 
 from argparser import argparser
 from modules.utils import read_vdw_dat, read_pdb
-from _gridprocessing import detect
+from _gridprocessing import detect, characterize
 
 def run(args):
     
@@ -64,6 +64,19 @@ def run(args):
 
     nvoxels = nx * ny * nz
     cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose).reshape(nx, ny, nz)
+    
+    # Number of cavities 
+    # FIXME: check if it better to return this value from detect
+    ncav = int(np.sum((np.unique(cavities) > 1)))
+
+    # No cavities were found
+    if (not ncav):
+        return True
+
+    # Characterization
+    surface = characterize(cavities, nvoxels, P1, sincos, args.step, args.probe_in, args.probe_out, ncav, 15, args.verbose).reshape(nx, ny, nz)
+
+    # Export cavities
 
     return True
     

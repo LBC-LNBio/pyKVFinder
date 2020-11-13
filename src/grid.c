@@ -13,22 +13,9 @@
 *********************/
 
 void 
-detect (
-    int *PI, int size, 
-    int nx, int ny, int nz,
-    double *atoms, int natoms, int xyzr, 
-    double *reference, int ndims, 
-    double *sincos, int nvalues, 
-    double step, 
-    double probe_in,
-    double probe_out,
-    double removal_threshold,
-    double volume_cutoff,
-    int is_ses,
-    int ncores,
-    int verbose)
+detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose)
 {
-    int *PO;
+    int *PO, ncav;
 
     #pragma omp parallel sections num_threads(2)
     {
@@ -62,11 +49,7 @@ detect (
 
     if (verbose)
         fprintf (stdout, "> Clustering cavity points\n");
-    int ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, ncores);
-
-    if (verbose)
-        fprintf (stdout, "> Writing cavities to PDB\n");
-    export ("tests/cavity.pdb", PI, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav, ncores);
+    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, ncores);
 
     // Free PO
     free(PO);
@@ -283,7 +266,7 @@ filter_noise (int *grid, int nx, int ny, int nz, int ncores)
             }
 }
 
-int volume; /* FIXME: ! remove from global environment */
+int vol; /* FIXME: ! remove from global environment */
 
 int
 cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int ncores)
@@ -299,15 +282,15 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                 if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
                 {
                     tag++;
-                    volume = 0;
+                    vol = 0;
                     // Clustering procedure
                     DFS(grid, nx, ny, nz, i, j, k, tag);
                     
                     // if (DEBUG)
-                    //     printf("Volume (%d): %lf\n", tag-2, (double) volume * step * step * step);
+                    //     printf("Volume (%d): %lf\n", tag-2, (double) vol * step * step * step);
 
                     // Check if cavity reached cutoff
-                    if ( (double) volume * pow(step, 3) < volume_cutoff )
+                    if ( (double) vol * pow(step, 3) < volume_cutoff )
                     {
                         remove_cavity(grid, nx, ny, nz, tag, ncores);
                         tag--;
@@ -327,7 +310,7 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
     if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
     {
         grid[ k + nz * (j + ( ny * i ) ) ] = tag;
-        volume++;
+        vol++;
         #pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
         for (x=i-1 ; x<=i+1 ; x++)
             for (y=j-1 ; y<=j+1 ; y++)
@@ -408,7 +391,109 @@ filter (int *grid, int dx, int dy, int dz)
 }
 
 void
-export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
+characterize (
+    int *cavities, int nx, int ny, int nz,
+    int *surface, int size,
+    double *reference, int ndims,
+    double *sincos, int nvalues,
+    double step,
+    double probe_in,
+    double probe_out,
+    int ncav,
+    int ncores,
+    int verbose
+    )
+{
+    double *volumes;
+
+    if (verbose)
+        fprintf (stdout, "> Defining surface points\n");
+    filter_surface (cavities, surface, nx, ny, nz, ncores);
+
+    #pragma omp sections
+    {
+        #pragma omp section
+        {
+            if (verbose)
+                fprintf (stdout, "> Estimating volume\n");
+            volume (cavities, nx, ny, nz, ncav, step, &volumes);
+        }
+
+        // #pragma omp section
+        // {
+        //     if (verbose)
+        //         fprintf (stdout, "> Estimating area\n");
+        // }
+
+        // #pragma omp section
+        // {
+        //     if (verbose)
+        //         fprintf (stdout, "> Retrieving interface residues\n");
+        // }
+
+        #pragma omp section
+        {
+            if (verbose)
+                fprintf (stdout, "> Writing cavities to PDB\n");
+            export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, ncav, ncores);
+        }
+    }
+}
+
+void 
+filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores)
+{
+    int i, j, k;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(ncores);
+    omp_set_nested(1);
+
+    #pragma omp parallel default(none), shared(cavities, surface, nx, ny, nz), private(i, j, k)
+    {
+        #pragma omp for collapse(3) schedule(static)
+        for (i=0; i<nx; i++)
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++)
+                    if (cavities[k + nz * (j + ( ny * i ) )] > 1)
+                    {
+                        // Define surface cavity points
+                        surface[k + nz * (j + ( ny * i ) )] = define_surface_points (cavities, nx, ny, nz, i, j, k);
+                    }
+                    else
+                    {
+                        if (cavities[k + nz * (j + ( ny * i ) )] == 0)
+                            surface[k + nz * (j + ( ny * i ) )] = 0;
+                        else
+                            surface[k + nz * (j + ( ny * i ) )] = -1;
+                    }
+    }
+
+}
+
+int
+define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k)
+{
+    if (i-1>=0 && i+1<nx && j-1>=0 && j+1<ny && k-1>=0 && k+1<nz)
+    {
+        if (grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+        if (grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
+            return grid[k + nz * (j + ( ny * i ) )];
+    }
+	return -1;
+}
+
+void
+export (char *fn, int *cavities, int *surface, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -422,7 +507,7 @@ export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int 
 	output = fopen (fn, "w");
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
-        #pragma omp parallel default(none) shared(cavities, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+        #pragma omp parallel default(none) shared(cavities, surface, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
         {
             #pragma omp for schedule(static) collapse(3) ordered nowait
             for (i=0; i<nx; i++)
@@ -441,24 +526,33 @@ export (char *fn, int *cavities, int nx, int ny, int nz, double *reference, int 
                             yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
                             zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
 
-                            // Write each cavity point
+                            // Write cavity point
                             #pragma omp critical
-                            fprintf (
-                                output, 
-                                "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
-                                count % 100000,
-                                65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26),
-                                65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26),
-                                xaux,
-                                yaux,
-                                zaux,
-                                0.0
-                                );
+                            if ( surface[k + nz * (j + ( ny * i ) )] == tag )
+                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
+                            else
+                                fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
                             count++;
                         }
                     }
         }
         fclose (output);
+}
+
+void
+volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double **volumes) 
+{
+    int i, j, k;
+    *volumes = malloc (ncav * sizeof(**volumes));
+
+    for (i=0; i<ncav; i++)
+        (*volumes)[i] = 0.0;
+
+    for (i=0; i<nx; i++)
+        for (j=0; j<ny; j++)
+            for (k=0; k<nz; k++)
+                if (cavities[k + nz * (j + ( ny * i ) )] > 1)
+                    (*volumes)[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
 }
 
 // void 
