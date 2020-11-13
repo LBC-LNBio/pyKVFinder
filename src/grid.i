@@ -11,12 +11,12 @@
     import_array();
 %}
 
-// %include "typemaps.i"
-
 /* **** GRID **** */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* PI, int size)}
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
+
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int ncav)}
 
 /* Box coordinates */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims

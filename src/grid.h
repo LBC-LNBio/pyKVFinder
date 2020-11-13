@@ -28,7 +28,8 @@ void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag);
 void remove_cavity (int *grid, int nx, int ny, int nz, int tag, int ncores);
 
 /* Cavity characterization */
-void characterize (
+void
+characterize (
     int *cavities, int nx, int ny, int nz,
     int *surface, int size,
     double *reference, int ndims,
@@ -52,6 +53,7 @@ void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, doubl
 void area (int *surface, int nx, int ny, int nz, int ncav, double step, double **areas, int ncores);
 double check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
+/* Retrieve interface residues */
 
 /* Export cavity PDB */
 void export (char *fn, int *cavities, int *surface, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);

@@ -266,7 +266,7 @@ filter_noise (int *grid, int nx, int ny, int nz, int ncores)
             }
 }
 
-int vol; /* FIXME: ! remove from global environment */
+int vol;
 
 int
 cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int ncores)
@@ -390,7 +390,7 @@ filter (int *grid, int dx, int dy, int dz)
 
 }
 
-void
+void 
 characterize (
     int *cavities, int nx, int ny, int nz,
     int *surface, int size,
@@ -417,6 +417,9 @@ characterize (
             if (verbose)
                 fprintf (stdout, "> Estimating volume\n");
             volume (cavities, nx, ny, nz, ncav, step, &volumes, ncores);
+            if (DEBUG) 
+                for (int i=0; i<ncav; i++) 
+                    printf("%d: %lf\n", i, volumes[i]);
         }
 
         #pragma omp section
@@ -424,6 +427,9 @@ characterize (
             if (verbose)
                 fprintf (stdout, "> Estimating area\n");
             area (surface, nx, ny, nz, ncav, step, &areas, ncores);
+            if (DEBUG) 
+                for (int i=0; i<ncav; i++) 
+                    printf("%d: %lf\n", i, areas[i]);
         }
 
         // #pragma omp section
@@ -626,14 +632,10 @@ area (int *surface, int nx, int ny, int nz, int ncav, double step, double **area
 
     for (i=0; i<ncav; i++)
         (*areas)[i] = 0.0;
-    
-    #pragma omp parallel default(none), shared(surface, nx, ny, nz, step, areas), private(i, j, k)
-    {
-        #pragma omp for schedule(dynamic)
-        for (i=0; i<nx; i++)
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++)
-                    if (surface[k + nz * (j + ( ny * i ) )] > 1)
-                        (*areas)[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
-    }
+
+    for (i=0; i<nx; i++)
+        for (j=0; j<ny; j++)
+            for (k=0; k<nz; k++)
+                if (surface[k + nz * (j + ( ny * i ) )] > 1)
+                    (*areas)[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
 }

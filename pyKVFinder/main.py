@@ -74,7 +74,8 @@ def run(args):
         return True
 
     # Characterization
-    surface = characterize(cavities, nvoxels, P1, sincos, args.step, args.probe_in, args.probe_out, ncav, 15, args.verbose).reshape(nx, ny, nz)
+    surface = characterize(cavities, nvoxels, P1, sincos, args.step, args.probe_in, args.probe_out, ncav, 15, args.verbose)
+    print(surface)
 
     # Export cavities
 
