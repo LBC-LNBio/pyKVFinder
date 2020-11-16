@@ -390,8 +390,8 @@ filter (int *grid, int dx, int dy, int dz)
 
 }
 
-void 
-characterize (
+char 
+*characterize (
     int *cavities, int nx, int ny, int nz,
     int *surface, int size,
     double *volumes, int nvol,
@@ -438,13 +438,22 @@ characterize (
         //         fprintf (stdout, "> Retrieving interface residues\n");
         // }
 
-        #pragma omp section
-        {
-            if (verbose)
-                fprintf (stdout, "> Writing cavities to PDB\n");
-            export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, nvol, ncores);
-        }
+        // #pragma omp section
+        // {
+        //     if (verbose)
+        //         fprintf (stdout, "> Writing cavities to PDB\n");
+        //     export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, nvol, ncores);
+        // }
     }
+    char *residues;
+    residues = (char*) malloc (25 * sizeof(char));
+    strcpy(residues, "124_A,");
+    strcat(residues, "125_B,");
+    strcat(residues, "-1,");
+    residues = (char*) realloc (residues, 30 * sizeof(char));
+    strcat(residues, "14_B,");
+    strcat(residues, "-1,");
+    return residues;
 }
 
 int
@@ -497,53 +506,6 @@ filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores)
                     }
     }
 
-}
-
-void
-export (char *fn, int *cavities, int *surface, int nx, int ny, int nz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
-{
-	int i, j, k, count, tag;
-	double x, y, z, xaux, yaux, zaux;
-	FILE *output;
-
-    // Set number of threads in OpenMP
-    omp_set_num_threads(ncores);
-    omp_set_nested(1);
-
-	// Open cavity PDB file
-	output = fopen (fn, "w");
-
-    for (count=1, tag=2; tag<=ncav+2; tag++)
-        #pragma omp parallel default(none) shared(cavities, surface, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
-        {
-            #pragma omp for schedule(static) collapse(3) ordered nowait
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++) 
-                    {
-                        // Check if cavity point with value tag
-                        if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
-                        {
-                            // Convert 3D grid coordinates to real coordinates
-                            x = i * step; 
-                            y = j * step; 
-                            z = k * step;
-                            
-                            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
-                            yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
-                            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
-
-                            // Write cavity point
-                            #pragma omp critical
-                            if ( surface[k + nz * (j + ( ny * i ) )] == tag )
-                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
-                            else
-                                fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
-                            count++;
-                        }
-                    }
-        }
-        fclose (output);
 }
 
 void
@@ -636,4 +598,57 @@ area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas
             for (k=0; k<nz; k++)
                 if (surface[k + nz * (j + ( ny * i ) )] > 1)
                     areas[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
+}
+
+void
+interface (int *grid, int nx, int ny, int nz, double *atoms, int natoms, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ignore_backbone, int ncores)
+{
+
+}
+
+void
+export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
+{
+	int i, j, k, count, tag;
+	double x, y, z, xaux, yaux, zaux;
+	FILE *output;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(ncores);
+    omp_set_nested(1);
+
+	// Open cavity PDB file
+	output = fopen (fn, "w");
+
+    for (count=1, tag=2; tag<=ncav+2; tag++)
+        #pragma omp parallel default(none) shared(cavities, surf, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+        {
+            #pragma omp for schedule(static) collapse(3) ordered nowait
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++) 
+                    {
+                        // Check if cavity point with value tag
+                        if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
+                        {
+                            // Convert 3D grid coordinates to real coordinates
+                            x = i * step; 
+                            y = j * step; 
+                            z = k * step;
+                            
+                            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                            yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+
+                            // Write cavity point
+                            #pragma omp critical
+                            if ( surf[k + nz * (j + ( ny * i ) )] == tag )
+                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surf[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surf[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
+                            else
+                                fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
+                            count++;
+                        }
+                    }
+        }
+        fclose (output);
 }

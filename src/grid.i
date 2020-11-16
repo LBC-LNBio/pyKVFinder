@@ -15,6 +15,7 @@
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* PI, int size)}
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
+%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* surf, int nxx, int nyy, int nzz)}
 
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int nvol)}
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* areas, int narea)}
