@@ -6,15 +6,28 @@ here = os.path.abspath(os.path.dirname(__file__))
 # print(here)
 
 
-def read_pdb(fn: str, vdw: dict):
-    """
-    Create a C function to read pdb and return a numpy array
-    """
+# def read_pdb(fn: str, vdw: dict):
+#     """
+#     Create a C function to read pdb and return a numpy array
+#     """
     # # C reading function
     # numpy_char_vector = _read_pdb(fn: str)
     # Split strings by ,
     # np.char.split(numpy_char_vector, sep=' ')
     # return pdb, coords
+
+
+def write_results(fn: str, volume: list, area: list):
+    keys = [f"K{chr(65 + int(i / 26) % 26)}{chr( 65 + (i % 26))}" for i in range(len(volume))]
+    results = {
+        'RESULTS' : {
+            'VOLUME': dict(zip(keys, volume)),
+            'AREA': dict(zip(keys, area)), 
+        }
+    }
+    import toml
+    with open(fn, "w") as f:
+        toml.dump(results, f)
 
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
