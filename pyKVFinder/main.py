@@ -5,7 +5,7 @@ import time
 import numpy as np
 
 from argparser import argparser
-from modules.utils import read_vdw_dat, read_pdb
+from modules.utils import read_vdw_dat, read_pdb, write_results
 from _gridprocessing import detect, characterize, export
 
 def run(args):
@@ -52,7 +52,6 @@ def run(args):
         print(f"sina: {sincos[0]}\tsinb: {sincos[2]}")
         print(f"cosa: {sincos[1]}\tcosb: {sincos[3]}")
 
-    
     if args.surface == 'SES':
         args.surface = True
         if args.verbose:
@@ -74,13 +73,17 @@ def run(args):
         return True
 
     # Characterization
-    surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
-    print(surface.reshape(nx, ny, nz))
-    print(volume.tolist())
-    print(area.tolist())
-    
+    residues, surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
+    surface = surface.reshape(nx, ny, nz)
+    print(type(residues), type(surface), type(volume), type(area))
+    print(residues)
 
     # Export cavities
+    export("tests/cavity.pdb", cavities, surface, P1, sincos, args.step, ncav, 15)
+
+    # Export results
+    # FIXME: bad formatting
+    write_results("tests/results.toml", volume, area)
 
     return True
 
