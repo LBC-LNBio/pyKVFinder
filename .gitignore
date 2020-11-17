@@ -8,6 +8,7 @@ etc/
 
 # Virtual environment
 venv/
+.vscode/
 
 # Remove __pycache__
 pyKVFinder/__pycache__/
