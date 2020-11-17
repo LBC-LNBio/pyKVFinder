@@ -659,15 +659,11 @@ interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, in
     double x, y, z, xaux, yaux, zaux, distance, H;
 
     // Allocate memory for reslist structure    
-    res* reslist[ncav];
+    res *reslist[ncav], *new;
     
+    // Initialize linked list
     for (i=0; i<ncav; i++)
         reslist[i] = NULL;
-    res* new;
-
-    /* Set number of processes in OpenMP */
-	omp_set_num_threads (ncores);
-    omp_set_nested (1);
 
     for (atom=0; atom<natoms; atom++)
     {
@@ -695,7 +691,7 @@ interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, in
                         if (i < nx-1 && i > 0 && j < ny-1 && j > 0 && k < nz-1 && k > 0)
                             if (grid[ k + nz * (j + ( ny * i ) ) ] > 1)
                             {
-                                tag = grid[ k + nz * (j + ( ny * i ) ) ];
+                                tag = grid[ k + nz * (j + ( ny * i ) ) ] - 2;
                                 distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
                                 if (distance <= H)
                                 {   
@@ -710,13 +706,37 @@ interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, in
                             }
                     }
     }
+    
+    // Pass res information to char **
     for (i=0; i<ncav; i++)
     {
+        printf("> Cavity %d: ", i);
         printList(reslist[i]);
-        printf("%d\n", sizeof(reslist[i]));
+        // printf("%d\n", sizeof(reslist[i]));
+        free(reslist[i]); // TODO: Do it right
     }
-    printf("%d\n", sizeof(reslist));
+    // printf("%d\n", sizeof(reslist));
+    // free(reslist);
 }
+
+char 
+** test (char ** pdb, int length)
+{
+    int i, j;
+    char **t = calloc(17, sizeof(char*));
+
+    for (i=0, j=0; i<17; i++)
+        t[i] = pdb[j++];
+
+
+    while (pdb[i])
+    {
+        // printf("%s\n", pdb[i]);
+        i++;
+    }
+    return t;
+}
+
 
 void
 export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)

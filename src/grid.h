@@ -69,3 +69,5 @@ void export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx
 
 /* Debug */
 void filter (int *grid, int dx, int dy, int dz);
+
+char **test (char ** pdb, int length);
