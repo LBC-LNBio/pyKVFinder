@@ -1,33 +1,11 @@
 import os
 import sys
+import toml
 import numpy as np
+from itertools import groupby
 
 here = os.path.abspath(os.path.dirname(__file__))
 # print(here)
-
-
-# def read_pdb(fn: str, vdw: dict):
-#     """
-#     Create a C function to read pdb and return a numpy array
-#     """
-    # # C reading function
-    # numpy_char_vector = _read_pdb(fn: str)
-    # Split strings by ,
-    # np.char.split(numpy_char_vector, sep=' ')
-    # return pdb, coords
-
-
-def write_results(fn: str, volume: list, area: list):
-    keys = [f"K{chr(65 + int(i / 26) % 26)}{chr( 65 + (i % 26))}" for i in range(len(volume))]
-    results = {
-        'RESULTS' : {
-            'VOLUME': dict(zip(keys, volume)),
-            'AREA': dict(zip(keys, area)), 
-        }
-    }
-    import toml
-    with open(fn, "w") as f:
-        toml.dump(results, f)
 
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
@@ -58,7 +36,7 @@ def process_pdb_line(line: str, vdw: dict) -> tuple:
     return [f"{resnum}_{chain}", resname, atom], [x, y, z, radius]
 
 
-def read_vdw_dat(fn: str) -> dict:
+def read_vdw(fn: str) -> dict:
     """
     Read van der Waals radii from .dat format
     """
@@ -79,40 +57,42 @@ def read_vdw_dat(fn: str) -> dict:
     return vdw
 
 
-def read_vdw_json(fn: str) -> dict:
-    """
-    Read van der Waals radii from .json format
-    """
-    import json
-    with open(fn, "r") as f:
-        return json.load(f)
+def process_residues(raw: list) -> dict:
+    residues = {}
+    index = 0
+    for flag, cavity_residues in groupby(raw, lambda res: res == "-1"):
+        if not flag:
+            key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+            residues[key] = [item.split('_') for item in list(dict.fromkeys(cavity_residues))]
+            index += 1
+    return residues
 
 
-def read_vdw_toml(fn: str) -> dict:
-    """
-    Read van der Waals radii from .toml format
-    """
-    import toml
-    with open(fn, "r") as f:
-        return toml.load(f)
+def process_spatial(raw_volume: np.ndarray, raw_area: np.ndarray, ncav: int) -> tuple:
+    volume, area = {}, {}
+    for index in range(ncav):
+        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        volume[key] = float(round(raw_volume[index], 2))
+        area[key] = float(round(raw_area[index], 2))
+    return volume, area
 
-if __name__ == "__main__":
-    from time import time
 
-    vdw = read_vdw_dat("data/vdw.dat")
-
-    start = time()
-    pdb = read_pdb("tests/1FMO.pdb", vdw)
-    end = time()
-    total = end-start
-
-    start = time()
-    # reference = np.array([np.min(coords[:, 0:2], axis=0), np.max(coords[:, 0:2], axis=0)])
-    end = time()
-    ref = end-start
-
-    print(pdb)
-    # print(coords)
-    # print(reference)
-    print(f"Time read_pdb:\t{total:.6f}")
-    # print(f"Time reference:\t{ref:.6f}")
+def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float):
+    results = {
+        'FILES': {
+            'INPUT': pdb,
+            'LIGAND': ligand,
+            'OUTPUT': output,
+        },
+        'PARAMETERS': {
+            'STEP': step,
+        },
+        'RESULTS' : {
+            'VOLUME': volume,
+            'AREA': area,
+            'RESIDUES': residues
+        }
+    }
+    with open(fn, "w") as f:
+        f.write("# pyKVFinder results\n\n")
+        toml.dump(results, f)
