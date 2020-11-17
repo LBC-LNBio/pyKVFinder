@@ -30,7 +30,8 @@
 
 %include "typemaps.i"
 
-%typemap(in) char ** 
+%typemap(in) 
+char ** 
 {
     /* Check if is a list */
     if (PyList_Check($input)) 

@@ -13,7 +13,7 @@
 * sincos[3] = cos b  *
 *********************/
 
-void 
+int 
 detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose)
 {
     int *PO, ncav;
@@ -54,6 +54,8 @@ detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, in
 
     // Free PO
     free(PO);
+
+    return ncav;
 }
 
 void 
@@ -276,7 +278,6 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
 
     tag = 1;
 
-    #pragma omp taskloop
     for (i=0; i<nx; i++)
         for (j=0; j<ny; j++)
             for (k=0; k<nz; k++)
@@ -297,7 +298,7 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                         tag--;
                     }
                 }
-    return tag-2;
+    return tag-1;
 }
 
 int 
@@ -603,16 +604,6 @@ insert (res** head, res* new)
         current->next = new;
     }
 }
-
-void printList(res* head) 
-{ 
-    res* temp = head; 
-    while (temp != NULL) { 
-        printf("(%d),",temp->pos); 
-        temp = temp->next; 
-    }
-    printf("\n"); 
-} 
 
 char
 **interface (int *grid, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores)

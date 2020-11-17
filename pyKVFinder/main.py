@@ -62,11 +62,8 @@ def run(args):
             print ("> Surface representation: Solvent Accessible Surface (SAS)")
 
     nvoxels = nx * ny * nz
-    cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose).reshape(nx, ny, nz)
-    
-    # Number of cavities 
-    # FIXME: check if it better to return this value from detect
-    ncav = int(np.sum((np.unique(cavities) > 1)))
+    ncav, cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose)
+    cavities = cavities.reshape(nx, ny, nz)
 
     # No cavities were found
     if (not ncav):
