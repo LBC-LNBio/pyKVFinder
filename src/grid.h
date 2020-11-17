@@ -27,22 +27,8 @@ int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutof
 void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag);
 void remove_cavity (int *grid, int nx, int ny, int nz, int tag, int ncores);
 
-/* Cavity characterization */
-char
-*characterize (
-    int *cavities, int nx, int ny, int nz,
-    int *surface, int size,
-    double *volumes, int nvol,
-    double *areas, int narea,
-    double *atoms, int natoms, int xyzr,
-    double *reference, int ndims,
-    double *sincos, int nvalues,
-    double step,
-    double probe_in,
-    double probe_out,
-    int ncores,
-    int verbose
-    );
+/* Spatial characterization */
+void spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose);
 
 /* Cavity surface points */
 void filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores);
@@ -55,6 +41,21 @@ void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, doubl
 void area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int ncores);
 double check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
+/* Constitutional characterization */
+char
+** constitutional (
+    int *cavities, int nx, int ny, int nz,
+    char **pdb,
+    double *atoms, int natoms, int xyzr,
+    double *reference, int ndims,
+    double *sincos, int nvalues,
+    double step,
+    double probe_in,
+    int ncav,
+    int ncores,
+    int verbose
+    );
+
 /* Retrieve interface residues */
 typedef struct node {
     int pos;
@@ -62,12 +63,7 @@ typedef struct node {
 } res;
 void insert (res** head, res* new);
 res* create (int pos);
-void interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores);
+char **interface (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores);
 
 /* Export cavity PDB */
 void export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);
-
-/* Debug */
-void filter (int *grid, int dx, int dy, int dz);
-
-char **test (char ** pdb, int length);

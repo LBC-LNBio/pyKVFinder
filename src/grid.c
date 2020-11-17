@@ -391,24 +391,9 @@ filter (int *grid, int dx, int dy, int dz)
 
 }
 
-char 
-*characterize (
-    int *cavities, int nx, int ny, int nz,
-    int *surface, int size,
-    double *volumes, int nvol,
-    double *areas, int narea,
-    double *atoms, int natoms, int xyzr,
-    double *reference, int ndims,
-    double *sincos, int nvalues,
-    double step,
-    double probe_in,
-    double probe_out,
-    int ncores,
-    int verbose
-    )
+void 
+spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose)
 {
-    char *residues;
-
     if (verbose)
         fprintf (stdout, "> Defining surface points\n");
     filter_surface (cavities, surface, nx, ny, nz, ncores);
@@ -434,30 +419,7 @@ char
                 for (int i=0; i<narea; i++) 
                     printf("%d: %lf\n", i, areas[i]);
         }
-
-        #pragma omp section
-        {
-            if (verbose)
-                fprintf (stdout, "> Retrieving interface residues\n");
-            interface(&residues, cavities, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nvol, ncores);
-        }
-
-        // #pragma omp section
-        // {
-        //     if (verbose)
-        //         fprintf (stdout, "> Writing cavities to PDB\n");
-        //     export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, nvol, ncores);
-        // }
-    }
-    
-    // residues = (char*) malloc (25 * sizeof(char));
-    // strcpy(residues, "");
-    // strcat(residues, "125_B,");
-    // strcat(residues, "-1,");
-    // residues = (char*) realloc (residues, 30 * sizeof(char));
-    // strcat(residues, "14_B,");
-    // strcat(residues, "-1,");
-    return residues;
+    }    
 }
 
 int
@@ -652,11 +614,12 @@ void printList(res* head)
     printf("\n"); 
 } 
 
-void
-interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores)
+char
+**interface (int *grid, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores)
 {
-    int i, j, k, atom, tag, old_atom=-1, old_tag=-1;
+    int i, j, k, atom, tag, count=0, old_atom=-1, old_tag=-1;
     double x, y, z, xaux, yaux, zaux, distance, H;
+    char **residues;
 
     // Allocate memory for reslist structure    
     res *reslist[ncav], *new;
@@ -699,6 +662,7 @@ interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, in
                                     {
                                         new = create(atom);
                                         insert(&reslist[tag], new);
+                                        count++;
                                     }
                                     old_atom = atom;
                                     old_tag = tag;
@@ -708,35 +672,32 @@ interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, in
     }
     
     // Pass res information to char **
-    for (i=0; i<ncav; i++)
-    {
-        printf("> Cavity %d: ", i);
-        printList(reslist[i]);
-        // printf("%d\n", sizeof(reslist[i]));
-        free(reslist[i]); // TODO: Do it right
+    residues = calloc(count + ncav + 1, sizeof(char*));
+    for (i=0, j=0; i<ncav; i++)
+    {   
+        new = reslist[i];
+        while (new != NULL) { 
+            residues[j++] = pdb[new->pos];
+            new = new->next;
+        }
+        free(reslist[i]);
+        residues[j++] = "-1";
     }
-    // printf("%d\n", sizeof(reslist));
-    // free(reslist);
+    residues[j] = NULL;
+    return residues;
 }
 
-char 
-** test (char ** pdb, int length)
+char
+** constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores, int verbose)
 {
-    int i, j;
-    char **t = calloc(17, sizeof(char*));
+    char **residues;
 
-    for (i=0, j=0; i<17; i++)
-        t[i] = pdb[j++];
+    if (verbose)
+        fprintf (stdout, "> Retrieving interface residues\n");
+    residues = interface(cavities, nx, ny, nz, pdb, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncav, ncores);
 
-
-    while (pdb[i])
-    {
-        // printf("%s\n", pdb[i]);
-        i++;
-    }
-    return t;
+    return residues;
 }
-
 
 void
 export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
