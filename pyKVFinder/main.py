@@ -75,8 +75,8 @@ def run(args):
     volume, area = process_spatial(volume, area, ncav)
 
     # Constitutional characterization
-    backbone = False
-    if backbone:
+    ignore_backbone = True
+    if ignore_backbone:
         # Remove backbone from pdb
         mask = np.where(pdb[:,2] != 'C') and np.where(pdb[:,2] != 'CA') and np.where(pdb[:,2] != 'N') and np.where(pdb[:,2] != 'O')
         pdb = pdb[mask[0],]

@@ -644,13 +644,13 @@ char
                     for (k=floor(z - H); k<=ceil(z + H); k++) 
                     {
                         if (i < nx-1 && i > 0 && j < ny-1 && j > 0 && k < nz-1 && k > 0)
-                            if (grid[ k + nz * (j + ( ny * i ) ) ] > 1)
+                            if (abs(grid[ k + nz * (j + ( ny * i ) ) ]) > 1)
                             {
                                 tag = grid[ k + nz * (j + ( ny * i ) ) ] - 2;
                                 distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
                                 if (distance <= H)
                                 {   
-                                    if (old_atom != atom && old_tag != tag)
+                                    if (old_atom != atom || old_tag != tag)
                                     {
                                         new = create(atom);
                                         insert(&reslist[tag], new);

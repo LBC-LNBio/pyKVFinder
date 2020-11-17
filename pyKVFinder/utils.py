@@ -78,6 +78,13 @@ def process_spatial(raw_volume: np.ndarray, raw_area: np.ndarray, ncav: int) -> 
 
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float):
+    # Prepare paths
+    pdb = os.path.abspath(pdb)
+    if ligand:
+        ligand = os.path.abspath(ligand)
+    output = os.path.abspath(output)
+
+    # Create results dictionary
     results = {
         'FILES': {
             'INPUT': pdb,
@@ -93,6 +100,8 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, are
             'RESIDUES': residues
         }
     }
+
+    # Write results to TOML file
     with open(fn, "w") as f:
         f.write("# pyKVFinder results\n\n")
         toml.dump(results, f)
