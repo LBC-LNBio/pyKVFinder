@@ -55,7 +55,7 @@ def process_pdb_line(line: str, vdw: dict) -> tuple:
         radius = vdw[resname][atom]
     else:
         radius = vdw['GEN'][atom_symbol]
-    return [resnum, chain, resname, atom], [x, y, z, radius]
+    return [f"{resnum}_{chain}", resname, atom], [x, y, z, radius]
 
 
 def read_vdw_dat(fn: str) -> dict:
