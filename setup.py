@@ -35,7 +35,7 @@ setup(
     ext_modules=[_grid],
     include_package_data=True,
     install_requires=reqs,
-    packages=['pyKVFinder', 'pyKVFinder.modules']
+    packages=['pyKVFinder']
     # include_dirs=['src'],
     # extra_compile_args=['-fopenmp'],
     # extra_link_args=['-lgomp'],
