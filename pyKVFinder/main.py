@@ -72,6 +72,14 @@ def run(args):
     if (not ncav):
         return True
 
+    # Backbone
+    # FIXME: need to be tested
+    backbone = False
+    if backbone:
+        mask = np.where(pdb[:,2] != 'C') and np.where(pdb[:,2] != 'CA') and np.where(pdb[:,2] != 'N') and np.where(pdb[:,2] != 'O')
+        pdb = pdb[mask[0], 0]
+        xyzr = xyzr[mask[0]]
+
     # Characterization
     residues, surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
     surface = surface.reshape(nx, ny, nz)
