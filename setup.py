@@ -1,11 +1,17 @@
 # System imports
-from distutils.core import setup, Extension
+# from distutils.core import setup, Extension
+from setuptools import setup, Extension, dist
 
 # parKVFinder information
 name = "parKVFinder"
 version = "1.1"
 
+# Prepare reqs from requirements.txt
+with open('requirements.txt') as f:
+    reqs = f.read().splitlines()
+
 # Third-party modules - we depend on numpy for everything
+dist.Distribution().fetch_build_eggs([req for req in reqs if req.find('numpy') != -1])
 import numpy
 
 # Obtain the numpy include directory.  This logic works across numpy versions.
@@ -23,10 +29,6 @@ _grid = Extension(
     extra_link_args=['-lgomp'],
     # swig_opts=['-c']
 )
-
-# Prepare reqs from requirements.txt
-with open('requirements.txt') as f:
-    reqs = f.read().splitlines()
 
 # Setup
 setup(
