@@ -5,7 +5,7 @@ import time
 import numpy as np
 
 from argparser import argparser
-from modules.utils import read_vdw_dat, read_pdb, write_results
+from utils import read_vdw, read_pdb, process_spatial, process_residues, write_results
 from _gridprocessing import detect, spatial, constitutional, export
 
 def run(args):
@@ -15,7 +15,7 @@ def run(args):
 
     if args.verbose:
         print("> Loading atomic dictionary file")
-    vdw = read_vdw_dat(args.dictionary)
+    vdw = read_vdw(args.dictionary)
 
     if args.verbose:
         print("> Reading PDB coordinates")
@@ -72,8 +72,7 @@ def run(args):
     # Spatial characterization
     surface, volume, area = spatial(cavities, nvoxels, ncav, ncav, args.step, 15, args.verbose)
     surface = surface.reshape(nx, ny, nz)
-    # print(type(surface), type(volume), type(area))
-    print(surface, volume, area)
+    volume, area = process_spatial(volume, area, ncav)
 
     # Constitutional characterization
     backbone = False
@@ -83,15 +82,14 @@ def run(args):
         pdb = pdb[mask[0],]
         xyzr = xyzr[mask[0]]
     residues = constitutional(cavities, pdb[:, 0].tolist(), xyzr, P1, sincos, args.step, args.probe_in, ncav, 15, args.verbose)
-    print(residues)
+    residues = process_residues(residues)
 
     # Export cavities
     output = "tests/cavity.pdb"
     export(output, cavities, surface, P1, sincos, args.step, ncav, 15)
 
-    # Export results
-    # FIXME: bad formatting
-    write_results("tests/results.toml", volume, area)
+    # Write results
+    write_results("tests/results.toml", args.pdb, args.ligand, output, volume, area, residues, args.step)
 
     return True
 

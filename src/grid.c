@@ -285,6 +285,7 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                 {
                     tag++;
                     vol = 0;
+                    
                     // Clustering procedure
                     DFS(grid, nx, ny, nz, i, j, k, tag);
                     
@@ -406,9 +407,9 @@ spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *
             if (verbose)
                 fprintf (stdout, "> Estimating volume\n");
             volume (cavities, nx, ny, nz, nvol, step, volumes, ncores);
-            if (DEBUG) 
-                for (int i=0; i<nvol; i++) 
-                    printf("%d: %lf\n", i, volumes[i]);
+            // if (DEBUG) 
+            //     for (int i=0; i<nvol; i++) 
+            //         printf("%d: %lf\n", i, volumes[i]);
         }
 
         #pragma omp section
@@ -416,9 +417,9 @@ spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *
             if (verbose)
                 fprintf (stdout, "> Estimating area\n");
             area (surface, nx, ny, nz, narea, step, areas, ncores);
-            if (DEBUG) 
-                for (int i=0; i<narea; i++) 
-                    printf("%d: %lf\n", i, areas[i]);
+            // if (DEBUG) 
+            //     for (int i=0; i<narea; i++) 
+            //         printf("%d: %lf\n", i, areas[i]);
         }
     }    
 }
