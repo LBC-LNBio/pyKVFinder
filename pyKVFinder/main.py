@@ -21,6 +21,11 @@ def run(args):
         print("> Reading PDB coordinates")
     pdb, xyzr = read_pdb(args.pdb, vdw)
 
+    if args.ligand:
+        if args.verbose:
+            print("> Reading ligand coordinates")
+        ligand, lxyzr = read_pdb(args.ligand, vdw)
+
     if args.verbose: 
         print("> Calculating 3D grid dimensions")
     P1 = np.min(xyzr[:, 0:3], axis=0) - args.probe_out 
