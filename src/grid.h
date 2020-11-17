@@ -34,6 +34,7 @@ char
     int *surface, int size,
     double *volumes, int nvol,
     double *areas, int narea,
+    double *atoms, int natoms, int xyzr,
     double *reference, int ndims,
     double *sincos, int nvalues,
     double step,
@@ -55,7 +56,13 @@ void area (int *surface, int nx, int ny, int nz, int ncav, double step, double *
 double check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
 /* Retrieve interface residues */
-void interface (int *grid, int nx, int ny, int nz, double *atoms, int natoms, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ignore_backbone, int ncores);
+typedef struct node {
+    int pos;
+    struct node* next;
+} res;
+void insert (res** head, res* new);
+res* create (int pos);
+void interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores);
 
 /* Export cavity PDB */
 void export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);

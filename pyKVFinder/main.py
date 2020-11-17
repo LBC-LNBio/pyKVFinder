@@ -73,7 +73,7 @@ def run(args):
         return True
 
     # Characterization
-    residues, surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
+    residues, surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
     surface = surface.reshape(nx, ny, nz)
     print(type(residues), type(surface), type(volume), type(area))
     print(residues)

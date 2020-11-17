@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <omp.h>
 
@@ -87,9 +88,9 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
                 H = ( probe + atoms[3 + (atom * 4)] ) / step;
             
                 // Loop around radius from atom center
-                for (i=floor(x - H); i<ceil(x + H); i++)
-                    for (j=floor(y - H); j<ceil(y + H); j++)
-                        for (k=floor(z - H); k<ceil(z + H); k++) 
+                for (i=floor(x - H); i<=ceil(x + H); i++)
+                    for (j=floor(y - H); j<=ceil(y + H); j++)
+                        for (k=floor(z - H); k<=ceil(z + H); k++) 
                         {
                             // Get distance between atom center and point inspected
                             distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
@@ -396,6 +397,7 @@ char
     int *surface, int size,
     double *volumes, int nvol,
     double *areas, int narea,
+    double *atoms, int natoms, int xyzr,
     double *reference, int ndims,
     double *sincos, int nvalues,
     double step,
@@ -405,6 +407,7 @@ char
     int verbose
     )
 {
+    char *residues;
 
     if (verbose)
         fprintf (stdout, "> Defining surface points\n");
@@ -432,11 +435,12 @@ char
                     printf("%d: %lf\n", i, areas[i]);
         }
 
-        // #pragma omp section
-        // {
-        //     if (verbose)
-        //         fprintf (stdout, "> Retrieving interface residues\n");
-        // }
+        #pragma omp section
+        {
+            if (verbose)
+                fprintf (stdout, "> Retrieving interface residues\n");
+            interface(&residues, cavities, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nvol, ncores);
+        }
 
         // #pragma omp section
         // {
@@ -445,14 +449,14 @@ char
         //     export ("tests/cavity.pdb", cavities, surface, nx, ny, nz, reference, ndims, sincos, nvalues, step, nvol, ncores);
         // }
     }
-    char *residues;
-    residues = (char*) malloc (25 * sizeof(char));
-    strcpy(residues, "124_A,");
-    strcat(residues, "125_B,");
-    strcat(residues, "-1,");
-    residues = (char*) realloc (residues, 30 * sizeof(char));
-    strcat(residues, "14_B,");
-    strcat(residues, "-1,");
+    
+    // residues = (char*) malloc (25 * sizeof(char));
+    // strcpy(residues, "");
+    // strcat(residues, "125_B,");
+    // strcat(residues, "-1,");
+    // residues = (char*) realloc (residues, 30 * sizeof(char));
+    // strcat(residues, "14_B,");
+    // strcat(residues, "-1,");
     return residues;
 }
 
@@ -600,10 +604,118 @@ area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas
                     areas[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
 }
 
-void
-interface (int *grid, int nx, int ny, int nz, double *atoms, int natoms, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ignore_backbone, int ncores)
-{
+typedef struct node {
+    int pos;
+    struct node* next;
+} res;
 
+res* 
+create (int pos)
+{
+    res* new = (res*) malloc (sizeof(res));
+
+    new->pos = pos;
+    new->next = NULL;
+
+    return new; 
+}
+
+void 
+insert (res** head, res* new)
+{
+    res* current;
+
+    if (*head == NULL || (*head)->pos >= new->pos)
+    {
+        new->next = *head;
+        *head = new;
+    } 
+    else
+    {
+        current = *head;
+        while (current->next != NULL && current->next->pos < new->pos) 
+        {
+            current = current->next;
+        }
+        new->next = current->next;
+        current->next = new;
+    }
+}
+
+void printList(res* head) 
+{ 
+    res* temp = head; 
+    while (temp != NULL) { 
+        printf("(%d),",temp->pos); 
+        temp = temp->next; 
+    }
+    printf("\n"); 
+} 
+
+void
+interface (char **residues, int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores)
+{
+    int i, j, k, atom, tag, old_atom=-1, old_tag=-1;
+    double x, y, z, xaux, yaux, zaux, distance, H;
+
+    // Allocate memory for reslist structure    
+    res* reslist[ncav];
+    
+    for (i=0; i<ncav; i++)
+        reslist[i] = NULL;
+    res* new;
+
+    /* Set number of processes in OpenMP */
+	omp_set_num_threads (ncores);
+    omp_set_nested (1);
+
+    for (atom=0; atom<natoms; atom++)
+    {
+            // Convert atom coordinates in 3D grid coordinates
+            x = ( atoms[atom * 4] - reference[0] ) / step; 
+            y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
+            z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+
+            xaux = x * sincos[3] + z * sincos[2];
+            yaux = y;
+            zaux = (-x) * sincos[2] + z * sincos[3];
+
+            x = xaux;
+            y = yaux * sincos[1] - zaux * sincos[0];
+            z = yaux * sincos[0] + zaux * sincos[1];
+
+            // Create a radius (H) for space occupied by probe and atom
+            H = ( probe_in + atoms[3 + (atom * 4)] ) / step;
+
+            // Loop around radius from atom center        
+            for (i=floor(x - H); i<=ceil(x + H); i++)
+                for (j=floor(y - H); j<=ceil(y + H); j++)
+                    for (k=floor(z - H); k<=ceil(z + H); k++) 
+                    {
+                        if (i < nx-1 && i > 0 && j < ny-1 && j > 0 && k < nz-1 && k > 0)
+                            if (grid[ k + nz * (j + ( ny * i ) ) ] > 1)
+                            {
+                                tag = grid[ k + nz * (j + ( ny * i ) ) ];
+                                distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
+                                if (distance <= H)
+                                {   
+                                    if (old_atom != atom && old_tag != tag)
+                                    {
+                                        new = create(atom);
+                                        insert(&reslist[tag], new);
+                                    }
+                                    old_atom = atom;
+                                    old_tag = tag;
+                                }
+                            }
+                    }
+    }
+    for (i=0; i<ncav; i++)
+    {
+        printList(reslist[i]);
+        printf("%d\n", sizeof(reslist[i]));
+    }
+    printf("%d\n", sizeof(reslist));
 }
 
 void
