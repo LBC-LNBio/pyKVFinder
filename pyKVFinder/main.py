@@ -6,7 +6,7 @@ import numpy as np
 
 from argparser import argparser
 from modules.utils import read_vdw_dat, read_pdb, write_results
-from _gridprocessing import detect, characterize, export
+from _gridprocessing import detect, spatial, constitutional, export
 
 def run(args):
     
@@ -72,22 +72,25 @@ def run(args):
     if (not ncav):
         return True
 
-    # Backbone
-    # FIXME: need to be tested
+    # Spatial characterization
+    surface, volume, area = spatial(cavities, nvoxels, ncav, ncav, args.step, 15, args.verbose)
+    surface = surface.reshape(nx, ny, nz)
+    # print(type(surface), type(volume), type(area))
+    print(surface, volume, area)
+
+    # Constitutional characterization
     backbone = False
     if backbone:
+        # Remove backbone from pdb
         mask = np.where(pdb[:,2] != 'C') and np.where(pdb[:,2] != 'CA') and np.where(pdb[:,2] != 'N') and np.where(pdb[:,2] != 'O')
-        pdb = pdb[mask[0], 0]
+        pdb = pdb[mask[0],]
         xyzr = xyzr[mask[0]]
-
-    # Characterization
-    residues, surface, volume, area = characterize(cavities, nvoxels, ncav, ncav, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, 15, args.verbose)
-    surface = surface.reshape(nx, ny, nz)
-    print(type(residues), type(surface), type(volume), type(area))
+    residues = constitutional(cavities, pdb[:, 0].tolist(), xyzr, P1, sincos, args.step, args.probe_in, ncav, 15, args.verbose)
     print(residues)
 
     # Export cavities
-    export("tests/cavity.pdb", cavities, surface, P1, sincos, args.step, ncav, 15)
+    output = "tests/cavity.pdb"
+    export(output, cavities, surface, P1, sincos, args.step, ncav, 15)
 
     # Export results
     # FIXME: bad formatting
