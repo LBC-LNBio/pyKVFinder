@@ -1,12 +1,11 @@
-import os
-import sys
-import toml
-import numpy as np
-import logging
+import os as _os
+import toml as _toml
+import numpy as _np
+import logging as _logging
 
 __all__ = ["read_pdb", "read_vdw", "write_results"]
 
-here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
+here = _os.path.join(_os.path.abspath(_os.path.dirname(__file__)), "data/vdw.dat")
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
     pdb = []
@@ -17,7 +16,7 @@ def read_pdb(fn: str, vdw: dict) -> tuple:
                 atom, xyzr = process_pdb_line(line, vdw)
                 pdb.append(atom)
                 coords.append(xyzr)
-    return np.asarray(pdb), np.asarray(coords)
+    return _np.asarray(pdb), _np.asarray(coords)
 
 
 def process_pdb_line(line: str, vdw: dict) -> tuple:
@@ -33,8 +32,8 @@ def process_pdb_line(line: str, vdw: dict) -> tuple:
         radius = vdw[resname][atom]
     else:
         radius = vdw['GEN'][atom_symbol]
-        logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
-        logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
+        _logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
+        _logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
     return [f"{resnum}_{chain}", resname, atom], [x, y, z, radius]
 
 
@@ -61,15 +60,15 @@ def read_vdw(fn: str = here) -> dict:
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float):
     # Prepare paths
-    pdb = os.path.abspath(pdb)
+    pdb = _os.path.abspath(pdb)
     if ligand:
-        ligand = os.path.abspath(ligand)
-    output = os.path.abspath(output)
+        ligand = _os.path.abspath(ligand)
+    output = _os.path.abspath(output)
 
     # Create results dictionary
     results = {
         'FILES': {
-            'INPUT': pdb,
+            'I_npUT': pdb,
             'LIGAND': ligand,
             'OUTPUT': output,
         },
@@ -83,7 +82,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, are
         }
     }
 
-    # Write results to TOML file
+    # Write results to toml file
     with open(fn, "w") as f:
         f.write("# pyKVFinder results\n\n")
-        toml.dump(results, f)
+        _toml.dump(results, f)
