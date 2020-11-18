@@ -14,7 +14,7 @@
 *********************/
 
 int 
-detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose)
+_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose)
 {
     int *PO, ncav;
 
@@ -394,7 +394,7 @@ filter (int *grid, int dx, int dy, int dz)
 }
 
 void 
-spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose)
+_spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose)
 {
     if (verbose)
         fprintf (stdout, "> Defining surface points\n");
@@ -680,7 +680,7 @@ char
 }
 
 char
-** constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores, int verbose)
+** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores, int verbose)
 {
     char **residues;
 
@@ -692,7 +692,7 @@ char
 }
 
 void
-export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
+_export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;

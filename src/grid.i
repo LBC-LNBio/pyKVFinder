@@ -1,4 +1,4 @@
-%module gridprocessing
+%module grid
 
 %{
     #define SWIG_FILE_WITH_INIT
@@ -69,7 +69,7 @@ char **
 }
 
 %typemap(out) 
-(char **constitutional)
+(char **_constitutional)
 {
     int nC, nPy, py_err;
     PyObject *tmp;

@@ -1,5 +1,5 @@
 /* Cavity detection */
-int detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose);
+int _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose);
 
 /* Grid initialization */
 void igrid (int *grid, int size);
@@ -26,7 +26,7 @@ void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag);
 void remove_cavity (int *grid, int nx, int ny, int nz, int tag, int ncores);
 
 /* Spatial characterization */
-void spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose);
+void _spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose);
 
 /* Cavity surface points */
 void filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores);
@@ -40,7 +40,7 @@ void area (int *surface, int nx, int ny, int nz, int ncav, double step, double *
 double check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
 /* Constitutional characterization */
-char ** constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores, int verbose);
+char ** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores, int verbose);
 
 /* Retrieve interface residues */
 typedef struct node { int pos; struct node* next; } res;
@@ -49,4 +49,4 @@ res* create (int pos);
 char **interface (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores);
 
 /* Export cavity PDB */
-void export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);
+void _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores);

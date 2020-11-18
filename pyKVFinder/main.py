@@ -7,8 +7,8 @@ from datetime import datetime
 import numpy as np
 
 from .argparser import argparser
-from .utils import read_vdw, read_pdb, process_spatial, process_residues, write_results
-from _gridprocessing import detect, spatial, constitutional, export
+from .utils import read_vdw, read_pdb, write_results
+from .grid import detect, spatial, constitutional, export
 
 def run():
     # Start time
@@ -74,7 +74,7 @@ def run():
         print(f"sina: {sincos[0]}\tsinb: {sincos[2]}")
         print(f"cosa: {sincos[1]}\tcosb: {sincos[3]}")
 
-    # Log parameters
+    # Logging parameters
     logging.info(f"> Step: {args.step} \u00c5")
     logging.info(f"> Probe In: {args.probe_in} \u00c5")
     logging.info(f"> Probe Out: {args.probe_out} \u00c5")
@@ -92,32 +92,23 @@ def run():
         if args.verbose:
             print ("> Surface representation: Solvent Accessible Surface (SAS)")
 
-    nvoxels = nx * ny * nz
-    ncav, cavities = detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose)
-    cavities = cavities.reshape(nx, ny, nz)
+    # Cavity detection
+    ncav, cavities = detect(nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose)
 
     # No cavities were found
     if (not ncav):
         return True
 
     # Spatial characterization
-    surface, volume, area = spatial(cavities, nvoxels, ncav, ncav, args.step, 15, args.verbose)
-    surface = surface.reshape(nx, ny, nz)
-    volume, area = process_spatial(volume, area, ncav)
+    surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, 15, args.verbose)
 
     # Constitutional characterization
-    ignore_backbone = True
-    if ignore_backbone:
-        # Remove backbone from pdb
-        mask = np.where(pdb[:,2] != 'C') and np.where(pdb[:,2] != 'CA') and np.where(pdb[:,2] != 'N') and np.where(pdb[:,2] != 'O')
-        pdb = pdb[mask[0],]
-        xyzr = xyzr[mask[0]]
-    residues = constitutional(cavities, pdb[:, 0].tolist(), xyzr, P1, sincos, args.step, args.probe_in, ncav, 15, args.verbose)
-    residues = process_residues(residues)
+    ignore_backbone = False
+    residues = constitutional(cavities, pdb, xyzr, P1, sincos, ncav, args.step, args.probe_in, ignore_backbone, 15, args.verbose)
 
     # Export cavities
     output = "tests/cavity.pdb"
-    export(output, cavities, surface, P1, sincos, args.step, ncav, 15)
+    export(output, cavities, surface, P1, sincos, ncav, args.step, 15)
 
     # Write results
     write_results("tests/results.toml", args.pdb, args.ligand, output, volume, area, residues, args.step)

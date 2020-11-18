@@ -23,12 +23,11 @@ except AttributeError:
 
 # Extension modules
 _grid = Extension(
-    name="_gridprocessing",
+    name="_grid",
     sources=["src/grid.i", "src/grid.c"],
     include_dirs=[numpy_include],
     extra_compile_args=['-fopenmp', '-lm'],
     extra_link_args=['-lgomp'],
-    # swig_opts=['-c']
 )
 
 # Setup
@@ -40,7 +39,4 @@ setup(
     install_requires=reqs,
     packages=['pyKVFinder'],
     entry_points={'console_scripts': ['pyKVFinder=pyKVFinder.main:run']},
-    # extra_compile_args=['-fopenmp'],
-    # extra_link_args=['-lgomp'],
-    # swig_opts=['-threads']
 )

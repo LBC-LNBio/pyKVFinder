@@ -1,9 +1,10 @@
 import os
 import sys
-import logging
 import toml
 import numpy as np
-from itertools import groupby
+import logging
+
+__all__ = ["read_pdb", "read_vdw", "write_results"]
 
 here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
@@ -56,26 +57,6 @@ def read_vdw(fn: str = here) -> dict:
                     vdw[res][atom] = float(radius)
     
     return vdw
-
-
-def process_residues(raw: list) -> dict:
-    residues = {}
-    index = 0
-    for flag, cavity_residues in groupby(raw, lambda res: res == "-1"):
-        if not flag:
-            key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
-            residues[key] = [item.split('_') for item in list(dict.fromkeys(cavity_residues))]
-            index += 1
-    return residues
-
-
-def process_spatial(raw_volume: np.ndarray, raw_area: np.ndarray, ncav: int) -> tuple:
-    volume, area = {}, {}
-    for index in range(ncav):
-        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
-        volume[key] = float(round(raw_volume[index], 2))
-        area[key] = float(round(raw_area[index], 2))
-    return volume, area
 
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float):
