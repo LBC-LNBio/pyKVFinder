@@ -15,7 +15,6 @@ def _process_residues(raw: list) -> dict:
             index += 1
     return residues
 
-
 def _process_spatial(raw_volume: _np.ndarray, raw_area: _np.ndarray, ncav: int) -> tuple:
     volume, area = {}, {}
     for index in range(ncav):
