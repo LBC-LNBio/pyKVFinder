@@ -55,19 +55,20 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
     )
 
     # Optional arguments
-    # parser.add_argument('-h', '--help',
-    #                     action="store_true",
-    #                     help="Show basic arguments and exit.")
-    parser.add_argument('-H', '--full_help',
-                        action="store_true",
-                        help="Show all arguments and exit.")
     parser.add_argument("-v", "--verbose",
                         help="Print extra information to standard output.",
                         action="store_true")
     parser.add_argument('--version',
                         action='version',
                         version=f'{_name} v{_version}',
-                        help="Show KVFinderMD version number and exit.")
+                        help="Show pyKVFinder version number and exit.")
+    parser.add_argument("--base_name",
+                        metavar="<str>",
+                        help="Prefix to output files.")
+    parser.add_argument("--output_directory",
+                        metavar="<path>",
+                        default=os.path.abspath("."),
+                        help="Output directory. (default: %(default)s)")
 
     # Create argument group
     parameters = parser.add_argument_group("Parameters")
@@ -76,7 +77,7 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                              default=os.path.join(os.path.abspath(os.path.dirname(__file__)),"data/vdw.dat"), # FIXME: prepare it latter
                              metavar="<file>",
                              type=str,
-                             help="Path to a custom van der Waals dictionary file. (default: %(default)s)")
+                             help="Path to van der Waals radii file. (default: %(default)s)")
     parameters.add_argument("-s", "--step",
                              metavar="<float>",
                              default=0.6,
@@ -107,12 +108,7 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                              metavar="<enum>",
                              default="SES",
                              choices=["SES", "SAS"],
-                             help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible \
-                                  surface. VdW specifies van der Waals molecular surface. (default: %(default)s)")
-    parameters.add_argument("--filled",
-                             action='store_true',
-                             help="Output filled cavities. Increase memory consumption for molecular visualization.")
-
+                             help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible surface. SES specifies solvent excluded surface. (default: %(default)s)")
 
     # Create argument group
     box_adjustment = parser.add_argument_group("Box adjustment arguments")
@@ -134,7 +130,6 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                                 type=positive_float,
                                 help=u"Length (\u212B) added in each box direction. (default: %(default).1lf)")
 
-
     # Create argument group
     ligand_adjustment = parser.add_argument_group("Ligand adjustment arguments")
 
@@ -144,13 +139,6 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                                    type=str,
                                    help="Target-ligand trajectory to limit a search space within a radius \
                                         (ligand_cutoff) around it.")
-    # ligand_adjustment.add_argument("--split_ligands",
-    #                                metavar="<residues_numbers>",
-    #                                nargs='+',
-    #                                help="Residues numbers to be split from target-biomolecule trajectory and used to \
-    #                                 limit a search space with a radius (ligand_cutoff) around them. Argument can be a \
-    #                                 interval (X-X+n), a sequence (Y Y+1 ... Y+n) or a combination of both. \
-    #                                 Ex.: --split_ligands resnumX_chainId-resnumX+n_chaindId resnumY_chainId ...")
     ligand_adjustment.add_argument("--ligand_cutoff",
                                    metavar="<float>",
                                    default=5.0,

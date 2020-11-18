@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import logging
+from datetime import datetime
 
 import numpy as np
 
@@ -19,8 +20,15 @@ def run():
     # Parse command-line arguments
     args = parser.parse_args()
 
-    # if args.verbose:
+    # Print message to stdout
     print (f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
+
+    # Start logging
+    logging.basicConfig(filename=f"{os.path.join(args.output_directory, 'KVFinder.log')}", level=logging.INFO, format='%(message)s')
+    logging.info("=" * 80)
+    logging.info(f"Date: {datetime.now().strftime('%a %d %B, %Y')}\nTime: {datetime.now().strftime('%H:%M:%S')}\n")
+    logging.info(f"[ Running pyKVFinder for: {args.pdb} ]")
+    logging.info(f"> vdW radii file: {args.dictionary}")
 
     if args.verbose:
         print("> Loading atomic dictionary file")
@@ -53,7 +61,7 @@ def run():
     ny = int ( norm2 / args.step ) + 1
     nz = int ( norm3 / args.step ) + 1
     if args.verbose:
-        print(f"nx: {nz}\tny: {ny}\tnz: {nz}")
+        print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
 
     # Calculate sin and cos of angles a and b
     sincos = np.array([
@@ -65,6 +73,15 @@ def run():
     if args.verbose:
         print(f"sina: {sincos[0]}\tsinb: {sincos[2]}")
         print(f"cosa: {sincos[1]}\tcosb: {sincos[3]}")
+
+    # Log parameters
+    logging.info(f"> Step: {args.step} \u00c5")
+    logging.info(f"> Probe In: {args.probe_in} \u00c5")
+    logging.info(f"> Probe Out: {args.probe_out} \u00c5")
+    logging.info(f"> Voxel volume: {args.step * args.step * args.step} \u00c5\u00b3")
+    logging.info(f"> Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
+    logging.info(f"> sina: {sincos[0]}\tcosa: {sincos[1]}")
+    logging.info(f"> sinb: {sincos[2]}\tcosb: {sincos[3]}")
 
     if args.surface == 'SES':
         args.surface = True
@@ -107,9 +124,7 @@ def run():
 
     # Elapsed time
     elapsed_time = time.time() - start_time
-    print(f"[ \033[1mElapsed time:\033[0m {elapsed_time:.6f} ]")
+    print(f"[ \033[1mElapsed time:\033[0m {elapsed_time:.4f} ]")
+    logging.info(f"[ Elapsed time (s): {elapsed_time:.4f} ]\n")
 
     return True
-
-if __name__ == "__main__":
-    run()

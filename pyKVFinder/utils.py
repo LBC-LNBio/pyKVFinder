@@ -1,9 +1,11 @@
 import os
 import sys
+import logging
 import toml
 import numpy as np
 from itertools import groupby
 
+here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
     pdb = []
@@ -30,10 +32,12 @@ def process_pdb_line(line: str, vdw: dict) -> tuple:
         radius = vdw[resname][atom]
     else:
         radius = vdw['GEN'][atom_symbol]
+        logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
+        logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
     return [f"{resnum}_{chain}", resname, atom], [x, y, z, radius]
 
 
-def read_vdw(fn: str) -> dict:
+def read_vdw(fn: str = here) -> dict:
     """
     Read van der Waals radii from .dat format
     """

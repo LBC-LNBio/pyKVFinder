@@ -37,7 +37,6 @@ setup(
     version=_version,
     ext_modules=[_grid],
     include_package_data=True,
-    # package_data={'': ['data/vdw.dat']}, # FIXME: Not working
     install_requires=reqs,
     packages=['pyKVFinder'],
     entry_points={'console_scripts': ['pyKVFinder=pyKVFinder.main:run']},
@@ -45,33 +44,3 @@ setup(
     # extra_link_args=['-lgomp'],
     # swig_opts=['-threads']
 )
-
-# setup(
-#     name=name, 
-#     version=version,
-#     # distutils detects .i files and compiles them automatically
-#     ext_modules=[
-#         Extension(
-#             name='_parKVFinder', # SWIG requires _ as a prefix for the module name
-#             sources=[
-#                 "parKVFinder.i", 
-#                 "src/parKVFinder.c",
-#                 "src/matrixprocessing.c",
-#                 "src/pdbprocessing.c",
-#                 "src/resultsprocessing.c",
-#                 "src/tomlprocessing.c",
-#                 "src/dictionaryprocessing.c",
-#                 "src/argparser.c"
-#                 ],
-#             include_dirs=['src'],
-#             extra_compile_args=["-fopenmp"],
-#             extra_link_args=['-lgomp'],
-#             swig_opts=['-threads']
-#         )
-#     ]
-#     # entry_points={
-#     #     'console_scripts': [
-#     #         'parKVFinder=parKVFinder.parKVFinder:run',
-#     #     ],
-#     # },
-# )
