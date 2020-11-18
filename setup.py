@@ -12,7 +12,8 @@ with open('requirements.txt') as f:
     reqs = f.read().splitlines()
 
 # Third-party modules - we depend on numpy for everything
-dist.Distribution().fetch_build_eggs([req for req in reqs if req.find('numpy') != -1])
+np_req = [req for req in reqs if req.find('numpy') != -1]
+dist.Distribution().fetch_build_eggs(np_req)
 import numpy
 
 # Obtain the numpy include directory.  This logic works across numpy versions.
@@ -32,7 +33,7 @@ _grid = Extension(
 
 # Setup
 setup(
-    name=_name, 
+    name=_name,
     version=_version,
     ext_modules=[_grid],
     include_package_data=True,

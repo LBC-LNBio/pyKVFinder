@@ -1,32 +1,35 @@
 import os
-import sys
-import time
 import argparse
 from . import _name, _version
+
 
 def positive_float(x):
     try:
         x = float(x)
     except ValueError:
-        raise argparse.ArgumentTypeError("%r not a floating-point literal" % (x,))
+        msg = "%r not a floating-point literal" % (x,)
+        raise argparse.ArgumentTypeError(msg)
 
     if x < 0.0:
-        raise argparse.ArgumentTypeError("%r not a positive floating-point" % (x,))
+        msg = "%r not a positive floating-point" % (x,)
+        raise argparse.ArgumentTypeError(msg)
     return x
+
 
 def restricted_step_size(x):
     try:
         x = float(x)
     except ValueError:
-        raise argparse.ArgumentTypeError("%r not a floating-point literal" % (x,))
+        msg = "%r not a floating-point literal" % (x,)
+        raise argparse.ArgumentTypeError(msg)
 
     if not 0.0 < x <= 2.0:
-        raise argparse.ArgumentTypeError("%r not in range (0.0, 2.0]"%(x,))
+        msg = "%r not in range (0.0, 2.0]" % (x,)
+        raise argparse.ArgumentTypeError(msg)
     return x
 
-def argparser(__title__: str = None, __version__: str = None, __license__: str = None
-    ):
 
+def argparser():
     # Overrides method in HelpFormatter
     class CapitalisedHelpFormatter(argparse.HelpFormatter):
 
@@ -74,49 +77,55 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
     parser.add_argument("--nthreads",
                         metavar="<int>",
                         type=int,
-                        default=os.cpu_count()-1,
-                        help="Number of threads to apply in parallel routines. (default: %(default)s)")
+                        default=os.cpu_count() - 1,
+                        help="Number of threads to apply in parallel routines (default: %(default)s)")
 
     # Create argument group
     parameters = parser.add_argument_group("Parameters")
 
-    parameters.add_argument("-d", "--dictionary",
-                             default=os.path.join(os.path.abspath(os.path.dirname(__file__)),"data/vdw.dat"), # FIXME: prepare it latter
-                             metavar="<file>",
-                             type=str,
-                             help="Path to van der Waals radii file. (default: %(default)s)")
-    parameters.add_argument("-s", "--step",
-                             metavar="<float>",
-                             default=0.6,
-                             type=restricted_step_size,
-                             help="Step size (grid spacing). (default: %(default).1lf)")
-    parameters.add_argument("-i", "--probe_in",
-                             metavar="<float>",
-                             default=1.4,
-                             type=positive_float,
-                             help=u"Probe In size (\u212B). (default: %(default).1lf)")
-    parameters.add_argument("-o", "--probe_out",
-                             metavar="<float>",
-                             default=4.0,
-                             type=positive_float,
-                             help=u"Probe Out size (\u212B). (default: %(default).1lf)")
-    parameters.add_argument("-V", "--volume_cutoff",
-                             metavar="<float>",
-                             default=5.0,
-                             type=positive_float,
-                             help=u"Cavities volume filter (\u212B\u00b3). (default: %(default).1lf)")
-    parameters.add_argument("-R", "--removal_distance",
-                             metavar="<float>",
-                             default=2.4,
-                             type=positive_float,
-                             help=u"Length to be removed from the cavity-bulk frontier (\u212B). \
-                             (default: %(default).1lf)")
-    parameters.add_argument("-S", "--surface",
-                             metavar="<enum>",
-                             type=str,
-                             default="SES",
-                             choices=["SES", "SAS"],
-                             help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible surface. SES specifies solvent excluded surface. (default: %(default)s)")
+    parameters.add_argument("-d",
+                            "--dictionary",
+                            default=os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat"),
+                            metavar="<file>",
+                            type=str,
+                            help="Path to van der Waals radii file. (default: %(default)s)")
+    parameters.add_argument("-s",
+                            "--step",
+                            metavar="<float>",
+                            default=0.6,
+                            type=restricted_step_size,
+                            help="Step size (grid spacing). (default: %(default).1lf)")
+    parameters.add_argument("-i",
+                            "--probe_in",
+                            metavar="<float>",
+                            default=1.4,
+                            type=positive_float,
+                            help=u"Probe In size (\u212B). (default: %(default).1lf)")
+    parameters.add_argument("-o",
+                            "--probe_out",
+                            metavar="<float>",
+                            default=4.0,
+                            type=positive_float,
+                            help=u"Probe Out size (\u212B). (default: %(default).1lf)")
+    parameters.add_argument("-V",
+                            "--volume_cutoff",
+                            metavar="<float>",
+                            default=5.0,
+                            type=positive_float,
+                            help=u"Cavities volume filter (\u212B\u00b3). (default: %(default).1lf)")
+    parameters.add_argument("-R",
+                            "--removal_distance",
+                            metavar="<float>",
+                            default=2.4,
+                            type=positive_float,
+                            help=u"Length to be removed from the cavity-bulk frontier (\u212B). (default: %(default).1lf)")
+    parameters.add_argument("-S",
+                            "--surface",
+                            metavar="<enum>",
+                            type=str,
+                            default="SES",
+                            choices=["SES", "SAS"],
+                            help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible surface. SES specifies solvent excluded surface. (default: %(default)s)")
     parameters.add_argument("--ignore_backbone",
                             action='store_true',
                             default=False,
@@ -126,7 +135,8 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
     box_adjustment = parser.add_argument_group("Box adjustment arguments")
 
     # Box adjustment arguments
-    box_adjustment.add_argument("-B", "--box",
+    box_adjustment.add_argument("-B",
+                                "--box",
                                 metavar="<.toml>",
                                 type=os.path.abspath,
                                 help="Adjust the 3D grid based on a list of residues ([\"resnum\",\"chain\"]) and a padding (default: 3.5) or a set of minimum and maximum coordinates (xmin, xmax, ymin, ymax, zmin, zmax) and two angles (angle1, angle2). Define one of them using a toml file.")
@@ -135,7 +145,8 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
     ligand_adjustment = parser.add_argument_group("Ligand adjustment arguments")
 
     # Ligand adjustment arguments
-    ligand_adjustment.add_argument("--ligand",
+    ligand_adjustment.add_argument("-L",
+                                   "--ligand",
                                    metavar="<.pdb>",
                                    type=os.path.abspath,
                                    help="Path to a ligand PDB file to limit the cavities within a radius (ligand_cutoff) around it.")

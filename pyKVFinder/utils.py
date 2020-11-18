@@ -5,7 +5,11 @@ import logging as _logging
 
 __all__ = ["read_pdb", "read_vdw", "write_results"]
 
-here = _os.path.join(_os.path.abspath(_os.path.dirname(__file__)), "data/vdw.dat")
+here = _os.path.join(
+    _os.path.abspath(
+        _os.path.dirname(__file__)),
+    "data/vdw.dat")
+
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
     pdb = []
@@ -42,7 +46,6 @@ def read_vdw(fn: str = here) -> dict:
     Read van der Waals radii from .dat format
     """
     vdw = {}
-    
     with open(fn, 'r') as f:
         # Read line with data only (ignore empty lines)
         lines = [line.replace(' ', '') for line in f.read().splitlines() if line.replace('\t\t', '')]
@@ -54,7 +57,6 @@ def read_vdw(fn: str = here) -> dict:
                 else:
                     atom, radius = line.split('\t\t')
                     vdw[res][atom] = float(radius)
-    
     return vdw
 
 
@@ -75,7 +77,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, are
         'PARAMETERS': {
             'STEP': step,
         },
-        'RESULTS' : {
+        'RESULTS': {
             'VOLUME': volume,
             'AREA': area,
             'RESIDUES': residues
