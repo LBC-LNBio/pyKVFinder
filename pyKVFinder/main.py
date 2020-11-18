@@ -1,17 +1,26 @@
 import os
 import sys
 import time
+import logging
 
 import numpy as np
 
-from argparser import argparser
-from utils import read_vdw, read_pdb, process_spatial, process_residues, write_results
+from .argparser import argparser
+from .utils import read_vdw, read_pdb, process_spatial, process_residues, write_results
 from _gridprocessing import detect, spatial, constitutional, export
 
-def run(args):
-    
-    if args.verbose:
-        print (f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
+def run():
+    # Start time
+    start_time = time.time()
+
+    # Load pyKVFinder argument parser
+    parser = argparser()
+
+    # Parse command-line arguments
+    args = parser.parse_args()
+
+    # if args.verbose:
+    print (f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
 
     if args.verbose:
         print("> Loading atomic dictionary file")
@@ -96,23 +105,11 @@ def run(args):
     # Write results
     write_results("tests/results.toml", args.pdb, args.ligand, output, volume, area, residues, args.step)
 
-    return True
-
-if __name__ == "__main__":
-    # Start time
-    start_time = time.time()
-
-    # Load pyKVFinder argument parser
-    parser = argparser()
-
-    # Parse command-line arguments
-    args = parser.parse_args()
-    print(args)
-
-    # Run pyKVFinder
-    run(args)
-
     # Elapsed time
     elapsed_time = time.time() - start_time
     print(f"[ \033[1mElapsed time:\033[0m {elapsed_time:.6f} ]")
 
+    return True
+
+if __name__ == "__main__":
+    run()

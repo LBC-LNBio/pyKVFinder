@@ -2,9 +2,10 @@
 # from distutils.core import setup, Extension
 from setuptools import setup, Extension, dist
 
-# parKVFinder information
-name = "parKVFinder"
-version = "1.1"
+# pyKVFinder information
+from pyKVFinder import _name, _version
+# _name = "pyKVFinder"
+# _version = "0.1"
 
 # Prepare reqs from requirements.txt
 with open('requirements.txt') as f:
@@ -32,13 +33,14 @@ _grid = Extension(
 
 # Setup
 setup(
-    name=name, 
-    version=version,
+    name=_name, 
+    version=_version,
     ext_modules=[_grid],
     include_package_data=True,
+    # package_data={'': ['data/vdw.dat']}, # FIXME: Not working
     install_requires=reqs,
-    packages=['pyKVFinder']
-    # include_dirs=['src'],
+    packages=['pyKVFinder'],
+    entry_points={'console_scripts': ['pyKVFinder=pyKVFinder.main:run']},
     # extra_compile_args=['-fopenmp'],
     # extra_link_args=['-lgomp'],
     # swig_opts=['-threads']

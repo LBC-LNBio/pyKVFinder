@@ -1,5 +1,5 @@
 # Include vdw dictionary data file 
-include data/dictionary
+include data/vdw.dat
 
 # Include the license file
 include LICENSE.txt

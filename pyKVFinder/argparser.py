@@ -3,6 +3,8 @@ import sys
 import time
 import argparse
 
+from . import _name, _version
+
 def positive_float(x):
     try:
         x = float(x)
@@ -64,14 +66,14 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                         action="store_true")
     parser.add_argument('--version',
                         action='version',
-                        version='{} (%(prog)s) v{}'.format(__title__, __version__),
+                        version=f'{_name} v{_version}',
                         help="Show KVFinderMD version number and exit.")
 
     # Create argument group
     parameters = parser.add_argument_group("Parameters")
 
     parameters.add_argument("-d", "--dictionary",
-                             default=os.path.join(os.path.abspath(os.path.dirname(__file__)),"../data/vdw.dat"), # FIXME: prepare it latter
+                             default=os.path.join(os.path.abspath(os.path.dirname(__file__)),"data/vdw.dat"), # FIXME: prepare it latter
                              metavar="<file>",
                              type=str,
                              help="Path to a custom van der Waals dictionary file. (default: %(default)s)")
