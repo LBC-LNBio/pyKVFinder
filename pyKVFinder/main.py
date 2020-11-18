@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import toml
 import logging
 from datetime import datetime
 
@@ -19,6 +20,10 @@ def run():
 
     # Parse command-line arguments
     args = parser.parse_args()
+
+    # Get base name from pdb file if not defined by user
+    if not args.base_name:
+        args.base_name = os.path.basename(args.pdb.replace('.pdb', ''))
 
     # Print message to stdout
     print (f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
@@ -93,25 +98,31 @@ def run():
             print ("> Surface representation: Solvent Accessible Surface (SAS)")
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, 15, args.verbose)
+    ncav, cavities = detect(nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.surface, args.nthreads, args.verbose)
 
     # No cavities were found
     if (not ncav):
         return True
 
     # Spatial characterization
-    surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, 15, args.verbose)
+    surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, args.nthreads, args.verbose)
 
     # Constitutional characterization
-    ignore_backbone = False
-    residues = constitutional(cavities, pdb, xyzr, P1, sincos, ncav, args.step, args.probe_in, ignore_backbone, 15, args.verbose)
+    residues = constitutional(cavities, pdb, xyzr, P1, sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
     # Export cavities
-    output = "tests/cavity.pdb"
-    export(output, cavities, surface, P1, sincos, ncav, args.step, 15)
+    output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
+    export(output_cavity, cavities, surface, P1, sincos, ncav, args.step, args.nthreads)
 
     # Write results
-    write_results("tests/results.toml", args.pdb, args.ligand, output, volume, area, residues, args.step)
+    output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
+    write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, residues, args.step)
+
+    # Write parameters
+    # FIXME: Poorly formatted and missing information
+    parameters = os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
+    with open(parameters, "w") as param:
+        toml.dump(vars(args), param)
 
     # Elapsed time
     elapsed_time = time.time() - start_time

@@ -68,7 +68,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, are
     # Create results dictionary
     results = {
         'FILES': {
-            'I_npUT': pdb,
+            'INPUT': pdb,
             'LIGAND': ligand,
             'OUTPUT': output,
         },

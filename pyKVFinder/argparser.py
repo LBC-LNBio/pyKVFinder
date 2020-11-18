@@ -2,7 +2,6 @@ import os
 import sys
 import time
 import argparse
-
 from . import _name, _version
 
 def positive_float(x):
@@ -51,6 +50,7 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
     parser.add_argument(
         "pdb",
         metavar="<.pdb>",
+        type=os.path.abspath,
         help="Path to a target PDB file."
     )
 
@@ -64,11 +64,18 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                         help="Show pyKVFinder version number and exit.")
     parser.add_argument("--base_name",
                         metavar="<str>",
+                        type=str,
                         help="Prefix to output files.")
     parser.add_argument("--output_directory",
                         metavar="<path>",
+                        type=os.path.abspath,
                         default=os.path.abspath("."),
                         help="Output directory. (default: %(default)s)")
+    parser.add_argument("--nthreads",
+                        metavar="<int>",
+                        type=int,
+                        default=os.cpu_count()-1,
+                        help="Number of threads to apply in parallel routines. (default: %(default)s)")
 
     # Create argument group
     parameters = parser.add_argument_group("Parameters")
@@ -106,29 +113,23 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
                              (default: %(default).1lf)")
     parameters.add_argument("-S", "--surface",
                              metavar="<enum>",
+                             type=str,
                              default="SES",
                              choices=["SES", "SAS"],
                              help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible surface. SES specifies solvent excluded surface. (default: %(default)s)")
+    parameters.add_argument("--ignore_backbone",
+                            action='store_true',
+                            default=False,
+                            help="Ignore backbone contacts to cavity when defining interface residues. (default: %(default)s)")
 
     # Create argument group
     box_adjustment = parser.add_argument_group("Box adjustment arguments")
 
     # Box adjustment arguments
-    box_adjustment.add_argument("--custom_box",
-                                metavar="<file>",
-                                type=str,
-                                help="Custom search box based on a tab-separated file containing the minimum and \
-                                     maximum cartesian values of each axis in angstrom.")
-    box_adjustment.add_argument("--residues_box",
-                                metavar="<file>",
-                                type=str,
-                                help="Custom search box around a list of residues (resnum_chainId) with a padding, \
-                                     which are defined through a tab-separated file.")
-    box_adjustment.add_argument("--padding",
-                                metavar="<float>",
-                                default=3.5,
-                                type=positive_float,
-                                help=u"Length (\u212B) added in each box direction. (default: %(default).1lf)")
+    box_adjustment.add_argument("-B", "--box",
+                                metavar="<.toml>",
+                                type=os.path.abspath,
+                                help="Adjust the 3D grid based on a list of residues ([\"resnum\",\"chain\"]) and a padding (default: 3.5) or a set of minimum and maximum coordinates (xmin, xmax, ymin, ymax, zmin, zmax) and two angles (angle1, angle2). Define one of them using a toml file.")
 
     # Create argument group
     ligand_adjustment = parser.add_argument_group("Ligand adjustment arguments")
@@ -136,14 +137,12 @@ def argparser(__title__: str = None, __version__: str = None, __license__: str =
     # Ligand adjustment arguments
     ligand_adjustment.add_argument("--ligand",
                                    metavar="<.pdb>",
-                                   type=str,
-                                   help="Target-ligand trajectory to limit a search space within a radius \
-                                        (ligand_cutoff) around it.")
+                                   type=os.path.abspath,
+                                   help="Path to a ligand PDB file to limit the cavities within a radius (ligand_cutoff) around it.")
     ligand_adjustment.add_argument("--ligand_cutoff",
                                    metavar="<float>",
                                    default=5.0,
                                    type=positive_float,
-                                   help="Radius used to limit search space around the target-ligand. \
-                                        (default: %(default).1lf)")
+                                   help="Radius value to limit a space around the defined ligand. (default: %(default).1lf)")
 
     return parser
