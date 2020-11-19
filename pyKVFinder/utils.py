@@ -5,10 +5,7 @@ import logging as _logging
 
 __all__ = ["read_pdb", "read_vdw", "write_results"]
 
-here = _os.path.join(
-    _os.path.abspath(
-        _os.path.dirname(__file__)),
-    "data/vdw.dat")
+here = _os.path.join(_os.path.abspath(_os.path.dirname(__file__)), "data/vdw.dat")
 
 
 def read_pdb(fn: str, vdw: dict) -> tuple:

@@ -141,7 +141,7 @@ def argparser():
                                 "--box",
                                 metavar="<.toml>",
                                 type=os.path.abspath,
-                                help="Adjust the 3D grid based on a list of residues ([\"resnum\",\"chain\"]) and a padding (default: 3.5) or a set of minimum and maximum coordinates (xmin, xmax, ymin, ymax, zmin, zmax) and two angles (angle1, angle2). Define one of them using a toml file.")
+                                help="Adjust the 3D grid based on a list of residues ([\"resnum\",\"chain\"]) and a padding (default: 3.5) or a set of four points (p1: origin, p2: x-axis max, p3: y-axis max, p4: z-axis max) with xyz coordinates ([x, y, z]). Define one of them using a toml file.")
 
     # Create argument group
     ligand_adjustment = parser.add_argument_group("Ligand adjustment arguments")

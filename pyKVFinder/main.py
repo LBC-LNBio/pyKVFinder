@@ -5,7 +5,7 @@ import logging
 from datetime import datetime
 from .argparser import argparser
 from .utils import read_vdw, read_pdb, write_results
-from .grid import calculate_vertices, calculate_dimensions, calculate_sincos, detect, spatial, constitutional, export
+from .grid import calculate_vertices, calculate_dimensions, calculate_sincos, prepare_box_vertices, detect, spatial, constitutional, export
 
 
 def run():
@@ -52,7 +52,10 @@ def run():
 
     if args.verbose:
         print("> Calculating 3D grid dimensions")
-    P1, P2, P3, P4 = calculate_vertices(xyzr, args.probe_out)
+    if args.box:
+        P1, P2, P3, P4 = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
+    else:
+        P1, P2, P3, P4 = calculate_vertices(xyzr, args.probe_out)
 
     # Calculate distance between points
     nx, ny, nz = calculate_dimensions(P1, P2, P3, P4, args.step)
@@ -62,8 +65,8 @@ def run():
     # Calculate sin and cos of angles a and b
     sincos = calculate_sincos(P1, P2, P3, P4)
     if args.verbose:
-        print(f"sina: {sincos[0]}\tsinb: {sincos[2]}")
-        print(f"cosa: {sincos[1]}\tcosb: {sincos[3]}")
+        print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
+        print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
 
     # Logging parameters
     logging.info(f"> Step: {args.step} \u00c5")
