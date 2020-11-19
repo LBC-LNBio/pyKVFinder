@@ -89,29 +89,29 @@ def run():
     # Cavity detection
     ncav, cavities = detect(nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.surface, args.nthreads, args.verbose)
 
-    # No cavities were found
-    if (not ncav):
-        return True
+    # Cavities were found
+    if ncav > 0:
+        # Spatial characterization
+        surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, args.nthreads, args.verbose)
 
-    # Spatial characterization
-    surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, args.nthreads, args.verbose)
+        # Constitutional characterization
+        residues = constitutional(cavities, pdb, xyzr, P1, sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
-    # Constitutional characterization
-    residues = constitutional(cavities, pdb, xyzr, P1, sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        # Export cavities
+        output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
+        export(output_cavity, cavities, surface, P1, sincos, ncav, args.step, args.nthreads)
 
-    # Export cavities
-    output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
-    export(output_cavity, cavities, surface, P1, sincos, ncav, args.step, args.nthreads)
+        # Write results
+        output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
+        write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, residues, args.step)
 
-    # Write results
-    output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
-    write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, residues, args.step)
-
-    # Write parameters
-    # FIXME: Poorly formatted and missing information
-    parameters = os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
-    with open(parameters, "w") as param:
-        toml.dump(vars(args), param)
+        # Write parameters
+        # FIXME: Poorly formatted and missing information
+        parameters = os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
+        with open(parameters, "w") as param:
+            toml.dump(vars(args), param)
+    else:
+        print("> No cavities detected!")
 
     # Elapsed time
     elapsed_time = time.time() - start_time
