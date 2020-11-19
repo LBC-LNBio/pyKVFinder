@@ -65,11 +65,13 @@ def argparser():
                         action='version',
                         version=f'{_name} v{_version}',
                         help="Show pyKVFinder version number and exit.")
-    parser.add_argument("--base_name",
+    parser.add_argument("-b",
+                        "--base_name",
                         metavar="<str>",
                         type=str,
                         help="Prefix to output files.")
-    parser.add_argument("--output_directory",
+    parser.add_argument("-O",
+                        "--output_directory",
                         metavar="<path>",
                         type=os.path.abspath,
                         default=os.path.abspath("."),

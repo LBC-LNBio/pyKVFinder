@@ -3,10 +3,9 @@ import time
 import toml
 import logging
 from datetime import datetime
-import numpy as np
 from .argparser import argparser
 from .utils import read_vdw, read_pdb, write_results
-from .grid import detect, spatial, constitutional, export
+from .grid import calculate_vertices, calculate_dimensions, calculate_sincos, detect, spatial, constitutional, export
 
 
 def run():
@@ -22,6 +21,9 @@ def run():
     # Get base name from pdb file if not defined by user
     if not args.base_name:
         args.base_name = os.path.basename(args.pdb.replace('.pdb', ''))
+
+    # Create output directory
+    os.makedirs(args.output_directory, exist_ok=True)
 
     # Print message to stdout
     print(f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
@@ -48,31 +50,15 @@ def run():
 
     if args.verbose:
         print("> Calculating 3D grid dimensions")
-    P1 = np.min(xyzr[:, 0:3], axis=0) - args.probe_out
-    xmax, ymax, zmax = np.max(xyzr[:, 0:3], axis=0) + args.probe_out
-    P2 = np.array([xmax, P1[1], P1[2]])
-    P3 = np.array([P1[0], ymax, P1[2]])
-    P4 = np.array([P1[0], P1[1], zmax])
+    P1, P2, P3, P4 = calculate_vertices(xyzr, args.probe_out)
 
     # Calculate distance between points
-    norm1 = np.linalg.norm(P2 - P1)
-    norm2 = np.linalg.norm(P3 - P1)
-    norm3 = np.linalg.norm(P4 - P1)
-
-    # Calculate grid dimensions
-    nx = int(norm1 / args.step) + 1
-    ny = int(norm2 / args.step) + 1
-    nz = int(norm3 / args.step) + 1
+    nx, ny, nz = calculate_dimensions(P1, P2, P3, P4, args.step)
     if args.verbose:
         print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
 
     # Calculate sin and cos of angles a and b
-    sincos = np.array([
-        (P4[1] - P1[1]) / norm3,  # sin a
-        (P3[1] - P1[1]) / norm2,  # cos a
-        (P2[2] - P1[2]) / norm1,  # sin b
-        (P2[0] - P1[0]) / norm1   # cos b
-    ])
+    sincos = calculate_sincos(P1, P2, P3, P4)
     if args.verbose:
         print(f"sina: {sincos[0]}\tsinb: {sincos[2]}")
         print(f"cosa: {sincos[1]}\tcosb: {sincos[3]}")

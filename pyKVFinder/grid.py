@@ -5,6 +5,44 @@ from _grid import _detect, _spatial, _constitutional, _export
 __all__ = ["detect", "spatial", "constitutional", "export"]
 
 
+def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0):
+    P1 = _np.min(xyzr[:, 0:3], axis=0) - probe_out
+    xmax, ymax, zmax = _np.max(xyzr[:, 0:3], axis=0) + probe_out
+    P2 = _np.array([xmax, P1[1], P1[2]])
+    P3 = _np.array([P1[0], ymax, P1[2]])
+    P4 = _np.array([P1[0], P1[1], zmax])
+    return P1, P2, P3, P4
+
+
+def calculate_dimensions(P1: _np.ndarray, P2: _np.ndarray, P3: _np.ndarray, P4: _np.ndarray, step: float = 0.6):
+    # Calculate distance between points
+    norm1 = _np.linalg.norm(P2 - P1)
+    norm2 = _np.linalg.norm(P3 - P1)
+    norm3 = _np.linalg.norm(P4 - P1)
+
+    # Calculate grid dimensions
+    nx = int(norm1 / step) + 1
+    ny = int(norm2 / step) + 1
+    nz = int(norm3 / step) + 1
+    return nx, ny, nz
+
+
+def calculate_sincos(P1: _np.ndarray, P2: _np.ndarray, P3: _np.ndarray, P4: _np.ndarray):
+    # Calculate distance between points
+    norm1 = _np.linalg.norm(P2 - P1)
+    norm2 = _np.linalg.norm(P3 - P1)
+    norm3 = _np.linalg.norm(P4 - P1)
+
+    # Calculate sin and cos of angles a and b
+    sincos = _np.array([
+        (P4[1] - P1[1]) / norm3,  # sin a
+        (P3[1] - P1[1]) / norm2,  # cos a
+        (P2[2] - P1[2]) / norm1,  # sin b
+        (P2[0] - P1[0]) / norm1   # cos b
+    ])
+    return sincos
+
+
 def _process_residues(raw: list) -> dict:
     from itertools import groupby
     residues = {}
