@@ -1,17 +1,16 @@
 # Files to ignore
 
-# Implementation evaluation
-eval/
+# Debbuging
+tests/output/
 
 # parKVFinder source code
 etc/
+etc/eval
 
 # Virtual environment
 venv/
 .vscode/
 
 # Remove __pycache__
-pyKVFinder/__pycache__/
-pyKVFinder/modules/__pycache__/
-tests/files/__pycache__/
-tests/grid/__pycache__/
+*/__pycache__/
+*/*/__pycache__/
