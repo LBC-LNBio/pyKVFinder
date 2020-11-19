@@ -86,11 +86,9 @@ def get_residues_box(box: dict, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: 
     # Calculate vertices
     P1 = _np.min(xyzr[:, 0:3], axis=0) - probe_out - box['padding']
     xmax, ymax, zmax = _np.max(xyzr[:, 0:3], axis=0) + probe_out + box['padding']
-    P2 = _np.array([xmax, P1[1], P1[2]]) + box['padding']
-    P3 = _np.array([P1[0], ymax, P1[2]]) + box['padding']
-    P4 = _np.array([P1[0], P1[1], zmax]) + box['padding']
-
-    print(P1, P2, P3, P4)
+    P2 = _np.array([xmax, P1[1], P1[2]])
+    P3 = _np.array([P1[0], ymax, P1[2]])
+    P4 = _np.array([P1[0], P1[1], zmax])
 
     return P1, P2, P3, P4
 
