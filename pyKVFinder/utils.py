@@ -32,7 +32,7 @@ def process_pdb_line(line: str, vdw: dict) -> tuple:
     y = float(line[38:46])
     z = float(line[46:54])
     atom_symbol = line[76:78].strip()
-    if atom in vdw[resname].keys():
+    if resname in vdw.keys() and atom in vdw[resname].keys():
         radius = vdw[resname][atom]
     else:
         radius = vdw['GEN'][atom_symbol]

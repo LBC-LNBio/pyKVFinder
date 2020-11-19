@@ -27,6 +27,7 @@
 
 /* Atom coordinates */
 %apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *atoms, int natoms, int xyzr)}
+%apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *ligand, int lnatoms, int lxyzr)}
 
 %include "typemaps.i"
 

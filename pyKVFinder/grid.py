@@ -1,5 +1,6 @@
 import os as _os
 import numpy as _np
+from typing import Optional
 from _grid import _detect, _spatial, _constitutional, _export
 
 __all__ = ["detect", "spatial", "constitutional", "export"]
@@ -64,9 +65,13 @@ def _process_spatial(raw_volume: _np.ndarray, raw_area: _np.ndarray, ncav: int) 
     return volume, area
 
 
-def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, reference: _np.ndarray, sincos: _np.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, surface: bool = True, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+def detect(nx:int, ny:int, nz:int, xyzr:_np.ndarray, lxyzr: Optional[_np.ndarray], reference:_np.ndarray, sincos: _np.ndarray, step:float=0.6, probe_in:float=1.4, probe_out:float=4.0, removal_distance:float=2.4, volume_cutoff:float=5.0, ligand_cutoff: float = 5.0, surface:bool=True, nthreads:int=_os.cpu_count()-1, verbose:bool=False):
+    # Define ligand adjustment mode
+    ligand_adjustment, lxyzr = (True, lxyzr) if lxyzr is not None else (False, _np.ndarray((0, 4)))
+    # Calculate number of voxels
     nvoxels = nx * ny * nz
-    ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, reference, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, surface, nthreads, verbose)
+    # Detect cavities
+    ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, lxyzr, reference, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, surface, nthreads, verbose)
     return ncav, cavities.reshape(nx, ny, nz)
 
 
