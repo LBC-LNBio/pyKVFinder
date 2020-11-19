@@ -1,5 +1,6 @@
 /* Cavity detection */
-int _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int is_ses, int nthreads, int verbose);
+int _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int nthreads, int verbose);
+int _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int is_ses, int nthreads, int verbose);
 
 /* Grid initialization */
 void igrid (int *grid, int size);
@@ -19,6 +20,9 @@ void subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double rem
 
 /* Filter noise from Grid */
 void filter_noise (int *grid, int nx, int ny, int nz, int nthreads);
+
+/* Ligand adjustment */
+void adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double ligand_cutoff, int nthreads);
 
 /* Cavity clustering */
 int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads);

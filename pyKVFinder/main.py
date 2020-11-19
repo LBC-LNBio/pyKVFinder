@@ -84,7 +84,7 @@ def run():
             print("> Surface representation: Solvent Accessible Surface (SAS)")
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, lxyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, args.ligand_cutoff, args.surface, args.nthreads, args.verbose)
+    ncav, cavities = detect(nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.surface, args.nthreads, args.verbose)
 
     # No cavities were found
     if (not ncav):

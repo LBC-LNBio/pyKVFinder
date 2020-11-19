@@ -14,7 +14,7 @@
 *********************/
 
 int 
-_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int is_ses, int nthreads, int verbose)
+_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int nthreads, int verbose)
 {
     int *PO, ncav;
 
@@ -58,13 +58,62 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
     return ncav;
 }
 
+int 
+_detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int is_ses, int nthreads, int verbose)
+{
+    int *PO, ncav;
+
+    #pragma omp parallel sections num_threads(2)
+    {
+        #pragma omp section
+        {   
+
+            if (verbose)
+                fprintf(stdout, "> Filling grid with Probe In\n");
+            igrid(PI, size);
+            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
+
+        }
+        #pragma omp section
+        {
+            if (verbose)
+                fprintf(stdout, "> Filling grid with Probe Out\n");
+            PO = (int *) calloc (size, sizeof (int));
+            igrid(PO, size);
+            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
+        }
+    }
+
+    if (is_ses)
+        ses(PI, nx, ny, nz, step, probe_in, nthreads);
+    ses(PO, nx, ny, nz, step, probe_out, nthreads);
+
+    if (verbose)
+        fprintf (stdout, "> Defining biomolecular cavities\n");
+    subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
+    filter_noise(PI, nx, ny, nz, nthreads);
+
+    if (verbose)
+        fprintf (stdout, "> Adjusting biomolecular cavities to ligand\n");
+    adjust(PI, nx, ny, nz, ligand, lnatoms, lxyzr, reference, ndims, sincos, nvalues, step, ligand_cutoff, nthreads);
+
+    if (verbose)
+        fprintf (stdout, "> Clustering cavity points\n");
+    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
+
+    // Free PO
+    free(PO);
+
+    return ncav;
+}
+
 void 
 fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
 {
     int i, j, k, atom;
     double x, y, z, xaux, yaux, zaux, distance, H;
 
-    /* Set number of processes in OpenMP */
+    // Set number of processes in OpenMP
 	omp_set_num_threads (nthreads);
     omp_set_nested (1);
 
@@ -267,6 +316,48 @@ filter_noise (int *grid, int nx, int ny, int nz, int nthreads)
                     }
                 }
             }
+}
+
+void
+adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double ligand_cutoff, int nthreads)
+{
+    int i, j, k, atom, inside;
+    double x, y, z, xaux, yaux, zaux, distance;
+
+    // Set number of processes in OpenMP
+	omp_set_num_threads (nthreads);
+    omp_set_nested (1);
+
+    #pragma omp parallel default(none), shared(grid, nx, ny, nz, step, sincos, reference, ligand, ligand_cutoff, lnatoms), private(inside, i, j, k, x, y, z, xaux, yaux, zaux, atom, distance)
+    {
+        #pragma omp for collapse(3) schedule(static) nowait
+        for (i=0; i<nx; i++)
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++)
+                {
+                    inside = 0;
+                    for (atom=0; atom<lnatoms; atom++)
+                    {
+                        // Get 3D grid point coordinate
+                        x = i * step; 
+                        y = j * step; 
+                        z = k * step;
+
+                        xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                        yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                        zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+
+                        // Get distance between ligand and 3D grid point evaluated
+                        distance = sqrt ( pow(xaux - ligand[atom * 4], 2) + pow(yaux - ligand[1 + (atom * 4)], 2) + pow(zaux - ligand[2 + (atom * 4)], 2) );
+
+                        if (distance < ligand_cutoff)
+                            inside = 1;
+
+                    }
+                    if (inside == 0 && grid[ k + nz * (j + ( ny * i ) ) ])
+                        grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+                }             
+    }
 }
 
 int vol;
