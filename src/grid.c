@@ -14,7 +14,7 @@
 *********************/
 
 int 
-_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int ncores, int verbose)
+_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int nthreads, int verbose)
 {
     int *PO, ncav;
 
@@ -26,7 +26,7 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
             if (verbose)
                 fprintf(stdout, "> Filling grid with Probe In\n");
             igrid(PI, size);
-            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncores);
+            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
 
         }
         #pragma omp section
@@ -35,22 +35,22 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
                 fprintf(stdout, "> Filling grid with Probe Out\n");
             PO = (int *) calloc (size, sizeof (int));
             igrid(PO, size);
-            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, ncores);
+            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
         }
     }
 
     if (is_ses)
-        ses(PI, nx, ny, nz, step, probe_in, ncores);
-    ses(PO, nx, ny, nz, step, probe_out, ncores);
+        ses(PI, nx, ny, nz, step, probe_in, nthreads);
+    ses(PO, nx, ny, nz, step, probe_out, nthreads);
 
     if (verbose)
         fprintf (stdout, "> Defining biomolecular cavities\n");
-    subtract(PI, PO, nx, ny, nz, step, removal_threshold, ncores);
-    filter_noise(PI, nx, ny, nz, ncores);
+    subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
+    filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
         fprintf (stdout, "> Clustering cavity points\n");
-    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, ncores);
+    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
 
     // Free PO
     free(PO);
@@ -59,16 +59,16 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
 }
 
 void 
-fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int ncores)
+fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
 {
     int i, j, k, atom;
     double x, y, z, xaux, yaux, zaux, distance, H;
 
     /* Set number of processes in OpenMP */
-	omp_set_num_threads (ncores);
+	omp_set_num_threads (nthreads);
     omp_set_nested (1);
 
-    #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, ncores), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
+    #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
     {
         #pragma omp for schedule(dynamic) nowait
             for (atom=0; atom<natoms; atom++)
@@ -140,7 +140,7 @@ check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k
 }
 
 void 
-ses (int *grid, int nx, int ny, int nz, double step, double probe, int ncores)
+ses (int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
 {
     int i, j, k, i2, j2, k2, aux;
     double distance;    
@@ -149,7 +149,7 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe, int ncores)
     aux = ceil(probe / step);
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (ncores);
+	omp_set_num_threads (nthreads);
     omp_set_nested (1);
     
     #pragma omp parallel default(none), shared(grid,step,probe,aux,nx,ny,nz), private(i,j,k,i2,j2,k2,distance)
@@ -197,14 +197,14 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe, int ncores)
 }
 
 void
-subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int ncores)
+subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int nthreads)
 {
 	int i, j, k, i2, j2, k2, rt;
     
     rt = ceil (removal_threshold / step);
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (ncores);
+	omp_set_num_threads (nthreads);
     omp_set_nested (1);
 
     /* Create a parallel region */
@@ -233,7 +233,7 @@ subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_
 }
 
 void
-filter_noise (int *grid, int nx, int ny, int nz, int ncores)
+filter_noise (int *grid, int nx, int ny, int nz, int nthreads)
 {
     int i, j, k, contacts;
 
@@ -272,7 +272,7 @@ filter_noise (int *grid, int nx, int ny, int nz, int ncores)
 int vol;
 
 int
-cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int ncores)
+cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
 {
     int i, j, k, tag;
 
@@ -295,7 +295,7 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                     // Check if cavity reached cutoff
                     if ( (double) vol * pow(step, 3) < volume_cutoff )
                     {
-                        remove_cavity(grid, nx, ny, nz, tag, ncores);
+                        remove_cavity(grid, nx, ny, nz, tag, nthreads);
                         tag--;
                     }
                 }
@@ -323,12 +323,12 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
 }
 
 void
-remove_cavity (int *grid, int nx, int ny, int nz, int tag, int ncores)
+remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
 {
     int i, j, k;
 
     // Set number of threads in OpenMP
-	omp_set_num_threads (ncores);
+	omp_set_num_threads (nthreads);
     omp_set_nested(1);
 
     #pragma omp parallel default(shared)
@@ -394,11 +394,11 @@ filter (int *grid, int dx, int dy, int dz)
 }
 
 void 
-_spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int ncores, int verbose)
+_spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int nthreads, int verbose)
 {
     if (verbose)
         fprintf (stdout, "> Defining surface points\n");
-    filter_surface (cavities, surface, nx, ny, nz, ncores);
+    filter_surface (cavities, surface, nx, ny, nz, nthreads);
 
     #pragma omp sections
     {
@@ -406,7 +406,7 @@ _spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double 
         {
             if (verbose)
                 fprintf (stdout, "> Estimating volume\n");
-            volume (cavities, nx, ny, nz, nvol, step, volumes, ncores);
+            volume (cavities, nx, ny, nz, nvol, step, volumes, nthreads);
             // if (DEBUG) 
             //     for (int i=0; i<nvol; i++) 
             //         printf("%d: %lf\n", i, volumes[i]);
@@ -416,7 +416,7 @@ _spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double 
         {
             if (verbose)
                 fprintf (stdout, "> Estimating area\n");
-            area (surface, nx, ny, nz, narea, step, areas, ncores);
+            area (surface, nx, ny, nz, narea, step, areas, nthreads);
             // if (DEBUG) 
             //     for (int i=0; i<narea; i++) 
             //         printf("%d: %lf\n", i, areas[i]);
@@ -446,12 +446,12 @@ define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k)
 }
 
 void 
-filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores)
+filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nthreads)
 {
     int i, j, k;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads(ncores);
+    omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
     #pragma omp parallel default(none), shared(cavities, surface, nx, ny, nz), private(i, j, k)
@@ -477,12 +477,12 @@ filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int ncores)
 }
 
 void
-volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int ncores) 
+volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads) 
 {
     int i, j, k;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads(ncores);
+    omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
     for (i=0; i<ncav; i++)
@@ -550,12 +550,12 @@ check_voxel_class (int *grid, int nx, int ny, int nz, int i, int j, int k)
 }
 
 void
-area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int ncores)
+area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads)
 {
     int i, j, k;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads (ncores);
+    omp_set_num_threads (nthreads);
     omp_set_nested (1);
 
     for (i=0; i<ncav; i++)
@@ -607,7 +607,7 @@ insert (res** head, res* new)
 }
 
 char
-**interface (int *grid, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores)
+**interface (int *grid, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads)
 {
     int i, j, k, atom, tag, count=0, old_atom=-1, old_tag=-1;
     double x, y, z, xaux, yaux, zaux, distance, H;
@@ -680,26 +680,26 @@ char
 }
 
 char
-** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int ncores, int verbose)
+** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads, int verbose)
 {
     char **residues;
 
     if (verbose)
         fprintf (stdout, "> Retrieving interface residues\n");
-    residues = interface(cavities, nx, ny, nz, pdb, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncav, ncores);
+    residues = interface(cavities, nx, ny, nz, pdb, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncav, nthreads);
 
     return residues;
 }
 
 void
-_export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int ncores)
+_export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
 	FILE *output;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads(ncores);
+    omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
 	// Open cavity PDB file
