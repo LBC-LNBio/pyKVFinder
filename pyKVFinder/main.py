@@ -74,8 +74,8 @@ def run():
     logging.info(f"> Probe Out: {args.probe_out} \u00c5")
     logging.info(f"> Voxel volume: {args.step * args.step * args.step} \u00c5\u00b3")
     logging.info(f"> Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
-    logging.info(f"> sina: {sincos[0]}\tcosa: {sincos[1]}")
-    logging.info(f"> sinb: {sincos[2]}\tcosb: {sincos[3]}")
+    logging.info(f"> sina: {sincos[0]:.2f}\tcosa: {sincos[1]:.2f}")
+    logging.info(f"> sinb: {sincos[2]:.2f}\tcosb: {sincos[3]:.2f}")
 
     if args.surface == 'SES':
         args.surface = True
