@@ -11,6 +11,11 @@ etc/eval
 venv/
 .vscode/
 
-# Remove __pycache__
+# Ignore __pycache__
 */__pycache__/
 */*/__pycache__/
+
+# Ignore KV_Files
+KV_Files/
+*/KV_Files/
+*/*/KV_Files/
