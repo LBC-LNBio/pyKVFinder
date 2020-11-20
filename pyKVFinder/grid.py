@@ -11,7 +11,7 @@ def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0):
     P2 = _np.array([xmax, P1[1], P1[2]])
     P3 = _np.array([P1[0], ymax, P1[2]])
     P4 = _np.array([P1[0], P1[1], zmax])
-    return P1, P2, P3, P4
+    return _np.array([P1, P2, P3, P4])
 
 
 def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: float = 4.0):
@@ -43,7 +43,7 @@ def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out
     zcond = _np.logical_and(xyzr[:, 2] >= zmin, xyzr[:, 2] <= zmax)
     indexes = _np.logical_and(_np.logical_and(xcond, ycond), zcond)
 
-    return P1, P2, P3, P4, pdb[indexes, :], xyzr[indexes, :]
+    return _np.array([P1, P2, P3, P4]), pdb[indexes, :], xyzr[indexes, :]
 
 
 def get_vertices_box(box: dict, probe_out: float = 4.0):
@@ -80,7 +80,7 @@ def get_vertices_box(box: dict, probe_out: float = 4.0):
     P3 += _np.array([x3, y3, z3])
     P4 += _np.array([x4, y4, z4])
 
-    return P1, P2, P3, P4
+    return _np.array([P1, P2, P3, P4])
 
 
 def get_residues_box(box: dict, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: float = 4.0):
@@ -98,10 +98,13 @@ def get_residues_box(box: dict, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: 
     P3 = _np.array([P1[0], ymax, P1[2]])
     P4 = _np.array([P1[0], P1[1], zmax])
 
-    return P1, P2, P3, P4
+    return _np.array([P1, P2, P3, P4])
 
 
-def calculate_dimensions(P1: _np.ndarray, P2: _np.ndarray, P3: _np.ndarray, P4: _np.ndarray, step: float = 0.6):
+def calculate_dimensions(vertices: _np.ndarray, step: float = 0.6):
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+    
     # Calculate distance between points
     norm1 = _np.linalg.norm(P2 - P1)
     norm2 = _np.linalg.norm(P3 - P1)
@@ -114,7 +117,10 @@ def calculate_dimensions(P1: _np.ndarray, P2: _np.ndarray, P3: _np.ndarray, P4: 
     return nx, ny, nz
 
 
-def calculate_sincos(P1: _np.ndarray, P2: _np.ndarray, P3: _np.ndarray, P4: _np.ndarray):
+def calculate_sincos(vertices: _np.ndarray):
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+
     # Calculate distance between points
     norm1 = _np.linalg.norm(P2 - P1)
     norm2 = _np.linalg.norm(P3 - P1)
@@ -151,7 +157,10 @@ def _process_spatial(raw_volume: _np.ndarray, raw_area: _np.ndarray, ncav: int) 
     return volume, area
 
 
-def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, reference: _np.ndarray, sincos: _np.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, lxyzr: _np.ndarray = None, ligand_cutoff: float = 5.0, surface: bool = True, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, lxyzr: _np.ndarray = None, ligand_cutoff: float = 5.0, surface: bool = True, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+
     # Define ligand adjustment mode
     ligand_adjustment = True if lxyzr is not None else False
 
@@ -160,29 +169,44 @@ def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, reference: _np.ndarray,
 
     # Detect cavities
     if ligand_adjustment:
-        ncav, cavities = _detect_ladj(nvoxels, nx, ny, nz, xyzr, lxyzr, reference, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, surface, nthreads, verbose)
+        ncav, cavities = _detect_ladj(nvoxels, nx, ny, nz, xyzr, lxyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, surface, nthreads, verbose)
     else:
-        ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, reference, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, surface, nthreads, verbose)
+        ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, surface, nthreads, verbose)
+
     return ncav, cavities.reshape(nx, ny, nz)
 
 
 def spatial(cavities: _np.ndarray, nx: int, ny: int, nz: int, ncav: int, step: float = 0.6, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+    # Get surface points, volume and area
     surface, volume, area = _spatial(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
     volume, area = _process_spatial(volume, area, ncav)
+
     return surface.reshape(nx, ny, nz), volume, area
 
 
-def constitutional(cavities: _np.ndarray, pdb: _np.ndarray, xyzr: _np.ndarray, reference: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+def constitutional(cavities: _np.ndarray, pdb: _np.ndarray, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+    
+    # Remove backbone from pdb
     if ignore_backbone:
-        # Remove backbone from pdb
         mask = _np.where(pdb[:, 2] != 'C') and _np.where(pdb[:, 2] != 'CA') and _np.where(pdb[:, 2] != 'N') and _np.where(pdb[:, 2] != 'O')
         pdb = pdb[mask[0], ]
         xyzr = xyzr[mask[0]]
+
+    # Prepare pdb
     pdb = pdb[:, 0].tolist()
-    residues = _constitutional(cavities, pdb, xyzr, reference, sincos, step, probe_in, ncav, nthreads, verbose)
+
+    # Get interface residues
+    residues = _constitutional(cavities, pdb, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose)
     residues = _process_residues(residues)
+
     return residues
 
 
-def export(fn: str, cavities: _np.ndarray, surface: _np.ndarray, reference: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, nthreads: int = _os.cpu_count() - 1):
-    _export(fn, cavities, surface, reference, sincos, step, ncav, nthreads)
+def export(fn: str, cavities: _np.ndarray, surface: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, nthreads: int = _os.cpu_count() - 1):
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+
+    # Export cavities
+    _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads)

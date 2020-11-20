@@ -53,17 +53,17 @@ def run():
     if args.verbose:
         print("> Calculating 3D grid dimensions")
     if args.box:
-        P1, P2, P3, P4, pdb, xyzr = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
+        vertices, pdb, xyzr = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
     else:
-        P1, P2, P3, P4 = calculate_vertices(xyzr, args.probe_out)
+        vertices = calculate_vertices(xyzr, args.probe_out)
     
     # Calculate distance between points
-    nx, ny, nz = calculate_dimensions(P1, P2, P3, P4, args.step)
+    nx, ny, nz = calculate_dimensions(vertices, args.step)
     if args.verbose:
         print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
 
     # Calculate sin and cos of angles a and b
-    sincos = calculate_sincos(P1, P2, P3, P4)
+    sincos = calculate_sincos(vertices)
     if args.verbose:
         print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
         print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
@@ -87,7 +87,7 @@ def run():
             print("> Surface representation: Solvent Accessible Surface (SAS)")
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, P1, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.surface, args.nthreads, args.verbose)
+    ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.surface, args.nthreads, args.verbose)
 
     # Cavities were found
     if ncav > 0:
@@ -95,11 +95,11 @@ def run():
         surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, args.nthreads, args.verbose)
 
         # Constitutional characterization
-        residues = constitutional(cavities, pdb, xyzr, P1, sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        residues = constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
-        export(output_cavity, cavities, surface, P1, sincos, ncav, args.step, args.nthreads)
+        export(output_cavity, cavities, surface, vertices, sincos, ncav, args.step, args.nthreads)
 
         # Write results
         output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
