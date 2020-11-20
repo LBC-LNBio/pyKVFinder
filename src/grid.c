@@ -59,7 +59,7 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
 }
 
 int 
-_detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int is_ses, int nthreads, int verbose)
+_detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
 {
     int *PO, ncav;
 
@@ -94,8 +94,67 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Adjusting biomolecular cavities to ligand\n");
-    adjust(PI, nx, ny, nz, ligand, lnatoms, lxyzr, reference, ndims, sincos, nvalues, step, ligand_cutoff, nthreads);
+        fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
+    filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+
+    if (verbose)
+        fprintf (stdout, "> Clustering cavity points\n");
+    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
+
+    // Free PO
+    free(PO);
+
+    return ncav;
+}
+
+int 
+_detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
+{
+    int *PO, ncav;
+
+    #pragma omp parallel sections num_threads(2)
+    {
+        #pragma omp section
+        {   
+
+            if (verbose)
+                fprintf(stdout, "> Filling grid with Probe In\n");
+            igrid(PI, size);
+            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
+
+        }
+        #pragma omp section
+        {
+            if (verbose)
+                fprintf(stdout, "> Filling grid with Probe Out\n");
+            PO = (int *) calloc (size, sizeof (int));
+            igrid(PO, size);
+            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
+        }
+    }
+
+    if (is_ses)
+        ses(PI, nx, ny, nz, step, probe_in, nthreads);
+    ses(PO, nx, ny, nz, step, probe_out, nthreads);
+
+    if (verbose)
+        fprintf (stdout, "> Defining biomolecular cavities\n");
+    subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
+    filter_noise(PI, nx, ny, nz, nthreads);
+
+    if (ligand_adjustment)
+    {
+        if (verbose)
+            fprintf (stdout, "> Adjusting biomolecular cavities to ligand\n");
+        adjust(PI, nx, ny, nz, ligand, lnatoms, lxyzr, reference, ndims, sincos, nvalues, step, ligand_cutoff, nthreads);
+    }
+
+    if (box_adjustment)
+    {
+        if (verbose)
+            fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
+        filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+    }
 
     if (verbose)
         fprintf (stdout, "> Clustering cavity points\n");
@@ -360,6 +419,75 @@ adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyz
     }
 }
 
+int
+filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads)
+{
+    int i, j, k;
+    double aux, normB, norm1, X1, Y1, Z1, X2, Y2, Z2;
+
+    // Set number of processes in OpenMP
+	omp_set_num_threads (nthreads);
+    omp_set_nested (1);
+
+    // Get norm between X1 and X2 in 3D grid
+    X1 = P1[0]; Y1 = P1[1]; Z1 = P1[2];
+    X2 = P2[0]; Y2 = P2[1]; Z2 = P2[2];
+    norm1 = sqrt (pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
+
+    // Remove Probe out from grid to recreate box
+    X1 -= (- (probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2]));
+    Y1 -= (- (probe_out * sincos[1]) - (probe_out * sincos[0]));
+    Z1 -= (- (probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3]));
+    X2 -= ((probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2]));
+    Y2 -= (- (probe_out * sincos[1]) - (probe_out * sincos[0]));
+    Z2 -= ((probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3]));
+
+    // Get norm between X1 and X2 in box
+	normB = sqrt (pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
+
+    // Prepare grid units
+    aux = (int) (norm1 - normB) / (2 * step);
+
+    #pragma omp parallel default(shared), private(i, j, k)
+    {
+        for (i=0; i<=aux; i++)
+            #pragma omp for collapse(2) nowait
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++)
+                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+
+        for (i=nx-1; i>=nx-aux-1; i--)
+            #pragma omp for collapse(2) nowait
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++)
+                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;    
+
+        for (j=0; j<=aux; j++)
+            #pragma omp for collapse(2) nowait
+            for (i=0; i<nx; i++)
+                for (k=0; k<nz; k++)
+                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+
+        for (j=ny-1; j>=ny-aux-1; j--)
+            #pragma omp for collapse(2) nowait
+            for (i=0; i<nx; i++)
+                for (k=0; k<nz; k++)
+                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;    
+
+        for (k=0; k<=aux; k++)
+            #pragma omp for collapse(2) nowait
+            for (i=0; i<nx; i++)
+                for (k=0; k<nz; k++)
+                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+
+        for (k=nz-1; k>=nz-aux-1; k--)
+            #pragma omp for collapse(2) nowait
+            for (i=0; i<nx; i++)
+                for (j=0; j<nz; j++)
+                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;  
+    }
+}
+
 int vol;
 
 int
@@ -470,18 +598,6 @@ cgrid (int *grid, int size)
     for (i=0; i<size; i++)
         grid[i] = '\0';
                
-}
-
-void 
-filter (int *grid, int dx, int dy, int dz)
-{
-    int i, j, k;
-
-    for (i=0; i<dx; i++)
-        for (j=0; j<dy; j++)
-            for (k=0; k<dz; k++)
-                printf("(%d, %d, %d): %d\n", i, j, k, grid[k + dz * (j + ( dy * i ) ) ]);
-
 }
 
 void 

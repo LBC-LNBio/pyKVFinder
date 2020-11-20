@@ -23,6 +23,8 @@
 /* Box coordinates */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims
 )}
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *P2, int nndims
+)}
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *sincos, int nvalues)}
 
 /* Atom coordinates */

@@ -1,6 +1,6 @@
 import os as _os
 import numpy as _np
-from _grid import _detect, _detect_ladj, _spatial, _constitutional, _export
+from _grid import _detect, _detect_ladj, _detect_badj, _spatial, _constitutional, _export
 
 __all__ = ["calculate_vertices", "prepare_box_vertices", "get_vertices_box", "get_residues_box", "calculate_dimensions", "calculate_sincos", "detect", "spatial", "constitutional", "export"]
 
@@ -54,7 +54,7 @@ def get_vertices_box(box: dict, probe_out: float = 4.0):
     P4 = _np.array(box['p4'])
 
     # Get sincos
-    sincos = _np.round(calculate_sincos(P1, P2, P3, P4), 4)
+    sincos = _np.round(calculate_sincos(_np.array([P1, P2, P3, P4])), 4)
 
     # Get probe out additions
     # p1 = (x1, y1, z1)
@@ -157,7 +157,7 @@ def _process_spatial(raw_volume: _np.ndarray, raw_area: _np.ndarray, ncav: int) 
     return volume, area
 
 
-def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, lxyzr: _np.ndarray = None, ligand_cutoff: float = 5.0, surface: bool = True, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, lxyzr: _np.ndarray = None, ligand_cutoff: float = 5.0, box_adjustment: bool = False, surface: bool = True, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -169,7 +169,9 @@ def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, 
 
     # Detect cavities
     if ligand_adjustment:
-        ncav, cavities = _detect_ladj(nvoxels, nx, ny, nz, xyzr, lxyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, surface, nthreads, verbose)
+        ncav, cavities = _detect_ladj(nvoxels, nx, ny, nz, xyzr, lxyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, box_adjustment, P2, surface, nthreads, verbose)
+    elif box_adjustment:
+        ncav, cavities = _detect_badj(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, box_adjustment, P2, surface, nthreads, verbose)
     else:
         ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, surface, nthreads, verbose)
 

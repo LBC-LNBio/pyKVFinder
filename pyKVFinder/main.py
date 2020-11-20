@@ -54,8 +54,10 @@ def run():
         print("> Calculating 3D grid dimensions")
     if args.box:
         vertices, pdb, xyzr = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
+        args.box = True
     else:
         vertices = calculate_vertices(xyzr, args.probe_out)
+        args.box = False
     
     # Calculate distance between points
     nx, ny, nz = calculate_dimensions(vertices, args.step)
@@ -87,7 +89,7 @@ def run():
             print("> Surface representation: Solvent Accessible Surface (SAS)")
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.surface, args.nthreads, args.verbose)
+    ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.box, args.surface, args.nthreads, args.verbose)
 
     # Cavities were found
     if ncav > 0:
