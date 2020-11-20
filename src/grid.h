@@ -27,6 +27,7 @@ void adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int
 
 /* Box adjustment */
 int filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads);
+void _filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads);
 
 /* Cavity clustering */
 int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads);
@@ -58,3 +59,5 @@ char **interface (int *cavities, int nx, int ny, int nz, char **pdb, double *ato
 
 /* Export cavity PDB */
 void _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads);
+
+void verify (char *fn, int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2, double step,  double *reference, int ndims, double *sincos, int nvalues);

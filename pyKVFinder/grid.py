@@ -1,6 +1,6 @@
 import os as _os
 import numpy as _np
-from _grid import _detect, _detect_ladj, _detect_badj, _spatial, _constitutional, _export
+from _grid import _filter_pdb, _detect, _detect_ladj, _detect_badj, _spatial, _constitutional, _export
 
 __all__ = ["calculate_vertices", "prepare_box_vertices", "get_vertices_box", "get_residues_box", "calculate_dimensions", "calculate_sincos", "detect", "spatial", "constitutional", "export"]
 
@@ -14,7 +14,7 @@ def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0, step: float = 
     return _np.array([P1, P2, P3, P4])
 
 
-def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: float = 4.0):
+def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_in: float = 1.4, probe_out: float = 4.0, step: float = 0.6, nthreads: int = _os.cpu_count() - 1):
     from toml import load
 
     # Read box file
@@ -25,25 +25,23 @@ def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out
     if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
         if all([key in box.keys() for key in ['padding', 'residues']]):
             raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
-        P1, P2, P3, P4 = get_vertices_box(box, probe_out)
+        vertices = get_vertices_box(box, probe_out)
     elif 'residues' in box.keys():
         if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
             raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
         if 'padding' not in box.keys():
             box['padding'] = 3.5
-        P1, P2, P3, P4 = get_residues_box(box, pdb, xyzr, probe_out)
+        vertices = get_residues_box(box, pdb, xyzr, probe_out)
     else:
         raise Exception(f"Box not properly defined in {fn}")
 
     # Get atoms inside box only
-    xmin, ymin, zmin = _np.min([P1, P2, P3, P4], axis=0) - probe_out - 2.0
-    xmax, ymax, zmax = _np.max([P1, P2, P3, P4], axis=0) + probe_out + 2.0
-    xcond = _np.logical_and(xyzr[:, 0] >= xmin, xyzr[:, 0] <= xmax)
-    ycond = _np.logical_and(xyzr[:, 1] >= ymin, xyzr[:, 1] <= ymax)
-    zcond = _np.logical_and(xyzr[:, 2] >= zmin, xyzr[:, 2] <= zmax)
-    indexes = _np.logical_and(_np.logical_and(xcond, ycond), zcond)
+    sincos = _np.round(calculate_sincos(vertices), 4)
+    nx, ny, nz = calculate_dimensions(vertices, step)
+    _filter_pdb(nx, ny, nz, xyzr, vertices[0], sincos, step, probe_in, nthreads)
+    indexes = (xyzr[:, 3] != 0)
 
-    return _np.array([P1, P2, P3, P4]), pdb[indexes, :], xyzr[indexes, :]
+    return vertices, pdb[indexes, :], xyzr[indexes, :], sincos, nx, ny, nz
 
 
 def get_vertices_box(box: dict, probe_out: float = 4.0):

@@ -84,6 +84,9 @@ _detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
         }
     }
 
+    verify("PI.pdb", PI, nx, ny, nz, step, reference, ndims, sincos, nvalues);
+    verify("PO.pdb", PO, nx, ny, nz, step, reference, ndims, sincos, nvalues);
+
     if (is_ses)
         ses(PI, nx, ny, nz, step, probe_in, nthreads);
     ses(PO, nx, ny, nz, step, probe_out, nthreads);
@@ -95,6 +98,8 @@ _detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     if (verbose)
         fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
     filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+
+    verify("cav.pdb", PO, nx, ny, nz, step, reference, ndims, sincos, nvalues);
 
     filter_noise(PI, nx, ny, nz, nthreads);
 
@@ -421,6 +426,50 @@ adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyz
     }
 }
 
+void
+_filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
+{
+    int i, j, k, atom;
+    double x, y, z, xaux, yaux, zaux;
+
+    // Set number of processes in OpenMP
+	omp_set_num_threads (nthreads);
+
+    #pragma omp parallel default(none), shared(atoms, natoms, reference, sincos, step, probe, nx, ny, nz), private(atom, i, j, k, x, y, z, xaux, yaux, zaux)
+    {   
+        #pragma omp for schedule(static) //nowait
+            for (atom=0; atom<natoms; atom++)
+            {
+                x = ( atoms[atom * 4] - reference[0] ) / step; 
+                y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
+                z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+
+                xaux = x * sincos[3] + z * sincos[2];
+                yaux = y;
+                zaux = (-x) * sincos[2] + z * sincos[3];
+
+                x = xaux;
+                y = yaux * sincos[1] - zaux * sincos[0];
+                z = yaux * sincos[0] + zaux * sincos[1];
+
+                if (x >  0.0 - (probe + atoms[3 + (atom * 4)]) / step && 
+                    x < (double)nx + (probe + atoms[3 + (atom * 4)]) / step && 
+                    y > 0.0 - (probe + atoms[3 + (atom * 4)]) / step && 
+                    y < (double)ny + (probe + atoms[3 + (atom * 4)]) / step && 
+                    z >  0.0 - (probe + atoms[3 + (atom * 4)]) / step && 
+                    z < (double)nz + (probe + atoms[3 + (atom * 4)]) / step);
+                else
+                {
+                    atoms[atom * 4] = 0.0;
+                    atoms[1 + (atom * 4)] = 0.0;
+                    atoms[2 + (atom * 4)] = 0.0;
+                    atoms[3 + (atom * 4)] = 0.0;
+                }
+
+            }
+    }
+}
+
 int
 filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads)
 {
@@ -553,7 +602,7 @@ remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
     omp_set_nested(1);
 
     #pragma omp parallel default(shared)
-        #pragma omp for schedule(static) collapse(3) nowait
+        #pragma omp for schedule(static) collapse(3) //nowait
             for (i = 0; i < nx; i++)
                 for (j = 0; j < ny; j++)
                     for (k = 0; k < nz; k++)
@@ -945,4 +994,59 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
                     }
         }
         fclose (output);
+}
+
+void
+verify (char *fn, int *grid, int dx, int dy, int dz, double step,  double *reference, int ndims, double *sincos, int nvalues)
+{
+	int i, j, k, count = 1, control = 1, tag = 1;
+	double x, y, z, xaux, yaux, zaux;
+	FILE *output;
+
+	// Open cavity PDB file
+	output = fopen (fn, "w");
+
+	// Loop around grid
+    for (i=0; i<dx; i++)
+        for (j=0; j<dy; j++)
+            for (k=0; k<dz; k++) 
+            {
+                // Check if cavity point with value tag
+                if (grid[k + dz * (j + ( dy * i ) )] == 1) 
+                {
+                    // Convert 3D grid coordinates to real coordinates
+                    x = i * step; 
+                    y = j * step; 
+                    z = k * step;
+                    
+                    xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                    yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                    zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+
+                    /* Write each cavity point */
+                    fprintf (
+                        output, 
+                        "ATOM  %5.d  HS  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
+                        count,
+                        65+(((grid[k + dz * (j + ( dy * i ) )]-2)/26)%26),
+                        65+((grid[k + dz * (j + ( dy * i ) )]-2)%26),
+                        xaux,
+                        yaux,
+                        zaux,
+                        0.0
+                        );
+
+                    count++;
+
+                    /* If count equal to 100,000, restart count */
+                    if (count == 100000)
+                        count = 1;
+
+                }
+            }
+
+
+    /* Close output PDB file */
+	fclose (output);
+
 }
