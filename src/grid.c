@@ -91,11 +91,12 @@ _detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     if (verbose)
         fprintf (stdout, "> Defining biomolecular cavities\n");
     subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
-    filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
         fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
     filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+
+    filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
         fprintf (stdout, "> Clustering cavity points\n");
@@ -140,7 +141,6 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     if (verbose)
         fprintf (stdout, "> Defining biomolecular cavities\n");
     subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
-    filter_noise(PI, nx, ny, nz, nthreads);
 
     if (ligand_adjustment)
     {
@@ -155,6 +155,8 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
             fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
         filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
     }
+
+    filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
         fprintf (stdout, "> Clustering cavity points\n");
@@ -277,7 +279,7 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
                                 for (j2=j-aux; j2<=j+aux; j2++)
                                     for (k2=k-aux; k2<=k+aux; k2++)
                                     { 
-                                        if (i2>0 && j2>0 && k2>0 && i2<nx-1 && j2<ny-1 && k2<nz-1)
+                                        if (i2>0 && j2>0 && k2>0 && i2<nx && j2<ny && k2<nz)
                                         {
                                             // Get distance between point inspected and cavity point
                                             distance = sqrt ( pow(i - i2, 2) + pow(j - j2, 2) + pow(k - k2, 2));
@@ -308,7 +310,7 @@ void
 subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_threshold, int nthreads)
 {
 	int i, j, k, i2, j2, k2, rt;
-    
+
     rt = ceil (removal_threshold / step);
 
     // Set number of processes in OpenMP
@@ -850,7 +852,7 @@ char
                 for (j=floor(y - H); j<=ceil(y + H); j++)
                     for (k=floor(z - H); k<=ceil(z + H); k++) 
                     {
-                        if (i < nx-1 && i > 0 && j < ny-1 && j > 0 && k < nz-1 && k > 0)
+                        if (i < nx && i > 0 && j < ny && j > 0 && k < nz && k > 0)
                             if (abs(grid[ k + nz * (j + ( ny * i ) ) ]) > 1)
                             {
                                 tag = grid[ k + nz * (j + ( ny * i ) ) ] - 2;
