@@ -56,7 +56,7 @@ def run():
         vertices, pdb, xyzr = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
         args.box = True
     else:
-        vertices = calculate_vertices(xyzr, args.probe_out)
+        vertices = calculate_vertices(xyzr, args.probe_out, args.step)
         args.box = False
     
     # Calculate distance between points

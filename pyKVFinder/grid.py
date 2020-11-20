@@ -5,9 +5,9 @@ from _grid import _detect, _detect_ladj, _detect_badj, _spatial, _constitutional
 __all__ = ["calculate_vertices", "prepare_box_vertices", "get_vertices_box", "get_residues_box", "calculate_dimensions", "calculate_sincos", "detect", "spatial", "constitutional", "export"]
 
 
-def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0):
-    P1 = _np.min(xyzr[:, 0:3], axis=0) - probe_out
-    xmax, ymax, zmax = _np.max(xyzr[:, 0:3], axis=0) + probe_out
+def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0, step: float = 0.6):
+    P1 = _np.min(xyzr[:, 0:3], axis=0) - probe_out - step
+    xmax, ymax, zmax = _np.max(xyzr[:, 0:3], axis=0) + probe_out + step
     P2 = _np.array([xmax, P1[1], P1[2]])
     P3 = _np.array([P1[0], ymax, P1[2]])
     P4 = _np.array([P1[0], P1[1], zmax])
@@ -36,8 +36,8 @@ def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out
         raise Exception(f"Box not properly defined in {fn}")
 
     # Get atoms inside box only
-    xmin, ymin, zmin = _np.min([P1, P2, P3, P4], axis=0) - 0.5
-    xmax, ymax, zmax = _np.max([P1, P2, P3, P4], axis=0) + 0.5
+    xmin, ymin, zmin = _np.min([P1, P2, P3, P4], axis=0) - probe_out - 2.0
+    xmax, ymax, zmax = _np.max([P1, P2, P3, P4], axis=0) + probe_out + 2.0
     xcond = _np.logical_and(xyzr[:, 0] >= xmin, xyzr[:, 0] <= xmax)
     ycond = _np.logical_and(xyzr[:, 1] >= ymin, xyzr[:, 1] <= ymax)
     zcond = _np.logical_and(xyzr[:, 2] >= zmin, xyzr[:, 2] <= zmax)
