@@ -53,22 +53,28 @@ def run():
     if args.verbose:
         print("> Calculating 3D grid dimensions")
     if args.box:
-        vertices, pdb, xyzr = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
+        # Get vertices from file
+        vertices, pdb, xyzr, sincos, nx, ny, nz = prepare_box_vertices(args.box, pdb, xyzr, args.probe_in, args.probe_out, args.step, args.nthreads)
+        
+        # Set flag to boolean
         args.box = True
     else:
+        # Get vertices from pdb
         vertices = calculate_vertices(xyzr, args.probe_out, args.step)
-        args.box = False
-    
-    # Calculate distance between points
-    nx, ny, nz = calculate_dimensions(vertices, args.step)
-    if args.verbose:
-        print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
 
-    # Calculate sin and cos of angles a and b
-    sincos = calculate_sincos(vertices)
-    if args.verbose:
-        print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
-        print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
+        # Calculate distance between points
+        nx, ny, nz = calculate_dimensions(vertices, args.step)
+        if args.verbose:
+            print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
+
+        # Calculate sin and cos of angles a and b
+        sincos = calculate_sincos(vertices)
+        if args.verbose:
+            print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
+            print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
+
+        # Set flag to boolean
+        args.box = False
 
     # Logging parameters
     logging.info(f"> Step: {args.step} \u00c5")
