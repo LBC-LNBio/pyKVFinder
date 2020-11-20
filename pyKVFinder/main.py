@@ -53,10 +53,10 @@ def run():
     if args.verbose:
         print("> Calculating 3D grid dimensions")
     if args.box:
-        P1, P2, P3, P4 = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
+        P1, P2, P3, P4, pdb, xyzr = prepare_box_vertices(args.box, pdb, xyzr, args.probe_out)
     else:
         P1, P2, P3, P4 = calculate_vertices(xyzr, args.probe_out)
-
+    
     # Calculate distance between points
     nx, ny, nz = calculate_dimensions(P1, P2, P3, P4, args.step)
     if args.verbose:

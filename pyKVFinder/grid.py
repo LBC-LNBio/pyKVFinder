@@ -35,7 +35,15 @@ def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out
     else:
         raise Exception(f"Box not properly defined in {fn}")
 
-    return P1, P2, P3, P4
+    # Get atoms inside box only
+    xmin, ymin, zmin = _np.min([P1, P2, P3, P4], axis=0) - 0.5
+    xmax, ymax, zmax = _np.max([P1, P2, P3, P4], axis=0) + 0.5
+    xcond = _np.logical_and(xyzr[:, 0] >= xmin, xyzr[:, 0] <= xmax)
+    ycond = _np.logical_and(xyzr[:, 1] >= ymin, xyzr[:, 1] <= ymax)
+    zcond = _np.logical_and(xyzr[:, 2] >= zmin, xyzr[:, 2] <= zmax)
+    indexes = _np.logical_and(_np.logical_and(xcond, ycond), zcond)
+
+    return P1, P2, P3, P4, pdb[indexes, :], xyzr[indexes, :]
 
 
 def get_vertices_box(box: dict, probe_out: float = 4.0):
