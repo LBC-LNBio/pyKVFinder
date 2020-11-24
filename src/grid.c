@@ -84,9 +84,6 @@ _detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
         }
     }
 
-    verify("PI.pdb", PI, nx, ny, nz, step, reference, ndims, sincos, nvalues);
-    verify("PO.pdb", PO, nx, ny, nz, step, reference, ndims, sincos, nvalues);
-
     if (is_ses)
         ses(PI, nx, ny, nz, step, probe_in, nthreads);
     ses(PO, nx, ny, nz, step, probe_out, nthreads);
@@ -98,8 +95,6 @@ _detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     if (verbose)
         fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
     filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
-
-    verify("cav.pdb", PO, nx, ny, nz, step, reference, ndims, sincos, nvalues);
 
     filter_noise(PI, nx, ny, nz, nthreads);
 
@@ -212,7 +207,7 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
                             // Get distance between atom center and point inspected
                             distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
                             if (distance < H)
-                                if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && i < nz)
+                                if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && k < nz)
                                     grid[ k + nz * (j + ( ny * i ) ) ] = 0;
                         }
             }
@@ -497,7 +492,7 @@ filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, in
 	normB = sqrt (pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
 
     // Prepare grid units
-    aux = (int) (norm1 - normB) / (2 * step);
+    aux = floor ( (norm1 - normB) / (2 * step) );
 
     #pragma omp parallel default(shared), private(i, j, k)
     {
@@ -528,13 +523,13 @@ filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, in
         for (k=0; k<=aux; k++)
             #pragma omp for collapse(2) nowait
             for (i=0; i<nx; i++)
-                for (k=0; k<nz; k++)
+                for (j=0; j<ny; j++)
                     grid[ k + nz * (j + ( ny * i ) ) ] = -1;
 
         for (k=nz-1; k>=nz-aux-1; k--)
             #pragma omp for collapse(2) nowait
             for (i=0; i<nx; i++)
-                for (j=0; j<nz; j++)
+                for (j=0; j<ny; j++)
                     grid[ k + nz * (j + ( ny * i ) ) ] = -1;  
     }
 }
@@ -994,59 +989,4 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
                     }
         }
         fclose (output);
-}
-
-void
-verify (char *fn, int *grid, int dx, int dy, int dz, double step,  double *reference, int ndims, double *sincos, int nvalues)
-{
-	int i, j, k, count = 1, control = 1, tag = 1;
-	double x, y, z, xaux, yaux, zaux;
-	FILE *output;
-
-	// Open cavity PDB file
-	output = fopen (fn, "w");
-
-	// Loop around grid
-    for (i=0; i<dx; i++)
-        for (j=0; j<dy; j++)
-            for (k=0; k<dz; k++) 
-            {
-                // Check if cavity point with value tag
-                if (grid[k + dz * (j + ( dy * i ) )] == 1) 
-                {
-                    // Convert 3D grid coordinates to real coordinates
-                    x = i * step; 
-                    y = j * step; 
-                    z = k * step;
-                    
-                    xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
-                    yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
-                    zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
-
-                    /* Write each cavity point */
-                    fprintf (
-                        output, 
-                        "ATOM  %5.d  HS  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n",
-                        count,
-                        65+(((grid[k + dz * (j + ( dy * i ) )]-2)/26)%26),
-                        65+((grid[k + dz * (j + ( dy * i ) )]-2)%26),
-                        xaux,
-                        yaux,
-                        zaux,
-                        0.0
-                        );
-
-                    count++;
-
-                    /* If count equal to 100,000, restart count */
-                    if (count == 100000)
-                        count = 1;
-
-                }
-            }
-
-
-    /* Close output PDB file */
-	fclose (output);
-
 }

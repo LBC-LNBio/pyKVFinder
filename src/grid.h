@@ -59,5 +59,3 @@ char **interface (int *cavities, int nx, int ny, int nz, char **pdb, double *ato
 
 /* Export cavity PDB */
 void _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads);
-
-void verify (char *fn, int *grid, int dx, int dy, int dz, int *grid2, int dx2, int dy2, int dz2, double step,  double *reference, int ndims, double *sincos, int nvalues);
