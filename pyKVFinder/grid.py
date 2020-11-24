@@ -1,6 +1,6 @@
 import os as _os
 import numpy as _np
-from _grid import _filter_pdb, _detect, _detect_ladj, _detect_badj, _spatial, _constitutional, _export
+from _grid import _filter_pdb, _detect, _detect_ladj, _spatial, _constitutional, _export
 
 __all__ = ["calculate_vertices", "prepare_box_vertices", "get_vertices_box", "get_residues_box", "calculate_dimensions", "calculate_sincos", "detect", "spatial", "constitutional", "export"]
 
@@ -168,10 +168,8 @@ def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, 
     # Detect cavities
     if ligand_adjustment:
         ncav, cavities = _detect_ladj(nvoxels, nx, ny, nz, xyzr, lxyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, box_adjustment, P2, surface, nthreads, verbose)
-    elif box_adjustment:
-        ncav, cavities = _detect_badj(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, box_adjustment, P2, surface, nthreads, verbose)
     else:
-        ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, surface, nthreads, verbose)
+        ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, box_adjustment, P2, surface, nthreads, verbose)
 
     return ncav, cavities.reshape(nx, ny, nz)
 

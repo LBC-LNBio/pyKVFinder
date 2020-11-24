@@ -14,52 +14,7 @@
 *********************/
 
 int 
-_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int is_ses, int nthreads, int verbose)
-{
-    int *PO, ncav;
-
-    #pragma omp parallel sections num_threads(2)
-    {
-        #pragma omp section
-        {   
-
-            if (verbose)
-                fprintf(stdout, "> Filling grid with Probe In\n");
-            igrid(PI, size);
-            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
-
-        }
-        #pragma omp section
-        {
-            if (verbose)
-                fprintf(stdout, "> Filling grid with Probe Out\n");
-            PO = (int *) calloc (size, sizeof (int));
-            igrid(PO, size);
-            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
-        }
-    }
-
-    if (is_ses)
-        ses(PI, nx, ny, nz, step, probe_in, nthreads);
-    ses(PO, nx, ny, nz, step, probe_out, nthreads);
-
-    if (verbose)
-        fprintf (stdout, "> Defining biomolecular cavities\n");
-    subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
-    filter_noise(PI, nx, ny, nz, nthreads);
-
-    if (verbose)
-        fprintf (stdout, "> Clustering cavity points\n");
-    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
-
-    // Free PO
-    free(PO);
-
-    return ncav;
-}
-
-int 
-_detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
+_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_threshold, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
 {
     int *PO, ncav;
 
@@ -92,9 +47,12 @@ _detect_badj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
         fprintf (stdout, "> Defining biomolecular cavities\n");
     subtract(PI, PO, nx, ny, nz, step, removal_threshold, nthreads);
 
-    if (verbose)
-        fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
-    filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+    if (box_adjustment)
+    {
+        if (verbose)
+            fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
+        filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+    }
 
     filter_noise(PI, nx, ny, nz, nthreads);
 
