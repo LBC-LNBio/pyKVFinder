@@ -4,8 +4,11 @@
 tests/output/
 
 # parKVFinder source code
-etc/
-!etc/templates
+etc/*.h
+etc/*.c
+etc/metrics/
+etc/templates/cavities/
+!etc/templates/box.toml
 
 # Virtual environment
 venv/
