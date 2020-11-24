@@ -5,11 +5,10 @@ tests/output/
 
 # parKVFinder source code
 etc/
-etc/eval
+!etc/templates
 
 # Virtual environment
 venv/
-.vscode/
 
 # Ignore __pycache__
 */__pycache__/
