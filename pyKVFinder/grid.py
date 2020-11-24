@@ -102,7 +102,7 @@ def get_residues_box(box: dict, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: 
 def calculate_dimensions(vertices: _np.ndarray, step: float = 0.6):
     # Unpack vertices
     P1, P2, P3, P4 = vertices
-    
+
     # Calculate distance between points
     norm1 = _np.linalg.norm(P2 - P1)
     norm2 = _np.linalg.norm(P3 - P1)
@@ -185,7 +185,7 @@ def spatial(cavities: _np.ndarray, nx: int, ny: int, nz: int, ncav: int, step: f
 def constitutional(cavities: _np.ndarray, pdb: _np.ndarray, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
     # Unpack vertices
     P1, P2, P3, P4 = vertices
-    
+
     # Remove backbone from pdb
     if ignore_backbone:
         mask = _np.where(pdb[:, 2] != 'C') and _np.where(pdb[:, 2] != 'CA') and _np.where(pdb[:, 2] != 'N') and _np.where(pdb[:, 2] != 'O')

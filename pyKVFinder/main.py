@@ -4,7 +4,7 @@ import toml
 import logging
 from datetime import datetime
 from .argparser import argparser
-from .utils import read_vdw, read_pdb, write_results
+from .utils import read_vdw, read_pdb, write_results, _write_parameters
 from .grid import calculate_vertices, calculate_dimensions, calculate_sincos, prepare_box_vertices, detect, spatial, constitutional, export
 
 
@@ -54,24 +54,24 @@ def run():
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        vertices, pdb, xyzr, sincos, nx, ny, nz = prepare_box_vertices(args.box, pdb, xyzr, args.probe_in, args.probe_out, args.step, args.nthreads)
-        
+        args.vertices, pdb, xyzr, args.sincos, nx, ny, nz = prepare_box_vertices(args.box, pdb, xyzr, args.probe_in, args.probe_out, args.step, args.nthreads)
+
         # Set flag to boolean
         args.box = True
     else:
         # Get vertices from pdb
-        vertices = calculate_vertices(xyzr, args.probe_out, args.step)
+        args.vertices = calculate_vertices(xyzr, args.probe_out, args.step)
 
         # Calculate distance between points
-        nx, ny, nz = calculate_dimensions(vertices, args.step)
+        nx, ny, nz = calculate_dimensions(args.vertices, args.step)
         if args.verbose:
             print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
 
         # Calculate sin and cos of angles a and b
-        sincos = calculate_sincos(vertices)
+        args.sincos = calculate_sincos(args.vertices)
         if args.verbose:
-            print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
-            print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
+            print(f"sina: {args.sincos[0]:.2f}\tsinb: {args.sincos[2]:.2f}")
+            print(f"cosa: {args.sincos[1]:.2f}\tcosb: {args.sincos[3]:.2f}")
 
         # Set flag to boolean
         args.box = False
@@ -82,8 +82,8 @@ def run():
     logging.info(f"> Probe Out: {args.probe_out} \u00c5")
     logging.info(f"> Voxel volume: {args.step * args.step * args.step} \u00c5\u00b3")
     logging.info(f"> Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
-    logging.info(f"> sina: {sincos[0]:.2f}\tcosa: {sincos[1]:.2f}")
-    logging.info(f"> sinb: {sincos[2]:.2f}\tcosb: {sincos[3]:.2f}")
+    logging.info(f"> sina: {args.sincos[0]:.2f}\tcosa: {args.sincos[1]:.2f}")
+    logging.info(f"> sinb: {args.sincos[2]:.2f}\tcosb: {args.sincos[3]:.2f}")
 
     if args.surface == 'SES':
         args.surface = True
@@ -95,7 +95,7 @@ def run():
             print("> Surface representation: Solvent Accessible Surface (SAS)")
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.box, args.surface, args.nthreads, args.verbose)
+    ncav, cavities = detect(nx, ny, nz, xyzr, args.vertices, args.sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.box, args.surface, args.nthreads, args.verbose)
 
     # Cavities were found
     if ncav > 0:
@@ -103,21 +103,18 @@ def run():
         surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, args.nthreads, args.verbose)
 
         # Constitutional characterization
-        residues = constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        residues = constitutional(cavities, pdb, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
-        export(output_cavity, cavities, surface, vertices, sincos, ncav, args.step, args.nthreads)
+        export(output_cavity, cavities, surface, args.vertices, args.sincos, ncav, args.step, args.nthreads)
 
         # Write results
         output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
         write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, residues, args.step)
 
         # Write parameters
-        # FIXME: Poorly formatted and missing information
-        parameters = os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
-        with open(parameters, "w") as param:
-            toml.dump(vars(args), param)
+        _write_parameters(args)
     else:
         print("> No cavities detected!")
 
