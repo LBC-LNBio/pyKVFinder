@@ -1,8 +1,7 @@
 import os as _os
 import numpy as _np
-from _grid import _filter_pdb, _detect, _detect_ladj, _spatial, _constitutional, _export
 
-__all__ = ["calculate_vertices", "prepare_box_vertices", "get_vertices_box", "get_residues_box", "calculate_dimensions", "calculate_sincos", "detect", "spatial", "constitutional", "export"]
+__all__ = ["calculate_vertices", "get_vertices", "calculate_dimensions", "calculate_sincos", "detect", "spatial", "constitutional", "export"]
 
 
 def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0, step: float = 0.6):
@@ -14,7 +13,8 @@ def calculate_vertices(xyzr: _np.ndarray, probe_out: float = 4.0, step: float = 
     return _np.array([P1, P2, P3, P4])
 
 
-def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_in: float = 1.4, probe_out: float = 4.0, step: float = 0.6, nthreads: int = _os.cpu_count() - 1):
+def get_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_in: float = 1.4, probe_out: float = 4.0, step: float = 0.6, nthreads: int = _os.cpu_count() - 1):
+    from _grid import _filter_pdb
     from toml import load
 
     # Read box file
@@ -25,13 +25,13 @@ def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_in:
     if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
         if all([key in box.keys() for key in ['padding', 'residues']]):
             raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
-        vertices = get_vertices_box(box, probe_out)
+        vertices = _get_vertices_box(box, probe_out)
     elif 'residues' in box.keys():
         if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
             raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
         if 'padding' not in box.keys():
             box['padding'] = 3.5
-        vertices = get_residues_box(box, pdb, xyzr, probe_out)
+        vertices = _get_residues_box(box, pdb, xyzr, probe_out)
     else:
         raise Exception(f"Box not properly defined in {fn}")
 
@@ -44,7 +44,7 @@ def prepare_box_vertices(fn: str, pdb: _np.ndarray, xyzr: _np.ndarray, probe_in:
     return vertices, pdb[indexes, :], xyzr[indexes, :], sincos, nx, ny, nz
 
 
-def get_vertices_box(box: dict, probe_out: float = 4.0):
+def _get_vertices_box(box: dict, probe_out: float = 4.0):
     # Get vertices
     P1 = _np.array(box['p1'])
     P2 = _np.array(box['p2'])
@@ -81,7 +81,7 @@ def get_vertices_box(box: dict, probe_out: float = 4.0):
     return _np.array([P1, P2, P3, P4])
 
 
-def get_residues_box(box: dict, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: float = 4.0):
+def _get_residues_box(box: dict, pdb: _np.ndarray, xyzr: _np.ndarray, probe_out: float = 4.0):
     # Prepare residues list
     box['residues'] = _np.array(['_'.join(item[0:2]) for item in box['residues']])
 
@@ -156,6 +156,7 @@ def _process_spatial(raw_volume: _np.ndarray, raw_area: _np.ndarray, ncav: int) 
 
 
 def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, lxyzr: _np.ndarray = None, ligand_cutoff: float = 5.0, box_adjustment: bool = False, surface: bool = True, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+    from _grid import _detect, _detect_ladj
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -175,6 +176,7 @@ def detect(nx: int, ny: int, nz: int, xyzr: _np.ndarray, vertices: _np.ndarray, 
 
 
 def spatial(cavities: _np.ndarray, nx: int, ny: int, nz: int, ncav: int, step: float = 0.6, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+    from _grid import _spatial
     # Get surface points, volume and area
     surface, volume, area = _spatial(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
     volume, area = _process_spatial(volume, area, ncav)
@@ -183,6 +185,7 @@ def spatial(cavities: _np.ndarray, nx: int, ny: int, nz: int, ncav: int, step: f
 
 
 def constitutional(cavities: _np.ndarray, pdb: _np.ndarray, xyzr: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = _os.cpu_count() - 1, verbose: bool = False):
+    from _grid import _constitutional
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -203,6 +206,7 @@ def constitutional(cavities: _np.ndarray, pdb: _np.ndarray, xyzr: _np.ndarray, v
 
 
 def export(fn: str, cavities: _np.ndarray, surface: _np.ndarray, vertices: _np.ndarray, sincos: _np.ndarray, ncav: int, step: float = 0.6, nthreads: int = _os.cpu_count() - 1):
+    from _grid import _export
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 

@@ -39,5 +39,5 @@ setup(
     include_package_data=True,
     install_requires=reqs,
     packages=['pyKVFinder'],
-    entry_points={'console_scripts': ['pyKVFinder=pyKVFinder.main:run']},
+    entry_points={'console_scripts': ['pyKVFinder=pyKVFinder.main:cli']},
 )

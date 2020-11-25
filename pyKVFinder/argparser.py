@@ -2,8 +2,10 @@ import os
 import argparse
 from . import _name, _version
 
+__all__ = ["argparser"]
 
-def positive_float(x):
+
+def _positive_float(x):
     try:
         x = float(x)
     except ValueError:
@@ -16,7 +18,7 @@ def positive_float(x):
     return x
 
 
-def restricted_step_size(x):
+def _restricted_step_size(x):
     try:
         x = float(x)
     except ValueError:
@@ -95,31 +97,31 @@ def argparser():
                             "--step",
                             metavar="<float>",
                             default=0.6,
-                            type=restricted_step_size,
+                            type=_restricted_step_size,
                             help="Step size (grid spacing). (default: %(default).1lf)")
     parameters.add_argument("-i",
                             "--probe_in",
                             metavar="<float>",
                             default=1.4,
-                            type=positive_float,
+                            type=_positive_float,
                             help=u"Probe In size (\u212B). (default: %(default).1lf)")
     parameters.add_argument("-o",
                             "--probe_out",
                             metavar="<float>",
                             default=4.0,
-                            type=positive_float,
+                            type=_positive_float,
                             help=u"Probe Out size (\u212B). (default: %(default).1lf)")
     parameters.add_argument("-V",
                             "--volume_cutoff",
                             metavar="<float>",
                             default=5.0,
-                            type=positive_float,
+                            type=_positive_float,
                             help=u"Cavities volume filter (\u212B\u00b3). (default: %(default).1lf)")
     parameters.add_argument("-R",
                             "--removal_distance",
                             metavar="<float>",
                             default=2.4,
-                            type=positive_float,
+                            type=_positive_float,
                             help=u"Length to be removed from the cavity-bulk frontier (\u212B). (default: %(default).1lf)")
     parameters.add_argument("-S",
                             "--surface",
@@ -155,7 +157,7 @@ def argparser():
     ligand_adjustment.add_argument("--ligand_cutoff",
                                    metavar="<float>",
                                    default=5.0,
-                                   type=positive_float,
+                                   type=_positive_float,
                                    help="Radius value to limit a space around the defined ligand. (default: %(default).1lf)")
 
     return parser
