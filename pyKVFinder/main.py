@@ -1,6 +1,5 @@
 import os
 import time
-import toml
 import logging
 import numpy as np
 from datetime import datetime
