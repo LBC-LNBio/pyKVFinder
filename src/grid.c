@@ -18,26 +18,16 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
 {
     int *PO, ncav;
 
-    #pragma omp parallel sections num_threads(2)
-    {
-        #pragma omp section
-        {   
+    if (verbose)
+        fprintf(stdout, "> Filling grid with Probe In\n");
+    igrid(PI, size);
+    fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
 
-            if (verbose)
-                fprintf(stdout, "> Filling grid with Probe In\n");
-            igrid(PI, size);
-            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
-
-        }
-        #pragma omp section
-        {
-            if (verbose)
-                fprintf(stdout, "> Filling grid with Probe Out\n");
-            PO = (int *) calloc (size, sizeof (int));
-            igrid(PO, size);
-            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
-        }
-    }
+    if (verbose)
+        fprintf(stdout, "> Filling grid with Probe Out\n");
+    PO = (int *) calloc (size, sizeof (int));
+    igrid(PO, size);
+    fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
 
     if (is_ses)
         ses(PI, nx, ny, nz, step, probe_in, nthreads);
@@ -71,26 +61,16 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
 {
     int *PO, ncav;
 
-    #pragma omp parallel sections num_threads(2)
-    {
-        #pragma omp section
-        {   
+    if (verbose)
+        fprintf(stdout, "> Filling grid with Probe In\n");
+    igrid(PI, size);
+    fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
 
-            if (verbose)
-                fprintf(stdout, "> Filling grid with Probe In\n");
-            igrid(PI, size);
-            fill(PI, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
-
-        }
-        #pragma omp section
-        {
-            if (verbose)
-                fprintf(stdout, "> Filling grid with Probe Out\n");
-            PO = (int *) calloc (size, sizeof (int));
-            igrid(PO, size);
-            fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
-        }
-    }
+    if (verbose)
+        fprintf(stdout, "> Filling grid with Probe Out\n");
+    PO = (int *) calloc (size, sizeof (int));
+    igrid(PO, size);
+    fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
 
     if (is_ses)
         ses(PI, nx, ny, nz, step, probe_in, nthreads);
