@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <omp.h>
+#include "grid.h"
 
 #define DEBUG 1
 
@@ -362,13 +363,13 @@ adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyz
 void
 _filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
 {
-    int i, j, k, atom;
+    int atom;
     double x, y, z, xaux, yaux, zaux;
 
     // Set number of processes in OpenMP
 	omp_set_num_threads (nthreads);
 
-    #pragma omp parallel default(none), shared(atoms, natoms, reference, sincos, step, probe, nx, ny, nz), private(atom, i, j, k, x, y, z, xaux, yaux, zaux)
+    #pragma omp parallel default(none), shared(atoms, natoms, reference, sincos, step, probe, nx, ny, nz), private(atom, x, y, z, xaux, yaux, zaux)
     {   
         #pragma omp for schedule(static) //nowait
             for (atom=0; atom<natoms; atom++)
@@ -472,8 +473,6 @@ filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, in
     }
 }
 
-int vol;
-
 int
 cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
 {
@@ -505,7 +504,7 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
     return tag-1;
 }
 
-int 
+void 
 DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
 {
     int x, y, z;
@@ -758,11 +757,6 @@ area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas
                 if (surface[k + nz * (j + ( ny * i ) )] > 1)
                     areas[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
 }
-
-typedef struct node {
-    int pos;
-    struct node* next;
-} res;
 
 res* 
 create (int pos)

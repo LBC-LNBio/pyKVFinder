@@ -12,7 +12,7 @@ void cgrid (int *grid, int size);
 void fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads);
 
 /* Biomolecular surface representation */
-void check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k);
+int check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k);
 void ses (int *grid, int nx, int ny, int nz, double step, double probe, int nthreads);
 
 /* Grid subtract (Probe In - Probe Out) */;
@@ -41,6 +41,7 @@ void filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nt
 int define_surface_points (int *grid, int nx, int ny, int nz, int i, int j, int k);
 
 /* Estimate volume */
+int vol;
 void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads);
 
 /* Estimate area */
