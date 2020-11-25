@@ -1,5 +1,4 @@
 import os as _os
-import numpy as _np
 import logging as _logging
 import argparse as _argparse
 
@@ -29,6 +28,7 @@ def read_vdw(fn: str = here) -> dict:
 
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
+    import numpy as _np
     pdb = []
     coords = []
     with open(fn, "r") as f:
@@ -59,6 +59,7 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
 
 
 def _process_box(args: _argparse.Namespace):
+    import numpy as _np
     # Create box parameter
     box = {
         'p1': args.vertices[0],
