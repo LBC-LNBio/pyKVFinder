@@ -26,7 +26,6 @@ def read_vdw(fn: str = here) -> dict:
     return vdw
 
 
-
 def read_pdb(fn: str, vdw: dict) -> tuple:
     import numpy as _np
     pdb = []
@@ -99,7 +98,7 @@ def _process_box(args: _argparse.Namespace):
     box['p2'] = _np.around(box['p2'], 2).tolist()
     box['p3'] = _np.around(box['p3'], 2).tolist()
     box['p4'] = _np.around(box['p4'], 2).tolist()
-        
+
     return box
 
 
@@ -116,7 +115,7 @@ def _write_parameters(args: _argparse.Namespace) -> None:
             'BASE_NAME': args.base_name,
             'OUTPUT_DIRECTORY': args.output_directory,
             'DICTIONARY': args.dictionary,
-            },
+        },
         'SETTINGS': {
             'MODES': {
                 'BOX_ADJUSTMENT': args.box,
@@ -141,6 +140,7 @@ def _write_parameters(args: _argparse.Namespace) -> None:
     # Write to TOML file
     with open(fn, "w") as param:
         _toml.dump(parameters, param)
+
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float) -> None:
     import toml as _toml

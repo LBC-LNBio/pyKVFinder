@@ -145,7 +145,7 @@ class pyKVFinderResults(object):
 
     def __repr__(self):
         return '<pyKVFinderResults class>'
-    
+
     def export(self, fn: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1):
         sincos = calculate_sincos(self.vertices)
         export(fn, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, nthreads)
@@ -167,7 +167,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         _, lxyzr = read_pdb(ligand, vdw)
     else:
         lxyzr = None
-    
+
     if verbose:
         print("> Calculating 3D grid dimensions")
     if box:
