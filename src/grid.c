@@ -5,8 +5,6 @@
 #include <omp.h>
 #include "grid.h"
 
-#define DEBUG 1
-
 /******* sincos ******
 * sincos[0] = sin a  *
 * sincos[1] = cos a  *

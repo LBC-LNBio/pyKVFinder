@@ -1,5 +1,4 @@
 import os as _os
-import toml as _toml
 import numpy as _np
 import logging as _logging
 import argparse as _argparse
@@ -104,6 +103,7 @@ def _process_box(args: _argparse.Namespace):
 
 
 def _write_parameters(args: _argparse.Namespace) -> None:
+    import toml as _toml
     # Parameters filename
     fn = _os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
 
@@ -142,6 +142,7 @@ def _write_parameters(args: _argparse.Namespace) -> None:
         _toml.dump(parameters, param)
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float) -> None:
+    import toml as _toml
     # Prepare paths
     pdb = _os.path.abspath(pdb)
     if ligand:

@@ -27,7 +27,7 @@ _grid = Extension(
     name="_grid",
     sources=["src/grid.i", "src/grid.c"],
     include_dirs=[numpy_include],
-    extra_compile_args=['-fopenmp', '-lm'],
+    extra_compile_args=['-lm', '-fopenmp'],
     extra_link_args=['-lgomp'],
 )
 
