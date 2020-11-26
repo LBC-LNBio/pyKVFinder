@@ -402,7 +402,7 @@ _filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double
     }
 }
 
-int
+void
 filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads)
 {
     int i, j, k;
