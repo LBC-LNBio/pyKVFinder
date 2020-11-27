@@ -17,8 +17,8 @@ __version__ = "0.1"
 license = "GNU GPL-3.0 License"
 
 try:
-    from .utils import read_pdb, read_vdw, write_results
-    from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, constitutional, export
-    from .main import pyKVFinder
+    from .utils import *
+    from .grid import *
+    from .main import *
 except SyntaxError:
     pass
