@@ -1,15 +1,23 @@
-import os as _os
-import logging as _logging
-import argparse as _argparse
+import os
+import logging
+import argparse
 
 __all__ = ["read_pdb", "read_vdw", "write_results"]
 
-here = _os.path.join(_os.path.abspath(_os.path.dirname(__file__)), "data/vdw.dat")
+here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 
 def read_vdw(fn: str = here) -> dict:
     """
-    Read van der Waals radii from .dat format
+    Read van der Waals radii from .dat file
+
+    Parameters
+    ----------
+        fn (str): van der Waals radii file
+
+    Returns
+    -------
+        vdw (dict): a dict of radius values with residue name and atom name as keys
     """
     vdw = {}
     with open(fn, 'r') as f:
@@ -27,19 +35,45 @@ def read_vdw(fn: str = here) -> dict:
 
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
+    """
+    Read PDB file into numpy arrays
+
+    Parameters
+    ----------
+        fn (str): Path to PDB file
+        vdw (dict): Dictionary with radii values (vdw[resname][atom])
+
+    Returns
+    -------
+        pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
+        xyzr (numpy.ndarray): an array with xyz coordinates and radius
+    """
     import numpy as _np
     pdb = []
-    coords = []
+    xyzr = []
     with open(fn, "r") as f:
         for line in f.readlines():
             if line[:4] == 'ATOM' or line[:6] == 'HETATM':
-                atom, xyzr = _process_pdb_line(line, vdw)
+                atom, coords = _process_pdb_line(line, vdw)
                 pdb.append(atom)
-                coords.append(xyzr)
-    return _np.asarray(pdb), _np.asarray(coords)
+                xyzr.append(coords)
+    return _np.asarray(pdb), _np.asarray(xyzr)
 
 
 def _process_pdb_line(line: str, vdw: dict) -> tuple:
+    """
+    Extracts ATOM and HETATM information of PDB line
+
+    Parameters
+    ----------
+        line (str): line of PDB file
+        vdw (dict): Dictionary with radii values (vdw[resname][atom])
+
+    Returns
+    -------
+        pdb (list): a list with resnum, chain, resname and atom name
+        xyzr (list): a list with xyz coordinates and radius
+    """
     atom = line[12:16].strip()
     resname = line[17:20].strip()
     resnum = int(line[22:26])
@@ -52,12 +86,25 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
         radius = vdw[resname][atom]
     else:
         radius = vdw['GEN'][atom_symbol]
-        _logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
-        _logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
-    return [f"{resnum}_{chain}", resname, atom], [x, y, z, radius]
+        logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
+        logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
+    pdb = [f"{resnum}_{chain}", resname, atom]
+    xyzr = [x, y, z, radius]
+    return pdb, xyzr
 
 
-def _process_box(args: _argparse.Namespace):
+def _process_box(args: argparse.Namespace):
+    """
+    Get xyz coordinates of 3D grid vertices
+
+    Parameters
+    ----------
+        args (argparse.Namespace): arguments passes by argparser CLI
+
+    Returns
+    -------
+        box (list): a list of vertices coordinates (origin, Xmax, Ymax, Zmax)
+    """
     import numpy as _np
     # Create box parameter
     box = {
@@ -102,10 +149,22 @@ def _process_box(args: _argparse.Namespace):
     return box
 
 
-def _write_parameters(args: _argparse.Namespace) -> None:
-    import toml as _toml
+def _write_parameters(args: argparse.Namespace) -> None:
+    """
+    Write parameters used in cavity detection and characterization of pyKVFinder
+    to TOML file
+
+    Parameters
+    ----------
+        args (argparse.Namespace): arguments passes by argparser CLI
+
+    Returns
+    -------
+        None
+    """
+    import toml
     # Parameters filename
-    fn = _os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
+    fn = os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
 
     # Parameters dict
     parameters = {
@@ -120,7 +179,7 @@ def _write_parameters(args: _argparse.Namespace) -> None:
             'MODES': {
                 'BOX_ADJUSTMENT': args.box,
                 'LIGAND_ADJUSTMENT': True if args.ligand else False,
-                'SURFACE': 'SES' if args.surface else 'SAS',
+                'SURFACE': args.surface,
                 'IGNORE_BACKBONE': args.ignore_backbone,
             },
             'STEP': args.step,
@@ -139,16 +198,34 @@ def _write_parameters(args: _argparse.Namespace) -> None:
 
     # Write to TOML file
     with open(fn, "w") as param:
-        _toml.dump(parameters, param)
+        toml.dump(parameters, param)
 
 
-def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, area: dict, residues: dict, step: float) -> None:
-    import toml as _toml
+def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, residues: dict = None, step: float = 0.6) -> None:
+    """
+    Write outputed files and cavity characterization to TOML file
+
+    Parameters
+    ----------
+        fn (str): path to KVFinder results TOML file
+        pdb (str): path to input PDB file
+        ligand (str): path to ligand PDB file
+        output (str): path to output directory
+        volume (dict): dictionary with cavity name/volume pairs
+        area (dict): dictionary with cavity name/area pairs
+        residues (dict): dictionary with cavity name/list of interface residues pairs
+        step (float): grid spacing (A)
+
+    Returns
+    -------
+        None
+    """
+    import toml
     # Prepare paths
-    pdb = _os.path.abspath(pdb)
+    pdb = os.path.abspath(pdb)
     if ligand:
-        ligand = _os.path.abspath(ligand)
-    output = _os.path.abspath(output)
+        ligand = os.path.abspath(ligand)
+    output = os.path.abspath(output)
 
     # Create results dictionary
     results = {
@@ -170,4 +247,4 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict, are
     # Write results to toml file
     with open(fn, "w") as f:
         f.write("# pyKVFinder results\n\n")
-        _toml.dump(results, f)
+        toml.dump(results, f)

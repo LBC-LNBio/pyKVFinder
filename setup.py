@@ -1,11 +1,8 @@
 # System imports
-# from distutils.core import setup, Extension
 from setuptools import setup, Extension, dist
 
 # pyKVFinder information
-from pyKVFinder import _name, _version
-# _name = "pyKVFinder"
-# _version = "0.1"
+from pyKVFinder import __name__, __version__
 
 # Prepare reqs from requirements.txt
 with open('requirements.txt') as f:
@@ -33,8 +30,8 @@ _grid = Extension(
 
 # Setup
 setup(
-    name=_name,
-    version=_version,
+    name=__name__,
+    version=__version__,
     ext_modules=[_grid],
     include_package_data=True,
     install_requires=reqs,

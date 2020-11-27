@@ -1,11 +1,22 @@
 import os
 import argparse
-from . import _name, _version
+from . import __name__, __version__
 
 __all__ = ["argparser"]
 
 
-def _positive_float(x):
+def _positive_float(x: float) -> float:
+    """
+    Checks if x is a float
+
+    Parameters
+    ----------
+        x (float): variable to be checked
+
+    Returns
+    -------
+        x (float): float variable
+    """
     try:
         x = float(x)
     except ValueError:
@@ -18,7 +29,18 @@ def _positive_float(x):
     return x
 
 
-def _restricted_step_size(x):
+def _restricted_step_size(x: float) -> float:
+    """
+    Checks: 0.0 < x <= 2.0
+
+    Parameters
+    ----------
+        x (float): grid spacing (A)
+
+    Returns
+    -------
+        x (float): grid spacing (A) between 0.0 and 2.0
+    """
     try:
         x = float(x)
     except ValueError:
@@ -31,7 +53,18 @@ def _restricted_step_size(x):
     return x
 
 
-def argparser():
+def argparser() -> argparse.ArgumentParser:
+    """
+    Defines pyKVFinder argument parser
+
+    Parameters
+    ----------
+        None
+
+    Returns
+    -------
+        parser (argparse.ArgumentParser): pyKVFinder argument parser
+    """
     # Overrides method in HelpFormatter
     class CapitalisedHelpFormatter(argparse.HelpFormatter):
 
@@ -65,7 +98,7 @@ def argparser():
                         action="store_true")
     parser.add_argument('--version',
                         action='version',
-                        version=f'{_name} v{_version}',
+                        version=f'{__name__} v{__version__}',
                         help="Show pyKVFinder version number and exit.")
     parser.add_argument("-b",
                         "--base_name",
