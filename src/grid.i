@@ -11,28 +11,42 @@
     import_array();
 %}
 
-/* **** GRID **** */
+/*** Numpy definitions ***/
+
+/* Cavities grid */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* PI, int size)}
-%apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
+
+/* Surface pointsd grid */
+%apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* surf, int nxx, int nyy, int nzz)}
 
+/* Volume array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int nvol)}
+
+/* Area array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* areas, int narea)}
 
-/* Box coordinates */
+/* Origin coordinates */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims
 )}
+
+/* X-axis vertice coordinates */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *P2, int nndims
 )}
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double *sincos, int nvalues)}
 
-/* Atom coordinates */
+/* PDB coordinates */
 %apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *atoms, int natoms, int xyzr)}
+
+/* Ligand coordinates */
 %apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *ligand, int lnatoms, int lxyzr)}
+
+/* Sine and Cossine */
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *sincos, int nvalues)}
 
 %include "typemaps.i"
 
+/* Map array of strings (Python) to char** (C) */
 %typemap(in) 
 char ** 
 {
@@ -64,13 +78,14 @@ char **
     }
 }
 
-// This cleans up the char ** array we malloc'd before the function call
+/* Free char ** array (C) */
 %typemap(freearg) 
 char ** 
 {
   free((char *) $1);
 }
 
+/* Map char ** (C) to array of strings (Python) */
 %typemap(out) 
 (char **_constitutional)
 {
