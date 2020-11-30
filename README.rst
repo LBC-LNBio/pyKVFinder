@@ -327,7 +327,7 @@ API Reference
         Exports cavities to PDB-formatted file
     * ``write(fn = 'results.toml')``
         Writes file paths and cavity characterization to TOML-formatted file
-    * export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = os.cpu_count() - 1)
+    * ``export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
         Exports cavities to PDB-formatted file and writes results to TOML-formatted file
 
 ``pyKVFinder.pyKVFinderResults.export(fn = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
@@ -424,6 +424,7 @@ pyKVFinder Command Line Interface (CLI) aims to direct interaction between pyKVF
 The available options (short and long options) are shown above:
 
 * ``-h`` or ``--help``: Show help message.
+  
   .. code-block:: bash
 
     pyKVFinder -h
