@@ -38,8 +38,7 @@ API Reference
 =============
 
 ``pyKVFinder.read_vdw(fn = "vdw.dat")``
-  
-  Read van der Waals radii from .dat file.
+  Reads van der Waals radii from .dat file.
 
   :Args:
     * ``fn`` : *str, default 'vdw.dat'*
@@ -50,8 +49,7 @@ API Reference
         A dictionary containing radii values (vdw[resname][atom])
 
 ``pyKVFinder.read_pdb(fn, vdw)``
-  
-  Read PDB file into numpy arrays.
+  Reads PDB file into numpy arrays.
 
   :Args:
     * ``fn`` : *str*
@@ -64,8 +62,7 @@ API Reference
         A tuple with two elements: a numpy array with resnum, chain, resname and atom name, and a numpy array with xyz coordinates and radii values
 
 ``pyKVFinder.get_vertices(xyzr, probe_out = 4.0, step = 0.6)``
-  
-  Get 3D grid vertices.
+  Gets 3D grid vertices.
 
   :Args:
     * ``xyzr`` : *numpy.ndarray*
@@ -80,7 +77,6 @@ API Reference
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
 
 ``pyKVFinder.get_vertices_from_file(fn, pdb, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads)``
-  
   Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
 
   :Args:
@@ -104,7 +100,6 @@ API Reference
         A tuple with five elements: a numpy array with xyz vertices coordinates (vertices), a numpy array with resnum, chain, resname and atom name (pdb), a numpy array with xyz coordinates and radii values (xyzr), a numpy array with sine and cossine of 3D grid angles (sincos), x grid units (nx), y grid units (ny) and z grid units (nz)
 
 ``pyKVFinder.get_dimensions(vertices, step = 0.6)``
-  
   Gets dimensions of 3D grid from vertices.
 
   :Args:
@@ -130,7 +125,6 @@ API Reference
         A numpy array with sine and cossine of 3D grid angles (a, b)
 
 ``pyKVFinder.detect(nx, ny, nz, xyzr, vetices, sincos, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, lxyzr = None, ligand_cutoff = 5.0, box_adjustment = False, surface = 'SES', nthreads, verbose = False)``
-  
   Detects biomolecular cavities.
 
   :Args:
@@ -174,7 +168,6 @@ API Reference
         A tuple with two elements: number of cavities detected (ncav) and a numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
 
 ``pyKVFinder.spatial(cavities, ncav, step, nthreads, verbose)``
-
   Spatial characterization (volume and area) of the detected cavities.
 
   :Args:
@@ -194,7 +187,6 @@ API Reference
         A tuple with three elements:  numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz]), a dictionary with volume of each detected cavity and a dictionary with area of each detected cavity
 
 ``pyKVFinder.constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step = 0.6, probe_in = 1.4, ignore_backbone = False, nthreads, verbose = False)``
-
   Constitutional characterization (interface residues) of the detected cavities
 
   :Args:
@@ -226,7 +218,6 @@ API Reference
         A dictionary with cavity name/list of interface residues pairs
 
 ``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step, nthreads)``
-
   Exports cavities to PDB file.
 
   :Args:
@@ -251,7 +242,6 @@ API Reference
     A file with PDB-formatted data corresponding to cavity points
 
 ``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, residues = None, step = 0.6)``
-
   Writes file paths and cavity characterization to TOML file
 
   :Args:
@@ -279,12 +269,12 @@ Command Line Interface
 ======================
 
 
-Box Configureation File Template
+Box Configuration File Template
 ================================
 
-There are two distinct methods for defining the custom 3D grid.
+There are two methods for defining a custom 3D grid in pyKVFinder.
 
-The first directly defines four vertices (origin, X-axis, Y-axis and Z-axis), the template are displayed above:
+The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the template is shown above:
 
 .. code-block:: TOML
 
@@ -295,7 +285,7 @@ The first directly defines four vertices (origin, X-axis, Y-axis and Z-axis), th
   p4 = [x4, y4, z4]
 
 
-The second defines a list of residues and a padding, the template are displayed above:
+The second defines a list of residues and a padding, the template is shown above:
 
 .. code-block:: TOML
 
@@ -303,10 +293,6 @@ The second defines a list of residues and a padding, the template are displayed 
   residues = [ ["resname", "chain",], ["resname", "chain",], ]
   padding =  3.5
 
-parKVFinder in Python v3
-========================
-
-This is pyKVFinder Python3 library.
 
 Comments
 --------
