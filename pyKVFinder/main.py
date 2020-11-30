@@ -76,7 +76,7 @@ def cli():
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, pdb, xyzr, args.sincos, nx, ny, nz = get_vertices_from_file(args.box, pdb, xyzr, args.probe_in, args.probe_out, args.step, args.nthreads)
+        args.vertices, pdb, xyzr, args.sincos, nx, ny, nz = get_vertices_from_file(args.box, pdb, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
 
         # Set flag to boolean
         args.box = True
@@ -325,7 +325,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, pdb, xyzr, sincos, nx, ny, nz = get_vertices_from_file(box, pdb, xyzr, probe_in, probe_out, step, nthreads)
+        vertices, pdb, xyzr, sincos, nx, ny, nz = get_vertices_from_file(box, pdb, xyzr, step, probe_in, probe_out, nthreads)
 
         # Set flag to boolean
         box = True

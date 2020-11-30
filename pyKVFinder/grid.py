@@ -6,7 +6,7 @@ __all__ = ["get_vertices", "get_vertices_from_file", "get_dimensions", "get_sinc
 
 def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6) -> numpy.ndarray:
     """
-    Gets vertices from 3D grid
+    Gets 3D grid vertices
 
     Parameters
     ----------
@@ -29,18 +29,18 @@ def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6)
     return vertices
 
 
-def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, probe_in: float = 1.4, probe_out: float = 4.0, step: float = 0.6, nthreads: int = os.cpu_count() - 1) -> tuple:
+def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
     """
-    Gets 3D grid vertices from box configuration file
+    Gets 3D grid vertices from box configuration file and selects atoms inside custom 3D grid
 
     Parameters
     ----------
         fn (str): path to box configuration file (TOML-formatted)
         pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
+        step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
         probe_out (float): Probe Out size (A)
-        step (float): grid spacing (A)
         nthreads (int): number of threads for OpenMP
 
     Returns

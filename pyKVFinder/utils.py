@@ -9,7 +9,7 @@ here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 def read_vdw(fn: str = here) -> dict:
     """
-    Read van der Waals radii from .dat file
+    Reads van der Waals radii from .dat file
 
     Parameters
     ----------
@@ -17,7 +17,7 @@ def read_vdw(fn: str = here) -> dict:
 
     Returns
     -------
-        vdw (dict): a dict of radius values with residue name and atom name as keys
+        vdw (dict): A dictionary containing radii values with residue name and atom name as keys
     """
     vdw = {}
     with open(fn, 'r') as f:
@@ -36,7 +36,7 @@ def read_vdw(fn: str = here) -> dict:
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
     """
-    Read PDB file into numpy arrays
+    Reads PDB file into numpy arrays
 
     Parameters
     ----------
@@ -46,7 +46,7 @@ def read_pdb(fn: str, vdw: dict) -> tuple:
     Returns
     -------
         pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
-        xyzr (numpy.ndarray): an array with xyz coordinates and radius
+        xyzr (numpy.ndarray): an array with xyz coordinates and radii values
     """
     import numpy as _np
     pdb = []
@@ -95,7 +95,7 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
 
 def _process_box(args: argparse.Namespace):
     """
-    Get xyz coordinates of 3D grid vertices
+    Gets xyz coordinates of 3D grid vertices
 
     Parameters
     ----------
@@ -151,7 +151,7 @@ def _process_box(args: argparse.Namespace):
 
 def _write_parameters(args: argparse.Namespace) -> None:
     """
-    Write parameters used in cavity detection and characterization of pyKVFinder
+    Writes parameters used in cavity detection and characterization of pyKVFinder
     to TOML file
 
     Parameters
@@ -203,7 +203,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, residues: dict = None, step: float = 0.6) -> None:
     """
-    Write outputed files and cavity characterization to TOML file
+    Writes outputted files and cavity characterization to TOML file
 
     Parameters
     ----------
