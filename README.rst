@@ -38,7 +38,8 @@ API Reference
 =============
 
 ``pyKVFinder.read_vdw(fn = "vdw.dat")``
-  Read van der Waals radii from .dat file
+  
+  Read van der Waals radii from .dat file.
 
   :Args:
     * ``fn`` : *str, default 'vdw.dat'*
@@ -49,7 +50,8 @@ API Reference
         A dictionary containing radii values (vdw[resname][atom])
 
 ``pyKVFinder.read_pdb(fn, vdw)``
-  Read PDB file into numpy arrays
+  
+  Read PDB file into numpy arrays.
 
   :Args:
     * ``fn`` : *str*
@@ -62,7 +64,8 @@ API Reference
         A tuple with two elements: a numpy array with resnum, chain, resname and atom name, and a numpy array with xyz coordinates and radii values
 
 ``pyKVFinder.get_vertices(xyzr, probe_out = 4.0, step = 0.6)``
-    Get 3D grid vertices
+  
+  Get 3D grid vertices.
 
   :Args:
     * ``xyzr`` : *numpy.ndarray*
@@ -77,7 +80,8 @@ API Reference
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
 
 ``pyKVFinder.get_vertices_from_file(fn, pdb, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads)``
-    Gets 3D grid vertices from box configuration file and selects atoms inside custom 3D grid
+  
+  Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
 
   :Args:
     * ``fn``: *str*
@@ -100,63 +104,204 @@ API Reference
         A tuple with five elements: a numpy array with xyz vertices coordinates (vertices), a numpy array with resnum, chain, resname and atom name (pdb), a numpy array with xyz coordinates and radii values (xyzr), a numpy array with sine and cossine of 3D grid angles (sincos), x grid units (nx), y grid units (ny) and z grid units (nz)
 
 ``pyKVFinder.get_dimensions(vertices, step = 0.6)``
-  Gets dimensions of 3D grid from vertices
+  
+  Gets dimensions of 3D grid from vertices.
 
   :Args:
-    * ``vertices`` (numpy.ndarray): A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
-    * ``step`` (float): Grid spacing (A)
+    * ``vertices`` : * numpy.ndarray*
+        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+    * ``step`` : *float*
+        Grid spacing (A)
 
   :Returns:
-    * A tuple with three elements: x grid units (nx), y grid units (ny) and z grid units (nz)
+    ``(nx, ny, nz)`` : *tuple*
+        A tuple with three elements: x grid units (nx), y grid units (ny) and z grid units (nz)
 
 ``pyKVFinder.get_sincos(vertices)``
-  Gets sine and cossine of 3D grid angles (a, b)
+  
+  Gets sine and cossine of 3D grid angles (a, b).
 
   :Args:
-    * ``vertices`` (numpy.ndarray): A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+    * ``vertices`` : *numpy.ndarray*
+        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
 
   :Returns:
-    A numpy array with sine and cossine of 3D grid angles (a, b)
+    ``sincos`` : *numpy.ndarray*
+        A numpy array with sine and cossine of 3D grid angles (a, b)
 
 ``pyKVFinder.detect(nx, ny, nz, xyzr, vetices, sincos, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, lxyzr = None, ligand_cutoff = 5.0, box_adjustment = False, surface = 'SES', nthreads, verbose = False)``
-  Detects biomolecular cavities
+  
+  Detects biomolecular cavities.
 
   :Args:
-    * nx (int): x 3D grid units
-    * ny (int): y 3D grid units
-    * nz (int): z 3D grid units
-    * ``xyzr`` (numpy.ndarray): A numpy array with xyz coordinates and radii values
-    * ``vertices`` (numpy.ndarray): A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
-    * ``sincos`` (numpy.ndarray): 
+    * ``nx`` : *int*
+        x 3D grid units
+    * ``nx`` : *int*
+        y 3D grid units
+    * ``nx`` : *int*
+        z 3D grid units
+    * ``xyzr`` : *numpy.ndarray*
+        A numpy array with xyz coordinates and radii values
+    * ``vertices``: *numpy.ndarray*
+        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+    * ``sincos``: *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
-    * ``step`` (float): Grid spacing (A)
-    * ``probe_in`` (float): Probe In size (A)
-    * ``probe_out`` (float): Probe Out size (A)
-    * ``removal_distance`` ()
-    * ``nthreads`` (int): Number of threads
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+    * ``probe_in`` : *float, default 1.4*
+        Probe In size (A)
+    * ``probe_out`` : *float, default 4.0*
+        Probe Out size (A)
+    * ``removal_distance`` : *float, default 2.4*
+        Length to be removed from the cavity-bulk frontier (A)
+    * ``volume_cutoff`` : *float, default 5.0*
+        Cavities volume filter (A3)
+    * ``lxyzr`` : *numpy.ndarray*
+        A numpy array with xyz coordinates and radii values of ligand atoms
+    * ``ligand_cutoff`` : *float, default 5.0*
+        Radius value to limit a space around a ligand (A)
+    * ``box_adjustment`` :  *bool, default False*
+        Whether a custom 3D grid is applied
+    * ``surface`` : *str, default 'SES'*
+        SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
+    * ``nthreads`` : *int, default 'number of cpus - 1'*
+        Number of threads
+    * ``verbose`` : *bool, default False*
+        Print extra information to standard output
 
+  :Returns:
+    ``(ncav, cavities)`` : *tuple*
+        A tuple with two elements: number of cavities detected (ncav) and a numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
 
+``pyKVFinder.spatial(cavities, ncav, step, nthreads, verbose)``
+
+  Spatial characterization (volume and area) of the detected cavities.
+
+  :Args:
+    * ``cavities`` : *numpy.ndarray*
+        A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
+    * ``ncav`` : *int*
+        Number of cavities in ``cavities`` numpy array
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+    * ``nthreads`` : *int, default 'number of cpus - 1'*
+        Number of threads
+    * ``verbose`` : *bool, default False*
+        Print extra information to standard output
+
+  :Returns:
+    ``(surface, volume, area)`` : *tuple*
+        A tuple with three elements:  numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz]), a dictionary with volume of each detected cavity and a dictionary with area of each detected cavity
+
+``pyKVFinder.constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step = 0.6, probe_in = 1.4, ignore_backbone = False, nthreads, verbose = False)``
+
+  Constitutional characterization (interface residues) of the detected cavities
+
+  :Args:
+    * ``cavities`` : *numpy.ndarray*
+        A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
+    * ``pdb`` : *numpy.ndarray*
+        A numpy array with resnum, chain, resname and atom name
+    * ``xyzr`` : *numpy.ndarray*
+        A numpy array with xyz coordinates and radii values
+    * ``vertices``: *numpy.ndarray*
+        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+    * ``sincos``: *numpy.ndarray*
+        A numpy array with sine and cossine of 3D grid angles (a, b)
+    * ``ncav`` : *int*
+        Number of cavities in ``cavities`` numpy array
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+    * ``probe_in`` : *float, default 1.4*
+        Probe In size (A)
+    * ``ignore_backbone`` :  *bool, default False*
+        Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
+    * ``nthreads`` : *int, default 'number of cpus - 1'*
+        Number of threads
+    * ``verbose`` : *bool, default False*
+        Print extra information to standard output
+
+  :Returns:
+    ``residues`` : *dict*
+        A dictionary with cavity name/list of interface residues pairs
+
+``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step, nthreads)``
+
+  Exports cavities to PDB file.
+
+  :Args:
+    * ``fn``: *str*
+        A path to PDB file for writing cavities
+    * ``cavities`` : *numpy.ndarray*
+        A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
+    * ``surface`` : *numpy.ndarray*
+        A numpy array with surface points of cavities (cavity points >= 2; cavities[nx][ny][nz])
+    * ``vertices``: *numpy.ndarray*
+        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+    * ``sincos``: *numpy.ndarray*
+        A numpy array with sine and cossine of 3D grid angles (a, b)
+    * ``ncav`` : *int*
+        Number of cavities in ``cavities`` numpy array
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+    * ``nthreads`` : *int, default 'number of cpus - 1'*
+        Number of threads
+  
+  :Returns:
+    A file with PDB-formatted data corresponding to cavity points
+
+``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, residues = None, step = 0.6)``
+
+  Writes file paths and cavity characterization to TOML file
+
+  :Args:
+    * ``fn``: *str*
+        A path to TOML file for writing file paths and cavity characterization (volume, area and interface residues) per cavity detected
+    * ``pdb`` : *str*
+        A path to input PDB file
+    * ``ligand`` : *str*
+        A path to ligand PDB file
+    * ``output`` :  *str*
+        A path to cavity PDB file
+    * ``volume`` : *dict*
+        A dictionary with volume of each detected cavity
+    * ``area`` : *dict*
+        A dictionary with area of each detected cavity
+    * ``residues`` : *dict*
+        A dictionary with interface residues of each detected cavity
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+
+  :Returns:
+    A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
 Command Line Interface
 ======================
 
 
+Box Configureation File Template
+================================
+
+There are two distinct methods for defining the custom 3D grid.
+
+The first directly defines four vertices (origin, X-axis, Y-axis and Z-axis), the template are displayed above:
+
+.. code-block:: TOML
+
+  [box]
+  p1 = [x1, y1, z1]
+  p2 = [x2, y2, z2]
+  p3 = [x3, y3, z3]
+  p4 = [x4, y4, z4]
 
 
+The second defines a list of residues and a padding, the template are displayed above:
 
+.. code-block:: TOML
 
-..   :Note:
-..     Box Configuration File Template:
-..       [box]
-
-..       p1 = [x1, y1, z1]
-      
-..       p2 = [x2, y2, z2]
-      
-..       p3 = [x3, y3, z3]
-      
-..       p4 = [x4, y4, z4]
-
+  [box]
+  residues = [ ["resname", "chain",], ["resname", "chain",], ]
+  padding =  3.5
 
 parKVFinder in Python v3
 ========================

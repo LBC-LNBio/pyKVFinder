@@ -203,14 +203,14 @@ def _write_parameters(args: argparse.Namespace) -> None:
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, residues: dict = None, step: float = 0.6) -> None:
     """
-    Writes outputted files and cavity characterization to TOML file
+    Writes file paths and cavity characterization to TOML file
 
     Parameters
     ----------
         fn (str): path to KVFinder results TOML file
         pdb (str): path to input PDB file
         ligand (str): path to ligand PDB file
-        output (str): path to output directory
+        output (str): path to cavity PDB file
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
         residues (dict): dictionary with cavity name/list of interface residues pairs

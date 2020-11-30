@@ -31,7 +31,7 @@ def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6)
 
 def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
     """
-    Gets 3D grid vertices from box configuration file and selects atoms inside custom 3D grid
+    Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units
 
     Parameters
     ----------
@@ -325,7 +325,7 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
         volume_cutoff (float): cavities volume filter (A3)
         lxyzr (numpy.ndarray): an array with xyz coordinates and radius of ligand atoms
         ligand_cutoff (float): radius value to limit a space around a ligand (A)
-        box_adjustment (bool): box adjustment mode
+        box_adjustment (bool): whether a custom 3D grid is applied
         surface (str): SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
         nthreads (int): number of threads
         verbose: print extra information to standard output
@@ -333,7 +333,7 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
     Returns
     -------
         ncav (int): number of cavities
-        cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
+        cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
     """
     from _grid import _detect, _detect_ladj
     # Unpack vertices
@@ -365,16 +365,13 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
     return ncav, cavities.reshape(nx, ny, nz)
 
 
-def spatial(cavities: numpy.ndarray, nx: int, ny: int, nz: int, ncav: int, step: float = 0.6, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def spatial(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
     """
     Spatial characterization (volume and area) of the detected cavities
 
     Parameters
     ----------
-        cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
-        nx (int): x 3D grid units
-        ny (int): y 3D grid units
-        nz (int): z 3D grid units
+        cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
         ncav (int): number of cavities
         step (float): grid spacing (A)
         nthreads (int): number of threads
@@ -382,11 +379,12 @@ def spatial(cavities: numpy.ndarray, nx: int, ny: int, nz: int, ncav: int, step:
 
     Returns
     -------
-        surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
+        surface (numpy.ndarray): surface points 3D grid (surface[nx][ny][nz])
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
     """
     from _grid import _spatial
+    nx, ny, nz = cavities.shape
     # Get surface points, volume and area
     surface, volume, area = _spatial(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
     volume, area = _process_spatial(volume, area, ncav)
@@ -400,7 +398,7 @@ def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndar
 
     Parameters
     ----------
-        cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
+        cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
         pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
         vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
@@ -408,7 +406,7 @@ def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndar
         ncav (int): number of cavities
         step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
-        ignore_backbone (bool): ignore backbone atoms (C, CA, N, O) when defining interface residues
+        ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
         nthreads (int): number of threads
         verbose: print extra information to standard output
 
@@ -443,8 +441,8 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
     Parameters
     ----------
         fn (str): path to cavity pdb
-        cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
-        surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
+        cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
+        surface (numpy.ndarray): surface points 3D grid (surface[nx][ny][nz])
         vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
         sincos (numpy.ndarray): an array with sine and cossine of 3D grid angles (a, b)
         ncav (int): number of cavities

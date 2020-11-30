@@ -113,7 +113,7 @@ def cli():
     # Cavities were found
     if ncav > 0:
         # Spatial characterization
-        surface, volume, area = spatial(cavities, nx, ny, nz, ncav, args.step, args.nthreads, args.verbose)
+        surface, volume, area = spatial(cavities, ncav, args.step, args.nthreads, args.verbose)
 
         # Constitutional characterization
         residues = constitutional(cavities, pdb, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
@@ -351,7 +351,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
     if ncav > 0:
         # Spatial characterization
-        surface, volume, area = spatial(cavities, nx, ny, nz, ncav, step, nthreads, verbose)
+        surface, volume, area = spatial(cavities, ncav, step, nthreads, verbose)
 
         # Constitutional characterization
         residues = constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
