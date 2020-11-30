@@ -380,8 +380,8 @@ The van der Waals radii file define the radius values for each residue and when 
   O       1.69
   H       0.91
 
-  :Note:
-    The residue name should be in the standard PDB format and each radius value is separated by two tab characters of the atom name.
+:Note:
+  The residue name should be in the standard PDB format and each radius value is separated by two tab characters of the atom name.
 
 Box Configuration File Template
 ================================
@@ -423,16 +423,18 @@ pyKVFinder Command Line Interface (CLI) aims to direct interaction between pyKVF
 
 The available options (short and long options) are shown above:
 
-  * ``-h`` or ``--help``: Show help message.
-    .. code-block:: bash
+* ``-h`` or ``--help``: Show help message.
+  .. code-block:: bash
 
-      pyKVFinder -h
-      pyKVFinder --help
+    pyKVFinder -h
+    pyKVFinder --help
 
-  * ``-v`` or ``--version``: Display parKVFinder version.
-    .. code-block:: bash
+* ``-v`` or ``--version``: Display parKVFinder version.
+  .. code-block:: bash
 
-      pyKVFinder -v
-      pyKVFinder --version
+    pyKVFinder -v
+    pyKVFinder --version
+
+
 
 
