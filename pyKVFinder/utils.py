@@ -152,7 +152,7 @@ def _process_box(args: argparse.Namespace):
 def _write_parameters(args: argparse.Namespace) -> None:
     """
     Writes parameters used in cavity detection and characterization of pyKVFinder
-    to TOML file
+    to TOML-formatted file
 
     Parameters
     ----------
@@ -203,11 +203,11 @@ def _write_parameters(args: argparse.Namespace) -> None:
 
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, residues: dict = None, step: float = 0.6) -> None:
     """
-    Writes file paths and cavity characterization to TOML file
+    Writes file paths and cavity characterization to TOML-formatted file
 
     Parameters
     ----------
-        fn (str): path to KVFinder results TOML file
+        fn (str): path to KVFinder results TOML-formatted file
         pdb (str): path to input PDB file
         ligand (str): path to ligand PDB file
         output (str): path to cavity PDB file

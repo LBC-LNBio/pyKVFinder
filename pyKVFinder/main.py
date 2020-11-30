@@ -7,7 +7,7 @@ from .argparser import argparser
 from .utils import read_vdw, read_pdb, write_results, _write_parameters
 from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, constitutional, export
 
-__all__ = ['pyKVFinder']
+__all__ = ['pyKVFinder', 'pyKVFinderResults']
 
 here = os.path.abspath(os.path.dirname(__file__))
 _dictionary = os.path.join(here, "data/vdw.dat")
@@ -157,14 +157,14 @@ class pyKVFinderResults(object):
     Methods
     -------
         export(fn = 'cavity.pdb', nthreads = {os.cpu_count() - 1}):
-            Export cavities to PDB file
-        write(fn = 'results.toml', nthreads = {os.cpu_count() - 1}):
-            Write TOML results file
+            Exports cavities to PDB-formatted file
+        write(fn = 'results.toml'):
+            Writes TOML-formatted results file
         export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = {os.cpu_count() - 1}):
-            Export cavities to PDB file and write TOML results file
+            Exports cavities to PDB-formatted file and write results to TOML-formatted file
     """
 
-    def __init__(self, cavities: np.ndarray, surface: np.ndarray, volume: dict, area: dict, residues: dict, vertices: np.ndarray, step: float, ncav: int):
+    def __init__(self, cavities: np.ndarray, surface: np.ndarray, volume: dict, area: dict, residues: dict, _vertices: np.ndarray, _step: float, _ncav: int):
         """
         Constructs attributes for pyKVFinderResults object
 
@@ -193,7 +193,7 @@ class pyKVFinderResults(object):
 
     def export(self, fn: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
         """
-        Exports cavities to PDB file
+        Exports cavities to PDB-formatted file
 
         Parameters
         ----------
@@ -207,14 +207,13 @@ class pyKVFinderResults(object):
         sincos = get_sincos(self.vertices)
         export(fn, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, nthreads)
 
-    def write(self, fn: str = 'results.toml', nthreads: int = os.cpu_count() - 1) -> None:
+    def write(self, fn: str = 'results.toml') -> None:
         """
-        Writes TOML results file
+        Writes TOML-formatted results file
 
         Parameters
         ----------
-            fn (str): path to results TOML file (step, volume, area, interface residues)
-            nthreads (int): number of threads
+            fn (str): path to results TOML-formatted file (step, volume, area, interface residues)
 
         Returns
         -------
@@ -241,11 +240,11 @@ class pyKVFinderResults(object):
 
     def export_all(self, fn: str = 'results.toml', output: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
         """
-        Exports cavities to PDB file and writes TOML results file
+        Exports cavities to PDB-formatted file and writes results to TOML-formatted file
 
         Parameters
         ----------
-            fn (str): path to results TOML file (step, volume, area, interface residues)
+            fn (str): path to results TOML-formatted file (step, volume, area, interface residues)
             output (str): path to cavity pdb file
             nthreads (int): number of threads
 
@@ -298,7 +297,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         volume_cutoff (float): cavities volume filter (A3)
         ligand_cutoff (float): radius value to limit a space around a ligand (A)
         surface (str): SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
-        ignore_backbone (bool): ignore backbone atoms (C, CA, N, O) when defining interface residues
+        ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
         nthreads (int): number of threads
         verbose: print extra information to standard output
 
