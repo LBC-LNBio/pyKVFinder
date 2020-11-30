@@ -107,7 +107,7 @@ def argparser() -> argparse.ArgumentParser:
                         help="Prefix to output files.")
     parser.add_argument("-O",
                         "--output_directory",
-                        metavar="<path>",
+                        metavar="<str>",
                         type=os.path.abspath,
                         default=os.path.abspath("."),
                         help="Output directory. (default: %(default)s)")
@@ -123,7 +123,7 @@ def argparser() -> argparse.ArgumentParser:
     parameters.add_argument("-d",
                             "--dictionary",
                             default=os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat"),
-                            metavar="<file>",
+                            metavar="<str>",
                             type=str,
                             help="Path to van der Waals radii file. (default: %(default)s)")
     parameters.add_argument("-s",
@@ -158,11 +158,11 @@ def argparser() -> argparse.ArgumentParser:
                             help=u"Length to be removed from the cavity-bulk frontier (\u212B). (default: %(default).1lf)")
     parameters.add_argument("-S",
                             "--surface",
-                            metavar="<enum>",
+                            metavar="<str>",
                             type=str,
                             default="SES",
                             choices=["SES", "SAS"],
-                            help="Surface representation. Options: %(choices)s. SAS specifies solvent accessible surface. SES specifies solvent excluded surface. (default: %(default)s)")
+                            help="Surface representation. Options: %(choices)s. SES specifies solvent excluded surface. SAS specifies solvent accessible surface. (default: %(default)s)")
     parameters.add_argument("--ignore_backbone",
                             action='store_true',
                             default=False,
@@ -176,7 +176,7 @@ def argparser() -> argparse.ArgumentParser:
                                 "--box",
                                 metavar="<.toml>",
                                 type=os.path.abspath,
-                                help="Adjust the 3D grid based on a list of residues ([\"resnum\",\"chain\"]) and a padding (default: 3.5) or a set of four points (p1: origin, p2: x-axis max, p3: y-axis max, p4: z-axis max) with xyz coordinates ([x, y, z]). Define one of them using a toml file.")
+                                help="A path to TOML-formatted file with box parameters. Adjust the 3D grid based on a list of residues ([\"resnum\", \"chain\"]) and a padding or a set of four vertices (p1: origin, p2: X-axis max, p3: Y-axis max, p4: Z-axis max) with xyz coordinates ([x, y, z]). Define the custom 3D grid with only one of this box parameters.")
 
     # Create argument group
     ligand_adjustment = parser.add_argument_group("Ligand adjustment arguments")

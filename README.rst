@@ -411,31 +411,177 @@ The second defines a list of residues and a padding, the template is shown above
 Command Line Interface
 ======================
 
-pyKVFinder Command Line Interface (CLI) aims to direct interaction between pyKVFinder and users.
+pyKVFinder's Command Line Interface (CLI) aims to direct the interaction between pyKVFinder and users.
 
 .. code-block:: bash
 
   $ pyKVFinder
-  Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <path>] [--nthreads <int>] [-d <file>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <enum>]
-                   [--ignore_backbone] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                   <.pdb> 
+    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <path>] [--nthreads <int>] [-d <file>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <enum>]
+                     [--ignore_backbone] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+                     <.pdb>
 
+The positional arguments are:
 
-The available options (short and long options) are shown above:
+* ``<.pdb>``: A path to a target PDB file.
+  
+  .. code-block:: bash
+    
+    $ pyKVFinder <.pdb>
+
+The optional arguments are:
 
 * ``-h`` or ``--help``: Show help message.
   
   .. code-block:: bash
+    
+    $ pyKVFinder -h
+    $ pyKVFinder --help
 
-    pyKVFinder -h
-    pyKVFinder --help
-
-* ``-v`` or ``--version``: Display parKVFinder version.
+* ``--version``: Display parKVFinder version.
+  
   .. code-block:: bash
 
-    pyKVFinder -v
-    pyKVFinder --version
+    $ pyKVFinder --version
 
+* ``-v`` or ``--verbose``: Print extra information to standard output.
 
+  .. code-block:: bash
 
+    $ pyKVFinder <.pdb> --verbose
 
+:Default: ``None``
+
+* ``-b <str>`` or ``--base_name <str>``: A prefix for output files.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -b <str>
+    $ pyKVFinder <.pdb> --base_name <str>
+
+:Default: Prefix of target PDB file (<.pdb>)
+
+* ``-O <str>`` or ``--output_directory <str>``: A path to a directory for output files.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -O <str>
+    $ pyKVFinder <.pdb> --output_directory <str>
+
+:Default: Current working directory
+
+* ``--nthreads <int>``: Number of threads to apply in parallel routines.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> --nthreads <int>
+
+:Default: ``os.cpu_count() - 1``
+
+The arguments for adjusting biomolecular detection are:
+
+* ``-d <str>`` or ``--dictionary <str>``: A path to a van der Waals radii file.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -d <str>
+    $ pyKVFinder <.pdb> --dictionary <str>
+
+:Default: ``vdw.dat``
+
+* ``-s <float>`` or ``--step <float>``: Grid spacing (A).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -s <float>
+    $ pyKVFinder <.pdb> --step <float>
+
+:Default: ``0.6``
+
+* ``-i <float>`` or ``--probe_in <float>``: Probe In size (A).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -i <float>
+    $ pyKVFinder <.pdb> --probe_in <float>
+
+:Default: ``1.4``
+
+* ``-o <float>`` or ``--probe_out <float>``: Probe Out size (A).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -o <float>
+    $ pyKVFinder <.pdb> --probe_out <float>
+
+:Default: ``4.0``
+
+* ``-V <float>`` or ``--volume_cutoff <float>``: Cavities volume filter (A3).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -V <float>
+    $ pyKVFinder <.pdb> --volume_cutoff <float>
+
+:Default: ``5.0``
+
+* ``-R <float>`` or ``--removal_distance <float>``: Length to be removed from the cavity-bulk frontier (A).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -R <float>
+    $ pyKVFinder <.pdb> --removal_distance <float>
+
+:Default: ``2.4``
+
+* ``-S <str>`` or ``--surface <str>``: A surface representation. Options are: ``SES`` and ``SAS``. SES specifies solvent excluded surface and SAS specifies solvent accessible surface.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -S <str>
+    $ pyKVFinder <.pdb> --surface <str>
+
+:Default: ``SES``
+
+* ``--ignore_backbone``: Ignore backbone contacts to cavity when defining interface residues.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> --ignore_backbone
+
+:Default: ``None``
+
+The box adjustment argument is:
+
+* ``-B <.toml>`` or ``--box <.toml>``: A path to TOML-formatted file with box parameters. Adjust the 3D grid based on a list of residues (["resnum", "chain"]) and a padding or a set of four vertices (p1: origin, p2: X-axis max, p3: Y-axis max, p4: Z-axis max) with xyz coordinates ([x, y, z]).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -B <.toml>
+    $ pyKVFinder <.pdb> --box <.toml>
+
+:Default: ``None``
+
+The ligand adjustment arguments are:
+
+* ``-L <.pdb>`` or ``--ligand <.pdb>``: A path to a ligand PDB file to limit the cavities within a radius (ligand_cutoff) around it.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -L <.pdb>
+    $ pyKVFinder <.pdb> --ligand <.pdb>
+
+:Default: ``None``
+
+* ``--ligand_cutoff <float>``: A radius value to limit a space around the defined ligand.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -L <.pdb> --ligand_cutoff <float>
+
+:Default: ``5.0``
+
+Licensing
+=========
+
+This project is released under the terms of the GNU General Public License. View
+*LICENSE.txt* for more information.
