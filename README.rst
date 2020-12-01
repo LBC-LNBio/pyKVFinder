@@ -161,7 +161,7 @@ API Reference
         A numpy array with sine and cossine of 3D grid angles (a, b)
 
 ``pyKVFinder.detect(nx, ny, nz, xyzr, vetices, sincos, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, lxyzr = None, ligand_cutoff = 5.0, box_adjustment = False, surface = 'SES', nthreads = os.cpu_count() - 1, verbose = False)``
-  Detects biomolecular cavities.
+  Detects biomolecular cavities. Cavity points that belongs to the same cavity are assigned with an integer in the grid. Biomolecule points = 0, Unsigned cavity points = 1, Assigned cavity points >= 2 and Bulk points = -1.
 
   :Args:
     * ``nx`` : *int*
@@ -202,6 +202,12 @@ API Reference
   :Returns:
     ``(ncav, cavities)`` : *tuple*
         A tuple with two elements: number of cavities detected (ncav) and a numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
+
+  :Note:
+    * `Biomolecule point`: `0`
+    * `Unassigned cavity point`: `1`
+    * `Cavity point`: `>=2`
+    * `Bulk point`: `-1`
 
 ``pyKVFinder.spatial(cavities, ncav, step = 0.6, nthreads = os.cpu_count() - 1, verbose = False)``
   Spatial characterization (volume and area) of the detected cavities.
@@ -384,7 +390,7 @@ The van der Waals radii file define the radius values for each residue and when 
   The residue name should be in the standard PDB format and each radius value is separated by two tab characters of the atom name.
 
 Box Configuration File Template
-================================
+===============================
 
 There are two methods for defining a custom 3D grid in pyKVFinder.
 
