@@ -184,9 +184,9 @@ class pyKVFinderResults(object):
         self.volume = volume
         self.area = area
         self.residues = residues
-        self._vertices = vertices
-        self._step = step
-        self._ncav = ncav
+        self._vertices = _vertices
+        self._step = _step
+        self._ncav = _ncav
 
     def __repr__(self):
         return '<pyKVFinderResults class>'
