@@ -2,16 +2,26 @@
 
 # Debbuging
 tests/output/
+.vscode/
+
+# Virtual environment
+venv/
 
 # parKVFinder source code
 etc/*.h
 etc/*.c
-etc/metrics/
-etc/templates/cavities/
-!etc/templates/box.toml
 
-# Virtual environment
-venv/
+# Benchmarking dataset
+etc/performance/kv1000/
+
+# Benchmarking scripts
+!etc/performance/scripts/
+
+# Cavity templates (.pdb and .cif)
+etc/templates/cavities/
+
+# Box configuration file template
+!etc/templates/box.toml
 
 # Ignore __pycache__
 */__pycache__/
