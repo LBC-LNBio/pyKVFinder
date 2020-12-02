@@ -10,5 +10,5 @@ typedef struct POINTS
 
 void dgrid (double *grid, int size);
 int define_frontier_points (int *cavities, int nx, int ny, int nz, int i, int j, int k);
-void filter_frontier (int *cavities, int nx, int ny, int nz, int nthreads);
+void filter_frontier (int *cavities, int nx, int ny, int nz, pts *cavs, pts *frontiers, int nthreads);
 void _depth (int *cavities, int nx, int ny, int nz, double *depth, int size, double *max_depth, int n, double *avg_depth, int nn, double step, int nthreads, int verbose);
