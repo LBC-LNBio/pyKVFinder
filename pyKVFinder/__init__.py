@@ -22,3 +22,5 @@ try:
     from .main import *
 except SyntaxError:
     pass
+except ModuleNotFoundError:
+    pass
