@@ -591,49 +591,6 @@ filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, in
 }
 
 /*
- * Function: cluster
- * -----------------
- * 
- * Cluster consecutive cavity points together
- * 
- * grid: cavities 3D grid
- * nx: x grid units
- * ny: y grid units
- * nz: z grid units
- * step: 3D grid spacing (A)
- * volume_cutoff: Cavities volume filter (A3)
- * nthreads: number of threads for OpenMP
- * 
- */
-int
-cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
-{
-    int i, j, k, tag;
-
-    tag = 1;
-
-    for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-            for (k=0; k<nz; k++)
-                if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
-                {
-                    tag++;
-                    vol = 0;
-                    
-                    // Clustering procedure
-                    DFS(grid, nx, ny, nz, i, j, k, tag);
-
-                    // Check if cavity reached cutoff
-                    if ( (double) vol * pow(step, 3) < volume_cutoff )
-                    {
-                        remove_cavity(grid, nx, ny, nz, tag, nthreads);
-                        tag--;
-                    }
-                }
-    return tag-1;
-}
-
-/*
  * Function: DFS
  * -------------
  * 
@@ -700,6 +657,49 @@ remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
                         // Remove points based on tag
                         if (grid[ k + nz * (j + ( ny * i ) ) ] == tag)
                             grid[ k + nz * (j + ( ny * i ) ) ] = 0;
+}
+
+/*
+ * Function: cluster
+ * -----------------
+ * 
+ * Cluster consecutive cavity points together
+ * 
+ * grid: cavities 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * step: 3D grid spacing (A)
+ * volume_cutoff: Cavities volume filter (A3)
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+int
+cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
+{
+    int i, j, k, tag;
+
+    tag = 1;
+
+    for (i=0; i<nx; i++)
+        for (j=0; j<ny; j++)
+            for (k=0; k<nz; k++)
+                if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
+                {
+                    tag++;
+                    vol = 0;
+                    
+                    // Clustering procedure
+                    DFS(grid, nx, ny, nz, i, j, k, tag);
+
+                    // Check if cavity reached cutoff
+                    if ( (double) vol * pow(step, 3) < volume_cutoff )
+                    {
+                        remove_cavity(grid, nx, ny, nz, tag, nthreads);
+                        tag--;
+                    }
+                }
+    return tag-1;
 }
 
 /*
