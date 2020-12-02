@@ -42,7 +42,6 @@ double check_voxel_class (int *surface, int nx, int ny, int nz, int i, int j, in
 void area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads);
 
 /* Estimate volume */
-int vol;
 void volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads);
 
 /* Spatial characterization */

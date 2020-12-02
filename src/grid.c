@@ -3,7 +3,6 @@
 #include <string.h>
 #include <math.h>
 #include <omp.h>
-#include "grid.h"
 
 /******* sincos ******
 * sincos[0] = sin a  *
@@ -11,6 +10,9 @@
 * sincos[2] = sin b  *
 * sincos[3] = cos b  *
 *********************/
+
+int vol;
+typedef struct node { int pos; struct node* next; } res;
 
 /*
  * Function: igrid

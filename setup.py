@@ -23,7 +23,7 @@ except AttributeError:
 _grid = Extension(
     name="_grid",
     sources=["src/grid.i", "src/grid.c"],
-    include_dirs=[numpy_include],
+    include_dirs=[numpy_include, 'src'],
     extra_compile_args=['-fopenmp', '-Ofast', '-lm'],
     extra_link_args=['-lgomp'],
 )
