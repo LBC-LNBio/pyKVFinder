@@ -7,10 +7,6 @@ tests/output/
 # Virtual environment
 venv/
 
-# parKVFinder source code
-etc/*.h
-etc/*.c
-
 # Benchmarking dataset
 etc/performance/kv1000/
 
