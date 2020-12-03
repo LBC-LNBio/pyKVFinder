@@ -37,8 +37,8 @@ Or to install the latest developmental version, run:
 API Reference
 =============
 
-``pyKVFinder.pyKVFinder(pdb, ligand, dictionary, box, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
-  Detects and characterizes cavities (volume, area and interface residues)
+``pyKVFinder.pyKVFinder(pdb, ligand, dictionary, box, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, include_depth = False, surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
+  Detects and characterizes cavities (volume, area, depth [optional] and interface residues).
 
   :Args:
     * ``pdb`` : *str*
@@ -61,6 +61,8 @@ API Reference
         Cavities volume filter (A3)        
     * ``ligand_cutoff`` : *float, default 5.0*
         Radius value to limit a space around a ligand (A)
+    * ``include_depth``: *bool, default False*
+        Whether to characterize the depth of the detected cavities
     * ``surface`` : *str, default 'SES'*
         SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
     * ``ignore_backbone`` :  *bool, default False*
@@ -72,7 +74,7 @@ API Reference
 
   :Returns:
     ``pyKVFinderResults`` : *object*
-        A class that contains cavities and surface points 3D grids, volume, area and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
+        A class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, volume, area, maximum depth and average depth and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
 
 ``pyKVFinder.read_vdw(fn = "vdw.dat")``
   Reads van der Waals radii from .dat file.
@@ -226,10 +228,29 @@ API Reference
 
   :Returns:
     ``(surface, volume, area)`` : *tuple*
-        A tuple with three elements:  numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz]), a dictionary with volume of each detected cavity and a dictionary with area of each detected cavity
+        A tuple with three elements: numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz]), a dictionary with volume of each detected cavity and a dictionary with area of each detected cavity
+
+``pyKVFinder.depth(cavities, ncav, step = 0.6, nthreads = os.cpu_count() - 1, verbose = False)``
+  Characterization of the depth of the detected cavities, including depth per cavity point and maximum and average depths of detected cavities.
+
+  :Args:
+    * ``cavities`` : *numpy.ndarray*
+        A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
+    * ``ncav`` : *int*
+        Number of cavities in ``cavities`` numpy array
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+    * ``nthreads`` : *int, default 'number of cpus - 1'*
+        Number of threads
+    * ``verbose`` : *bool, default False*
+        Print extra information to standard output
+
+  :Returns:
+    ``(depths, max_depth, avg_depth)`` : *tuple*
+        A tuple with three elements: numpy array with depth of cavity points (depth[nx][ny][nz]), a dictionary with maximum depth of each detected cavity and a dictionary with average depth of each detected cavity
 
 ``pyKVFinder.constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step = 0.6, probe_in = 1.4, ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
-  Constitutional characterization (interface residues) of the detected cavities
+  Constitutional characterization (interface residues) of the detected cavities.
 
   :Args:
     * ``cavities`` : *numpy.ndarray*
@@ -259,8 +280,8 @@ API Reference
     ``residues`` : *dict*
         A dictionary with cavity name/list of interface residues pairs
 
-``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, nthreads = os.cpu_count() - 1)``
-  Exports cavities to PDB-formatted file.
+``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, nthreads = os.cpu_count() - 1)``
+  Exports cavities to PDB-formatted file, with variable as B-factor (optional).
 
   :Args:
     * ``fn``: *str*
@@ -277,18 +298,20 @@ API Reference
         Number of cavities in ``cavities`` and ``surface`` numpy arrays
     * ``step`` : *float, default 0.6*
         Grid spacing (A)
+    * ``B``: *numpy.ndarray*
+        B-factor for cavity points (B[nx][ny][nz])
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
   
   :Returns:
     A file with PDB-formatted data corresponding to cavity points
 
-``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, residues = None, step = 0.6)``
-  Writes file paths and cavity characterization to TOML-formatted file
+``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, max_depth = None, avg_depth = None, residues = None, step = 0.6)``
+  Writes file paths and cavity characterization to TOML-formatted file.
 
   :Args:
     * ``fn``: *str*
-        A path to TOML-formatted file for writing file paths and cavity characterization (volume, area and interface residues) per cavity detected
+        A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected
     * ``pdb`` : *str*
         A path to input PDB file
     * ``ligand`` : *str*
@@ -299,6 +322,10 @@ API Reference
         A dictionary with volume of each detected cavity
     * ``area`` : *dict*
         A dictionary with area of each detected cavity
+    * ``max_depth``: *dict*
+        A dictionary with maximum depth of each detected cavity
+    * ``avg_depth``: *dict*
+        A dictionary with average depth of each detected cavity
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
     * ``step`` : *float, default 0.6*
@@ -307,7 +334,7 @@ API Reference
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
-``pyKVFinder.pyKVFinderResults(cavities, surface, volume, area, residues, _vertices, _step, _ncav)``
+``pyKVFinder.pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, _vertices, _step, _ncav)``
   A class containing pyKVFinder detection and characterization results.
 
   :Attributes:
@@ -315,10 +342,16 @@ API Reference
         A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
     * ``surface`` : *numpy.ndarray*
         A numpy array with surface points of cavities (cavity points >= 2; cavities[nx][ny][nz])
+    * ``depths``: *numpy.ndarray*
+        A numpy array with depth of cavity points (depth[nx][ny][nz])
     * ``volume`` : *dict*
         A dictionary with volume of each detected cavity
     * ``area`` : *dict*
         A dictionary with area of each detected cavity
+    * ``max_depth``: *dict*
+        A dictionary with maximum depth of each detected cavity
+    * ``avg_depth``: *dict*
+        A dictionary with average depth of each detected cavity
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
     * ``_vertices``: *numpy.ndarray*
@@ -337,7 +370,7 @@ API Reference
         Exports cavities to PDB-formatted file and writes results to TOML-formatted file
 
 ``pyKVFinder.pyKVFinderResults.export(fn = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
-  Exports cavities to PDB-formatted file
+  Exports cavities to PDB-formatted file.
 
   :Args:
     * ``fn`` : *str, default 'cavity.pdb'*
@@ -349,17 +382,17 @@ API Reference
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
 ``pyKVFinder.pyKVFinderResults.write(fn = 'results.toml)``
-  Writes file paths and cavity characterization to TOML-formatted file
+  Writes file paths and cavity characterization to TOML-formatted file.
 
   :Args:
     * ``fn`` : *str, default 'results.toml'*
-        A path to TOML-formatted file for writing file paths and cavity characterization (volume, area and interface residues) per cavity detected
+        A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected
 
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
 ``pyKVFinder.pyKVFinderResults.export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
-  Exports cavities to PDB-formatted file and writes results to TOML-formatted file
+  Exports cavities to PDB-formatted file and writes results to TOML-formatted file.
 
   :Args:
     * ``fn`` : *str, default 'results.toml'*

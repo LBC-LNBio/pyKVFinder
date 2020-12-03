@@ -498,7 +498,7 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         ncav (int): number of cavities
         step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
-        B (numpy.ndarray): B-factor for 3D grid points (B[nx][ny][nz])
+        B (numpy.ndarray): B-factor for cavity points (B[nx][ny][nz])
         nthreads (int): number of threads
 
     Returns

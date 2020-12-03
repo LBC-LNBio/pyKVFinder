@@ -153,7 +153,7 @@ class pyKVFinderResults(object):
     ----------
         cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
         surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
-        depths (numpy.ndarray): depth of cavities 3D grid points (depth[nx][ny][nz])
+        depths (numpy.ndarray): depth of cavity points (depths[nx][ny][nz])
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
         max_depth (dict): dictionary with cavity name/maximum depth pairs
@@ -181,7 +181,7 @@ class pyKVFinderResults(object):
         ----------
             cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
             surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
-            depths (numpy.ndarray): depth of cavities 3D grid points (depth[nx][ny][nz])
+            depths (numpy.ndarray): depth of cavity points (depth[nx][ny][nz])
             volume (dict): dictionary with cavity name/volume pairs
             area (dict): dictionary with cavity name/area pairs
             max_depth (dict): dictionary with cavity name/maximum depth pairs
@@ -261,7 +261,7 @@ class pyKVFinderResults(object):
 
         Parameters
         ----------
-            fn (str): path to results TOML-formatted file (step, volume, area, interface residues)
+            fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
             output (str): path to cavity pdb file
             nthreads (int): number of threads
 
