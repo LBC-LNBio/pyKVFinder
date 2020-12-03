@@ -14,7 +14,7 @@
 /*** Numpy definitions ***/
 
 /* Cavities grid */
-%apply (int* IN_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
+%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
 
 /* Depth grid */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depth, int size)}
