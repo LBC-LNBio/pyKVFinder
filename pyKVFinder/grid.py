@@ -486,7 +486,7 @@ def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndar
 
 def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1) -> None:
     """
-    Exports cavities to PDB file
+    Exports cavities to PDB file, with variable as B-factor (optional)
 
     Parameters
     ----------
