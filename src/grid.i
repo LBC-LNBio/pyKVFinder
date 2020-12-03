@@ -22,9 +22,12 @@
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* surf, int nxx, int nyy, int nzz)}
 
 /* Depth grid */
-%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depth, int size)}
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depths, int size)}
 
-/* Depth results arrays */
+/* Bfactor grid */
+%apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int nxxx, int nyyy, int nzzz)}
+
+/* Depth arrays */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* max_depth, int nmax), (double* avg_depth, int navg)}
 
 /* Volume array */

@@ -1,7 +1,7 @@
 import os
 import numpy
 
-__all__ = ["get_vertices", "get_vertices_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "constitutional", "export"]
+__all__ = ["get_vertices", "get_vertices_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "depth", "constitutional", "export"]
 
 
 def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6) -> numpy.ndarray:
@@ -392,6 +392,56 @@ def spatial(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int
     return surface.reshape(nx, ny, nz), volume, area
 
 
+def _process_depth(raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, ncav: int) -> tuple:
+    """
+    Processes arrays of maximum and average depths
+
+    Parameters
+    ----------
+        raw_max_depth (numpy.ndarray): an array of volumes
+        raw_avg_depth (numpy.ndarray): an array of areas
+        ncav (int): number of cavities
+
+    Returns
+    -------
+        max_depth (dict): dictionary with cavity name/maximum depth pairs
+        avg_depth (dict): dictionary with cavity name/average depth pairss
+    """
+    max_depth, avg_depth = {}, {}
+    for index in range(ncav):
+        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        max_depth[key] = float(round(raw_max_depth[index], 2))
+        avg_depth[key] = float(round(raw_avg_depth[index], 2))
+    return max_depth, avg_depth
+
+
+def depth(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+    """
+    Characterization of the depth of the detected cavities, including depth per cavity point and maximum and average depths of detected cavities.
+
+    Parameters
+    ----------
+        cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
+        ncav (int): number of cavities
+        step (float): grid spacing (A)
+        nthreads (int): number of threads
+        verbose: print extra information to standard output
+
+    Returns
+    -------
+        depths (numpy.ndarray): depth of cavities 3D grid points (depth[nx][ny][nz])
+        max_depth (dict): dictionary with cavity name/maximum depth pairs
+        avg_depth (dict): dictionary with cavity name/average depth pairs
+    """
+    from _grid import _depth
+    nx, ny, nz = cavities.shape
+    # Get depth of cavity points, maximum depth and average depth
+    depths, max_depth, avg_depth = _depth(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
+    max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav)
+    
+    return depths.reshape(nx, ny, nz), max_depth, avg_depth
+
+
 def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> dict:
     """
     Constitutional characterization (interface residues) of the detected cavities
@@ -434,7 +484,7 @@ def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndar
     return residues
 
 
-def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int = os.cpu_count() - 1) -> None:
+def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1) -> None:
     """
     Exports cavities to PDB file
 
@@ -448,15 +498,19 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         ncav (int): number of cavities
         step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
+        B (numpy.ndarray): B-factor for 3D grid points (B[nx][ny][nz])
         nthreads (int): number of threads
 
     Returns
     -------
         None
     """
-    from _grid import _export
+    from _grid import _export, _export_b
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
     # Export cavities
-    _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads)
+    if B is None:
+        _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads)
+    else:
+        _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads)

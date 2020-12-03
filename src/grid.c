@@ -1338,7 +1338,7 @@ remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundarie
  * Calculate depth of each cavity point and maximum and average depth of cavities
  * 
  * cavities: cavities 3D grid
- * depth: depth 3D grid
+ * depths: depth of cavities 3D grid points
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
@@ -1353,7 +1353,7 @@ remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundarie
  * 
  */
 void
-estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max_depth, double *avg_depth, int ncav, pts *cavs, pts *boundaries, double step, int nthreads)
+estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *max_depth, double *avg_depth, int ncav, pts *cavs, pts *boundaries, double step, int nthreads)
 {
     int i, j, k, i2, j2, k2, count, tag;
     double distance, tmp;
@@ -1362,7 +1362,7 @@ estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(cavities, depth, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
+    #pragma omp parallel default(none), shared(cavities, depths, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
     {
         #pragma omp for schedule(dynamic)
             for (tag=0; tag < ncav; tag++)
@@ -1405,7 +1405,7 @@ estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max
                                 }
 
                                 // Save depth for cavity point
-                                depth[k + nz * (j + ( ny * i ) )] = tmp;
+                                depths[k + nz * (j + ( ny * i ) )] = tmp;
 
                                 // Save maximum depth for cavity tag
                                 if (tmp > max_depth[tag])
@@ -1433,7 +1433,7 @@ estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max
  * Function: _depth
  * ----------------
  * 
- * Description
+ * Characterization of the depth of the detected cavities. Calculate depth per cavity point and maximum and average depths of detected cavities.
  * 
  * cavities: cavities 3D grid
  * nx: x grid units
@@ -1449,11 +1449,11 @@ estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
  * 
- * returns: depth (3D grid with depth of points), max_depth (array of maximum depths) and avg_depth (array of average depths)
+ * returns: depths (3D grid with depth of cavity points), max_depth (array of maximum depths) and avg_depth (array of average depths)
  * 
  */
 void 
-_depth (int *cavities, int nx, int ny, int nz, double *depth, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose)
+_depth (int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose)
 {
     int i, ncav;
     pts *cavs, *boundaries;
@@ -1462,7 +1462,7 @@ _depth (int *cavities, int nx, int ny, int nz, double *depth, int size, double *
     ncav = nmax;
 
     // Fill depth 3D grid with 0.0
-    dgrid (depth, size);
+    dgrid (depths, size);
 
     // Allocate memory
     cavs = (pts*) calloc (ncav, sizeof(pts));
@@ -1485,7 +1485,7 @@ _depth (int *cavities, int nx, int ny, int nz, double *depth, int size, double *
 
     if (verbose)
         fprintf (stdout, "> Estimating depth\n");
-    estimate_depth (cavities, depth, nx, ny, nz, max_depth, avg_depth, ncav, cavs, boundaries, step, nthreads);
+    estimate_depth (cavities, depths, nx, ny, nz, max_depth, avg_depth, ncav, cavs, boundaries, step, nthreads);
 
     // Untag bulk-cavity boundary points
     remove_boundary (cavities, nx, ny, nz, ncav, boundaries, nthreads);
@@ -1770,6 +1770,81 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
                                 fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surf[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surf[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
                             else
                                 fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
+                            count++;
+                        }
+                    }
+        }
+        fclose (output);
+}
+
+/*
+ * Function: _export_b
+ * -------------------
+ * 
+ * Export cavities with a variable as B-factor to PDB file
+ * 
+ * fn: cavity pdb filename
+ * cavities: cavities 3D grid
+ * nx: x grid units (cavities)
+ * ny: y grid units (cavities)
+ * nz: z grid units (cavities)
+ * surf: surface points 3D grid
+ * nxx: x grid units (surf)
+ * nyy: y grid units (surf)
+ * nzz: z grid units (surf)
+ * B: b-factor 3D grid (depths or hydropathy)
+ * nxx: x grid units (B)
+ * nyy: y grid units (B)
+ * nzz: z grid units (B)
+ * reference: xyz coordinates of 3D grid origin
+ * ndims: number of coordinates (3: xyz)
+ * sincos: sin and cos of 3D grid angles
+ * nvalues: number of sin and cos (sina, cosa, sinb, cosb)
+ * step: 3D grid spacing (A)
+ * ncav: number of cavities
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+void 
+_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads)
+{
+	int i, j, k, count, tag;
+	double x, y, z, xaux, yaux, zaux;
+	FILE *output;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+	// Open cavity PDB file
+	output = fopen (fn, "w");
+
+    for (count=1, tag=2; tag<=ncav+2; tag++)
+        #pragma omp parallel default(none) shared(cavities, surf, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+        {
+            #pragma omp for schedule(static) collapse(3) ordered nowait
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++) 
+                    {
+                        // Check if cavity point with value tag
+                        if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
+                        {
+                            // Convert 3D grid coordinates to real coordinates
+                            x = i * step; 
+                            y = j * step; 
+                            z = k * step;
+                            
+                            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                            yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+
+                            // Write cavity point
+                            #pragma omp critical
+                            if ( surf[k + nz * (j + ( ny * i ) )] == tag )
+                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surf[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surf[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
+                            else
+                                fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
                             count++;
                         }
                     }

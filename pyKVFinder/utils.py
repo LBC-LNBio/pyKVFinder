@@ -179,6 +179,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
             'MODES': {
                 'BOX_ADJUSTMENT': args.box,
                 'LIGAND_ADJUSTMENT': True if args.ligand else False,
+                'DEPTH': args.depth,
                 'SURFACE': args.surface,
                 'IGNORE_BACKBONE': args.ignore_backbone,
             },
@@ -201,7 +202,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
         toml.dump(parameters, param)
 
 
-def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, residues: dict = None, step: float = 0.6) -> None:
+def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, max_depth: dict = None, avg_depth: dict = None, residues: dict = None, step: float = 0.6) -> None:
     """
     Writes file paths and cavity characterization to TOML-formatted file
 
@@ -213,6 +214,8 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
         output (str): path to cavity PDB file
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
+        max_depth (dict): dictionary with cavity name/maximum depth pairs
+        avg_depth (dict): dictionary with cavity name/average depth pairs
         residues (dict): dictionary with cavity name/list of interface residues pairs
         step (float): grid spacing (A)
 
@@ -240,7 +243,9 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
         'RESULTS': {
             'VOLUME': volume,
             'AREA': area,
-            'RESIDUES': residues
+            'MAX_DEPTH': max_depth,
+            'AVG_DEPTH': avg_depth,
+            'RESIDUES': residues,
         }
     }
 

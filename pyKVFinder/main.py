@@ -5,7 +5,7 @@ import numpy as np
 from datetime import datetime
 from .argparser import argparser
 from .utils import read_vdw, read_pdb, write_results, _write_parameters
-from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, constitutional, export
+from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, export
 
 __all__ = ['pyKVFinder', 'pyKVFinderResults']
 
@@ -114,17 +114,23 @@ def cli():
     if ncav > 0:
         # Spatial characterization
         surface, volume, area = spatial(cavities, ncav, args.step, args.nthreads, args.verbose)
+        
+        # Depth characterization
+        if args.depth:
+            depths, max_depth, avg_depth = depth(cavities, ncav, args.step, args.nthreads, args.verbose)
+        else:
+            depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
         residues = constitutional(cavities, pdb, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
-        export(output_cavity, cavities, surface, args.vertices, args.sincos, ncav, args.step, args.nthreads)
+        export(output_cavity, cavities, surface, args.vertices, args.sincos, ncav, args.step, depths, args.nthreads)
 
         # Write results
         output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
-        write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, residues, args.step)
+        write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, max_depth, avg_depth, residues, args.step)
 
         # Write parameters
         _write_parameters(args)
@@ -147,8 +153,11 @@ class pyKVFinderResults(object):
     ----------
         cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
         surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
+        depths (numpy.ndarray): depth of cavities 3D grid points (depth[nx][ny][nz])
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
+        max_depth (dict): dictionary with cavity name/maximum depth pairs
+        avg_depth (dict): dictionary with cavity name/average depth pairs
         residues (dict): dictionary with cavity name/list of interface residues pairs
         _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
         _step (float): grid spacing (A)
@@ -164,7 +173,7 @@ class pyKVFinderResults(object):
             Exports cavities to PDB-formatted file and write results to TOML-formatted file
     """
 
-    def __init__(self, cavities: np.ndarray, surface: np.ndarray, volume: dict, area: dict, residues: dict, _vertices: np.ndarray, _step: float, _ncav: int):
+    def __init__(self, cavities: np.ndarray, surface: np.ndarray, depths: np.ndarray, volume: dict, area: dict, max_depth: dict, avg_depth: dict, residues: dict, _vertices: np.ndarray, _step: float, _ncav: int):
         """
         Constructs attributes for pyKVFinderResults object
 
@@ -172,8 +181,11 @@ class pyKVFinderResults(object):
         ----------
             cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
             surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
+            depths (numpy.ndarray): depth of cavities 3D grid points (depth[nx][ny][nz])
             volume (dict): dictionary with cavity name/volume pairs
             area (dict): dictionary with cavity name/area pairs
+            max_depth (dict): dictionary with cavity name/maximum depth pairs
+            avg_depth (dict): dictionary with cavity name/average depth pairs
             residues (dict): dictionary with cavity name/list of interface residues pairs
             _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
             _step (float): grid spacing (A)
@@ -181,8 +193,11 @@ class pyKVFinderResults(object):
         """
         self.cavities = cavities
         self.surface = surface
+        self.depths = depths
         self.volume = volume
         self.area = area
+        self.max_depth = max_depth
+        self.avg_depth = avg_depth
         self.residues = residues
         self._vertices = _vertices
         self._step = _step
@@ -204,8 +219,8 @@ class pyKVFinderResults(object):
         -------
             None
         """
-        sincos = get_sincos(self.vertices)
-        export(fn, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, nthreads)
+        sincos = get_sincos(self._vertices)
+        export(fn, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, self.depths, nthreads)
 
     def write(self, fn: str = 'results.toml') -> None:
         """
@@ -213,7 +228,7 @@ class pyKVFinderResults(object):
 
         Parameters
         ----------
-            fn (str): path to results TOML-formatted file (step, volume, area, interface residues)
+            fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
 
         Returns
         -------
@@ -229,6 +244,8 @@ class pyKVFinderResults(object):
             'RESULTS': {
                 'VOLUME': self.volume,
                 'AREA': self.area,
+                'MAX_DEPTH': self.max_depth,
+                'AVG_DEPTH': self.avg_depth,
                 'RESIDUES': self.residues
             }
         }
@@ -270,6 +287,8 @@ class pyKVFinderResults(object):
             'RESULTS': {
                 'VOLUME': self.volume,
                 'AREA': self.area,
+                'MAX_DEPTH': self.max_depth,
+                'AVG_DEPTH': self.avg_depth,
                 'RESIDUES': self.residues
             }
         }
@@ -280,7 +299,7 @@ class pyKVFinderResults(object):
             toml.dump(results, f)
 
 
-def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box: str = None, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, ligand_cutoff: float = 5.0, surface: str = 'SES', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> pyKVFinderResults:
+def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box: str = None, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, ligand_cutoff: float = 5.0, include_depth: bool = False, surface: str = 'SES', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> pyKVFinderResults:
     """
     Detects and characterizes cavities (volume, area and interface residues)
 
@@ -296,6 +315,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         removal_distance (float): length to be removed from the cavity-bulk frontier (A)
         volume_cutoff (float): cavities volume filter (A3)
         ligand_cutoff (float): radius value to limit a space around a ligand (A)
+        include_depth (bool): whether to characterize the depth of the detected cavities
         surface (str): SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
         ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
         nthreads (int): number of threads
@@ -303,7 +323,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
     Returns
     -------
-        results (pyKVFinderResults): class that contains cavities and surface points 3D grids, volume, area and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
+        results (pyKVFinderResults): class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, volume, area, maximum depth and average depth and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
     """
     if verbose:
         print("> Loading atomic dictionary file")
@@ -352,12 +372,18 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         # Spatial characterization
         surface, volume, area = spatial(cavities, ncav, step, nthreads, verbose)
 
+        # Depth characterization
+        if include_depth:
+            depths, max_depth, avg_depth = depth(cavities, ncav, step, nthreads, verbose)
+        else:
+            depths, max_depth, avg_depth = None, None, None
+
         # Constitutional characterization
         residues = constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
     else:
-        volume, area, residues = None, None, None
+        volume, area, residues, depths, max_depth, avg_depth = None, None, None, None, None, None
 
     # Return dict
-    results = pyKVFinderResults(cavities, surface, volume, area, residues, vertices, step, ncav)
+    results = pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, vertices, step, ncav)
 
     return results

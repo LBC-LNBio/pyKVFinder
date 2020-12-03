@@ -156,6 +156,11 @@ def argparser() -> argparse.ArgumentParser:
                             default=2.4,
                             type=_positive_float,
                             help=u"Length to be removed from the cavity-bulk frontier (\u212B). (default: %(default).1lf)")
+    parameters.add_argument("-D",
+                            "--depth",
+                            action='store_true',
+                            default=False,
+                            help="Characterization of the depth of the detected cavities. Add depth to B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
     parameters.add_argument("-S",
                             "--surface",
                             metavar="<str>",

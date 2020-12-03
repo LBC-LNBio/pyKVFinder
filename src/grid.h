@@ -54,10 +54,10 @@ void filter_boundary (int *cavities, int nx, int ny, int nz, pts *cavs, pts *bou
 void remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundaries, int nthreads);
 
 /* Estimate depth */
-void estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max_depth, double *avg_depth, int n, pts *cavs, pts *boundaries, double step, int nthreads);
+void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *max_depth, double *avg_depth, int n, pts *cavs, pts *boundaries, double step, int nthreads);
 
 /* Depth characterization */
-void _depth (int *cavities, int nx, int ny, int nz, double *depth, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose);
+void _depth (int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose);
 
 /* Retrieve interface residues */
 typedef struct node { int pos; struct node* next; } res;
@@ -70,3 +70,4 @@ char ** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, doub
 
 /* Export cavity PDB */
 void _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads);
+void _export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads);
