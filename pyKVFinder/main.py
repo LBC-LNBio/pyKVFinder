@@ -189,7 +189,7 @@ class pyKVFinderResults(object):
         self._ncav = _ncav
 
     def __repr__(self):
-        return '<pyKVFinderResults class>'
+        return '<pyKVFinderResults object>'
 
     def export(self, fn: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
         """
