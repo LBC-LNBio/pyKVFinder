@@ -28,19 +28,11 @@ _grid = Extension(
     extra_link_args=['-lgomp'],
 )
 
-_depth = Extension(
-    name="_depth",
-    sources=["src/depth.i", "src/depth.c"],
-    include_dirs=[numpy_include, 'src'],
-    extra_compile_args=['-fopenmp', '-Ofast', '-lm'],
-    extra_link_args=['-lgomp'],
-)
-
 # Setup
 setup(
     name=__name__,
     version=__version__,
-    ext_modules=[_grid, _depth],
+    ext_modules=[_grid],
     include_package_data=True,
     install_requires=reqs,
     packages=['pyKVFinder'],

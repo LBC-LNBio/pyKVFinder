@@ -17,9 +17,15 @@
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* PI, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavities, int nx, int ny, int nz)}
 
-/* Surface pointsd grid */
+/* Surface points grid */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* surf, int nxx, int nyy, int nzz)}
+
+/* Depth grid */
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depth, int size)}
+
+/* Depth results arrays */
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* max_depth, int nmax), (double* avg_depth, int navg)}
 
 /* Volume array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int nvol)}

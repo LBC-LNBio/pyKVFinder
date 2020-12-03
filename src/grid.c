@@ -4,6 +4,9 @@
 #include <math.h>
 #include <omp.h>
 
+# define min(x,y) ( ((x) < (y)) ? (x) : (y))
+# define max(x,y) ( ((x) > (y)) ? (x) : (y))
+
 /******* sincos ******
 * sincos[0] = sin a  *
 * sincos[1] = cos a  *
@@ -11,8 +14,7 @@
 * sincos[3] = cos b  *
 *********************/
 
-int vol;
-typedef struct node { int pos; struct node* next; } res;
+/* Grid initialization */
 
 /*
  * Function: igrid
@@ -94,6 +96,8 @@ cgrid (int *grid, int size)
                
 }
 
+/* Grid filling */
+
 /*
  * Function: fill
  * --------------
@@ -161,6 +165,8 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
             }
         }
 }
+
+/* Biomolecular surface representation */
 
 /*
  * Function: check_protein_neighbours
@@ -269,6 +275,8 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
     }
 }
 
+/* Grid subtract (Probe In - Probe Out) */
+
 /*
  * Function: subtract
  * ------------------
@@ -321,6 +329,8 @@ subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_
     }
 }
 
+/* Filter noise from Grid */
+
 /*
  * Function: filter_noise
  * ----------------------
@@ -370,6 +380,8 @@ filter_noise (int *grid, int nx, int ny, int nz, int nthreads)
                 }
             }
 }
+
+/* Ligand adjustment */
 
 /*
  * Function: adjust
@@ -434,6 +446,8 @@ adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyz
                 }             
     }
 }
+
+/* Box adjustment */
 
 /*
  * Function: _filter_pdb
@@ -590,6 +604,17 @@ filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, in
     }
 }
 
+/* Cavity clustering */
+
+/*
+ * Variable: vol
+ * -------------
+ * 
+ * Accumulate volume of a cavity while clustering a cavity
+ *
+ */
+int vol;
+
 /*
  * Function: DFS
  * -------------
@@ -702,6 +727,8 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
     return tag-1;
 }
 
+/* Cavity detection */
+
 /*
  * Function: _detect
  * -----------------
@@ -776,7 +803,6 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
 
     return ncav;
 }
-
 
 /*
  * Function: _detect_ladj
@@ -865,6 +891,8 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     return ncav;
 }
 
+/* Cavity surface points */
+
 /*
  * Function: define_surface_points
  * -------------------------------
@@ -948,8 +976,9 @@ filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nthread
                             surface[k + nz * (j + ( ny * i ) )] = -1;
                     }
     }
-
 }
+
+/* Estimate area */
 
 /*
  * Function: check_voxel_class
@@ -1052,6 +1081,8 @@ area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas
                     areas[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
 }
 
+/* Estimate volume */
+
 /*
  * Function: volume
  * ----------------
@@ -1090,6 +1121,8 @@ volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *vo
                             volumes[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
     }
 }
+
+/* Spatial characterization */
 
 /*
  * Function: _spatial
@@ -1137,6 +1170,348 @@ _spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double 
         }
     }    
 }
+
+/* Bulk-cavity boundary points */
+
+/*
+ * Struct: points
+ * --------------
+ * 
+ * Two 3D grid points with xyz coordinates (P1 and P2)
+ * 
+ * X1: x coordinate of P1
+ * Y1: y coordinate of P1
+ * Z1: z coordinate of P1
+ * X2: x coordinate of P2
+ * Y2: y coordinate of P2
+ * Z2: z coordinate of P2
+ *  
+ */
+typedef struct POINTS 
+{
+    double X1;
+    double Y1;
+    double Z1;
+    double X2;
+    double Y2;
+    double Z2;
+} pts;
+
+/*
+ * Function: define_boundary_points
+ * --------------------------------
+ * 
+ * Identify cavity-bulk boundary points based on neighboring points
+ * 
+ * cavities: cavities 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * i: x coordinate of cavity point
+ * j: y coordinate of cavity point
+ * k: z coordinate of cavity point
+ * 
+ * returns: cavity identifier (tag) or cavity-bulk boundary identifier (-tag)
+ */
+int 
+define_boundary_points (int *cavities, int nx, int ny, int nz, int i, int j, int k)
+{
+    if (i-1>=0)
+        if (cavities[ k + nz * (j + ( ny * (i - 1) ) ) ] == -1)
+            return -(cavities[k + nz * (j + ( ny * i ) )]);
+    if (i+1<nx)
+        if (cavities[ k + nz * (j + ( ny * (i + 1) ) ) ] == -1)
+            return -(cavities[k + nz * (j + ( ny * i ) )]);
+    if (j-1>=0)
+        if (cavities[ k + nz * ( (j - 1) + ( ny * i ) ) ] == -1)
+            return -(cavities[k + nz * (j + ( ny * i ) )]);
+    if (j+1<ny)
+        if (cavities[ k + nz * ( (j + 1) + ( ny * i ) ) ] == -1)
+            return -(cavities[k + nz * (j + ( ny * i ) )]);
+    if (k-1>=0)
+        if (cavities[ (k - 1) + nz * (j + ( ny * i ) ) ] == -1)
+            return -(cavities[k + nz * (j + ( ny * i ) )]);
+    if (k+1<nz)
+        if (cavities[ (k + 1) + nz * (j + ( ny * i ) ) ] == -1)
+            return -(cavities[k + nz * (j + ( ny * i ) )]);
+
+	return cavities[k + nz * (j + ( ny * i ) )];
+}
+
+/*
+ * Function: filter_boundary
+ * -------------------------
+ * 
+ * Inspect cavities 3D grid and mark detected cavity-bulk boundary points
+ * 
+ * cavities: cavities 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+void 
+filter_boundary (int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundaries, int nthreads)
+{
+    int i, j, k, tag;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+    #pragma omp parallel default(none), shared(cavities, nx, ny, nz, cavs, boundaries), private(i, j, k, tag)
+    {
+        #pragma omp for collapse(3) schedule(static)
+        for (i=0; i<nx; i++)
+            for (j=0; j<ny; j++)
+                for (k=0; k<nz; k++)
+                    if (cavities[k + nz * (j + ( ny * i ) )] > 1)
+                    {
+                        // Get cavity identifier
+                        tag = cavities[k + nz * (j + ( ny * i ) )] - 2;
+                        
+                        // Get min and max coordinates of each cavity
+                        cavs[tag].X1 = min(cavs[tag].X1, i);
+                        cavs[tag].Y1 = min(cavs[tag].Y1, j);
+                        cavs[tag].Z1 = min(cavs[tag].Z1, k);
+                        cavs[tag].X2 = max(cavs[tag].X2, i);
+                        cavs[tag].Y2 = max(cavs[tag].Y2, j);
+                        cavs[tag].Z2 = max(cavs[tag].Z2, k);
+
+                        // Define cavity-bulk boundary points
+                        cavities[k + nz * (j + ( ny * i ) )] = define_boundary_points (cavities, nx, ny, nz, i, j, k);
+                        
+                        // Get min and max coordinates of each cavity-bulk boundary
+                        if (cavities[k + nz * (j + ( ny * i ) )] < -1)
+                        {
+                            boundaries[tag].X1 = min(boundaries[tag].X1, i);
+                            boundaries[tag].Y1 = min(boundaries[tag].Y1, j);
+                            boundaries[tag].Z1 = min(boundaries[tag].Z1, k);
+                            boundaries[tag].X2 = max(boundaries[tag].X2, i);
+                            boundaries[tag].Y2 = max(boundaries[tag].Y2, j);
+                            boundaries[tag].Z2 = max(boundaries[tag].Z2, k);
+                        }
+                    }
+    }
+}
+
+/*
+ * Function: remove_boundary
+ * -------------------------
+ * 
+ * Inspect cavities 3D grid and unmark detected cavity-bulk boundary points
+ * 
+ * cavities: cavities 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+void
+remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundaries, int nthreads)
+{
+    int i, j, k, tag;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+    #pragma omp parallel default(none), shared(cavities, boundaries, ncav, nx, ny, nz), private(tag, i, j, k)
+        #pragma omp for schedule(dynamic)
+            for (tag=0; tag < ncav; tag++)
+                for (i=boundaries[tag].X1; i<=boundaries[tag].X2; i++)
+                    for (j=boundaries[tag].Y1; j<=boundaries[tag].Y2; j++)
+                        for (k=boundaries[tag].Z1; k<=boundaries[tag].Z2; k++)
+                            if ( cavities[k + nz * (j + ( ny * i ) )] < -1 )
+                                // Untag cavity-bulk boundary points
+                                cavities[k + nz * (j + ( ny * i ) )] = abs(cavities[k + nz * (j + ( ny * i ) )]);
+}
+
+/* Estimate depth */
+
+/*
+ * Function: define_depth
+ * ----------------------
+ * 
+ * Calculate depth of each cavity point and maximum and average depth of cavities
+ * 
+ * cavities: cavities 3D grid
+ * depth: depth 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * max_depth: empty array of maximum depths
+ * avg_depth: empty array of average depths
+ * ncav: number of cavities
+ * step: 3D grid spacing (A)
+ * cavs: Array with minimum and maximum grid coordinates of each cavity
+ * boundaries: Array with minimum and maximum grid coordinates of each cavity-bulk boundary
+ * step: 3D grid spacing (A)
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+void
+estimate_depth(int *cavities, double *depth, int nx, int ny, int nz, double *max_depth, double *avg_depth, int ncav, pts *cavs, pts *boundaries, double step, int nthreads)
+{
+    int i, j, k, i2, j2, k2, count, tag;
+    double distance, tmp;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+    #pragma omp parallel default(none), shared(cavities, depth, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
+    {
+        #pragma omp for schedule(dynamic)
+            for (tag=0; tag < ncav; tag++)
+            {
+                // Initialize depths for cavity tag
+                max_depth[tag] = 0.0;
+                avg_depth[tag] = 0.0;
+
+                // Initialize number of cavity points in cavity
+                count = 0;
+                
+                for (i=cavs[tag].X1; i<=cavs[tag].X2; i++)
+                    for (j=cavs[tag].Y1; j<=cavs[tag].Y2; j++)
+                        for (k=cavs[tag].Z1; k<=cavs[tag].Z2; k++)
+                            if ( abs(cavities[k + nz * (j + ( ny * i ) )]) == (tag + 2) )
+                            {   
+                                // Initialize tmp depth value
+                                tmp = sqrt( pow(nx, 2) + pow(ny, 2) + pow(nz, 2));
+
+                                // Count cavity point
+                                count++;
+
+                                if (boundaries[tag].X1 == nx && boundaries[tag].Y1 == ny && boundaries[tag].Z1 == nz && boundaries[tag].X2 == 0.0 && boundaries[tag].Y2 == 0.0 && boundaries[tag].Z2 == 0.0)
+                                {
+                                    // Cavity without boundary (void)
+                                    tmp = 0.0;
+                                }
+                                else
+                                {
+                                    // Depth is calculate as the minimum distance between cavity point and bulk-cavity boundary
+                                    for (i2=boundaries[tag].X1; i2<=boundaries[tag].X2; i2++)
+                                        for (j2=boundaries[tag].Y1; j2<=boundaries[tag].Y2; j2++)
+                                            for (k2=boundaries[tag].Z1; k2<=boundaries[tag].Z2; k2++)
+                                                if ( cavities[k2 + nz * (j2 + ( ny * i2 ) )] == -(tag + 2) )
+                                                {
+                                                    distance = sqrt( pow(i2-i, 2) + pow(j2-j, 2) + pow(k2-k, 2) );
+                                                    if (distance < tmp)
+                                                        tmp = distance;
+                                                }
+                                }
+
+                                // Save depth for cavity point
+                                depth[k + nz * (j + ( ny * i ) )] = tmp;
+
+                                // Save maximum depth for cavity tag
+                                if (tmp > max_depth[tag])
+                                    max_depth[tag] = tmp;
+
+                                // Add cavity point depth to average depth for cavity tag
+                                avg_depth[tag] += tmp;
+                            }
+                // Divide sum of depths by number of cavity points for cavity tag
+                avg_depth[tag] /= count;
+            }
+    }
+    
+    // Multiply depth values by grid spacing (step)
+    for (i=0; i<ncav; i++)
+    {
+        max_depth[i] *= step;
+        avg_depth[i] *= step;
+    }
+}
+
+/* Depth characterization */
+
+/*
+ * Function: _depth
+ * ----------------
+ * 
+ * Description
+ * 
+ * cavities: cavities 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * depth: depth 3D grid
+ * size: number of voxels in 3D grid
+ * max_depth: empty array of maximum depths
+ * nmax: size of array of maximum depths
+ * avg_depth: empty array of average depths
+ * navg: size of array of average depths
+ * step: 3D grid spacing (A)
+ * nthreads: number of threads for OpenMP
+ * verbose: print extra information to standard output
+ * 
+ * returns: depth (3D grid with depth of points), max_depth (array of maximum depths) and avg_depth (array of average depths)
+ * 
+ */
+void 
+_depth (int *cavities, int nx, int ny, int nz, double *depth, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose)
+{
+    int i, ncav;
+    pts *cavs, *boundaries;
+
+    // Get number of cavities
+    ncav = nmax;
+
+    // Fill depth 3D grid with 0.0
+    dgrid (depth, size);
+
+    // Allocate memory
+    cavs = (pts*) calloc (ncav, sizeof(pts));
+    boundaries = (pts*) calloc (ncav, sizeof(pts));
+
+    // Initialize boundaries and cavs points
+    for (i=0; i<ncav; i++)
+    {
+        boundaries[i].X1 = cavs[i].X1 = nx; 
+        boundaries[i].Y1 = cavs[i].Y1 = ny;
+        boundaries[i].Z1 = cavs[i].Z1 = nz;
+        boundaries[i].X2 = cavs[i].X2 = 0.0;
+        boundaries[i].Y2 = cavs[i].Y2 = 0.0;
+        boundaries[i].Z2 = cavs[i].Z2 = 0.0;
+    }
+
+    if (verbose)
+        fprintf (stdout, "> Defining bulk-cavity boundary points\n");
+    filter_boundary (cavities, nx, ny, nz, cavs, boundaries, nthreads);
+
+    if (verbose)
+        fprintf (stdout, "> Estimating depth\n");
+    estimate_depth (cavities, depth, nx, ny, nz, max_depth, avg_depth, ncav, cavs, boundaries, step, nthreads);
+
+    // Untag bulk-cavity boundary points
+    remove_boundary (cavities, nx, ny, nz, ncav, boundaries, nthreads);
+
+    // Free pts
+    free (cavs);
+    free (boundaries);
+}
+
+/* Retrieve interface residues */
+
+/*
+ * Struct: node
+ * ------------
+ * 
+ * A linked list node for atom index in xyzr array
+ * 
+ * pos: atom index in xyzr array (coordinates and radii of pdb)
+ * struct node* next: pointer to next linked list node
+ *  
+ */
+typedef struct node 
+{ 
+    int pos; 
+    struct node* next; 
+} res;
 
 /*
  * Function: create
@@ -1289,6 +1664,8 @@ char
     return residues;
 }
 
+/* Constitutional characterization */
+
 /*
  * Function: _constitutional
  * -------------------------
@@ -1326,6 +1703,8 @@ char
 
     return residues;
 }
+
+/* Export cavity PDB */
 
 /*
  * Function: _export
