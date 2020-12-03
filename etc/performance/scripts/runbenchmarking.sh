@@ -47,8 +47,8 @@ do
 done
 
 # Revert all changes in KVFinder scripts
-sed -i -e "s/ncores = 24/ncores = omp_get_num_procs () - 1/" ~/softwares/parKVFinder/src/parKVFinder.c
-sed -i -e "s/ncores = 24/ncores = omp_get_num_procs () - 1/" ~/softwares/parKVFinder/src/matrixprocessing.c
+sed -i -e "s/ncores = 24/ncores = omp_get_num_procs () - 1/" ${PARKVFINDER_INSTALLATION}/src/parKVFinder.c
+sed -i -e "s/ncores = 24/ncores = omp_get_num_procs () - 1/" ${PARKVFINDER_INSTALLATION}/src/matrixprocessing.c
 
 # Compile new KVFinder for i cores
 cd ${PARKVFINDER_INSTALLATION}; make clean; make; cd ${CWD}
@@ -68,3 +68,6 @@ do
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
 done
+
+################## COMPILING BENCHMARKING ##################
+printf "[===> Compiling benchmarking\n"

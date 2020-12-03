@@ -20,4 +20,4 @@ with open(fn, 'w') as f:
             start = time.time()
             os.system(f"parKVFinder {os.path.join(sys.argv[1], pdb)} -o 8.0")
             t[i] = time.time() - start
-        f.write(f'{pdb}, {t.mean():.4f}, {t.std():.4f}\n')
+        f.write(f'{pdb.replace('.pdb', '')}, {t.mean():.4f}, {t.std():.4f}\n')
