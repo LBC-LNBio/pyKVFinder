@@ -10,6 +10,7 @@ venv/
 # Benchmarking dataset
 etc/performance/kv1000/
 etc/performance/raw/
+etc/performance/data/
 
 # Benchmarking scripts
 !etc/performance/scripts/
