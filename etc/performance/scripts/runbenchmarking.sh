@@ -26,6 +26,8 @@ printf "[===> parKVFinder benchmarking\n"
 mkdir ${CWD}/raw/
 mkdir ${CWD}/raw/parKVFinder
 
+cd ${PARKVFINDER_INSTALLATION}
+
 for i in "${arr[@]}"
 do
 
@@ -35,18 +37,14 @@ do
 	python ${CWD}/scripts/run_parKVFinder.py ${CWD}/kv1000 ${CWD}/raw/parKVFinder ${i}
 
 	# Save PDBs runs inside KVFiles_ncores
-	rm -r kv1000/KV_Files/
+	rm -r ${CWD}/kv1000/KV_Files/
+	rm KVFinder.log
 
 	# Save ncores as old
 	old=($i)
 done
 
-# Revert all changes in KVFinder scripts
-sed -i -e "s/ncores = 24/ncores = omp_get_num_procs () - 1/" ${PARKVFINDER_INSTALLATION}/src/parKVFinder.c
-sed -i -e "s/ncores = 24/ncores = omp_get_num_procs () - 1/" ${PARKVFINDER_INSTALLATION}/src/matrixprocessing.c
-
-# Compile new KVFinder for i cores
-cd ${PARKVFINDER_INSTALLATION}; make clean; make; cd ${CWD}
+cd ${CWD}/scripts
 
 ################## PYKVFINDER V0.1 ANALYSIS ##################
 printf "[===> pyKVFinder v0.1 benchmarking\n"
