@@ -24,7 +24,7 @@ do
 	cd ${CWD};
 
     # Prepare executables
-    mv ${PARKVFINDER_INSTALLATION}/parKVFinder ${PARKVFINDER_INSTALLATION}/parKVFinder${i}
+    mv ${PARKVFINDER_INSTALLATION}/parKVFinder parKVFinder${i}
 
 	# Save ncores as old
 	old=($i)

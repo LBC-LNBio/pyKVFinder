@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --nodes=1
+#SBATCH --nodes=24
 #SBATCH --job-name=pyKVFinder
 #SBATCH --output=serial.log
 #SBATCH --ntasks=24
@@ -26,8 +26,6 @@ printf "[===> parKVFinder benchmarking\n"
 mkdir ${CWD}/raw/
 mkdir ${CWD}/raw/parKVFinder
 
-cd ${PARKVFINDER_INSTALLATION}
-
 for i in "${arr[@]}"
 do
 
@@ -43,8 +41,6 @@ do
 	# Save ncores as old
 	old=($i)
 done
-
-cd ${CWD}/scripts
 
 ################## PYKVFINDER V0.1 ANALYSIS ##################
 printf "[===> pyKVFinder v0.1 benchmarking\n"
