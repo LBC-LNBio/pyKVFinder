@@ -1,10 +1,7 @@
 #!/bin/bash
 
-#SBATCH --nodes=24
 #SBATCH --job-name=pyKVFinder
-#SBATCH --output=serial.log
-#SBATCH --ntasks=24
-#SBATCH --cpus-per-task=24
+#SBATCH -c 24
 #SBATCH -w cpu001
 
 # Directories
