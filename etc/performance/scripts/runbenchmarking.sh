@@ -31,18 +31,6 @@ do
 
 	printf ">>> ${i} threads\n"
 
-	# Change KVFinder scripts
-	sed -i -e "s/ncores = ${old}/ncores = $i/" ${PARKVFINDER_INSTALLATION}/src/parKVFinder.c
-	sed -i -e "s/ncores = ${old}/ncores = $i/" ${PARKVFINDER_INSTALLATION}/src/matrixprocessing.c
-	# cat ${PARKVFINDER_INSTALLATION}/src/parKVFinder.c | grep ncores
-	# cat ${PARKVFINDER_INSTALLATION}/src/matrixprocessing.c | grep ncores
-
-	# Compile new parKVFinder for i cores
-	cd ${PARKVFINDER_INSTALLATION}; 
-	make clean; 
-	make; 
-	cd ${CWD};
-
 	# Run KVFinder for PDBs
 	python ${CWD}/scripts/run_parKVFinder.py ${CWD}/kv1000 ${CWD}/raw/parKVFinder ${i}
 
