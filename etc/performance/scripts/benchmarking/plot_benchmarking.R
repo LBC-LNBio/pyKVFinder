@@ -67,10 +67,10 @@ p <- ggplot(time, aes(x=nthreads, y=average_time, fill=software)) +
             axis.title.x = element_text(size = 20),
             legend.title = element_text(size = 12))
 
-svg('plots/boxplot_time_vs_nthreads.svg', width = 3200, height = 2100, res = 300)
+svg('plots/boxplot_time_vs_nthreads.svg')
 p
 dev.off()
 
-png('plots/boxplot_time_vs_nthreads.png')
+png('plots/boxplot_time_vs_nthreads.png', width = 3200, height = 2100, res = 300)
 p
 dev.off()
