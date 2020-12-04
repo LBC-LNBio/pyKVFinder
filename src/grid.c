@@ -1712,7 +1712,7 @@ char
  * 
  * Export cavities to PDB file
  * 
- * fn: cavity pdb filename
+ * fn: cavity PDB filename
  * cavities: cavities 3D grid
  * nx: x grid units (cavities)
  * ny: y grid units (cavities)
@@ -1728,10 +1728,11 @@ char
  * step: 3D grid spacing (A)
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
+ * append: append cavities to PDB file
  * 
  */
 void
-_export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads)
+_export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -1742,7 +1743,10 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
     omp_set_nested(1);
 
 	// Open cavity PDB file
-	output = fopen (fn, "w");
+    if (append)
+        output = fopen (fn, "a+");
+    else
+	    output = fopen (fn, "w");
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
         #pragma omp parallel default(none) shared(cavities, surf, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
@@ -1803,10 +1807,11 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
  * step: 3D grid spacing (A)
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
+ * append: append cavities to PDB file
  * 
  */
 void 
-_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads)
+_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -1817,7 +1822,10 @@ _export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, 
     omp_set_nested(1);
 
 	// Open cavity PDB file
-	output = fopen (fn, "w");
+    if (append)
+        output = fopen (fn, "a+");
+    else
+	    output = fopen (fn, "w");
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
         #pragma omp parallel default(none) shared(cavities, surf, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)

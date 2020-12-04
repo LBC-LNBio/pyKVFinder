@@ -280,7 +280,7 @@ API Reference
     ``residues`` : *dict*
         A dictionary with cavity name/list of interface residues pairs
 
-``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, nthreads = os.cpu_count() - 1)``
+``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, nthreads = os.cpu_count() - 1, append = False)``
   Exports cavities to PDB-formatted file, with variable as B-factor (optional).
 
   :Args:
@@ -302,6 +302,8 @@ API Reference
         B-factor for cavity points (B[nx][ny][nz])
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
+    * ``append`` : *bool, default False*
+        Append cavities to PDB file
   
   :Returns:
     A file with PDB-formatted data corresponding to cavity points

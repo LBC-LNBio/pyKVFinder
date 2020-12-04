@@ -484,7 +484,7 @@ def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndar
     return residues
 
 
-def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1) -> None:
+def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:
     """
     Exports cavities to PDB file, with variable as B-factor (optional)
 
@@ -500,6 +500,7 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         probe_in (float): Probe In size (A)
         B (numpy.ndarray): B-factor for cavity points (B[nx][ny][nz])
         nthreads (int): number of threads
+        append (bool): append cavities PDB to `fn`
 
     Returns
     -------
@@ -511,6 +512,6 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
 
     # Export cavities
     if B is None:
-        _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads)
+        _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
     else:
-        _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads)
+        _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append)
