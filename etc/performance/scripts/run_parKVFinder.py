@@ -18,6 +18,6 @@ with open(fn, 'w') as f:
         t = numpy.zeros(5)
         for i in range(0, 5):
             start = time.time()
-            os.system(f"parKVFinder{sys.argv[3]} {os.path.join(sys.argv[1], pdb)}")
+            os.system(f"./parKVFinder{sys.argv[3]} {os.path.join(sys.argv[1], pdb)}")
             t[i] = time.time() - start
         f.write(f"{pdb.replace('.pdb', '')}, {t.mean():.4f}, {t.std():.4f}\n")

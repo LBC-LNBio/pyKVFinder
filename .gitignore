@@ -13,7 +13,7 @@ etc/performance/raw/
 
 # Benchmarking scripts
 !etc/performance/scripts/
-etc/performance/parKVFinder*
+etc/performance/scritps/parKVFinder*
 
 # Cavity templates (.pdb and .cif)
 etc/templates/cavities/
