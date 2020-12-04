@@ -63,14 +63,14 @@ cd ${PARKVFINDER_INSTALLATION}; make clean; make; cd ${CWD}
 ################## PYKVFINDER V0.1 ANALYSIS ##################
 printf "[===> pyKVFinder v0.1 benchmarking\n"
 mkdir ${CWD}/raw/
-mkdir ${CWD}/raw/pyKVFinderv01/
+mkdir ${CWD}/raw/pyKVFinder/
 
 for i in "${arr[@]}"
 do
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
-	python ${CWD}/scripts/run_pyKVFinderv01.py ${CWD}/kv1000 ${CWD}/raw/pyKVFinderv01 ${i}
+	python ${CWD}/scripts/run_pyKVFinder.py ${CWD}/kv1000 ${CWD}/raw/pyKVFinder ${i}
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
