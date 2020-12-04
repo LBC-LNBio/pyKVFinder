@@ -8,6 +8,10 @@ PARKVFINDER_INSTALLATION="/mnt/nfs/home/joao/softwares/parKVFinder"
 old=("omp_get_num_procs () - 1")
 declare -a arr=("1" "2" "4" "8" "12" "16" "20" "24")
 
+# Download parKVFinder
+git clone https://github.com/LBC-LNBio/parKVFinder.git
+mv parKVFinder ${PARKVFINDER_INSTALLATION}
+
 for i in "${arr[@]}"
 do
 
@@ -35,4 +39,4 @@ sed -i -e "s/ncores = ${old}/ncores = omp_get_num_procs () - 1/" ${PARKVFINDER_I
 sed -i -e "s/ncores = ${old}/ncores = omp_get_num_procs () - 1/" ${PARKVFINDER_INSTALLATION}/src/matrixprocessing.c
 
 # Compile new KVFinder for i cores
-cd ${PARKVFINDER_INSTALLATION}; make clean; make; cd ${CWD}
+cd ${PARKVFINDER_INSTALLATION}; make clean; make; cd ${CWD}/scripts
