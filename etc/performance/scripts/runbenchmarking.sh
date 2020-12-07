@@ -1,22 +1,32 @@
 #!/bin/bash
 
 # Directories
-CWD="/mnt/nfs/home/joao/softwares/pyKVFinder/etc/performance"
-PARKVFINDER_INSTALLATION="/mnt/nfs/home/joao/softwares/parKVFinder"
+OUTPUT_DIRECTORY=${1%/}
 
 # Nthreads
 declare -a nthreads=("1" "2" "4" "8" "12" "16" "20" "24")
 
+# Require positional command-line arguments
+if [ -z "$1" ]; then
+    printf "> Missing OUTPUT_DIRECTORY!\n"
+
+	# Help menu
+	echo 'Usage:'
+	echo -e "\t"'./runbenchmarking.sh OUTPUT_DIRECTORY'
+
+	exit
+fi
+
 ################## Benchmarking dataset ##################
 printf "[===> Downloading kv1000 dataset\n"
 git clone https://github.com/jvsguerra/kv1000.git
-mv kv1000/kv1000/pdbs ${CWD}/kv1000
+mv kv1000/kv1000/pdbs ${OUTPUT_DIRECTORY}/kv1000
 rm -rf kv1000/
 
 ################## PARKVFINDER ANALYSIS ##################
 printf "[===> parKVFinder benchmarking\n"
-mkdir ${CWD}/raw/
-mkdir ${CWD}/raw/parKVFinder
+mkdir ${OUTPUT_DIRECTORY}/raw/
+mkdir ${OUTPUT_DIRECTORY}/raw/parKVFinder
 
 for i in "${nthreads[@]}"
 do
@@ -24,25 +34,25 @@ do
 	printf ">>> ${i} threads\n"
 
 	# Run KVFinder for PDBs
-	python ${CWD}/scripts/benchmarking/run_parKVFinder.py ${CWD}/kv1000 ${CWD}/raw/parKVFinder ${i}
+	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_parKVFinder.py ${OUTPUT_DIRECTORY}/kv1000 ${OUTPUT_DIRECTORY}/raw/parKVFinder ${i}
 
 	# Save PDBs runs inside KVFiles_ncores
-	rm -r ${CWD}/kv1000/KV_Files/
+	rm -r ${OUTPUT_DIRECTORY}/kv1000/KV_Files/
 	rm KVFinder.log
 
 done
 
 ################## PYKVFINDER V0.1 ANALYSIS ##################
 printf "[===> pyKVFinder v0.1 benchmarking\n"
-mkdir ${CWD}/raw/
-mkdir ${CWD}/raw/pyKVFinder/
+mkdir ${OUTPUT_DIRECTORY}/raw/
+mkdir ${OUTPUT_DIRECTORY}/raw/pyKVFinder/
 
 for i in "${nthreads[@]}"
 do
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
-	python ${CWD}/scripts/benchmarking/run_pyKVFinder.py ${CWD}/kv1000 ${CWD}/raw/pyKVFinder ${i}
+	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/kv1000 ${OUTPUT_DIRECTORY}/raw/pyKVFinder ${i}
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
@@ -50,5 +60,5 @@ done
 
 ################## COMPILING BENCHMARKING ##################
 printf "[===> Compiling benchmarking\n"
-mkdir ${CWD}/data
-python ${CWD}/scripts/benchmarking/compile_benchmarking.py ${CWD}/raw ${CWD}/kv1000 ${CWD}/data
+mkdir ${OUTPUT_DIRECTORY}/data
+python ${OUTPUT_DIRECTORY}/scripts/benchmarking/compile_benchmarking.py ${OUTPUT_DIRECTORY}/raw ${OUTPUT_DIRECTORY}/kv1000 ${OUTPUT_DIRECTORY}/data
