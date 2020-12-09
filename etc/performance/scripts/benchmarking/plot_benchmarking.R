@@ -24,7 +24,8 @@ raw_time = read.csv("time.csv", header=TRUE, row.names=1)
 ### [==> Processing time data
 ###
 
-dir.create('plots/time')
+dir.create('plots/comparison/')
+dir.create('plots/comparison/time')
 
 # Get number of replicates per software
 replicates = ( ncol(raw_time) - 2 ) / as.numeric(args[2])
@@ -86,7 +87,7 @@ median = apply(raw_time[,3:dim(raw_time)[2]], 2, median)
 time2 = data.frame(nthreads, software, t, sd, median)
 
 ###
-### [==> Plotting: plots/time/boxplot_time_vs_nthreads.svg)
+### [==> Plotting: plots/comparison/time/boxplot_time_vs_nthreads.svg)
 ###   Description: Boxplot with time for different softwares
 ###
 
@@ -109,16 +110,16 @@ p <- ggplot(time, aes(x=as.factor(nthreads), y=average_time, fill=software)) +
             axis.title.x = element_text(size = 20),
             legend.title = element_text(size = 12))
 
-svg('plots/time/boxplot_time_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/comparison/time/boxplot_time_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/time/boxplot_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/time/boxplot_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/time/lineplot_time_vs_atoms.svg)
+### [==> Plotting: plots/comparison/time/lineplot_time_vs_atoms.svg)
 ###   Description: Lineplots with time against number of atoms for different number of threads
 ###
 
@@ -146,16 +147,16 @@ p <- ggplot(time, aes(x=natoms, y=average_time, group=software)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
+svg('plots/comparison/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/time/lineplot_time_vs_atoms.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/time/lineplot_time_vs_atoms.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/time/scatter_time_vs_nthreads.svg)
+### [==> Plotting: plots/comparison/time/scatter_time_vs_nthreads.svg)
 ###   Description: Scatter plot with time against number of atoms for different number of threads
 ###
 
@@ -182,16 +183,16 @@ p <- ggplot(time, aes(x=as.factor(nthreads), y=average_time)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/time/scatter_time_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/comparison/time/scatter_time_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/time/scatter_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/time/scatter_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/time/average_time_vs_nthreads.svg)
+### [==> Plotting: plots/comparison/time/average_time_vs_nthreads.svg)
 ###   Description: Lineplot plot with average time against number of threads
 ###
 
@@ -210,17 +211,17 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=t, color=software)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/time/average_time_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/comparison/time/average_time_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/time/average_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/time/average_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 
 ###
-### [==> Plotting: plots/time/median_time_vs_nthreads.svg)
+### [==> Plotting: plots/comparison/time/median_time_vs_nthreads.svg)
 ###   Description: Lineplot plot with median time against number of threads
 ###
 
@@ -239,11 +240,11 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=median, color=software)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/time/median_time_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/comparison/time/median_time_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/time/median_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/time/median_time_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
@@ -251,7 +252,7 @@ dev.off()
 ### [==> Processing speedup data
 ###
 
-dir.create('plots/speedup')
+dir.create('plots/comparison/speedup')
 
 # Get number of replicates per software
 replicates = ( ncol(raw_time) - 2 ) / as.numeric(args[2])
@@ -282,7 +283,7 @@ speedup = gather(speedup)$value
 speedup = data.frame(natoms, nthreads, speedup)
 
 ###
-### [==> Plotting: plots/speedup/boxplot_speedup_vs_nthreads.svg)
+### [==> Plotting: plots/comparison/speedup/boxplot_speedup_vs_nthreads.svg)
 ###   Description: Boxplot with speedup against number of threads
 ###
 
@@ -302,16 +303,16 @@ p <- ggplot(speedup, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthrea
             axis.title.x = element_text(size = 20),
             legend.title = element_text(size = 12))
 
-svg('plots/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/comparison/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/speedup/boxplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/speedup/boxplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/time/lineplot_speedup_vs_atoms.svg)
+### [==> Plotting: plots/comparison/speedup/lineplot_speedup_vs_atoms.svg)
 ###   Description: Lineplots with speedup against number of atoms for different number of threads
 ###
 
@@ -339,11 +340,11 @@ p <- ggplot(speedup, aes(x=natoms, y=speedup)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/speedup/lineplot_speedup_vs_atoms.svg', width = 16, height = 9)
+svg('plots/comparison/speedup/lineplot_speedup_vs_atoms.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/speedup/lineplot_speedup_vs_atoms.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/speedup/lineplot_speedup_vs_atoms.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
@@ -351,7 +352,7 @@ dev.off()
 ### [==> Processing efficiency data
 ###
 
-dir.create('plots/efficiency')
+dir.create('plots/comparison/efficiency')
 
 # Get number of replicates per software
 replicates = ( ncol(raw_time) - 2 ) / as.numeric(args[2])
@@ -383,7 +384,7 @@ efficiency = data.frame(natoms, nthreads, efficiency)
 efficiency$efficiency = efficiency$efficiency/efficiency$nthreads
 
 ###
-### [==> Plotting: plots/efficiency/boxplot_time_vs_nthreads.svg)
+### [==> Plotting: plots/comparison/efficiency/boxplot_time_vs_nthreads.svg)
 ###   Description: Boxplot with efficiency against number of threads
 ###
 
@@ -403,16 +404,16 @@ p <- ggplot(efficiency, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.fac
             axis.title.x = element_text(size = 20),
             legend.title = element_text(size = 12))
 
-svg('plots/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/comparison/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/efficiency/boxplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/efficiency/boxplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/efficiency/lineplot_efficiency_vs_atoms.svg)
+### [==> Plotting: plots/comparison/efficiency/lineplot_efficiency_vs_atoms.svg)
 ###   Description: Lineplots with efficiency against number of atoms for different number of threads
 ###
 
@@ -440,11 +441,11 @@ p <- ggplot(efficiency, aes(x=natoms, y=efficiency*100)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/efficiency/lineplot_efficiency_vs_atoms.svg', width = 16, height = 9)
+svg('plots/comparison/efficiency/lineplot_efficiency_vs_atoms.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/efficiency/lineplot_efficiency_vs_atoms.png', width = 4400, height = 2475, res = 300)
+png('plots/comparison/efficiency/lineplot_efficiency_vs_atoms.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
@@ -453,13 +454,14 @@ dev.off()
 ###
 
 dir.create('plots/pyKVFinder')
+dir.create('plots/pyKVFinder/time')
 
 pyKVFinder = time[time$software == 'pyKVFinder',]
 pyKVFinder$speedup = rep(pyKVFinder$average_time[pyKVFinder$nthreads == 1], replicates) / pyKVFinder$average_time
 pyKVFinder$efficiency = pyKVFinder$speedup / pyKVFinder$nthreads
 
 ###
-### [==> Plotting: plots/pyKVFinder/lineplot_time_vs_atoms.svg)
+### [==> Plotting: plots/pyKVFinder/time/lineplot_time_vs_atoms.svg)
 ###   Description: Lineplots with pyKVFinder time against number of atoms for different number of threads
 ###
 
@@ -487,18 +489,20 @@ p <- ggplot(pyKVFinder, aes(x=natoms, y=average_time)) +
         axis.title.x = element_text(size = 18),
         legend.title = element_text(size = 12))
 
-svg('plots/pyKVFinder/lineplot_time_vs_atoms.svg', width = 16, height = 9)
+svg('plots/pyKVFinder/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/pyKVFinder/lineplot_time_vs_atoms.png', width = 4400, height = 2475, res = 300)
+png('plots/pyKVFinder/time/lineplot_time_vs_atoms.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/pyKVFinder/boxplot_speedup_vs_nthreads.svg)
+### [==> Plotting: plots/pyKVFinder/speedup/boxplot_speedup_vs_nthreads.svg)
 ###   Description: Boxplot with speedup against number of threads
 ###
+
+dir.create('plots/pyKVFinder/speedup')
 
 # Boxplot grouped by software: Time x Number of threads
 p <- ggplot(pyKVFinder, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthreads))) +
@@ -516,16 +520,16 @@ p <- ggplot(pyKVFinder, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nth
             axis.title.x = element_text(size = 20),
             legend.title = element_text(size = 12))
 
-svg('plots/pyKVFinder/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/pyKVFinder/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/pyKVFinder/boxplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/pyKVFinder/speedup/boxplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/pyKVFinder/lineplot_speedup_vs_nthreads.svg)
+### [==> Plotting: plots/pyKVFinder/speedup/lineplot_speedup_vs_nthreads.svg)
 ###   Description: Lineplot with speedup against number of threads
 ###
 
@@ -545,18 +549,20 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = speedup)) +
         axis.title.x = element_text(size = 16),
         legend.title = element_text(size = 12))
 
-svg('plots/pyKVFinder/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/pyKVFinder/speedup/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/pyKVFinder/lineplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/pyKVFinder/speedup/lineplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/pyKVFinder/boxplot_efficiency_vs_nthreads.svg)
+### [==> Plotting: plots/pyKVFinder/speedup/boxplot_efficiency_vs_nthreads.svg)
 ###   Description: Boxplot with efficiency against number of threads
 ###
+
+dir.create('plots/pyKVFinder/efficiency')
 
 # Boxplot grouped by software: Time x Number of threads
 p <- ggplot(pyKVFinder, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.factor(nthreads))) +
@@ -574,16 +580,16 @@ p <- ggplot(pyKVFinder, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.fac
             axis.title.x = element_text(size = 20),
             legend.title = element_text(size = 12))
 
-svg('plots/pyKVFinder/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/pyKVFinder/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/pyKVFinder/boxplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/pyKVFinder/efficiency/boxplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()
 
 ###
-### [==> Plotting: plots/pyKVFinder/lineplot_efficiency_vs_nthreads.svg)
+### [==> Plotting: plots/pyKVFinder/efficiency/lineplot_efficiency_vs_nthreads.svg)
 ###   Description: Lineplot with speedup against number of threads
 ###
 
@@ -592,7 +598,7 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = efficiency*100)) +
     stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
     stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
     theme_bw() + 
-    labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
+    labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$efficiency*100)[2]) + 1)) +
     scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
     theme(legend.position="none",
@@ -603,10 +609,10 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = efficiency*100)) +
         axis.title.x = element_text(size = 16),
         legend.title = element_text(size = 12))
 
-svg('plots/pyKVFinder/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+svg('plots/pyKVFinder/efficiency/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
 dev.off()
 
-png('plots/pyKVFinder/lineplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+png('plots/pyKVFinder/efficiency/lineplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()

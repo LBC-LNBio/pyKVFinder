@@ -7,9 +7,7 @@ tests/output/
 # Virtual environment
 venv/
 
-# Benchmarking dataset
-etc/performance/kv1000/
-etc/performance/raw/
+# Benchmarking data (kv1000, raw, plots)
 etc/performance/data/
 
 # Benchmarking scripts

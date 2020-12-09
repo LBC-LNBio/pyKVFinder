@@ -41,4 +41,4 @@ def process_raw_data(fn = sys.argv[1], kv1000 = sys.argv[2], output_directory = 
 
 if __name__ == "__main__":
     nsoftware = process_raw_data()
-    os.system(f"Rscript benchmarking/plot_benchmarking.R {sys.argv[3]} {nsoftware}")
+    os.system(f"Rscript {os.path.abspath(os.path.dirname(__file__))}/plot_benchmarking.R {sys.argv[3]} {nsoftware}")
