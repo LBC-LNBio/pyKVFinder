@@ -914,22 +914,22 @@ define_surface_points (int *cavities, int nx, int ny, int nz, int i, int j, int 
 {
     if (i-1>=0)
         if (cavities[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+            return cavities[k + nz * (j + ( ny * i ) )];
     if (i+1<nx)
         if (cavities[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+            return cavities[k + nz * (j + ( ny * i ) )];
     if (j-1>=0)
         if (cavities[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+            return cavities[k + nz * (j + ( ny * i ) )];
     if (j+1<ny)
         if (cavities[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+            return cavities[k + nz * (j + ( ny * i ) )];
     if (k-1>=0)
         if (cavities[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+            return cavities[k + nz * (j + ( ny * i ) )];
     if (k+1<nz)
         if (cavities[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+            return cavities[k + nz * (j + ( ny * i ) )];
 
 	return -1;
 }

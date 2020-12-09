@@ -88,7 +88,7 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
         radius = vdw['GEN'][atom_symbol]
         logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
         logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
-    pdb = [f"{resnum}_{chain}", resname, atom]
+    pdb = [f"{resnum}_{chain}_{resname}", atom]
     xyzr = [x, y, z, radius]
     return pdb, xyzr
 
