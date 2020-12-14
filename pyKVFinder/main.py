@@ -4,7 +4,7 @@ import logging
 import numpy as np
 from datetime import datetime
 from .argparser import argparser
-from .utils import read_vdw, read_pdb, write_results, _write_parameters, _process_frequencies
+from .utils import read_vdw, read_pdb, frequencies, write_results, _write_parameters
 from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, export
 
 __all__ = ['pyKVFinder', 'pyKVFinderResults']
@@ -200,7 +200,7 @@ class pyKVFinderResults(object):
         self.max_depth = max_depth
         self.avg_depth = avg_depth
         self.residues = residues
-        self.frequency = _process_frequencies(residues)
+        self.frequency = frequencies(residues)
         self._vertices = _vertices
         self._step = _step
         self._ncav = _ncav

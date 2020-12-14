@@ -2,7 +2,7 @@ import os
 import logging
 import argparse
 
-__all__ = ["read_pdb", "read_vdw", "write_results"]
+__all__ = ["read_pdb", "read_vdw", "frequencies", "write_results"]
 
 here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
@@ -202,17 +202,17 @@ def _write_parameters(args: argparse.Namespace) -> None:
         toml.dump(parameters, param)
 
 
-def _process_frequencies(residues: dict) -> dict:
+def frequencies(residues: dict) -> dict:
     """
     Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
 
     Parameters
     ----------
-        residues (dict): a dictionary with a list of interface residues for each detected cavity
+        residues (dict): a dictionary with a list of interface residues of each detected cavity
 
     Returns
     -------
-        frequency (dict): a dictionary containing frequencies of residues and class of residues for for each detected cavity
+        frequency (dict): a dictionary with frequencies of residues and class of residues of each detected cavity
     
     Note
     ----
@@ -294,7 +294,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
             'MAX_DEPTH': max_depth,
             'AVG_DEPTH': avg_depth,
             'RESIDUES': residues,
-            'FREQUENCY': _process_frequencies(residues),
+            'FREQUENCY': frequencies(residues),
         }
     }
 

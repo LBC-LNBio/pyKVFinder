@@ -47,7 +47,7 @@ API Reference
         A path to ligand PDB file
     * ``dictionary`` : *str, default 'vdw.dat'*
         A path to a van der Waals radii file
-    * ``fn``: *str*
+    * ``fn`` : *str*
         A path to a box configuration file (TOML-formatted)
     * ``step`` : *float, default 0.6*
         Grid spacing (A)
@@ -61,7 +61,7 @@ API Reference
         Cavities volume filter (A3)        
     * ``ligand_cutoff`` : *float, default 5.0*
         Radius value to limit a space around a ligand (A)
-    * ``include_depth``: *bool, default False*
+    * ``include_depth`` : *bool, default False*
         Whether to characterize the depth of the detected cavities
     * ``surface`` : *str, default 'SES'*
         SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
@@ -119,7 +119,7 @@ API Reference
   Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
 
   :Args:
-    * ``fn``: *str*
+    * ``fn`` : *str*
         A path to a box configuration file (TOML-formatted)
     * ``pdb`` : *numpy.ndarray*
         A numpy array with resnum, chain, resname and atom name
@@ -127,7 +127,7 @@ API Reference
         A numpy array with xyz coordinates and radii values
     * ``step`` : *float, default 0.6*
         Grid spacing (A)
-    * ``probe_in``: *float, default 1.4*
+    * ``probe_in`` : *float, default 1.4*
         Probe In size (A)
     * ``probe_out`` : *float, default 4.0*
         Probe Out size (A)
@@ -174,9 +174,9 @@ API Reference
         z 3D grid units
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
-    * ``vertices``: *numpy.ndarray*
+    * ``vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
-    * ``sincos``: *numpy.ndarray*
+    * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``step`` : *float, default 0.6*
         Grid spacing (A)
@@ -259,9 +259,9 @@ API Reference
         A numpy array with resnum, chain, resname and atom name
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
-    * ``vertices``: *numpy.ndarray*
+    * ``vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
-    * ``sincos``: *numpy.ndarray*
+    * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``ncav`` : *int*
         Number of cavities in ``cavities`` numpy array
@@ -284,21 +284,21 @@ API Reference
   Exports cavities to PDB-formatted file, with variable as B-factor (optional).
 
   :Args:
-    * ``fn``: *str*
+    * ``fn`` : *str*
         A path to PDB file for writing cavities
     * ``cavities`` : *numpy.ndarray*
         A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
     * ``surface`` : *numpy.ndarray*
         A numpy array with surface points of cavities (cavity points >= 2; cavities[nx][ny][nz])
-    * ``vertices``: *numpy.ndarray*
+    * ``vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
-    * ``sincos``: *numpy.ndarray*
+    * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``ncav`` : *int*
         Number of cavities in ``cavities`` and ``surface`` numpy arrays
     * ``step`` : *float, default 0.6*
         Grid spacing (A)
-    * ``B``: *numpy.ndarray*
+    * ``B`` : *numpy.ndarray*
         B-factor for cavity points (B[nx][ny][nz])
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
@@ -308,11 +308,36 @@ API Reference
   :Returns:
     A file with PDB-formatted data corresponding to cavity points
 
+``pyKVFinder.frequencies(residues)``
+  Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
+
+  :Args:
+    * ``residues`` : *dict*
+        A dictionary with interface residues of each detected cavity
+
+  :Returns:
+    * ``frequency`` : *dict*
+        A dictionary with frequencies of interface residues and classes of residues of each detected cavity
+
+  :Note:
+    * ``R1`` : Alipathic apolar
+        Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
+    * ``R2`` : Aromatic
+        Phenylalanine, Tryptophan, Tyrosine
+    * ``R3`` : Polar Uncharged
+        Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
+    * ``R4`` : Negatively charged
+        Aspartate, Glutamate
+    * ``R5`` : Positively charged
+        Arginine, Histidine, Lysine
+    * ``RX`` : Not classified
+        Non-standard residues
+
 ``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, max_depth = None, avg_depth = None, residues = None, step = 0.6)``
   Writes file paths and cavity characterization to TOML-formatted file.
 
   :Args:
-    * ``fn``: *str*
+    * ``fn`` : *str*
         A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected
     * ``pdb`` : *str*
         A path to input PDB file
@@ -324,9 +349,9 @@ API Reference
         A dictionary with volume of each detected cavity
     * ``area`` : *dict*
         A dictionary with area of each detected cavity
-    * ``max_depth``: *dict*
+    * ``max_depth`` : *dict*
         A dictionary with maximum depth of each detected cavity
-    * ``avg_depth``: *dict*
+    * ``avg_depth`` : *dict*
         A dictionary with average depth of each detected cavity
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
@@ -344,21 +369,21 @@ API Reference
         A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
     * ``surface`` : *numpy.ndarray*
         A numpy array with surface points of cavities (cavity points >= 2; cavities[nx][ny][nz])
-    * ``depths``: *numpy.ndarray*
+    * ``depths`` : *numpy.ndarray*
         A numpy array with depth of cavity points (depth[nx][ny][nz])
     * ``volume`` : *dict*
         A dictionary with volume of each detected cavity
     * ``area`` : *dict*
         A dictionary with area of each detected cavity
-    * ``max_depth``: *dict*
+    * ``max_depth`` : *dict*
         A dictionary with maximum depth of each detected cavity
-    * ``avg_depth``: *dict*
+    * ``avg_depth`` : *dict*
         A dictionary with average depth of each detected cavity
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
     * ``frequency`` : *dict*
         A dictionary with frequency of residues and class of residues of each detected cavity
-    * ``_vertices``: *numpy.ndarray*
+    * ``_vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
     * ``_step`` : *float, default 0.6*
         Grid spacing (A)
