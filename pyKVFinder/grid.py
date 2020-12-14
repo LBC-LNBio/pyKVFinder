@@ -260,29 +260,6 @@ def get_sincos(vertices: numpy.ndarray):
     return sincos
 
 
-def _process_residues(raw: list) -> dict:
-    """
-    Processes raw list of residues from _constitutional to a list of residue information per cavity name
-
-    Parameters
-    ----------
-        raw (list): a list of residues with cavities separated by '-1'
-
-    Returns
-    -------
-        residues (dict): dictionary with cavity name/list of interface residues pairs
-    """
-    from itertools import groupby
-    residues = {}
-    index = 0
-    for flag, cavity_residues in groupby(raw, lambda res: res == "-1"):
-        if not flag:
-            key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
-            residues[key] = [item.split('_') for item in list(dict.fromkeys(cavity_residues))]
-            index += 1
-    return residues
-
-
 def _process_spatial(raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: int) -> tuple:
     """
     Processes arrays of volumes and areas
@@ -440,6 +417,29 @@ def depth(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int =
     max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav)
     
     return depths.reshape(nx, ny, nz), max_depth, avg_depth
+
+
+def _process_residues(raw: list) -> dict:
+    """
+    Processes raw list of residues from _constitutional to a list of residue information per cavity name
+
+    Parameters
+    ----------
+        raw (list): a list of residues with cavities separated by '-1'
+
+    Returns
+    -------
+        residues (dict): a dictionary with cavity name/list of interface residues pairs
+    """
+    from itertools import groupby
+    residues = {}
+    index = 0
+    for flag, cavity_residues in groupby(raw, lambda res: res == "-1"):
+        if not flag:
+            key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+            residues[key] = [item.split('_') for item in list(dict.fromkeys(cavity_residues))]
+            index += 1
+    return residues
 
 
 def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> dict:

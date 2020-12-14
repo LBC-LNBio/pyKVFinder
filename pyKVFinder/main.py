@@ -4,7 +4,7 @@ import logging
 import numpy as np
 from datetime import datetime
 from .argparser import argparser
-from .utils import read_vdw, read_pdb, write_results, _write_parameters
+from .utils import read_vdw, read_pdb, write_results, _write_parameters, _process_frequencies
 from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, export
 
 __all__ = ['pyKVFinder', 'pyKVFinderResults']
@@ -159,6 +159,7 @@ class pyKVFinderResults(object):
         max_depth (dict): dictionary with cavity name/maximum depth pairs
         avg_depth (dict): dictionary with cavity name/average depth pairs
         residues (dict): dictionary with cavity name/list of interface residues pairs
+        frequency (dict): dictionary containing frequencies of residues and class of residues for for each detected cavity
         _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
         _step (float): grid spacing (A)
         _ncav (int): number of cavities
@@ -199,6 +200,7 @@ class pyKVFinderResults(object):
         self.max_depth = max_depth
         self.avg_depth = avg_depth
         self.residues = residues
+        self.frequency = _process_frequencies(residues)
         self._vertices = _vertices
         self._step = _step
         self._ncav = _ncav
@@ -246,7 +248,8 @@ class pyKVFinderResults(object):
                 'AREA': self.area,
                 'MAX_DEPTH': self.max_depth,
                 'AVG_DEPTH': self.avg_depth,
-                'RESIDUES': self.residues
+                'RESIDUES': self.residues,
+                'FREQUENCY': self.frequency,
             }
         }
 
@@ -289,7 +292,8 @@ class pyKVFinderResults(object):
                 'AREA': self.area,
                 'MAX_DEPTH': self.max_depth,
                 'AVG_DEPTH': self.avg_depth,
-                'RESIDUES': self.residues
+                'RESIDUES': self.residues,
+                'FREQUENCY': self.frequency,
             }
         }
 

@@ -202,6 +202,54 @@ def _write_parameters(args: argparse.Namespace) -> None:
         toml.dump(parameters, param)
 
 
+def _process_frequencies(residues: dict) -> dict:
+    """
+    Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
+
+    Parameters
+    ----------
+        residues (dict): a dictionary with a list of interface residues for each detected cavity
+
+    Returns
+    -------
+        frequency (dict): a dictionary containing frequencies of residues and class of residues for for each detected cavity
+    
+    Note
+    ----
+    R1: Aliphatic apolar
+    R2: Aromatic
+    R3: Polar Uncharged
+    R4: Negatively charged
+    R5: Positively charged
+    RX: Not classified
+    """
+    # Create a dict for frequencies
+    frequency = {}
+
+    # Get cavity name and residues list for each detected cavity
+    for name, reslist in residues.items():
+        # Create a dict for cavity name
+        frequency[name] = {
+            'RESIDUES': {},
+            'CLASS': {},
+        }
+        # Get unique residues names
+        reslist = sorted(list(set([res[2] for res in reslist])))
+        # Get residues frequency 
+        for res in reslist:
+            frequency[name]['RESIDUES'][res] = reslist.count(res)
+
+        # Get class frequency
+        frequency[name]['CLASS']['R1'] = frequency[name]['RESIDUES'].get('ALA', 0) + frequency[name]['RESIDUES'].get('GLY', 0) + frequency[name]['RESIDUES'].get('ILE', 0) + frequency[name]['RESIDUES'].get('LEU', 0) + frequency[name]['RESIDUES'].get('PRO', 0) + frequency[name]['RESIDUES'].get('VAL', 0)
+        frequency[name]['CLASS']['R2'] = frequency[name]['RESIDUES'].get('PHE', 0) + frequency[name]['RESIDUES'].get('TRP', 0) + frequency[name]['RESIDUES'].get('TYR', 0)
+        frequency[name]['CLASS']['R3'] = frequency[name]['RESIDUES'].get('ASN', 0) + frequency[name]['RESIDUES'].get('CYS', 0) + frequency[name]['RESIDUES'].get('GLN', 0) + frequency[name]['RESIDUES'].get('MET', 0) + frequency[name]['RESIDUES'].get('SER', 0) + frequency[name]['RESIDUES'].get('THR', 0)
+        frequency[name]['CLASS']['R4'] = frequency[name]['RESIDUES'].get('ASP', 0) + frequency[name]['RESIDUES'].get('GLU', 0)
+        frequency[name]['CLASS']['R5'] = frequency[name]['RESIDUES'].get('ARG', 0) + frequency[name]['RESIDUES'].get('HIS', 0) + frequency[name]['RESIDUES'].get('LYS', 0)
+        frequency[name]['CLASS']['RX'] = len(reslist) - sum(frequency[name]['CLASS'].values())
+
+    return frequency
+
+
 def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, max_depth: dict = None, avg_depth: dict = None, residues: dict = None, step: float = 0.6) -> None:
     """
     Writes file paths and cavity characterization to TOML-formatted file
@@ -246,6 +294,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
             'MAX_DEPTH': max_depth,
             'AVG_DEPTH': avg_depth,
             'RESIDUES': residues,
+            'FREQUENCY': _process_frequencies(residues),
         }
     }
 
