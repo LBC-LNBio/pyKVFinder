@@ -356,6 +356,8 @@ API Reference
         A dictionary with average depth of each detected cavity
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
+    * ``frequency`` : *dict*
+        A dictionary with frequency of residues and class of residues of each detected cavity
     * ``_vertices``: *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
     * ``_step`` : *float, default 0.6*
