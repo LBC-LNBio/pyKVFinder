@@ -502,15 +502,16 @@ Box Configuration File Template
 
 There are two methods for defining a custom 3D grid in pyKVFinder.
 
-The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the template is shown above:
+The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown above:
 
-.. code-block::
+.. code-block:: TOML
 
   [box]
-  p1 = [x1, y1, z1]
-  p2 = [x2, y2, z2]
-  p3 = [x3, y3, z3]
-  p4 = [x4, y4, z4]
+  # px = [x, y, z]
+  p1 = [0.0, 0.0, 0.0]
+  p2 = [1.0, 0.0, 0.0]
+  p3 = [0.0, 1.0, 0.0]
+  p4 = [0.0, 0.0, 1.0]
 
 
 The second defines a list of residues and a padding, the template is shown above:
