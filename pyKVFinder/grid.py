@@ -415,7 +415,7 @@ def depth(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int =
     # Get depth of cavity points, maximum depth and average depth
     depths, max_depth, avg_depth = _depth(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
     max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav)
-    
+
     return depths.reshape(nx, ny, nz), max_depth, avg_depth
 
 

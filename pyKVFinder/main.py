@@ -4,7 +4,7 @@ import logging
 import numpy as np
 from datetime import datetime
 from .argparser import argparser
-from .utils import read_vdw, read_pdb, frequencies, write_results, _write_parameters
+from .utils import read_vdw, read_pdb, calculate_frequencies, plot_frequencies, write_results, _write_parameters
 from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, export
 
 __all__ = ['pyKVFinder', 'pyKVFinderResults']
@@ -27,8 +27,8 @@ def cli():
 
     Example
     -------
-    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <path>] [--nthreads <int>] [-d <file>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <enum>]
-                    [--ignore_backbone] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>] [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <str>] [--ignore_backbone]
+                    [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
                     <.pdb>
     """
     # Start time
@@ -114,7 +114,7 @@ def cli():
     if ncav > 0:
         # Spatial characterization
         surface, volume, area = spatial(cavities, ncav, args.step, args.nthreads, args.verbose)
-        
+
         # Depth characterization
         if args.depth:
             depths, max_depth, avg_depth = depth(cavities, ncav, args.step, args.nthreads, args.verbose)
@@ -123,6 +123,11 @@ def cli():
 
         # Constitutional characterization
         residues = constitutional(cavities, pdb, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        frequencies = calculate_frequencies(residues)
+
+        if args.plot_frequencies:
+            output_plot = os.path.join(args.output_directory, f"{args.base_name}.histograms.pdf")
+            plot_frequencies(frequencies, output_plot)
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
@@ -130,7 +135,7 @@ def cli():
 
         # Write results
         output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
-        write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, max_depth, avg_depth, residues, args.step)
+        write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, max_depth, avg_depth, residues, frequencies, args.step)
 
         # Write parameters
         _write_parameters(args)
@@ -163,18 +168,22 @@ class pyKVFinderResults(object):
         _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
         _step (float): grid spacing (A)
         _ncav (int): number of cavities
+        _pdb (str): path to input PDB file
+        _ligand (str): path to ligand PDB file
 
     Methods
     -------
         export(fn = 'cavity.pdb', nthreads = {os.cpu_count() - 1}):
             Exports cavities to PDB-formatted file
-        write(fn = 'results.toml'):
+        write(fn = 'results.toml', output = None):
             Writes TOML-formatted results file
-        export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = {os.cpu_count() - 1}):
-            Exports cavities to PDB-formatted file and write results to TOML-formatted file
+        plot_frequencies(pdf = 'histogram.pdf')
+            Plot histograms of frequencies in PDF file
+        export_all(fn = 'results.toml', output = 'cavity.pdb', include_frequencies_plot = False, nthreads = {os.cpu_count() - 1}):
+            Exports cavities and writes results. Also includes a flag to plot histograms of frequencies (residues and classes of residues).
     """
 
-    def __init__(self, cavities: np.ndarray, surface: np.ndarray, depths: np.ndarray, volume: dict, area: dict, max_depth: dict, avg_depth: dict, residues: dict, _vertices: np.ndarray, _step: float, _ncav: int):
+    def __init__(self, cavities: np.ndarray, surface: np.ndarray, depths: np.ndarray, volume: dict, area: dict, max_depth: dict, avg_depth: dict, residues: dict, frequencies: dict, _vertices: np.ndarray, _step: float, _ncav: int, _pdb: str = None, _ligand: str = None):
         """
         Constructs attributes for pyKVFinderResults object
 
@@ -191,6 +200,8 @@ class pyKVFinderResults(object):
             _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
             _step (float): grid spacing (A)
             _ncav (int): number of cavities
+            _pdb (str): path to input PDB file
+            _ligand (str): path to ligand PDB file
         """
         self.cavities = cavities
         self.surface = surface
@@ -200,71 +211,22 @@ class pyKVFinderResults(object):
         self.max_depth = max_depth
         self.avg_depth = avg_depth
         self.residues = residues
-        self.frequency = frequencies(residues)
+        self.frequencies = frequencies
         self._vertices = _vertices
         self._step = _step
         self._ncav = _ncav
+        self._pdb = os.path.abspath(_pdb)
+        self._ligand = os.path.abspath(_ligand) if _ligand else None
 
     def __repr__(self):
         return '<pyKVFinderResults object>'
 
-    def export(self, fn: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
+    def export(self, output: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
         """
         Exports cavities to PDB-formatted file
 
         Parameters
         ----------
-            fn (str): path to cavity pdb file
-            nthreads (int): number of threads
-
-        Returns
-        -------
-            None
-        """
-        sincos = get_sincos(self._vertices)
-        export(fn, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, self.depths, nthreads)
-
-    def write(self, fn: str = 'results.toml') -> None:
-        """
-        Writes TOML-formatted results file
-
-        Parameters
-        ----------
-            fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
-
-        Returns
-        -------
-            None
-        """
-        import toml
-
-        # Create results dictionary
-        results = {
-            'PARAMETERS': {
-                'STEP': self._step,
-            },
-            'RESULTS': {
-                'VOLUME': self.volume,
-                'AREA': self.area,
-                'MAX_DEPTH': self.max_depth,
-                'AVG_DEPTH': self.avg_depth,
-                'RESIDUES': self.residues,
-                'FREQUENCY': self.frequency,
-            }
-        }
-
-        # Write results to toml file
-        with open(fn, "w") as f:
-            f.write("# pyKVFinder characterization results\n\n")
-            toml.dump(results, f)
-
-    def export_all(self, fn: str = 'results.toml', output: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
-        """
-        Exports cavities to PDB-formatted file and writes results to TOML-formatted file
-
-        Parameters
-        ----------
-            fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
             output (str): path to cavity pdb file
             nthreads (int): number of threads
 
@@ -272,35 +234,61 @@ class pyKVFinderResults(object):
         -------
             None
         """
-        import toml
-        # Prepare paths
-        output = os.path.abspath(output)
+        sincos = get_sincos(self._vertices)
+        export(output, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, self.depths, nthreads)
 
+    def write(self, fn: str = 'results.toml', output: str = None) -> None:
+        """
+       Writes file paths and cavity characterization to TOML-formatted file
+
+        Parameters
+        ----------
+            fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
+            output (str): path to cavity pdb file
+
+        Returns
+        -------
+            None
+        """
+        output = os.path.abspath(output) if output else None
+        write_results(fn, self._pdb, self._ligand, output, self.volume, self.area, self.max_depth, self.avg_depth, self.residues, self.frequencies, self._step)
+
+    def plot_frequencies(self, pdf: str = 'histograms.pdf'):
+        """
+        Plot histograms of frequencies in PDF file
+
+        Parameters
+        ----------
+            pdf (str): A path to a PDF file
+
+        Returns
+        -------
+            None
+        """
+        plot_frequencies(self.frequencies, pdf)
+
+    def export_all(self, fn: str = 'results.toml', output: str = 'cavity.pdb', include_plot_frequencies: bool = False, nthreads: int = os.cpu_count() - 1) -> None:
+        """
+        Exports cavities and writes results. Also includes a flag to plot histograms of frequencies (residues and classes of residues).
+
+        Parameters
+        ----------
+            fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
+            output (str): path to cavity pdb file
+            include_plot_frequencies (bool): whether to plot frequencies (residues and classes of residues) to PDF file
+            nthreads (int): number of threads
+
+        Returns
+        -------
+            None
+        """
         # Export cavity PDB file
         self.export(output, nthreads)
-
-        # Create results dictionary
-        results = {
-            'FILES': {
-                'OUTPUT': output,
-            },
-            'PARAMETERS': {
-                'STEP': self._step,
-            },
-            'RESULTS': {
-                'VOLUME': self.volume,
-                'AREA': self.area,
-                'MAX_DEPTH': self.max_depth,
-                'AVG_DEPTH': self.avg_depth,
-                'RESIDUES': self.residues,
-                'FREQUENCY': self.frequency,
-            }
-        }
-
-        # Write results to toml file
-        with open(fn, "w") as f:
-            f.write("# pyKVFinder results\n\n")
-            toml.dump(results, f)
+        # Write KVFinder results TOML
+        self.write(fn, output)
+        # Plot histograms of frequencies
+        if include_plot_frequencies:
+            self.plot_frequencies()
 
 
 def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box: str = None, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, ligand_cutoff: float = 5.0, include_depth: bool = False, surface: str = 'SES', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> pyKVFinderResults:
@@ -335,6 +323,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
     if verbose:
         print("> Reading PDB coordinates")
+    pdb_path = pdb
     pdb, xyzr = read_pdb(pdb, vdw)
 
     if ligand:
@@ -384,10 +373,11 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
         # Constitutional characterization
         residues = constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
+        frequencies = calculate_frequencies(residues)
     else:
         volume, area, residues, depths, max_depth, avg_depth = None, None, None, None, None, None
 
     # Return dict
-    results = pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, vertices, step, ncav)
+    results = pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, frequencies, vertices, step, ncav, pdb_path, ligand)
 
     return results

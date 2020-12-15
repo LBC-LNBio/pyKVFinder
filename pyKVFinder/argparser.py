@@ -156,11 +156,6 @@ def argparser() -> argparse.ArgumentParser:
                             default=2.4,
                             type=_positive_float,
                             help=u"Length to be removed from the cavity-bulk frontier (\u212B). (default: %(default).1lf)")
-    parameters.add_argument("-D",
-                            "--depth",
-                            action='store_true',
-                            default=False,
-                            help="Characterization of the depth of the detected cavities. Add depth to B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
     parameters.add_argument("-S",
                             "--surface",
                             metavar="<str>",
@@ -172,6 +167,18 @@ def argparser() -> argparse.ArgumentParser:
                             action='store_true',
                             default=False,
                             help="Ignore backbone contacts to cavity when defining interface residues. (default: %(default)s)")
+
+    # Extra modes
+    extra_modes = parser.add_argument_group("Additional characterization")
+    extra_modes.add_argument("-D",
+                             "--depth",
+                             action='store_true',
+                             default=False,
+                             help="Characterization of the depth of the detected cavities. Add depth to B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
+    extra_modes.add_argument("--plot_frequencies",
+                             action='store_true',
+                             default=False,
+                             help="Plot histograms of calculated frequencies of the detected cavities in a PDF file. (default: %(default)s)")
 
     # Create argument group
     box_adjustment = parser.add_argument_group("Box adjustment arguments")

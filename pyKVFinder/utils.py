@@ -2,7 +2,7 @@ import os
 import logging
 import argparse
 
-__all__ = ["read_pdb", "read_vdw", "frequencies", "write_results"]
+__all__ = ["read_pdb", "read_vdw", "calculate_frequencies", "plot_frequencies", "write_results"]
 
 here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
@@ -202,7 +202,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
         toml.dump(parameters, param)
 
 
-def frequencies(residues: dict) -> dict:
+def calculate_frequencies(residues: dict) -> dict:
     """
     Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
 
@@ -212,8 +212,8 @@ def frequencies(residues: dict) -> dict:
 
     Returns
     -------
-        frequency (dict): a dictionary with frequencies of residues and class of residues of each detected cavity
-    
+        frequencies (dict): a dictionary with frequencies of residues and class of residues of each detected cavity
+
     Note
     ----
     R1: Aliphatic apolar
@@ -221,36 +221,125 @@ def frequencies(residues: dict) -> dict:
     R3: Polar Uncharged
     R4: Negatively charged
     R5: Positively charged
-    RX: Not classified
+    RX: Non-standard
     """
     # Create a dict for frequencies
-    frequency = {}
+    frequencies = {}
 
     # Get cavity name and residues list for each detected cavity
     for name, reslist in residues.items():
         # Create a dict for cavity name
-        frequency[name] = {
+        frequencies[name] = {
             'RESIDUES': {},
             'CLASS': {},
         }
         # Get unique residues names
         reslist = sorted(list(set([res[2] for res in reslist])))
-        # Get residues frequency 
+        # Get residues frequencies
         for res in reslist:
-            frequency[name]['RESIDUES'][res] = reslist.count(res)
+            frequencies[name]['RESIDUES'][res] = reslist.count(res)
 
-        # Get class frequency
-        frequency[name]['CLASS']['R1'] = frequency[name]['RESIDUES'].get('ALA', 0) + frequency[name]['RESIDUES'].get('GLY', 0) + frequency[name]['RESIDUES'].get('ILE', 0) + frequency[name]['RESIDUES'].get('LEU', 0) + frequency[name]['RESIDUES'].get('PRO', 0) + frequency[name]['RESIDUES'].get('VAL', 0)
-        frequency[name]['CLASS']['R2'] = frequency[name]['RESIDUES'].get('PHE', 0) + frequency[name]['RESIDUES'].get('TRP', 0) + frequency[name]['RESIDUES'].get('TYR', 0)
-        frequency[name]['CLASS']['R3'] = frequency[name]['RESIDUES'].get('ASN', 0) + frequency[name]['RESIDUES'].get('CYS', 0) + frequency[name]['RESIDUES'].get('GLN', 0) + frequency[name]['RESIDUES'].get('MET', 0) + frequency[name]['RESIDUES'].get('SER', 0) + frequency[name]['RESIDUES'].get('THR', 0)
-        frequency[name]['CLASS']['R4'] = frequency[name]['RESIDUES'].get('ASP', 0) + frequency[name]['RESIDUES'].get('GLU', 0)
-        frequency[name]['CLASS']['R5'] = frequency[name]['RESIDUES'].get('ARG', 0) + frequency[name]['RESIDUES'].get('HIS', 0) + frequency[name]['RESIDUES'].get('LYS', 0)
-        frequency[name]['CLASS']['RX'] = len(reslist) - sum(frequency[name]['CLASS'].values())
+        # Get class frequencies
+        frequencies[name]['CLASS']['R1'] = frequencies[name]['RESIDUES'].get('ALA', 0) + frequencies[name]['RESIDUES'].get('GLY', 0) + frequencies[name]['RESIDUES'].get('ILE', 0) + frequencies[name]['RESIDUES'].get('LEU', 0) + frequencies[name]['RESIDUES'].get('PRO', 0) + frequencies[name]['RESIDUES'].get('VAL', 0)
+        frequencies[name]['CLASS']['R2'] = frequencies[name]['RESIDUES'].get('PHE', 0) + frequencies[name]['RESIDUES'].get('TRP', 0) + frequencies[name]['RESIDUES'].get('TYR', 0)
+        frequencies[name]['CLASS']['R3'] = frequencies[name]['RESIDUES'].get('ASN', 0) + frequencies[name]['RESIDUES'].get('CYS', 0) + frequencies[name]['RESIDUES'].get('GLN', 0) + frequencies[name]['RESIDUES'].get('MET', 0) + frequencies[name]['RESIDUES'].get('SER', 0) + frequencies[name]['RESIDUES'].get('THR', 0)
+        frequencies[name]['CLASS']['R4'] = frequencies[name]['RESIDUES'].get('ASP', 0) + frequencies[name]['RESIDUES'].get('GLU', 0)
+        frequencies[name]['CLASS']['R5'] = frequencies[name]['RESIDUES'].get('ARG', 0) + frequencies[name]['RESIDUES'].get('HIS', 0) + frequencies[name]['RESIDUES'].get('LYS', 0)
+        frequencies[name]['CLASS']['RX'] = len(reslist) - sum(frequencies[name]['CLASS'].values())
 
-    return frequency
+    return frequencies
 
 
-def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, max_depth: dict = None, avg_depth: dict = None, residues: dict = None, step: float = 0.6) -> None:
+def plot_frequencies(frequencies: dict, fn: str = 'histograms.pdf') -> None:
+    """
+    Plot histograms of calculated frequencies (residues and classes of residues) for each detected cavity in a target PDF file
+
+    Parameters
+    ----------
+        frequencies (dict): A dictionary with frequencies of residues and class of residues of each detected cavity
+        fn (str): A path to a PDF file
+
+    Returns
+    -------
+        None
+
+    Note
+    ----
+    R1: Aliphatic apolar
+    R2: Aromatic
+    R3: Polar Uncharged
+    R4: Negatively charged
+    R5: Positively charged
+    RX: Non-standard
+    """
+    import matplotlib.pyplot as plt
+    from matplotlib.backends.backend_pdf import PdfPages
+
+    # Create base directories of output PDF file
+    os.makedirs(os.path.abspath(os.path.dirname(pdf), exist_ok=True))
+
+    # Create a dictionary for standard amino acids
+    tmp = {'ALA': 0, 'ARG': 0, 'ASN': 0, 'ASP': 0, 'CYS': 0, 'GLN': 0, 'GLU': 0, 'GLY': 0, 'HIS': 0, 'ILE': 0, 'LEU': 0, 'LYS': 0, 'MET': 0, 'PHE': 0, 'PRO': 0, 'SER': 0, 'THR': 0, 'TRP': 0, 'TYR': 0, 'VAL': 0}
+
+    with PdfPages(fn) as pdf:
+        # Standardize data
+        ymax = 0
+        for cavity_tag in frequencies.keys():
+            # Include missing residues
+            frequencies[cavity_tag]['RESIDUES'] = {**tmp, **frequencies[cavity_tag]['RESIDUES']}
+            # Get y maximum
+            if ymax < max(frequencies[cavity_tag]['CLASS'].values()):
+                ymax = max(frequencies[cavity_tag]['CLASS'].values())
+        ymax += 1
+
+        # Pdf plots
+        for cavity_tag in frequencies.keys():
+            # Create page
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 9), dpi=300)
+            fig.suptitle(r'Cavity ' + f'{cavity_tag}', fontsize=30)
+
+            # Frequency residues
+            x = list(frequencies[cavity_tag]['RESIDUES'].keys())
+            y = frequencies[cavity_tag]['RESIDUES'].values()
+
+            ax1.bar(x, y, align='center', edgecolor='black')
+            ax1.set_xlabel(None)
+            ax1.set_xlim(-1, len(x))
+            ax1.tick_params(axis='x', labelsize=15, rotation=45)
+            ax1.tick_params(axis='y', labelsize=20)
+            ax1.set_ylabel(r'Frequency', fontsize=20)
+            ax1.set_ylim(0, ymax)
+            ax1.grid(which='major', axis='y', linestyle='--')
+
+            # Frequency classes
+            x = list(frequencies[cavity_tag]['CLASS'].keys())
+            y = frequencies[cavity_tag]['CLASS'].values()
+            colors = ['tab:cyan', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:gray']
+
+            ax2.bar(x=x, height=y, align='center', edgecolor='black', color=colors)
+            ax2.set_xlabel(None)
+            ax2.set_xlim(-1, len(x))
+            ax2.tick_params(axis='x', labelsize=20)
+            ax2.tick_params(axis='y', labelsize=20)
+            ax2.set_ylabel(None)
+            ax2.set_ylim(0, ymax)
+            ax2.grid(which='major', axis='y', linestyle='--')
+
+            # Legend
+            labels = [r'Aliphatic apolar', r'Aromatic', r'Polar uncharged', r'Negatively charged', r'Positively charged', r'Non-standard']
+            handles = [plt.Rectangle((0, 0), 1, 1, facecolor=colors[label], edgecolor='black') for label in range(len(labels))]
+            fig.legend(handles, labels, fontsize=15, fancybox=True, shadow=True, loc='lower center', ncol=6)
+
+            # Adjust plots
+            fig.tight_layout()
+            fig.subplots_adjust(bottom=0.12)
+
+            # Save page
+            pdf.savefig()
+            plt.close()
+
+
+def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, max_depth: dict = None, avg_depth: dict = None, residues: dict = None, frequencies: dict = None, step: float = 0.6) -> None:
     """
     Writes file paths and cavity characterization to TOML-formatted file
 
@@ -276,7 +365,8 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
     pdb = os.path.abspath(pdb)
     if ligand:
         ligand = os.path.abspath(ligand)
-    output = os.path.abspath(output)
+    if output:
+        output = os.path.abspath(output)
 
     # Create results dictionary
     results = {
@@ -294,11 +384,14 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
             'MAX_DEPTH': max_depth,
             'AVG_DEPTH': avg_depth,
             'RESIDUES': residues,
-            'FREQUENCY': frequencies(residues),
+            'FREQUENCY': frequencies,
         }
     }
 
-    # Write results to toml file
+    # Create base directories of results TOML file
+    os.makedirs(os.path.abspath(os.path.dirname(fn), exist_ok=True))
+
+    # Write results to TOML file
     with open(fn, "w") as f:
         f.write("# pyKVFinder results\n\n")
         toml.dump(results, f)
