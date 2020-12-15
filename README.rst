@@ -504,7 +504,7 @@ There are two methods for defining a custom 3D grid in pyKVFinder.
 
 The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the template is shown above:
 
-.. code-block:: TOML
+.. code-block::
 
   [box]
   p1 = [x1, y1, z1]
@@ -531,8 +531,8 @@ pyKVFinder's Command Line Interface (CLI) aims to direct the interaction between
 
   $ pyKVFinder
     Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>] [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <str>] [--ignore_backbone]
-                    [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                    <.pdb>
+                      [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+                      <.pdb>
 
 The positional arguments are:
 
