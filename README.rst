@@ -74,7 +74,7 @@ API Reference
 
   :Returns:
     ``pyKVFinderResults`` : *object*
-        A class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, volume, area, maximum depth and average depth and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
+        A class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, volume, area, maximum depth and average depth, and interface residues and their frequencies (residues and classes of residues) per cavity, 3D grid vertices, grid spacing and number of cavities
 
 ``pyKVFinder.read_vdw(fn = "vdw.dat")``
   Reads van der Waals radii from .dat file.
