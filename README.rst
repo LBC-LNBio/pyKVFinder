@@ -308,7 +308,7 @@ API Reference
   :Returns:
     A file with PDB-formatted data corresponding to cavity points
 
-``pyKVFinder.frequencies(residues)``
+``pyKVFinder.calculate_frequencies(residues)``
   Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
 
   :Args:
@@ -316,7 +316,7 @@ API Reference
         A dictionary with interface residues of each detected cavity
 
   :Returns:
-    * ``frequency`` : *dict*
+    * ``frequencies`` : *dict*
         A dictionary with frequencies of interface residues and classes of residues of each detected cavity
 
   :Note:
@@ -330,7 +330,33 @@ API Reference
         Aspartate, Glutamate
     * ``R5`` : Positively charged
         Arginine, Histidine, Lysine
-    * ``RX`` : Not classified
+    * ``RX`` : Non-standard
+        Non-standard residues
+
+``pyKVFinder.plot_frequencies(residues, fn = 'histograms.pdf)``
+  Plot histograms of calculated frequencies (residues and classes of residues) for each detected cavity in a target PDF file.
+
+  :Args:
+    * ``frequencies`` : *dict*
+        A dictionary with frequencies of interface residues and classes of residues of each detected cavity
+    * ``fn`` : *str, default 'histograms.pdf'* 
+        A path to PDF file for plotting histograms of frequencies.
+
+  :Returns:
+    A PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
+
+  :Note:
+    * ``R1`` : Alipathic apolar
+        Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
+    * ``R2`` : Aromatic
+        Phenylalanine, Tryptophan, Tyrosine
+    * ``R3`` : Polar Uncharged
+        Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
+    * ``R4`` : Negatively charged
+        Aspartate, Glutamate
+    * ``R5`` : Positively charged
+        Arginine, Histidine, Lysine
+    * ``RX`` : Non-standard
         Non-standard residues
 
 ``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, max_depth = None, avg_depth = None, residues = None, step = 0.6)``
@@ -389,20 +415,26 @@ API Reference
         Grid spacing (A)
     * ``_ncav`` : *int*
         Number of cavities in ``cavities`` and ``surface`` numpy arrays
+    * ``_pdb`` : *str*
+        A path to input PDB file
+    * ``_ligand`` : *str*
+        A path to ligand PDB file
 
   :Methods:
-    * ``export(fn = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
+    * ``export(output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
         Exports cavities to PDB-formatted file
     * ``write(fn = 'results.toml')``
-        Writes file paths and cavity characterization to TOML-formatted file
+        Writes TOML-formatted results file
+    * ``plot_frequencies(pdf = 'histogram.pdf')``
+        Plot histograms of frequencies in PDF file
     * ``export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
-        Exports cavities to PDB-formatted file and writes results to TOML-formatted file
+        Exports cavities and writes results. Also includes a flag to plot histograms of frequencies (residues and classes of residues).
 
-``pyKVFinder.pyKVFinderResults.export(fn = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
+``pyKVFinder.pyKVFinderResults.export(output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
   Exports cavities to PDB-formatted file.
 
   :Args:
-    * ``fn`` : *str, default 'cavity.pdb'*
+    * ``output`` : *str, default 'cavity.pdb'*
         A path to PDB file for writing cavities
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
@@ -410,17 +442,29 @@ API Reference
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
-``pyKVFinder.pyKVFinderResults.write(fn = 'results.toml)``
+``pyKVFinder.pyKVFinderResults.write(fn = 'results.toml, output = None)``
   Writes file paths and cavity characterization to TOML-formatted file.
 
   :Args:
     * ``fn`` : *str, default 'results.toml'*
         A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected
+    * ``output`` : *str, default None*
+        A path to a cavity PDB file
 
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
-``pyKVFinder.pyKVFinderResults.export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
+``pyKVFinder.plot_frequencies(pdf = 'histogram.pdf')``
+  Plot histograms of frequencies in PDF file
+
+  :Args:
+    * ``pdf`` : *str, default 'histograms.pdf'*
+        A path to a PDF file
+  
+  :Returns:
+    A PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
+
+``pyKVFinder.pyKVFinderResults.export_all(fn = 'results.toml', output = 'cavity.pdb', include_frequencies_plot = False, nthreads = os.cpu_count() - 1)``
   Exports cavities to PDB-formatted file and writes results to TOML-formatted file.
 
   :Args:
@@ -428,11 +472,13 @@ API Reference
         A path to TOML-formatted file for writing file paths and cavity characterization (volume, area and interface residues) per cavity detected
     * ``output`` : *str, default 'cavity.pdb'*
         A path to PDB file for writing cavities
+    * ``include_plot_frequencies`` : *bool, default False*
+        Whether to plot frequencies (residues and classes of residues) to PDF file
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
 
   :Returns:
-    A file with PDB-formatted data corresponding to cavity points and a file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
+    A file with PDB-formatted data corresponding to cavity points, a file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity and optionally a PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
 
 Van der Waals Radii File Template
 =================================
@@ -615,6 +661,25 @@ The arguments for adjusting biomolecular detection are:
   .. code-block:: bash
 
     $ pyKVFinder <.pdb> --ignore_backbone
+
+:Default: ``None``
+
+The parameters for additional characterization are:
+
+* ``--D or --depth``: Characterize the depth of the detected cavities. This mode includes depth of each cavity point as the B-factor in the cavity PDB file and maximum and average depth of the detected cavities in the results file.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> -D
+    $ pyKVFinder <.pdb> --depth
+
+:Default: ``None``
+
+* ``--plot_frequencies``: Plot histograms of calculated frequencies (residues and classes of residues) of the detected cavities in a PDF file. The classes of residues are aliphatic apolar (R1), aromatic (R2), polar uncharged (R3), negatively charged (R4), positively charged (R5) and non-standard (RX) residues.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> --plot_frequencies
 
 :Default: ``None``
 
