@@ -1,22 +1,22 @@
 [HessaHeijne]
 # Recognition of transmembrane helices by the endoplasmic reticulum translocon. Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, Nilsson I, White SH, von Heijne G. Nature. 2005 Jan 27;433(7024):377-81, supplementary data.
 ALA = 0.11
-PHE = -0.32
+ARG = 2.58
+ASN = 2.05
+ASP = 3.49
+CYS = -0.13
+GLN = 2.36
+GLU = 2.68
+GLY = 0.74
+HIS = 2.06
 ILE = -0.6
 LEU = -0.55
-ASP = 3.49
-TRP = 0.3
-VAL = -0.31
-CYS = -0.13
-THR = 0.52
 LYS = 2.71
-GLN = 2.36
 MET = -0.1
-TYR = 0.68
-GLU = 2.68
-SER = 0.84
-ARG = 2.58
-HIS = 2.06
-ASN = 2.05
-GLY = 0.74
+PHE = -0.32
 PRO = 2.23
+SER = 0.84
+THR = 0.52
+TRP = 0.3
+TYR = 0.68
+VAL = -0.31

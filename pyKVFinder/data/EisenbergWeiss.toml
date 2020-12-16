@@ -1,22 +1,22 @@
 [EisenbergWeiss]
 # The hydrophobic moment detects periodicity in protein hydrophobicity.Eisenberg D, Weiss RM, Terwilliger TC. Proc Natl Acad Sci USA. 1984 Jan;81(1):140-4.
 ALA = -0.64
-PHE = -1.22
+ARG = 2.6
+ASN = 0.8
+ASP = 0.92
+CYS = -0.3
+GLN = 0.87
+GLU = 0.76
+GLY = -0.49
+HIS = 0.41
 ILE = -1.42
 LEU = -1.09
-ASP = 0.92
-TRP = -0.83
-VAL = -1.11
-CYS = -0.30
-THR = 0.05
 LYS = 1.54
-GLN = 0.87
 MET = -0.66
-TYR = -0.27
-GLU = 0.76
-SER = 0.18
-ARG = 2.60
-HIS = 0.41
-ASN = 0.80
-GLY = -0.49
+PHE = -1.22
 PRO = -0.12
+SER = 0.18
+THR = 0.05
+TRP = -0.83
+TYR = -0.27
+VAL = -1.11

@@ -1,22 +1,22 @@
 [MoonFleming]
 # Side-chain hydrophobicity scale derived from transmembrane protein folding into lipid bilayers. Moon CP, Fleming KG. Proc Natl Acad Sci USA. 2011 Jun 21;108(25):10174-7, supplementary data.
 ALA = 0.0
-PHE = -2.2
+ARG = 3.71
+ASN = 3.47
+ASP = 2.95
+CYS = 0.49
+GLN = 3.01
+GLU = 1.64
+GLY = 1.72
+HIS = 4.76
 ILE = -1.56
 LEU = -1.81
-ASP = 2.95
-TRP = -0.38
-VAL = -0.78
-CYS = 0.49
-THR = 1.78
 LYS = 5.39
-GLN = 3.01
 MET = -0.76
-TYR = -1.09
-GLU = 1.64
-SER = 1.83
-ARG = 3.71
-HIS = 4.76
-ASN = 3.47
-GLY = 1.72
+PHE = -2.2
 PRO = -1.5
+SER = 1.83
+THR = 1.78
+TRP = -0.38
+TYR = -1.09
+VAL = -0.78
