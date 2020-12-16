@@ -1,0 +1,22 @@
+[ZhaoLondon]
+# An amino acid "transmembrane tendency" scale that approaches the theoretical limit to accuracy for prediction of transmembrane helices: relationship to biological hydrophobicity. Zhao G, London E. Protein Sci. 2006 Aug;15(8):1987-2001.
+ALA = 0.38
+PHE = 1.98
+ILE = 1.97
+LEU = 1.82
+ASP = -3.27
+TRP = 1.53
+VAL = 1.46
+CYS = -0.3
+THR = -0.32
+LYS = -3.46
+GLN = -1.84
+MET = 1.4
+TYR = 0.49
+GLU = -2.9
+SER = -0.53
+ARG = -2.57
+HIS = -1.44
+ASN = -1.62
+GLY = -0.19
+PRO = -1.44

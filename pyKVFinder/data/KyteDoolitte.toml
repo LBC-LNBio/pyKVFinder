@@ -1,0 +1,22 @@
+[KyteDoolitte]
+# A simple method for displaying the hydropathic character of a protein. Kyte J, Doolittle RF. J Mol Biol. 1982 May 5;157(1):105-32.
+ALA = 1.8
+PHE = 2.8
+ILE = 4.5
+LEU = 3.8
+ASP = -3.5
+TRP = -0.9
+VAL = 4.2
+CYS = 2.5
+THR = -0.7
+LYS = -3.9
+GLN = -3.5
+MET = 1.9
+TYR = -1.3
+GLU = -3.5
+SER = -0.8
+ARG = -4.5
+HIS = -3.2
+ASN = -3.5
+GLY = -0.4
+PRO = -1.6

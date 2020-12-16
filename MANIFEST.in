@@ -1,6 +1,9 @@
 # Include vdw dictionary data file 
 include pyKVFinder/data/vdw.dat
 
+# Include hydrophobicity scales
+include pyKVFinder/data/*.toml
+
 # Include the license file
 include LICENSE.txt
 
