@@ -125,9 +125,15 @@ def cli():
         residues = constitutional(cavities, resinfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
         frequencies = calculate_frequencies(residues)
 
+        # Plot histograms of frequencies
         if args.plot_frequencies:
             output_plot = os.path.join(args.output_directory, f"{args.base_name}.histograms.pdf")
             plot_frequencies(frequencies, output_plot)
+        
+        # Map hydrophobicity scales
+        if args.hydropathy:
+            from .grid import hydropathy
+            scales = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, args.hydropathy, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
