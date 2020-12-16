@@ -1704,6 +1704,65 @@ char
     return residues;
 }
 
+/* Hydropathy characterization */
+void 
+_hydropathy (
+    double *hydropathy, int size,
+    double *surface, int nxx, int nyy, int nzz,
+    double *atoms, int natoms, int xyzr,
+    double *reference, int ndims, 
+    double *sincos, int nvalues, 
+    double step, 
+    double probe_in,
+    int nthreads, 
+    int verbose)
+{
+    int i, j, k, atom, *ref;
+    double x, y, z, xaux, yaux, zaux, distance, H;
+
+    if (verbose)
+        fprintf(stdout, "> Mapping hydrophobicity scale at surface points\n");
+
+    // Initiliaze 3D grid for residues distances
+    ref = (double *) calloc (size, sizeof (double));
+    dgrid(ref, size);
+
+    // Get hydrophobicity value for each surface point
+    for (atom=0; atom<natoms; atom++)
+    {
+            // Convert atom coordinates in 3D grid coordinates
+            x = ( atoms[atom * 4] - reference[0] ) / step; 
+            y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
+            z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+
+            xaux = x * sincos[3] + z * sincos[2];
+            yaux = y;
+            zaux = (-x) * sincos[2] + z * sincos[3];
+
+            x = xaux;
+            y = yaux * sincos[1] - zaux * sincos[0];
+            z = yaux * sincos[0] + zaux * sincos[1];
+
+            // Create a radius (H) for space occupied by probe and atom
+            H = ( probe_in + atoms[3 + (atom * 4)] ) / step;
+
+            // Loop around radius from atom center        
+            for (i=floor(x - H); i<=ceil(x + H); i++)
+                for (j=floor(y - H); j<=ceil(y + H); j++)
+                    for (k=floor(z - H); k<=ceil(z + H); k++) 
+                    {
+                        if (i < nxx && i > 0 && j < nyy && j > 0 && k < nzz && k > 0)
+                            if (surface[ k + nzz * (j + ( nyy * i ) ) ] > 1)
+                            {
+                                // Do something
+                            }
+                    }
+    }
+
+    // Free 3D grid for residues distances
+    free(ref);
+}
+
 /* Export cavity PDB */
 
 /*
@@ -1717,10 +1776,10 @@ char
  * nx: x grid units (cavities)
  * ny: y grid units (cavities)
  * nz: z grid units (cavities)
- * surf: surface points 3D grid
- * nxx: x grid units (surf)
- * nyy: y grid units (surf)
- * nzz: z grid units (surf)
+ * surface: surface points 3D grid
+ * nxx: x grid units (surface)
+ * nyy: y grid units (surface)
+ * nzz: z grid units (surface)
  * reference: xyz coordinates of 3D grid origin
  * ndims: number of coordinates (3: xyz)
  * sincos: sin and cos of 3D grid angles
@@ -1732,7 +1791,7 @@ char
  * 
  */
 void
-_export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
+_export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -1749,7 +1808,7 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
 	    output = fopen (fn, "w");
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
-        #pragma omp parallel default(none) shared(cavities, surf, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+        #pragma omp parallel default(none) shared(cavities, surface, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
         {
             #pragma omp for schedule(static) collapse(3) ordered nowait
             for (i=0; i<nx; i++)
@@ -1770,8 +1829,8 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
 
                             // Write cavity point
                             #pragma omp critical
-                            if ( surf[k + nz * (j + ( ny * i ) )] == tag )
-                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surf[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surf[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
+                            if ( surface[k + nz * (j + ( ny * i ) )] == tag )
+                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surface[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
                             else
                                 fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
                             count++;
@@ -1792,10 +1851,10 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
  * nx: x grid units (cavities)
  * ny: y grid units (cavities)
  * nz: z grid units (cavities)
- * surf: surface points 3D grid
- * nxx: x grid units (surf)
- * nyy: y grid units (surf)
- * nzz: z grid units (surf)
+ * surface: surface points 3D grid
+ * nxx: x grid units (surface)
+ * nyy: y grid units (surface)
+ * nzz: z grid units (surface)
  * B: b-factor 3D grid (depths or hydropathy)
  * nxx: x grid units (B)
  * nyy: y grid units (B)
@@ -1811,7 +1870,7 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, in
  * 
  */
 void 
-_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
+_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -1828,7 +1887,7 @@ _export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, 
 	    output = fopen (fn, "w");
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
-        #pragma omp parallel default(none) shared(cavities, surf, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+        #pragma omp parallel default(none) shared(cavities, surface, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
         {
             #pragma omp for schedule(static) collapse(3) ordered nowait
             for (i=0; i<nx; i++)
@@ -1849,8 +1908,8 @@ _export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surf, int nxx, 
 
                             // Write cavity point
                             #pragma omp critical
-                            if ( surf[k + nz * (j + ( ny * i ) )] == tag )
-                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surf[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surf[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
+                            if ( surface[k + nz * (j + ( ny * i ) )] == tag )
+                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surface[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
                             else
                                 fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
                             count++;

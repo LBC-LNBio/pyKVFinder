@@ -19,10 +19,13 @@
 
 /* Surface points grid */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* surface, int size)}
-%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* surf, int nxx, int nyy, int nzz)}
+%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* surface, int nxx, int nyy, int nzz)}
 
 /* Depth grid */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depths, int size)}
+
+/* Hydropathy grid */
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* hydropathy, int size)}
 
 /* Bfactor grid */
 %apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int nxxx, int nyyy, int nzzz)}

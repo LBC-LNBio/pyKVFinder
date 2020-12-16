@@ -484,6 +484,22 @@ def constitutional(cavities: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.
     return residues
 
 
+def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, hydrophobicity_scale: str = None, step: float = 0.6, probe_in = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+    from _grid import _hydropathy
+
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+
+    # Remove backbone from resinfo
+    if ignore_backbone:
+        mask = numpy.where(resinfo[:, 1] != 'C') and numpy.where(resinfo[:, 1] != 'CA') and numpy.where(resinfo[:, 1] != 'N') and numpy.where(resinfo[:, 1] != 'O')
+        resinfo = resinfo[mask[0], ]
+        xyzr = xyzr[mask[0]]
+
+    # Get residue name from resinfo
+    resname = list(map(lambda x: x.split("_")[2], resinfo[:,0]))
+
+
 def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:
     """
     Exports cavities to PDB file, with variable as B-factor (optional)
