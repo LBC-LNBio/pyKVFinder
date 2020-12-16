@@ -45,19 +45,19 @@ def read_pdb(fn: str, vdw: dict) -> tuple:
 
     Returns
     -------
-        pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
+        resinfo (numpy.ndarray): an array with resnum, chain, resname and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radii values
     """
     import numpy as _np
-    pdb = []
+    resinfo = []
     xyzr = []
     with open(fn, "r") as f:
         for line in f.readlines():
             if line[:4] == 'ATOM' or line[:6] == 'HETATM':
                 atom, coords = _process_pdb_line(line, vdw)
-                pdb.append(atom)
+                resinfo.append(atom)
                 xyzr.append(coords)
-    return _np.asarray(pdb), _np.asarray(xyzr)
+    return _np.asarray(resinfo), _np.asarray(xyzr)
 
 
 def _process_pdb_line(line: str, vdw: dict) -> tuple:
@@ -71,8 +71,8 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
 
     Returns
     -------
-        pdb (list): a list with resnum, chain, resname and atom name
-        xyzr (list): a list with xyz coordinates and radius
+        resinfo (list): a list with resnum, chain, resname and atom name
+        coords (list): a list with xyz coordinates and radius
     """
     atom = line[12:16].strip()
     resname = line[17:20].strip()
@@ -88,9 +88,9 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
         radius = vdw['GEN'][atom_symbol]
         logging.info(f"Warning: Atom {atom} of residue {resname} not found in dictionary")
         logging.info(f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5")
-    pdb = [f"{resnum}_{chain}_{resname}", atom]
-    xyzr = [x, y, z, radius]
-    return pdb, xyzr
+    resinfo = [f"{resnum}_{chain}_{resname}", atom]
+    coords = [x, y, z, radius]
+    return resinfo, coords
 
 
 def _process_box(args: argparse.Namespace):

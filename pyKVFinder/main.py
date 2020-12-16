@@ -63,7 +63,7 @@ def cli():
 
     if args.verbose:
         print("> Reading PDB coordinates")
-    pdb, xyzr = read_pdb(args.pdb, vdw)
+    resinfo, xyzr = read_pdb(args.pdb, vdw)
 
     if args.ligand:
         if args.verbose:
@@ -76,7 +76,7 @@ def cli():
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, pdb, xyzr, args.sincos, nx, ny, nz = get_vertices_from_file(args.box, pdb, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
+        args.vertices, resinfo, xyzr, args.sincos, nx, ny, nz = get_vertices_from_file(args.box, resinfo, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
 
         # Set flag to boolean
         args.box = True
@@ -122,7 +122,7 @@ def cli():
             depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
-        residues = constitutional(cavities, pdb, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        residues = constitutional(cavities, resinfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
         frequencies = calculate_frequencies(residues)
 
         if args.plot_frequencies:
@@ -323,8 +323,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
     if verbose:
         print("> Reading PDB coordinates")
-    pdb_path = pdb
-    pdb, xyzr = read_pdb(pdb, vdw)
+    resinfo, xyzr = read_pdb(pdb, vdw)
 
     if ligand:
         if verbose:
@@ -337,7 +336,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, pdb, xyzr, sincos, nx, ny, nz = get_vertices_from_file(box, pdb, xyzr, step, probe_in, probe_out, nthreads)
+        vertices, resinfo, xyzr, sincos, nx, ny, nz = get_vertices_from_file(box, resinfo, xyzr, step, probe_in, probe_out, nthreads)
 
         # Set flag to boolean
         box = True
@@ -372,12 +371,12 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
             depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
-        residues = constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
+        residues = constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
         frequencies = calculate_frequencies(residues)
     else:
         volume, area, residues, depths, max_depth, avg_depth = None, None, None, None, None, None
 
     # Return dict
-    results = pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, frequencies, vertices, step, ncav, pdb_path, ligand)
+    results = pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, frequencies, vertices, step, ncav, pdb, ligand)
 
     return results

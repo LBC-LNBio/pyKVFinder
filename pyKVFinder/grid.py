@@ -29,14 +29,14 @@ def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6)
     return vertices
 
 
-def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
+def get_vertices_from_file(fn: str, resinfo: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
     """
     Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units
 
     Parameters
     ----------
         fn (str): path to box configuration file (TOML-formatted)
-        pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
+        resinfo (numpy.ndarray): an array with resnum, chain, resname and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
         step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
@@ -46,7 +46,7 @@ def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, ste
     Returns
     -------
         vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
-        pdb (numpy.ndarray): an array with resnum, chain, resname and atom name of atoms inside the box
+        resinfo (numpy.ndarray): an array with resnum, chain, resname and atom name of atoms inside the box
         xyzr (numpy.ndarray): an array with xyz coordinates and radius of atoms inside the box
         sincos (numpy.ndarray): an array with sine and cossine of 3D grid angles (a, b)
         nx (int): x 3D grid units
@@ -84,7 +84,7 @@ def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, ste
             raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
         if 'padding' not in box.keys():
             box['padding'] = 3.5
-        vertices = _get_vertices_from_residues(box, pdb, xyzr, probe_out)
+        vertices = _get_vertices_from_residues(box, resinfo, xyzr, probe_out)
     else:
         raise Exception(f"Box not properly defined in {fn}")
 
@@ -94,11 +94,11 @@ def get_vertices_from_file(fn: str, pdb: numpy.ndarray, xyzr: numpy.ndarray, ste
     _filter_pdb(nx, ny, nz, xyzr, vertices[0], sincos, step, probe_in, nthreads)
     indexes = (xyzr[:, 3] != 0)
 
-    # Slice pdb and xyzr
-    pdb = pdb[indexes, :]
+    # Slice resinfo and xyzr
+    resinfo = resinfo[indexes, :]
     xyzr = xyzr[indexes, :]
 
-    return vertices, pdb, xyzr, sincos, nx, ny, nz
+    return vertices, resinfo, xyzr, sincos, nx, ny, nz
 
 
 def _get_vertices_from_box(box: dict, probe_out: float = 4.0) -> numpy.ndarray:
@@ -160,14 +160,14 @@ def _get_vertices_from_box(box: dict, probe_out: float = 4.0) -> numpy.ndarray:
     return vertices
 
 
-def _get_vertices_from_residues(box: dict, pdb: numpy.ndarray, xyzr: numpy.ndarray, probe_out: float = 4.0) -> numpy.ndarray:
+def _get_vertices_from_residues(box: dict, resinfo: numpy.ndarray, xyzr: numpy.ndarray, probe_out: float = 4.0) -> numpy.ndarray:
     """
     Gets 3D grid vertices based on a list of residues (name and chain) and a padding value
 
     Parameters
     ----------
         box (dict): dictionary with a list of residues (name and chain) and a padding value
-        pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
+        resinfo (numpy.ndarray): an array with residue number, chain, residue name and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
         probe_out (float): Probe Out size (A)
 
@@ -185,7 +185,7 @@ def _get_vertices_from_residues(box: dict, pdb: numpy.ndarray, xyzr: numpy.ndarr
     box['residues'] = numpy.array(['_'.join(item[0:2]) for item in box['residues']])
 
     # Get coordinates of residues
-    indexes = numpy.in1d(pdb[:, 0], box['residues'])
+    indexes = numpy.in1d(resinfo[:, 0], box['residues'])
     xyzr = xyzr[indexes, 0:3]
 
     # Calculate vertices
@@ -442,14 +442,14 @@ def _process_residues(raw: list) -> dict:
     return residues
 
 
-def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> dict:
+def constitutional(cavities: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> dict:
     """
     Constitutional characterization (interface residues) of the detected cavities
 
     Parameters
     ----------
         cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
-        pdb (numpy.ndarray): an array with resnum, chain, resname and atom name
+        resinfo (numpy.ndarray): an array with residue number, chain, residue name and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
         vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
         sincos (numpy.ndarray): an array with sine and cossine of 3D grid angles (a, b)
@@ -468,17 +468,17 @@ def constitutional(cavities: numpy.ndarray, pdb: numpy.ndarray, xyzr: numpy.ndar
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
-    # Remove backbone from pdb
+    # Remove backbone from resinfo
     if ignore_backbone:
-        mask = numpy.where(pdb[:, 2] != 'C') and numpy.where(pdb[:, 2] != 'CA') and numpy.where(pdb[:, 2] != 'N') and numpy.where(pdb[:, 2] != 'O')
-        pdb = pdb[mask[0], ]
+        mask = numpy.where(resinfo[:, 1] != 'C') and numpy.where(resinfo[:, 1] != 'CA') and numpy.where(resinfo[:, 1] != 'N') and numpy.where(resinfo[:, 1] != 'O')
+        resinfo = resinfo[mask[0], ]
         xyzr = xyzr[mask[0]]
 
-    # Prepare pdb
-    pdb = pdb[:, 0].tolist()
+    # Prepare resinfo
+    resinfo = resinfo[:, 0].tolist()
 
     # Get interface residues
-    residues = _constitutional(cavities, pdb, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose)
+    residues = _constitutional(cavities, resinfo, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose)
     residues = _process_residues(residues)
 
     return residues

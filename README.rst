@@ -97,8 +97,8 @@ API Reference
         A dictionary with radii values (vdw[resname][atom])
 
   :Returns:
-    ``(pdb, xyzr)`` : *tuple*
-        A tuple with two elements: a numpy array with resnum, chain, resname and atom name, and a numpy array with xyz coordinates and radii values
+    ``(resinfo, xyzr)`` : *tuple*
+        A tuple with two elements: a numpy array with residue number, chain, residue name and atom name, and a numpy array with xyz coordinates and radii values
 
 ``pyKVFinder.get_vertices(xyzr, probe_out = 4.0, step = 0.6)``
   Gets 3D grid vertices.
@@ -115,14 +115,14 @@ API Reference
     ``vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
 
-``pyKVFinder.get_vertices_from_file(fn, pdb, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads = os.cpu_count() - 1)``
+``pyKVFinder.get_vertices_from_file(fn, resinfo, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads = os.cpu_count() - 1)``
   Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
 
   :Args:
     * ``fn`` : *str*
         A path to a box configuration file (TOML-formatted)
-    * ``pdb`` : *numpy.ndarray*
-        A numpy array with resnum, chain, resname and atom name
+    * ``resinfo`` : *numpy.ndarray*
+        A numpy array with residue number, chain, residue name and atom name
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
     * ``step`` : *float, default 0.6*
@@ -135,8 +135,8 @@ API Reference
         Number of threads
 
   :Returns:
-    ``(vertices, pdb, xyzr, sincos, nx, ny, nz)`` : *tuple*
-        A tuple with five elements: a numpy array with xyz vertices coordinates (vertices), a numpy array with resnum, chain, resname and atom name (pdb), a numpy array with xyz coordinates and radii values (xyzr), a numpy array with sine and cossine of 3D grid angles (sincos), x grid units (nx), y grid units (ny) and z grid units (nz)
+    ``(vertices, resinfo, xyzr, sincos, nx, ny, nz)`` : *tuple*
+        A tuple with five elements: a numpy array with xyz vertices coordinates (vertices), a numpy array with residue number, chain, residue name and atom name (resinfo), a numpy array with xyz coordinates and radii values (xyzr), a numpy array with sine and cossine of 3D grid angles (sincos), x grid units (nx), y grid units (ny) and z grid units (nz)
 
 ``pyKVFinder.get_dimensions(vertices, step = 0.6)``
   Gets dimensions of 3D grid from vertices.
@@ -249,14 +249,14 @@ API Reference
     ``(depths, max_depth, avg_depth)`` : *tuple*
         A tuple with three elements: numpy array with depth of cavity points (depth[nx][ny][nz]), a dictionary with maximum depth of each detected cavity and a dictionary with average depth of each detected cavity
 
-``pyKVFinder.constitutional(cavities, pdb, xyzr, vertices, sincos, ncav, step = 0.6, probe_in = 1.4, ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
+``pyKVFinder.constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav, step = 0.6, probe_in = 1.4, ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
   Constitutional characterization (interface residues) of the detected cavities.
 
   :Args:
     * ``cavities`` : *numpy.ndarray*
         A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
-    * ``pdb`` : *numpy.ndarray*
-        A numpy array with resnum, chain, resname and atom name
+    * ``resinfo`` : *numpy.ndarray*
+        A numpy array with residue number, chain, residue name and atom name
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
     * ``vertices`` : *numpy.ndarray*
