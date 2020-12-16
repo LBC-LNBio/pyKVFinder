@@ -48,7 +48,7 @@ def read_pdb(fn: str, vdw: dict) -> tuple:
         resinfo (numpy.ndarray): an array with resnum, chain, resname and atom name
         xyzr (numpy.ndarray): an array with xyz coordinates and radii values
     """
-    import numpy as _np
+    import numpy as np
     resinfo = []
     xyzr = []
     with open(fn, "r") as f:
@@ -57,7 +57,7 @@ def read_pdb(fn: str, vdw: dict) -> tuple:
                 atom, coords = _process_pdb_line(line, vdw)
                 resinfo.append(atom)
                 xyzr.append(coords)
-    return _np.asarray(resinfo), _np.asarray(xyzr)
+    return np.asarray(resinfo), np.asarray(xyzr)
 
 
 def _process_pdb_line(line: str, vdw: dict) -> tuple:
@@ -105,7 +105,7 @@ def _process_box(args: argparse.Namespace):
     -------
         box (list): a list of vertices coordinates (origin, Xmax, Ymax, Zmax)
     """
-    import numpy as _np
+    import numpy as np
     # Create box parameter
     box = {
         'p1': args.vertices[0],
@@ -135,16 +135,16 @@ def _process_box(args: argparse.Namespace):
         z4 = - (args.probe_out * args.sincos[2]) + (args.probe_out * args.sincos[0] * args.sincos[3]) + (args.probe_out * args.sincos[1] * args.sincos[3])
 
         # Remove probe out addition
-        box['p1'] -= _np.array([x1, y1, z1])
-        box['p2'] -= _np.array([x2, y2, z2])
-        box['p3'] -= _np.array([x3, y3, z3])
-        box['p4'] -= _np.array([x4, y4, z4])
+        box['p1'] -= np.array([x1, y1, z1])
+        box['p2'] -= np.array([x2, y2, z2])
+        box['p3'] -= np.array([x3, y3, z3])
+        box['p4'] -= np.array([x4, y4, z4])
 
     # Prepare to dict to toml module
-    box['p1'] = _np.around(box['p1'], 2).tolist()
-    box['p2'] = _np.around(box['p2'], 2).tolist()
-    box['p3'] = _np.around(box['p3'], 2).tolist()
-    box['p4'] = _np.around(box['p4'], 2).tolist()
+    box['p1'] = np.around(box['p1'], 2).tolist()
+    box['p2'] = np.around(box['p2'], 2).tolist()
+    box['p3'] = np.around(box['p3'], 2).tolist()
+    box['p4'] = np.around(box['p4'], 2).tolist()
 
     return box
 
