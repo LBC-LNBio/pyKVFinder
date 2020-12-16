@@ -5,6 +5,31 @@ from . import __name__, __version__
 __all__ = ["argparser"]
 
 
+def _check_hydropathy_options(x: str) -> str:
+    """
+    Checks if x is a acceptable option for hydropathy argument
+    Parameters
+    ----------
+        x (str): option to be checked
+
+    Returns
+    -------
+        x (str): accepted option
+    """
+    if x in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolitte', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
+        return x
+    elif os.path.exists(x):
+        import toml
+        try:
+            toml.load(x)
+        except toml.decoder.TomlDecodeError:
+            msg = f"invalid TOML-formatted file: {x} (define a TOML-formatted file with hydrophobicity values for standard residues)"
+            raise(argparse.ArgumentTypeError(msg))
+        return x
+    else:
+        msg = f"invalid choice: {x} (choose from \'EisenbergWeiss\', \'HessaHeijne\', \'KyteDoolitte\', \'MoonFleming\', \'WimleyWhite\', \'ZhaoLondon\' or define a TOML-formatted file with hydrophobicity values for standard residues)"
+        raise(argparse.ArgumentTypeError(msg))
+
 def _positive_float(x: float) -> float:
     """
     Checks if x is a float
@@ -21,11 +46,11 @@ def _positive_float(x: float) -> float:
         x = float(x)
     except ValueError:
         msg = "%r not a floating-point literal" % (x,)
-        raise argparse.ArgumentTypeError(msg)
+        raise(argparse.ArgumentTypeError(msg))
 
     if x < 0.0:
         msg = "%r not a positive floating-point" % (x,)
-        raise argparse.ArgumentTypeError(msg)
+        raise(argparse.ArgumentTypeError(msg))
     return x
 
 
@@ -45,11 +70,11 @@ def _restricted_step_size(x: float) -> float:
         x = float(x)
     except ValueError:
         msg = "%r not a floating-point literal" % (x,)
-        raise argparse.ArgumentTypeError(msg)
+        raise(argparse.ArgumentTypeError(msg))
 
     if not 0.0 < x <= 2.0:
         msg = "%r not in range (0.0, 2.0]" % (x,)
-        raise argparse.ArgumentTypeError(msg)
+        raise(argparse.ArgumentTypeError(msg))
     return x
 
 
@@ -174,11 +199,18 @@ def argparser() -> argparse.ArgumentParser:
                              "--depth",
                              action='store_true',
                              default=False,
-                             help="Characterization of the depth of the detected cavities. Add depth to B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
+                             help="Characterization of the depth of the detected cavities. Map depth in B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
     extra_modes.add_argument("--plot_frequencies",
                              action='store_true',
                              default=False,
                              help="Plot histograms of calculated frequencies of the detected cavities in a PDF file. (default: %(default)s)")
+    extra_modes.add_argument("--hydropathy",
+                             type=_check_hydropathy_options,
+                             metavar = "{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}",
+                             nargs='?',
+                             const = 'EisenbergWeiss',
+                             default = False,
+                             help="Map hydrophobicity scale values in B-factor at surface points of detected cavities. Hydrophobicity scales options: %(metavar)s. A custom hydrophobicity scale can be defined via a TOML-formatted file. (default: %(default)s) (constant: %(const)s)")
 
     # Create argument group
     box_adjustment = parser.add_argument_group("Box adjustment arguments")
