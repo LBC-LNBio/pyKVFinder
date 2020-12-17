@@ -777,10 +777,7 @@ The parameters for additional characterization are:
 
     $ pyKVFinder <.pdb> --hydropathy
 
-:Default: ``None``
-:Constant: ``EisenbergWeiss``
-
-  In addition, the user can define one of the native hydrophobicity scale. The native hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
+In addition, the user can define one of the native hydrophobicity scale. The native hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
 
   .. code-block:: bash
 
@@ -791,11 +788,14 @@ The parameters for additional characterization are:
     $ pyKVFinder <.pdb> --hydropathy WimleyWhite
     $ pyKVFinder <.pdb> --hydropathy ZhaoLondon
 
-  Further, the user can also define a custom hydrophobicity scale file via a TOML-formatted file (see template).
+Further, the user can also define a custom hydrophobicity scale file via a TOML-formatted file (see template).
 
   .. code-block:: bash
 
     $ pyKVFinder <.pdb> --hydropathy <.toml>
+
+:Default: ``None``
+:Constant: ``EisenbergWeiss``
 
 The box adjustment argument is:
 
