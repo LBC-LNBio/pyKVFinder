@@ -551,8 +551,8 @@ The van der Waals radii file define the radius values for each residue and when 
   O       1.69
   H       0.91
 
-  :Note:
-    The residue name should be in the standard PDB format and each radius value is separated by two tab characters of the atom name.
+:Note:
+  The residue name should be in the standard PDB format and each radius value is separated by two tab characters of the atom name.
 
 Box Configuration File Template
 ===============================
@@ -561,23 +561,23 @@ There are two methods for defining a custom 3D grid in pyKVFinder.
 
 The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown below:
 
-  .. code-block:: TOML
+.. code-block:: TOML
 
-    [box]
-    # px = [x, y, z]
-    p1 = [0.0, 0.0, 0.0]
-    p2 = [1.0, 0.0, 0.0]
-    p3 = [0.0, 1.0, 0.0]
-    p4 = [0.0, 0.0, 1.0]
+  [box]
+  # px = [x, y, z]
+  p1 = [0.0, 0.0, 0.0]
+  p2 = [1.0, 0.0, 0.0]
+  p3 = [0.0, 1.0, 0.0]
+  p4 = [0.0, 0.0, 1.0]
 
 
 The second defines a list of residues and a padding, the template is shown below:
 
-  .. code-block:: TOML
+.. code-block:: TOML
 
-    [box]
-    residues = [ ["resname", "chain",], ["resname", "chain",], ]
-    padding =  3.5
+  [box]
+  residues = [ ["resname", "chain",], ["resname", "chain",], ]
+  padding =  3.5
 
 
 Hydrophobicity Scale File Template
@@ -585,29 +585,29 @@ Hydrophobicity Scale File Template
 
 The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are five native hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
-  .. code-block:: TOML
+.. code-block:: TOML
 
-      [EisenbergWeiss]
-      ALA = -0.64
-      ARG = 2.6
-      ASN = 0.8
-      ASP = 0.92
-      CYS = -0.3
-      GLN = 0.87
-      GLU = 0.76
-      GLY = -0.49
-      HIS = 0.41
-      ILE = -1.42
-      LEU = -1.09
-      LYS = 1.54
-      MET = -0.66
-      PHE = -1.22
-      PRO = -0.12
-      SER = 0.18
-      THR = 0.05
-      TRP = -0.83
-      TYR = -0.27
-      VAL = -1.11
+    [EisenbergWeiss]
+    ALA = -0.64
+    ARG = 2.6
+    ASN = 0.8
+    ASP = 0.92
+    CYS = -0.3
+    GLN = 0.87
+    GLU = 0.76
+    GLY = -0.49
+    HIS = 0.41
+    ILE = -1.42
+    LEU = -1.09
+    LYS = 1.54
+    MET = -0.66
+    PHE = -1.22
+    PRO = -0.12
+    SER = 0.18
+    THR = 0.05
+    TRP = -0.83
+    TYR = -0.27
+    VAL = -1.11
 
 
 Command Line Interface
@@ -615,12 +615,12 @@ Command Line Interface
 
 pyKVFinder's Command Line Interface (CLI) aims to direct the interaction between pyKVFinder and users.
 
-  .. code-block:: bash
+.. code-block:: bash
 
-    $ pyKVFinder
-      Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>] [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <str>] [--ignore_backbone]
-                        [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                        <.pdb>
+  $ pyKVFinder
+    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>] [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <str>] [--ignore_backbone]
+                      [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+                      <.pdb>
 
 The positional arguments are:
 
