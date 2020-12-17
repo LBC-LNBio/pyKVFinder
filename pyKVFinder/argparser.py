@@ -120,7 +120,8 @@ def argparser() -> argparse.ArgumentParser:
     # Optional arguments
     parser.add_argument("-v", "--verbose",
                         help="Print extra information to standard output.",
-                        action="store_true")
+                        action="store_true",
+                        default=None)
     parser.add_argument('--version',
                         action='version',
                         version=f'{__name__} v{__version__}',
@@ -190,7 +191,7 @@ def argparser() -> argparse.ArgumentParser:
                             help="Surface representation. Options: %(choices)s. SES specifies solvent excluded surface. SAS specifies solvent accessible surface. (default: %(default)s)")
     parameters.add_argument("--ignore_backbone",
                             action='store_true',
-                            default=False,
+                            default=None,
                             help="Ignore backbone contacts to cavity when defining interface residues. (default: %(default)s)")
 
     # Extra modes
@@ -198,19 +199,19 @@ def argparser() -> argparse.ArgumentParser:
     extra_modes.add_argument("-D",
                              "--depth",
                              action='store_true',
-                             default=False,
-                             help="Characterization of the depth of the detected cavities. Map depth in B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
+                             default=None,
+                             help="Depth characterization of the detected cavities. Map depth in B-factor in the cavity PDB file and maximum and average depth of the detected cavities. (default: %(default)s)")
     extra_modes.add_argument("--plot_frequencies",
                              action='store_true',
-                             default=False,
+                             default=None,
                              help="Plot histograms of calculated frequencies of the detected cavities in a PDF file. (default: %(default)s)")
     extra_modes.add_argument("--hydropathy",
                              type=_check_hydropathy_options,
                              metavar = "{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}",
                              nargs='?',
-                             const = 'EisenbergWeiss',
-                             default = False,
-                             help="Map hydrophobicity scale values in B-factor at surface points of detected cavities. Hydrophobicity scales options: %(metavar)s. A custom hydrophobicity scale can be defined via a TOML-formatted file. (default: %(default)s) (constant: %(const)s)")
+                             const='EisenbergWeiss',
+                             default=None,
+                             help="Hydropathy characterization of the detected cavities. Map hydrophobicity scale values as B-factor at surface points of detected cavities. Hydrophobicity scales options: %(metavar)s. A custom hydrophobicity scale can be defined via a TOML-formatted file. (default: %(default)s) (constant: %(const)s)")
 
     # Create argument group
     box_adjustment = parser.add_argument_group("Box adjustment arguments")

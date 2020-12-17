@@ -665,7 +665,7 @@ The optional arguments are:
 
 The arguments for adjusting biomolecular detection are:
 
-* ``-d <str>`` or ``--dictionary <str>``: A path to a van der Waals radii file.
+* ``-d <str>`` or ``--dictionary <str>``: A path to a van der Waals radii file (see template).
 
   .. code-block:: bash
 
@@ -755,9 +755,35 @@ The parameters for additional characterization are:
 
 :Default: ``None``
 
+* ``--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]``: Characterize the hydropathy of the detected cavities. This mode maps a target hydrophobicity scale as B-factor at surface points of the detected cavities. Also, it calculates the average hydropathy of each detected cavity. The constant hydrophobicity scale is EisenbergWeiss.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> --hydropathy
+
+:Default: ``None``
+:Constant: ``EisenbergWeiss``
+
+In addition, the user can define one of the native hydrophobicity scale. The native hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> --hydropathy EisenbergWeiss
+    $ pyKVFinder <.pdb> --hydropathy HessaHeijne
+    $ pyKVFinder <.pdb> --hydropathy KyteDoolitte
+    $ pyKVFinder <.pdb> --hydropathy MoonFleming
+    $ pyKVFinder <.pdb> --hydropathy WimleyWhite
+    $ pyKVFinder <.pdb> --hydropathy ZhaoLondon
+
+Further, the user can also define a custom hydrophobicity scale file via a TOML-formatted file (see template).
+
+  .. code-block:: bash
+
+    $ pyKVFinder <.pdb> --hydropathy <.toml>
+
 The box adjustment argument is:
 
-* ``-B <.toml>`` or ``--box <.toml>``: A path to TOML-formatted file with box parameters. Adjust the 3D grid based on a list of residues (["resnum", "chain"]) and a padding or a set of four vertices (p1: origin, p2: X-axis max, p3: Y-axis max, p4: Z-axis max) with xyz coordinates ([x, y, z]).
+* ``-B <.toml>`` or ``--box <.toml>``: A path to TOML-formatted file with box parameters (see template). Adjust the 3D grid based on a list of residues (["resnum", "chain"]) and a padding or a set of four vertices (p1: origin, p2: X-axis max, p3: Y-axis max, p4: Z-axis max) with xyz coordinates ([x, y, z]).
 
   .. code-block:: bash
 
