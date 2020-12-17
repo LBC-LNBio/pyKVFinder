@@ -783,6 +783,10 @@ The parameters for additional characterization are:
 In addition, the user can define one of the native hydrophobicity scale. The native hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
 
   .. code-block:: bash
+    
+    $ pyKVFinder <.pdb> --hydropathy EisenbergWeiss
+
+  .. code-block:: bash
 
     $ pyKVFinder <.pdb> --hydropathy EisenbergWeiss
     $ pyKVFinder <.pdb> --hydropathy HessaHeijne
