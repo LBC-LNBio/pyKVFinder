@@ -1705,27 +1705,29 @@ char
 }
 
 /* Hydropathy characterization */
+
+double 
+get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscales)
+{
+    int i;
+
+    // Get hydrophobicity value
+    for (i=0; i<nscales; i++)
+        if (strcmp(resname, resn[i]) == 0)
+            return scales[i];
+
+    return 0.0;
+}
+
 void 
-_hydropathy (
-    double *hydropathy, int size,
-    double *surface, int nxx, int nyy, int nzz,
-    double *atoms, int natoms, int xyzr,
-    double *reference, int ndims, 
-    double *sincos, int nvalues, 
-    double step, 
-    double probe_in,
-    int nthreads, 
-    int verbose)
+define_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int ncav, int nthreads)
 {
     int i, j, k, atom, *ref;
     double x, y, z, xaux, yaux, zaux, distance, H;
 
-    if (verbose)
-        fprintf(stdout, "> Mapping hydrophobicity scale at surface points\n");
-
     // Initiliaze 3D grid for residues distances
-    ref = (double *) calloc (size, sizeof (double));
-    dgrid(ref, size);
+    ref = (double *) calloc (nxx * nyy * nzz, sizeof (double));
+    dgrid(ref, nxx * nyy * nzz);
 
     // Get hydrophobicity value for each surface point
     for (atom=0; atom<natoms; atom++)
@@ -1752,15 +1754,43 @@ _hydropathy (
                     for (k=floor(z - H); k<=ceil(z + H); k++) 
                     {
                         if (i < nxx && i > 0 && j < nyy && j > 0 && k < nzz && k > 0)
+                            // Found a surface point
                             if (surface[ k + nzz * (j + ( nyy * i ) ) ] > 1)
-                            {
-                                // Do something
+                            {   
+                                // Calculate distance bewteen atom and surface point
+                                distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
+                                // Check if surface point was not checked before
+                                if (ref[ k + nzz * (j + ( nyy * i ) ) ] == 0.0)
+                                {
+                                    ref[ k + nzz * (j + ( nyy * i ) ) ] = distance;
+                                    hydropathy[ k + nzz * (j + ( nyy * i ) ) ] = get_hydrophobicity_value (resname[atom], resn, scales, nscales);
+                                }
+                                // Check if this atom is closer to the previous one assigned
+                                else
+                                    if (ref[ k + nzz * (j + ( nyy * i ) ) ] > distance)
+                                    {
+                                        ref[ k + nzz * (j + ( nyy * i ) ) ] = distance;
+                                        hydropathy[ k + nzz * (j + ( nyy * i ) ) ] = get_hydrophobicity_value (resname[atom], resn, scales, nscales);
+                                    }
+                                    
                             }
                     }
     }
 
     // Free 3D grid for residues distances
     free(ref);
+}
+
+void 
+_hydropathy (double *hydropathy, int size, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int ncav, int nthreads, int verbose)
+{
+    if (verbose)
+        fprintf(stdout, "> Mapping hydrophobicity scale at surface points\n");
+    define_hydropathy (hydropathy, surface, nxx, nyy, nzz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, resname, resn, scales, nscales, step, probe_in, ncav, nthreads);
+
+    if (verbose)
+        fprintf(stdout, "> Estimating average hydropathy\n");
+    
 }
 
 /* Export cavity PDB */

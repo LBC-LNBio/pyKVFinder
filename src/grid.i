@@ -33,6 +33,9 @@
 /* Depth arrays */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* max_depth, int nmax), (double* avg_depth, int navg)}
 
+/* Hydrophobicity scales values array */
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *scales, int nscales)}
+
 /* Volume array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int nvol)}
 

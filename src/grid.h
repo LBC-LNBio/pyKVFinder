@@ -69,15 +69,20 @@ char **interface (int *cavities, int nx, int ny, int nz, char **pdb, double *ato
 char ** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads, int verbose);
 
 /* Hydropathy characterization */
+double get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscales);
 void 
 _hydropathy (
     double *hydropathy, int size,
-    double *surface, int nx, int ny, int nz,
+    int *surface, int nxx, int nyy, int nzz,
     double *atoms, int natoms, int xyzr,
     double *reference, int ndims, 
     double *sincos, int nvalues, 
+    char **resname,
+    char **resn,
+    double *scales, int nscales,
     double step, 
     double probe_in,
+    int ncav,
     int nthreads, 
     int verbose
 );

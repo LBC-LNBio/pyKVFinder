@@ -484,8 +484,17 @@ def constitutional(cavities: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.
     return residues
 
 
-def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, hydrophobicity_scale: str = None, step: float = 0.6, probe_in = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, hydrophobicity_scale: str, ncav: int, step: float = 0.6, probe_in = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+    import toml
     from _grid import _hydropathy
+
+    # Get dimensions
+    nx, ny, nz = surface.shape
+    nvoxels = nx * ny * nz
+
+    # Load hydrophobicity scales
+    data = list(toml.load(hydrophobicity_scale).values())[0]
+    resn, scale = list(data.keys()), numpy.asarray(list(data.values()))
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
@@ -498,6 +507,13 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
 
     # Get residue name from resinfo
     resname = list(map(lambda x: x.split("_")[2], resinfo[:,0]))
+
+    # Get hydrophobicity scales
+    scales = _hydropathy(nvoxels, surface, xyzr, P1, sincos, resname, resn, scale, step, probe_in, ncav, nthreads, verbose).reshape(nx, ny, nz)
+
+    print((scales != 0.0).sum())
+    
+    return scales
 
 
 def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:

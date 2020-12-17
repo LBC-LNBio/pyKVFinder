@@ -17,7 +17,7 @@ def _check_hydropathy_options(x: str) -> str:
         x (str): accepted option
     """
     if x in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolitte', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
-        return x
+        return os.path.join(os.path.abspath(os.path.dirname(__file__)), f"data/{x}.toml")
     elif os.path.exists(x):
         import toml
         try:
