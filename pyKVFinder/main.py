@@ -5,7 +5,7 @@ import numpy as np
 from datetime import datetime
 from .argparser import argparser
 from .utils import read_vdw, read_pdb, calculate_frequencies, plot_frequencies, write_results, _write_parameters
-from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, export
+from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, hydropathy, export
 
 __all__ = ['pyKVFinder', 'pyKVFinderResults']
 
@@ -132,16 +132,18 @@ def cli():
         
         # Map hydrophobicity scales
         if args.hydropathy:
-            from .grid import hydropathy
-            scales, avgh = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, args.hydropathy, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+            scales, avg_hydropathy = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.hydropathy, args.ignore_backbone, args.nthreads, args.verbose)
+            output_hydropathy = os.path.join(args.output_directory, f"{args.base_name}.{list(avg_hydropathy.keys())[-1]}.pdb")
+        else:
+            scales, avg_hydropathy, output_hydropathy = None, None, None
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
-        export(output_cavity, cavities, surface, args.vertices, args.sincos, ncav, args.step, depths, args.nthreads)
+        export(output_cavity, cavities, surface, args.vertices, args.sincos, ncav, args.step, depths, output_hydropathy, scales, args.nthreads)
 
         # Write results
         output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
-        write_results(output_results, args.pdb, args.ligand, output_cavity, volume, area, max_depth, avg_depth, residues, frequencies, args.step)
+        write_results(output_results, args.pdb, args.ligand, output_cavity, output_hydropathy, volume, area, max_depth, avg_depth, avg_hydropathy, residues, frequencies, args.step)
 
         # Write parameters
         _write_parameters(args)

@@ -280,8 +280,41 @@ API Reference
     ``residues`` : *dict*
         A dictionary with cavity name/list of interface residues pairs
 
-``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, nthreads = os.cpu_count() - 1, append = False)``
-  Exports cavities to PDB-formatted file, with variable as B-factor (optional).
+``pyKVFinder.hydropathy(surface, resinfo, xyzr, vertices, sincos, ncav, step = 0.6, probe_in = 1.4, hydrophobicity_scale = 'EisenbergWeiss', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
+  Hydropathy characterization of the detected cavities. Map a hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.
+
+  :Args:
+    * ``surface`` : *numpy.ndarray*
+        A numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz])
+    * ``resinfo`` : *numpy.ndarray*
+        A numpy array with residue number, chain, residue name and atom name
+    * ``xyzr`` : *numpy.ndarray*
+        A numpy array with xyz coordinates and radii values
+    * ``vertices`` : *numpy.ndarray*
+        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+    * ``sincos`` : *numpy.ndarray*
+        A numpy array with sine and cossine of 3D grid angles (a, b)
+    * ``ncav`` : *int*
+        Number of cavities in ``cavities`` numpy array
+    * ``step`` : *float, default 0.6*
+        Grid spacing (A)
+    * ``probe_in`` : *float, default 1.4*
+        Probe In size (A)
+    * ``hydrophobicity_scale`` : *str, default 'EisenbergWeiss'*
+        Name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale file.
+    * ``ignore_backbone`` :  *bool, default False*
+        Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
+    * ``nthreads`` : *int, default 'number of cpus - 1'*
+        Number of threads
+    * ``verbose`` : *bool, default False*
+        Print extra information to standard output
+
+  :Returns:
+    ``(scales, avg_hydropathy)`` : *tuple*
+        A tuple with two elements: numpy array with hydrophobicity scale values mapped at surface points (scales[nx][ny][nz]) and a dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
+
+``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, output_hydropathy = 'hydropathy.pdb', scales = None, nthreads = os.cpu_count() - 1, append = False)``
+  Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points.
 
   :Args:
     * ``fn`` : *str*
@@ -289,7 +322,7 @@ API Reference
     * ``cavities`` : *numpy.ndarray*
         A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
     * ``surface`` : *numpy.ndarray*
-        A numpy array with surface points of cavities (cavity points >= 2; cavities[nx][ny][nz])
+        A numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz])
     * ``vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
     * ``sincos`` : *numpy.ndarray*
@@ -300,13 +333,17 @@ API Reference
         Grid spacing (A)
     * ``B`` : *numpy.ndarray*
         B-factor for cavity points (B[nx][ny][nz])
+    * ``hydropathy_output`` :  *str*
+        A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
+    * ``scales``: *numpy.ndarray*
+        Hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
     * ``append`` : *bool, default False*
         Append cavities to PDB file
   
   :Returns:
-    A file with PDB-formatted data corresponding to cavity points
+    A file with PDB-formatted data corresponding to cavity points (H), surface points (HA) and a target variable (B) as B-factor, and (optional) a file with PDB-formatted data corresponding to hydropathy mapped as B-factor at surface points (HA).
 
 ``pyKVFinder.calculate_frequencies(residues)``
   Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
@@ -359,7 +396,7 @@ API Reference
     * ``RX`` : Non-standard
         Non-standard residues
 
-``pyKVFinder.write_results(fn, pdb, ligand, output, volume = None, area = None, max_depth = None, avg_depth = None, residues = None, step = 0.6)``
+``pyKVFinder.write_results(fn, pdb, ligand, output, output_hydropathy = None, volume = None, area = None, max_depth = None, avg_depth = None, avg_hydropathy = None, residues = None, step = 0.6)``
   Writes file paths and cavity characterization to TOML-formatted file.
 
   :Args:
@@ -371,6 +408,8 @@ API Reference
         A path to ligand PDB file
     * ``output`` :  *str*
         A path to cavity PDB file
+    * ``hydropathy_output`` :  *str*
+        A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
     * ``volume`` : *dict*
         A dictionary with volume of each detected cavity
     * ``area`` : *dict*
@@ -379,6 +418,8 @@ API Reference
         A dictionary with maximum depth of each detected cavity
     * ``avg_depth`` : *dict*
         A dictionary with average depth of each detected cavity
+    * ``avg_hydropathy`` : *dict*
+        A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
     * ``step`` : *float, default 0.6*
@@ -394,7 +435,7 @@ API Reference
     * ``cavities`` : *numpy.ndarray*
         A numpy array with cavities (cavity points >= 2; cavities[nx][ny][nz])
     * ``surface`` : *numpy.ndarray*
-        A numpy array with surface points of cavities (cavity points >= 2; cavities[nx][ny][nz])
+        A numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz])
     * ``depths`` : *numpy.ndarray*
         A numpy array with depth of cavity points (depth[nx][ny][nz])
     * ``volume`` : *dict*
@@ -483,7 +524,7 @@ API Reference
 Van der Waals Radii File Template
 =================================
 
-The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown above:
+The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
 .. code-block::
 
@@ -502,7 +543,7 @@ Box Configuration File Template
 
 There are two methods for defining a custom 3D grid in pyKVFinder.
 
-The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown above:
+The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown below:
 
 .. code-block:: TOML
 
@@ -514,13 +555,43 @@ The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis 
   p4 = [0.0, 0.0, 1.0]
 
 
-The second defines a list of residues and a padding, the template is shown above:
+The second defines a list of residues and a padding, the template is shown below:
 
 .. code-block:: TOML
 
   [box]
   residues = [ ["resname", "chain",], ["resname", "chain",], ]
   padding =  3.5
+
+
+Hydrophobicity Scale File Template
+==================================
+
+The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are five native hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
+
+.. code-block:: TOML
+
+    [EisenbergWeiss]
+    ALA = -0.64
+    ARG = 2.6
+    ASN = 0.8
+    ASP = 0.92
+    CYS = -0.3
+    GLN = 0.87
+    GLU = 0.76
+    GLY = -0.49
+    HIS = 0.41
+    ILE = -1.42
+    LEU = -1.09
+    LYS = 1.54
+    MET = -0.66
+    PHE = -1.22
+    PRO = -0.12
+    SER = 0.18
+    THR = 0.05
+    TRP = -0.83
+    TYR = -0.27
+    VAL = -1.11
 
 
 Command Line Interface

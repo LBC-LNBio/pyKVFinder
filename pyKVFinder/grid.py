@@ -1,7 +1,7 @@
 import os
 import numpy
 
-__all__ = ["get_vertices", "get_vertices_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "depth", "constitutional", "export"]
+__all__ = ["get_vertices", "get_vertices_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "depth", "constitutional", "hydropathy", "export"]
 
 
 def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6) -> numpy.ndarray:
@@ -375,14 +375,14 @@ def _process_depth(raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, n
 
     Parameters
     ----------
-        raw_max_depth (numpy.ndarray): an array of volumes
-        raw_avg_depth (numpy.ndarray): an array of areas
+        raw_max_depth (numpy.ndarray): an array of maximum depth 
+        raw_avg_depth (numpy.ndarray): an array of average depth
         ncav (int): number of cavities
 
     Returns
     -------
         max_depth (dict): dictionary with cavity name/maximum depth pairs
-        avg_depth (dict): dictionary with cavity name/average depth pairss
+        avg_depth (dict): dictionary with cavity name/average depth pairs
     """
     max_depth, avg_depth = {}, {}
     for index in range(ncav):
@@ -484,7 +484,50 @@ def constitutional(cavities: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.
     return residues
 
 
-def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, hydrophobicity_scale: str, ncav: int, step: float = 0.6, probe_in = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def _process_hydropathy(raw_avg_hydropathy: numpy.ndarray, ncav: int) -> tuple:
+    """
+    Processes array of average hydropathy
+
+    Parameters
+    ----------
+        raw_avg_hydropathy (numpy.ndarray): an array of average hydropathy
+        ncav (int): number of cavities
+
+    Returns
+    -------
+        avg_hydropathy (dict): dictionary with cavity name/average hydropathy pairs
+    """
+    avg_hydropathy = {}
+    for index in range(ncav):
+        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        avg_hydropathy[key] = float(round(raw_avg_hydropathy[index], 2))
+    return avg_hydropathy
+
+
+def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in = 1.4, hydrophobicity_scale: str = 'EisenbergWeiss', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+    """
+    Hydropathy characterization of the detected cavities. Map a hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.
+
+    Parameters
+    ----------
+        surface (numpy.ndarray): surface points 3D grid (surface[nx][ny][nz])
+        resinfo (numpy.ndarray): an array with residue number, chain, residue name and atom name
+        xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
+        vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
+        sincos (numpy.ndarray): an array with sine and cossine of 3D grid angles (a, b)
+        ncav (int): number of cavities
+        step (float): grid spacing (A)
+        probe_in (float): Probe In size (A)
+        hydrophobicity_scale (str): name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
+        ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
+        nthreads (int): number of threads
+        verbose: print extra information to standard output
+
+    Returns
+    -------
+        scales (numpy.ndarray): hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
+        avg_hydropathy (dict): dictionary with cavity name/average hydropathy pairs and range of the hydrophobicity scale mapped
+    """
     import toml
     from _grid import _hydropathy
 
@@ -493,7 +536,10 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
     nvoxels = nx * ny * nz
 
     # Load hydrophobicity scales
-    data = list(toml.load(hydrophobicity_scale).values())[0]
+    if hydrophobicity_scale in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolitte', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
+        hydrophobicity_scale = os.path.join(os.path.abspath(os.path.dirname(__file__)), f"data/{hydrophobicity_scale}.toml")
+    f = toml.load(hydrophobicity_scale)
+    data, name = list(f.values())[0], list(f.keys())[0]
     resn, scale = list(data.keys()), numpy.asarray(list(data.values()))
 
     # Unpack vertices
@@ -509,17 +555,14 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
     resname = list(map(lambda x: x.split("_")[2], resinfo[:,0]))
 
     # Get hydrophobicity scales in 3D grid and average hydropathy
-    scales, avgh = _hydropathy(nvoxels, ncav, surface, xyzr, P1, sincos, resname, resn, scale, step, probe_in, nthreads, verbose)
+    scales, avg_hydropathy = _hydropathy(nvoxels, ncav, surface, xyzr, P1, sincos, resname, resn, scale, step, probe_in, nthreads, verbose)
+    avg_hydropathy = _process_hydropathy(avg_hydropathy, ncav)
+    avg_hydropathy[f"{name}"] = [float(scale.min()), float(scale.max())]
     
-    # scales = scales.reshape(nx, ny, nz)
-    # print((scales != 0.0).sum())
-    # print(scales.sum())
-    # print(avgh)
-    
-    return scales, avgh
+    return scales.reshape(nx, ny, nz), avg_hydropathy
 
 
-def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:
+def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, output_hydropathy: str = 'hydropathy.pdb', scales: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:
     """
     Exports cavities to PDB file, with variable as B-factor (optional)
 
@@ -534,6 +577,8 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
         B (numpy.ndarray): B-factor for cavity points (B[nx][ny][nz])
+        output_hydropathy (str): path to hydropathy PDB file
+        scales (numpy.ndarray): hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
         nthreads (int): number of threads
         append (bool): append cavities PDB to `fn`
 
@@ -550,3 +595,10 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
     else:
         _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append)
+    
+    # Export hydropathy surface points
+    if scales is None:
+        pass
+    else:
+        _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
+

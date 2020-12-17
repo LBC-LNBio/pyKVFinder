@@ -339,7 +339,7 @@ def plot_frequencies(frequencies: dict, fn: str = 'histograms.pdf') -> None:
             plt.close()
 
 
-def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = None, area: dict = None, max_depth: dict = None, avg_depth: dict = None, residues: dict = None, frequencies: dict = None, step: float = 0.6) -> None:
+def write_results(fn: str, pdb: str, ligand: str, output: str, output_hydropathy: str = None, volume: dict = None, area: dict = None, max_depth: dict = None, avg_depth: dict = None, avg_hydropathy: dict = None, residues: dict = None, frequencies: dict = None, step: float = 0.6) -> None:
     """
     Writes file paths and cavity characterization to TOML-formatted file
 
@@ -349,11 +349,14 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
         pdb (str): path to input PDB file
         ligand (str): path to ligand PDB file
         output (str): path to cavity PDB file
+        output_hydropathy (str): path to hydropathy PDB file
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
         max_depth (dict): dictionary with cavity name/maximum depth pairs
         avg_depth (dict): dictionary with cavity name/average depth pairs
+        avg_hydropapthy: dictionary with cavity name/average hydropathy pairs
         residues (dict): dictionary with cavity name/list of interface residues pairs
+        frequencies (dict): dictionary with frequencies of residues and class of residues of each detected cavity
         step (float): grid spacing (A)
 
     Returns
@@ -367,6 +370,8 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
         ligand = os.path.abspath(ligand)
     if output:
         output = os.path.abspath(output)
+    if output_hydropathy:
+        output_hydropathy = os.path.abspath(output_hydropathy)
 
     # Create results dictionary
     results = {
@@ -374,6 +379,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
             'INPUT': pdb,
             'LIGAND': ligand,
             'OUTPUT': output,
+            'HYDROPATHY': output_hydropathy,
         },
         'PARAMETERS': {
             'STEP': step,
@@ -383,6 +389,7 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, volume: dict = No
             'AREA': area,
             'MAX_DEPTH': max_depth,
             'AVG_DEPTH': avg_depth,
+            'AVG_HYDROPATHY': avg_hydropathy,
             'RESIDUES': residues,
             'FREQUENCY': frequencies,
         }
