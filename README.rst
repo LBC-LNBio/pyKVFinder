@@ -784,7 +784,7 @@ In addition, the user can define one of the native hydrophobicity scale. The nat
 
   .. code-block:: bash
 
-$ pyKVFinder <.pdb> --hydropathy EisenbergWeiss
+    $ pyKVFinder <.pdb> --hydropathy EisenbergWeiss
     $ pyKVFinder <.pdb> --hydropathy HessaHeijne
     $ pyKVFinder <.pdb> --hydropathy KyteDoolitte
     $ pyKVFinder <.pdb> --hydropathy MoonFleming
