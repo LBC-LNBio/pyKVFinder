@@ -1,7 +1,7 @@
 import os
 import time
 import logging
-import numpy as np
+import numpy
 from datetime import datetime
 from .argparser import argparser
 from .utils import read_vdw, read_pdb, calculate_frequencies, plot_frequencies, write_results, _write_parameters
@@ -130,8 +130,9 @@ def cli():
             output_plot = os.path.join(args.output_directory, f"{args.base_name}.histograms.pdf")
             plot_frequencies(frequencies, output_plot)
         
-        # Map hydrophobicity scales
+        # Hydropathy characterization
         if args.hydropathy:
+            # Map hydrophobicity scales
             scales, avg_hydropathy = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.hydropathy, args.ignore_backbone, args.nthreads, args.verbose)
             output_hydropathy = os.path.join(args.output_directory, f"{args.base_name}.{list(avg_hydropathy.keys())[-1]}.pdb")
         else:
@@ -167,10 +168,12 @@ class pyKVFinderResults(object):
         cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
         surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
         depths (numpy.ndarray): depth of cavity points (depths[nx][ny][nz])
+        scales (numpy.ndarray): hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
         volume (dict): dictionary with cavity name/volume pairs
         area (dict): dictionary with cavity name/area pairs
         max_depth (dict): dictionary with cavity name/maximum depth pairs
         avg_depth (dict): dictionary with cavity name/average depth pairs
+        avg_hydropathy (dict): dictionary with cavity name/average hydropathy pairs and range of the hydrophobicity scale mapped
         residues (dict): dictionary with cavity name/list of interface residues pairs
         frequency (dict): dictionary containing frequencies of residues and class of residues for for each detected cavity
         _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
@@ -181,17 +184,17 @@ class pyKVFinderResults(object):
 
     Methods
     -------
-        export(fn = 'cavity.pdb', nthreads = {os.cpu_count() - 1}):
-            Exports cavities to PDB-formatted file
-        write(fn = 'results.toml', output = None):
-            Writes TOML-formatted results file
-        plot_frequencies(pdf = 'histogram.pdf')
-            Plot histograms of frequencies in PDF file
-        export_all(fn = 'results.toml', output = 'cavity.pdb', include_frequencies_plot = False, nthreads = {os.cpu_count() - 1}):
-            Exports cavities and writes results. Also includes a flag to plot histograms of frequencies (residues and classes of residues).
+        export(output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', nthreads = {os.cpu_count() - 1}):
+            Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points (scales; optional).
+        write(fn = 'results.toml', output = None, output_hydropathy = None):
+            Writes TOML-formatted results file.
+        plot_frequencies(pdf = 'histograms.pdf')
+            Plot histograms of frequencies in PDF file.
+        export_all(fn = 'results.toml', output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', include_frequencies_pdf = False, pdf = 'histogtrams.pdf', nthreads = {os.cpu_count() - 1}):
+            Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, hydropathy to PDB-formatted file as B-factor at surface points (scales; optional), and writes TOML-formatted results file..Also includes a flag to plot histograms of frequencies (residues and classes of residues).
     """
 
-    def __init__(self, cavities: np.ndarray, surface: np.ndarray, depths: np.ndarray, volume: dict, area: dict, max_depth: dict, avg_depth: dict, residues: dict, frequencies: dict, _vertices: np.ndarray, _step: float, _ncav: int, _pdb: str = None, _ligand: str = None):
+    def __init__(self, cavities: numpy.ndarray, surface: numpy.ndarray, depths: numpy.ndarray, scales: numpy.ndarray, volume: dict, area: dict, max_depth: dict, avg_depth: dict, avg_hydropathy: dict, residues: dict, frequencies: dict, _vertices: numpy.ndarray, _step: float, _ncav: int, _pdb: str = None, _ligand: str = None):
         """
         Constructs attributes for pyKVFinderResults object
 
@@ -200,10 +203,12 @@ class pyKVFinderResults(object):
             cavities (numpy.ndarray): cavities 3D grid (cavities[nx, ny, nz])
             surface (numpy.ndarray): surface points 3D grid (surface[nx, ny, nz])
             depths (numpy.ndarray): depth of cavity points (depth[nx][ny][nz])
+            scales (numpy.ndarray): hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
             volume (dict): dictionary with cavity name/volume pairs
             area (dict): dictionary with cavity name/area pairs
             max_depth (dict): dictionary with cavity name/maximum depth pairs
             avg_depth (dict): dictionary with cavity name/average depth pairs
+            avg_hydropathy (dict): dictionary with cavity name/average hydropathy pairs and range of the hydrophobicity scale mapped
             residues (dict): dictionary with cavity name/list of interface residues pairs
             _vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
             _step (float): grid spacing (A)
@@ -214,10 +219,12 @@ class pyKVFinderResults(object):
         self.cavities = cavities
         self.surface = surface
         self.depths = depths
+        self.scales = scales
         self.volume = volume
         self.area = area
         self.max_depth = max_depth
         self.avg_depth = avg_depth
+        self.avg_hydropathy = avg_hydropathy
         self.residues = residues
         self.frequencies = frequencies
         self._vertices = _vertices
@@ -229,13 +236,14 @@ class pyKVFinderResults(object):
     def __repr__(self):
         return '<pyKVFinderResults object>'
 
-    def export(self, output: str = 'cavity.pdb', nthreads: int = os.cpu_count() - 1) -> None:
+    def export(self, output: str = 'cavity.pdb', output_hydropathy: str = 'hydropathy.pdb', nthreads: int = os.cpu_count() - 1) -> None:
         """
-        Exports cavities to PDB-formatted file
+        Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points (scales; optional).
 
         Parameters
         ----------
             output (str): path to cavity pdb file
+            output_hydropathy (str): path to hydropathy PDB file
             nthreads (int): number of threads
 
         Returns
@@ -243,9 +251,9 @@ class pyKVFinderResults(object):
             None
         """
         sincos = get_sincos(self._vertices)
-        export(output, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, self.depths, nthreads)
+        export(output, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, self.depths, output_hydropathy, self.scales, nthreads)
 
-    def write(self, fn: str = 'results.toml', output: str = None) -> None:
+    def write(self, fn: str = 'results.toml', output: str = None, output_hydropathy: str = None) -> None:
         """
        Writes file paths and cavity characterization to TOML-formatted file
 
@@ -253,13 +261,15 @@ class pyKVFinderResults(object):
         ----------
             fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
             output (str): path to cavity pdb file
+            output_hydropathy (str): path to hydropathy PDB file
 
         Returns
         -------
             None
         """
         output = os.path.abspath(output) if output else None
-        write_results(fn, self._pdb, self._ligand, output, self.volume, self.area, self.max_depth, self.avg_depth, self.residues, self.frequencies, self._step)
+        output_hydropathy = os.path.abspath(output_hydropathy) if output else None
+        write_results(fn, self._pdb, self._ligand, output, output_hydropathy, self.volume, self.area, self.max_depth, self.avg_depth, self.avg_hydropathy, self.residues, self.frequencies, self._step)
 
     def plot_frequencies(self, pdf: str = 'histograms.pdf'):
         """
@@ -275,15 +285,17 @@ class pyKVFinderResults(object):
         """
         plot_frequencies(self.frequencies, pdf)
 
-    def export_all(self, fn: str = 'results.toml', output: str = 'cavity.pdb', include_plot_frequencies: bool = False, nthreads: int = os.cpu_count() - 1) -> None:
+    def export_all(self, fn: str = 'results.toml', output: str = 'cavity.pdb', output_hydropathy: str = 'hydropathy.pdb', include_frequencies_pdf: bool = False, pdf: str = 'histograms.pdf', nthreads: int = os.cpu_count() - 1) -> None:
         """
-        Exports cavities and writes results. Also includes a flag to plot histograms of frequencies (residues and classes of residues).
+        Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, hydropathy to PDB-formatted file as B-factor at surface points (scales; optional), and writes TOML-formatted results file..Also includes a flag to plot histograms of frequencies (residues and classes of residues).
 
         Parameters
         ----------
             fn (str): path to results TOML-formatted file (step, volume, area, maximum depth, average depth and interface residues)
             output (str): path to cavity pdb file
-            include_plot_frequencies (bool): whether to plot frequencies (residues and classes of residues) to PDF file
+            output_hydropathy (str): path to hydropathy PDB file
+            include_frequencies_pdf (bool): whether to plot frequencies (residues and classes of residues) to PDF file
+            pdf (str): path to a PDF file
             nthreads (int): number of threads
 
         Returns
@@ -291,15 +303,15 @@ class pyKVFinderResults(object):
             None
         """
         # Export cavity PDB file
-        self.export(output, nthreads)
+        self.export(output, output_hydropathy, nthreads)
         # Write KVFinder results TOML
-        self.write(fn, output)
+        self.write(fn, output, output_hydropathy)
         # Plot histograms of frequencies
-        if include_plot_frequencies:
-            self.plot_frequencies()
+        if include_frequencies_pdf:
+            self.plot_frequencies(pdf)
 
 
-def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box: str = None, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, ligand_cutoff: float = 5.0, include_depth: bool = False, surface: str = 'SES', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> pyKVFinderResults:
+def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box: str = None, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, ligand_cutoff: float = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: str = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> pyKVFinderResults:
     """
     Detects and characterizes cavities (volume, area and interface residues)
 
@@ -316,6 +328,8 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         volume_cutoff (float): cavities volume filter (A3)
         ligand_cutoff (float): radius value to limit a space around a ligand (A)
         include_depth (bool): whether to characterize the depth of the detected cavities
+        include_hydropathy (bool): whether to characterize the hydropathy of the detected cavities
+        hydrophobicity_scale (str): name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
         surface (str): SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
         ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
         nthreads (int): number of threads
@@ -323,7 +337,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
     Returns
     -------
-        results (pyKVFinderResults): class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, volume, area, maximum depth and average depth and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
+        results (pyKVFinderResults): class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, 3D grid of surface points mapped with a hydrophobicity scale, volume, area, maximum depth and average depth, average hydropathy, and interface residues per cavity, 3D grid vertices, grid spacing and number of cavities
     """
     if verbose:
         print("> Loading atomic dictionary file")
@@ -381,10 +395,16 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         # Constitutional characterization
         residues = constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
         frequencies = calculate_frequencies(residues)
+
+        # Hydropathy hydrophobicity scales
+        if include_hydropathy:
+            scales, avg_hydropathy = hydropathy(surface, resinfo, xyzr, vertices, sincos, ncav, step, probe_in, hydrophobicity_scale, ignore_backbone, nthreads, verbose)
+        else:
+            scales, avg_hydropathy = None, None
     else:
-        volume, area, residues, depths, max_depth, avg_depth = None, None, None, None, None, None
+        volume, area, residues, depths, max_depth, avg_depth, scales, avg_hydropathy = None, None, None, None, None, None, None, None
 
     # Return dict
-    results = pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, frequencies, vertices, step, ncav, pdb, ligand)
+    results = pyKVFinderResults(cavities, surface, depths, scales, volume, area, max_depth, avg_depth, avg_hydropathy, residues, frequencies, vertices, step, ncav, pdb, ligand)
 
     return results

@@ -564,7 +564,7 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
 
 def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, output_hydropathy: str = 'hydropathy.pdb', scales: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:
     """
-    Exports cavities to PDB file, with variable as B-factor (optional)
+    Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points (scales; optional)
 
     Parameters
     ----------
@@ -601,4 +601,3 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         pass
     else:
         _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
-

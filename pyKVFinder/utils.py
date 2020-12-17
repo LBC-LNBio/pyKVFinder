@@ -276,7 +276,7 @@ def plot_frequencies(frequencies: dict, fn: str = 'histograms.pdf') -> None:
     from matplotlib.backends.backend_pdf import PdfPages
 
     # Create base directories of output PDF file
-    os.makedirs(os.path.abspath(os.path.dirname(pdf)), exist_ok=True)
+    os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
 
     # Create a dictionary for standard amino acids
     tmp = {'ALA': 0, 'ARG': 0, 'ASN': 0, 'ASP': 0, 'CYS': 0, 'GLN': 0, 'GLU': 0, 'GLY': 0, 'HIS': 0, 'ILE': 0, 'LEU': 0, 'LYS': 0, 'MET': 0, 'PHE': 0, 'PRO': 0, 'SER': 0, 'THR': 0, 'TRP': 0, 'TYR': 0, 'VAL': 0}

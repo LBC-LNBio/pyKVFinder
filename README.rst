@@ -37,8 +37,8 @@ Or to install the latest developmental version, run:
 API Reference
 =============
 
-``pyKVFinder.pyKVFinder(pdb, ligand, dictionary, box, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, include_depth = False, surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
-  Detects and characterizes cavities (volume, area, depth [optional] and interface residues).
+``pyKVFinder.pyKVFinder(pdb, ligand, dictionary, box, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, include_depth = False, include_hydropathy = False, hydrophobicity_scale = 'EisenbergWeiss', surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
+  Detects and characterizes cavities (volume, area, depth [optional], hydropathy [optional] and interface residues).
 
   :Args:
     * ``pdb`` : *str*
@@ -63,6 +63,10 @@ API Reference
         Radius value to limit a space around a ligand (A)
     * ``include_depth`` : *bool, default False*
         Whether to characterize the depth of the detected cavities
+    * ``include_hydropathy`` : *bool, default False*
+        Whether to characterize the hydropathy of the detected cavities
+    * ``hydrophobicity_scale`` : *str, default EisenbergWeiss*
+        Name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
     * ``surface`` : *str, default 'SES'*
         SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
     * ``ignore_backbone`` :  *bool, default False*
@@ -74,7 +78,7 @@ API Reference
 
   :Returns:
     ``pyKVFinderResults`` : *object*
-        A class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, volume, area, maximum depth and average depth, and interface residues and their frequencies (residues and classes of residues) per cavity, 3D grid vertices, grid spacing and number of cavities
+        A class that contains cavities 3D grid, surface points 3D grid, 3D grid of cavity points depth, 3D grid of surface points mapped with a hydrophobicity scale, volume, area, maximum depth and average depth, average hydropathy, and interface residues and their frequencies (residues and classes of residues) per cavity, 3D grid vertices, grid spacing and number of cavities
 
 ``pyKVFinder.read_vdw(fn = "vdw.dat")``
   Reads van der Waals radii from .dat file.
@@ -333,9 +337,9 @@ API Reference
         Grid spacing (A)
     * ``B`` : *numpy.ndarray*
         B-factor for cavity points (B[nx][ny][nz])
-    * ``hydropathy_output`` :  *str*
+    * ``output_hydropathy`` :  *str, default 'hydropathy.pdb'*
         A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
-    * ``scales``: *numpy.ndarray*
+    * ``scales``: *numpy.ndarray, default None*
         Hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
@@ -408,7 +412,7 @@ API Reference
         A path to ligand PDB file
     * ``output`` :  *str*
         A path to cavity PDB file
-    * ``hydropathy_output`` :  *str*
+    * ``output_hydropathy`` :  *str*
         A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
     * ``volume`` : *dict*
         A dictionary with volume of each detected cavity
@@ -428,7 +432,7 @@ API Reference
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
-``pyKVFinder.pyKVFinderResults(cavities, surface, depths, volume, area, max_depth, avg_depth, residues, _vertices, _step, _ncav)``
+``pyKVFinder.pyKVFinderResults(cavities, surface, depths, scales, volume, area, max_depth, avg_depth, avg_hydropathy, residues, _vertices, _step, _ncav, _pdb = None, _ligand = None)``
   A class containing pyKVFinder detection and characterization results.
 
   :Attributes:
@@ -438,6 +442,8 @@ API Reference
         A numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz])
     * ``depths`` : *numpy.ndarray*
         A numpy array with depth of cavity points (depth[nx][ny][nz])
+    * ``scales``: *numpy.ndarray*
+        Hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
     * ``volume`` : *dict*
         A dictionary with volume of each detected cavity
     * ``area`` : *dict*
@@ -446,6 +452,8 @@ API Reference
         A dictionary with maximum depth of each detected cavity
     * ``avg_depth`` : *dict*
         A dictionary with average depth of each detected cavity
+    * ``avg_hydropathy`` : *dict*
+        A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
     * ``residues`` : *dict*
         A dictionary with interface residues of each detected cavity
     * ``frequency`` : *dict*
@@ -462,28 +470,30 @@ API Reference
         A path to ligand PDB file
 
   :Methods:
-    * ``export(output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
-        Exports cavities to PDB-formatted file
-    * ``write(fn = 'results.toml')``
+    * ``export(output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', nthreads = os.cpu_count() - 1)``
+        Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points (scales; optional)
+    * ``write(fn = 'results.toml', output = None, output_hydropathy = None)``
         Writes TOML-formatted results file
     * ``plot_frequencies(pdf = 'histogram.pdf')``
         Plot histograms of frequencies in PDF file
-    * ``export_all(fn = 'results.toml', output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
-        Exports cavities and writes results. Also includes a flag to plot histograms of frequencies (residues and classes of residues).
+    * ``export_all(fn = 'results.toml', output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', include_frequencies_pdf = False, pdf = 'histogtrams.pdf', nthreads = os.cpu_count() - 1)``
+        Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, hydropathy to PDB-formatted file as B-factor at surface points (scales; optional), and writes TOML-formatted results file..Also includes a flag to plot histograms of frequencies (residues and classes of residues)
 
-``pyKVFinder.pyKVFinderResults.export(output = 'cavity.pdb', nthreads = os.cpu_count() - 1)``
-  Exports cavities to PDB-formatted file.
+``pyKVFinder.pyKVFinderResults.export(output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', nthreads = os.cpu_count() - 1)``
+  Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points (scales; optional).
 
   :Args:
     * ``output`` : *str, default 'cavity.pdb'*
         A path to PDB file for writing cavities
+    * ``output_hydropathy`` : *str, default 'hydropathy.pdb'*
+        A path to PDB file for writing hydropathy at surface points
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
 
   :Returns:
-    A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
+    A file with PDB-formatted data corresponding to cavity points (H), surface points (HA) and a target variable (B) as B-factor, and (optional) a file with PDB-formatted data corresponding to hydropathy mapped as B-factor at surface points (HA).
 
-``pyKVFinder.pyKVFinderResults.write(fn = 'results.toml, output = None)``
+``pyKVFinder.pyKVFinderResults.write(fn = 'results.toml, output = None, output_hydropathy = None)``
   Writes file paths and cavity characterization to TOML-formatted file.
 
   :Args:
@@ -491,6 +501,8 @@ API Reference
         A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected
     * ``output`` : *str, default None*
         A path to a cavity PDB file
+    * ``output_hydropathy`` : *str, default None*
+        A path to PDB file for writing hydropathy at surface points
 
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
@@ -505,7 +517,7 @@ API Reference
   :Returns:
     A PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
 
-``pyKVFinder.pyKVFinderResults.export_all(fn = 'results.toml', output = 'cavity.pdb', include_frequencies_plot = False, nthreads = os.cpu_count() - 1)``
+``pyKVFinder.pyKVFinderResults.export_all(fn = 'results.toml', output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', include_frequencies_pdf = False, pdf = 'histogtrams.pdf', nthreads = os.cpu_count() - 1)``
   Exports cavities to PDB-formatted file and writes results to TOML-formatted file.
 
   :Args:
@@ -513,13 +525,17 @@ API Reference
         A path to TOML-formatted file for writing file paths and cavity characterization (volume, area and interface residues) per cavity detected
     * ``output`` : *str, default 'cavity.pdb'*
         A path to PDB file for writing cavities
-    * ``include_plot_frequencies`` : *bool, default False*
+    * ``output_hydropathy`` : *str, default 'hydropathy.pdb'*
+        A path to PDB file for writing hydropathy at surface points
+    * ``include_frequencies_pdf`` : *bool, default False*
         Whether to plot frequencies (residues and classes of residues) to PDF file
+    * ``pdf`` : *str, default 'histograms.pdf'*
+        A path to a PDF file
     * ``nthreads`` : *int, default 'number of cpus - 1'*
         Number of threads
 
   :Returns:
-    A file with PDB-formatted data corresponding to cavity points, a file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity and optionally a PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
+    A file with PDB-formatted data corresponding to cavity points (H), surface points (HA) and a target variable (B) as B-factor, (optional) a file with PDB-formatted data corresponding to hydropathy mapped as B-factor at surface points (HA), a file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity and (optinal) a PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
 
 Van der Waals Radii File Template
 =================================
