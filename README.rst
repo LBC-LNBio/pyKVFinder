@@ -825,7 +825,7 @@ The ligand adjustment arguments are:
 
     $ pyKVFinder <.pdb> -L <.pdb> --ligand_cutoff <float>
 
-:Default: ``5.0``
+  :Default: ``5.0``
 
 Licensing
 =========
