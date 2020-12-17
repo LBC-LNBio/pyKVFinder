@@ -375,7 +375,7 @@ def _process_depth(raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, n
 
     Parameters
     ----------
-        raw_max_depth (numpy.ndarray): an array of maximum depth 
+        raw_max_depth (numpy.ndarray): an array of maximum depth
         raw_avg_depth (numpy.ndarray): an array of average depth
         ncav (int): number of cavities
 
@@ -504,7 +504,7 @@ def _process_hydropathy(raw_avg_hydropathy: numpy.ndarray, ncav: int) -> tuple:
     return avg_hydropathy
 
 
-def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in = 1.4, hydrophobicity_scale: str = 'EisenbergWeiss', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, hydrophobicity_scale: str = 'EisenbergWeiss', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
     """
     Hydropathy characterization of the detected cavities. Map a hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.
 
@@ -552,13 +552,13 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
         xyzr = xyzr[mask[0]]
 
     # Get residue name from resinfo
-    resname = list(map(lambda x: x.split("_")[2], resinfo[:,0]))
+    resname = list(map(lambda x: x.split("_")[2], resinfo[:, 0]))
 
     # Get hydrophobicity scales in 3D grid and average hydropathy
     scales, avg_hydropathy = _hydropathy(nvoxels, ncav, surface, xyzr, P1, sincos, resname, resn, scale, step, probe_in, nthreads, verbose)
     avg_hydropathy = _process_hydropathy(avg_hydropathy, ncav)
     avg_hydropathy[f"{name}"] = [float(scale.min()), float(scale.max())]
-    
+
     return scales.reshape(nx, ny, nz), avg_hydropathy
 
 
@@ -595,7 +595,7 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
     else:
         _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append)
-    
+
     # Export hydropathy surface points
     if scales is None:
         pass

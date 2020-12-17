@@ -30,6 +30,7 @@ def _check_hydropathy_options(x: str) -> str:
         msg = f"invalid choice: {x} (choose from \'EisenbergWeiss\', \'HessaHeijne\', \'KyteDoolitte\', \'MoonFleming\', \'WimleyWhite\', \'ZhaoLondon\' or define a TOML-formatted file with hydrophobicity values for standard residues)"
         raise(argparse.ArgumentTypeError(msg))
 
+
 def _positive_float(x: float) -> float:
     """
     Checks if x is a float
@@ -207,7 +208,7 @@ def argparser() -> argparse.ArgumentParser:
                              help="Plot histograms of calculated frequencies of the detected cavities in a PDF file. (default: %(default)s)")
     extra_modes.add_argument("--hydropathy",
                              type=_check_hydropathy_options,
-                             metavar = "{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}",
+                             metavar="{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}",
                              nargs='?',
                              const='EisenbergWeiss',
                              default=None,

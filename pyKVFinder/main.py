@@ -129,7 +129,7 @@ def cli():
         if args.plot_frequencies:
             output_plot = os.path.join(args.output_directory, f"{args.base_name}.histograms.pdf")
             plot_frequencies(frequencies, output_plot)
-        
+
         # Hydropathy characterization
         if args.hydropathy:
             # Map hydrophobicity scales
