@@ -30,17 +30,17 @@
 /* Bfactor grid */
 %apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int nxxx, int nyyy, int nzzz)}
 
-/* Depth arrays */
-%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* max_depth, int nmax), (double* avg_depth, int navg)}
-
-/* Hydrophobicity scales values array */
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double *scales, int nscales)}
-
 /* Volume array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int nvol)}
 
 /* Area array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* areas, int narea)}
+
+/* Depth arrays */
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* max_depth, int nmax), (double* avg_depth, int navg)}
+
+/* Average hydropathy array */
+%apply (double* ARGOUT_ARRAY1, int DIM1) {(double* avgh, int ncav)}
 
 /* Origin coordinates */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims
@@ -58,6 +58,9 @@
 
 /* Sine and Cossine */
 %apply (double* INPLACE_ARRAY1, int DIM1) {(double *sincos, int nvalues)}
+
+/* Hydrophobicity scale array */
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *scales, int nscales)}
 
 %include "typemaps.i"
 

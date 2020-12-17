@@ -1108,8 +1108,8 @@ volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *vo
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    for (i=0; i<ncav; i++)
-        volumes[i] = 0.0;
+    // Initialize volumes array
+    dgrid (volumes, ncav);
 
     #pragma omp parallel default(none), shared(volumes, cavities, ncav, step, nx, ny, nz), private(i, j, k)
     {
@@ -1332,8 +1332,8 @@ remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundarie
 /* Estimate depth */
 
 /*
- * Function: define_depth
- * ----------------------
+ * Function: estimate_depth
+ * ------------------------
  * 
  * Calculate depth of each cavity point and maximum and average depth of cavities
  * 
@@ -1691,6 +1691,7 @@ char
  * verbose: print extra information to standard output
  * 
  * returns: array of strings with interface residues with cavities separated by '-1'
+ * 
  */
 char
 ** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads, int verbose)
@@ -1704,8 +1705,20 @@ char
     return residues;
 }
 
-/* Hydropathy characterization */
+/* Estimate hydropathy */
 
+/*
+ * Function: get_hydrophobicity_value
+ * ----------------------------------
+ * 
+ * Get hydrophobicity scale value for a target residue name
+ * 
+ * resname: target residue name
+ * resn: 1D-array hydrophobicity scale residues names
+ * scales: 1D-array of hydrophocity scale values
+ * nscales: size of 1D-array of scales and resn
+ * 
+ */
 double 
 get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscales)
 {
@@ -1719,8 +1732,35 @@ get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscale
     return 0.0;
 }
 
+/*
+ * Function: project_hydropathy
+ * ---------------------------
+ * 
+ * Map a hydrophobicity scale per surface point of detected cavities.
+ * 
+ * hydropathy: hydrophobicity scale 3D grid
+ * surface: surface points 3D grid
+ * nxx: x grid units
+ * nyy: y grid units
+ * nzz: z grid units
+ * atoms: xyz coordinates and radii of input pdb
+ * natoms: number of atoms
+ * xyzr: number of data per atom (4: xyzr)
+ * reference: xyz coordinates of 3D grid origin
+ * ndims: number of coordinates (3: xyz)
+ * sincos: sin and cos of 3D grid angles
+ * nvalues: number of sin and cos (sina, cosa, sinb, cosb)
+ * resname: 1D-array of residues names
+ * resn: 1D-array hydrophobicity scale residues names
+ * scales: 1D-array of hydrophocity scale values
+ * nscales: size of 1D-array of scales and resn
+ * step: 3D grid spacing (A)
+ * probe_in: Probe In size (A)
+ * nthreads: number of threads for OpenMP
+ * 
+ */
 void 
-define_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int ncav, int nthreads)
+project_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads)
 {
     int i, j, k, atom, *ref;
     double x, y, z, xaux, yaux, zaux, distance, H;
@@ -1781,15 +1821,104 @@ define_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz, 
     free(ref);
 }
 
+/* Estimate average hydropathy */
+
+/*
+ * Function: estimate_average_hydropathy
+ * -------------------------------------
+ * 
+ * Calculate average hydropathy of detected cavities.
+ * 
+ * avgh: empty array of average hydropathy
+ * ncav: number of cavities
+ * hydropathy: hydrophobicity scale 3D grid
+ * surface: surface points 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+void
+estimate_average_hydropathy (double *avgh, int ncav, double *hydropathy, int *surface, int nx, int ny, int nz, int nthreads)
+{
+    int i, j, k, *pts;
+
+    // Initialize array to get number of points in each cavity
+    pts = (int *) calloc (ncav, sizeof(int));
+    igrid (pts, ncav);
+
+    // Initialize average hydropathy array
+    dgrid (avgh, ncav);
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads (nthreads);
+    omp_set_nested (1);
+
+    #pragma omp parallel default(none), shared(avgh, hydropathy, surface, pts, nx, ny, nz), private(i, j, k)
+    {
+        #pragma omp for collapse(3)
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++)
+                        if (surface[k + nz * (j + ( ny * i ) )] > 1)
+                        {
+                            pts[surface[k + nz * (j + ( ny * i ) )] - 2]++;
+                            avgh[surface[k + nz * (j + ( ny * i ) )] - 2] += hydropathy[k + nz * (j + ( ny * i ) )];
+                        }
+    }
+
+    for (i=0; i<ncav; i++)
+        avgh[i] /= pts[i];
+
+    // Free array with number of points per cavity
+    free(pts);
+}
+
+/* Hydropathy characterization */
+
+/*
+ * Function: _hydropathy
+ * ---------------------
+ * 
+ * Hydropathy characterization of the detected cavities. Map a hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.
+ * 
+ * hydropathy: hydrophobicity scale 3D grid
+ * size: number of voxels in 3D grid
+ * avgh: empty array of average hydropathy
+ * ncav: number of cavities
+ * surface: surface points 3D grid
+ * nxx: x grid units
+ * nyy: y grid units
+ * nzz: z grid units
+ * atoms: xyz coordinates and radii of input pdb
+ * natoms: number of atoms
+ * xyzr: number of data per atom (4: xyzr)
+ * reference: xyz coordinates of 3D grid origin
+ * ndims: number of coordinates (3: xyz)
+ * sincos: sin and cos of 3D grid angles
+ * nvalues: number of sin and cos (sina, cosa, sinb, cosb)
+ * resname: 1D-array of residues names
+ * resn: hydrophobicity scale residues names
+ * scales: 1D-array of hydrophocity scale values
+ * step: 3D grid spacing (A)
+ * probe_in: Probe In size (A)
+ * nthreads: number of threads for OpenMP
+ * verbose: print extra information to standard output
+ * 
+ * returns: hydropathy (3D grid with hydrophobicity scale of surface points), and avg_h (array of average hydropathy)
+ * 
+ */
 void 
-_hydropathy (double *hydropathy, int size, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int ncav, int nthreads, int verbose)
+_hydropathy (double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose)
 {
     if (verbose)
-        fprintf(stdout, "> Mapping hydrophobicity scale at surface points\n");
-    define_hydropathy (hydropathy, surface, nxx, nyy, nzz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, resname, resn, scales, nscales, step, probe_in, ncav, nthreads);
+        fprintf (stdout, "> Mapping hydrophobicity scale at surface points\n");
+    project_hydropathy (hydropathy, surface, nxx, nyy, nzz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, resname, resn, scales, nscales, step, probe_in, nthreads);
 
     if (verbose)
-        fprintf(stdout, "> Estimating average hydropathy\n");
+        fprintf (stdout, "> Estimating average hydropathy\n");
+    estimate_average_hydropathy (avgh, ncav, hydropathy, surface, nxx, nyy, nzz, nthreads);
     
 }
 
@@ -1828,8 +1957,8 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx,
 	FILE *output;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads(nthreads);
-    omp_set_nested(1);
+    omp_set_num_threads (nthreads);
+    omp_set_nested (1);
 
 	// Open cavity PDB file
     if (append)

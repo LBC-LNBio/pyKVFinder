@@ -68,24 +68,15 @@ char **interface (int *cavities, int nx, int ny, int nz, char **pdb, double *ato
 /* Constitutional characterization */
 char ** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads, int verbose);
 
-/* Hydropathy characterization */
+/* Estimate hydropathy */
 double get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscales);
-void 
-_hydropathy (
-    double *hydropathy, int size,
-    int *surface, int nxx, int nyy, int nzz,
-    double *atoms, int natoms, int xyzr,
-    double *reference, int ndims, 
-    double *sincos, int nvalues, 
-    char **resname,
-    char **resn,
-    double *scales, int nscales,
-    double step, 
-    double probe_in,
-    int ncav,
-    int nthreads, 
-    int verbose
-);
+void project_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads);
+
+/* Estimate average hydropathy */
+void estimate_average_hydropathy (double *avgh, int ncav, double *hydropathy, double *surface, int nx, int ny, int nz, int nthreads);
+
+/* Hydropathy characterization */
+void _hydropathy (double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose);
 
 /* Export cavity PDB */
 void _export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append);

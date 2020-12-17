@@ -133,7 +133,7 @@ def cli():
         # Map hydrophobicity scales
         if args.hydropathy:
             from .grid import hydropathy
-            scales = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, args.hydropathy, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+            scales, avgh = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, args.hydropathy, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
 
         # Export cavities
         output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
