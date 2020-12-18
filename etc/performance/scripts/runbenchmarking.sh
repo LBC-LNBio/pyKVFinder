@@ -17,6 +17,8 @@ if [ -z "$1" ]; then
 	exit
 fi
 
+mkdir ${OUTPUT_DIRECTORY}/data
+
 ################## Benchmarking dataset ##################
 printf "[===> Downloading kv1000 dataset\n"
 git clone https://github.com/jvsguerra/kv1000.git
