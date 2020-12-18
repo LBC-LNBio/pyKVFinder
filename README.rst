@@ -651,7 +651,7 @@ The optional arguments are:
 
     $ pyKVFinder <.pdb> --verbose
 
-  :Default: ``None``
+  :Default: ``False``
 
 * ``-b <str>`` or ``--base_name <str>``: A prefix for output files.
 

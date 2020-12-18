@@ -122,7 +122,7 @@ def argparser() -> argparse.ArgumentParser:
     parser.add_argument("-v", "--verbose",
                         help="Print extra information to standard output.",
                         action="store_true",
-                        default=None)
+                        default=False)
     parser.add_argument('--version',
                         action='version',
                         version=f'{__name__} v{__version__}',

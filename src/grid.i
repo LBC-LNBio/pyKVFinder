@@ -43,12 +43,10 @@
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* avgh, int ncav)}
 
 /* Origin coordinates */
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims
-)}
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *reference, int ndims)}
 
 /* X-axis vertice coordinates */
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double *P2, int nndims
-)}
+%apply (double* INPLACE_ARRAY1, int DIM1) {(double *P2, int nndims)}
 
 /* PDB coordinates */
 %apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double *atoms, int natoms, int xyzr)}
