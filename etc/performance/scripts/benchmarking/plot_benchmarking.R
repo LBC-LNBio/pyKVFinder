@@ -801,7 +801,7 @@ pyKVFinder.hydropathy$efficiency = pyKVFinder.hydropathy$speedup / pyKVFinder.hy
 ###   Description: Lineplots with pyKVFinder-hydropathy time against number of atoms for different number of threads
 ###
 
-p <- ggplot(pyKVFinder.depth, aes(x=natoms, y=average_time)) +
+p <- ggplot(pyKVFinder.hydropathy, aes(x=natoms, y=average_time)) +
 
     geom_jitter(aes(group=as.factor(nthreads), color=as.factor(nthreads)), alpha=0.4, size=0.5) +
 
@@ -813,9 +813,9 @@ p <- ggplot(pyKVFinder.depth, aes(x=natoms, y=average_time)) +
     
     theme_bw() +
     labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1)) +
-    scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder.depth$nthreads)), "Average")) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$average_time)[2] / 1) * 1)) +
+    scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$natoms)[2] / 100) * 100 + 100)) +
+    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder.hydropathy$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -841,11 +841,11 @@ dev.off()
 dir.create('plots/pyKVFinder-hydropathy/speedup')
 
 # Boxplot grouped by software: Time x Number of threads
-p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthreads))) +
+p <- ggplot(pyKVFinder.hydropathy, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthreads))) +
         geom_boxplot() +
         theme_bw() +
         labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
-        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
         theme(legend.position="none",
             axis.text.x = element_text(size = 14), 
             axis.text.y = element_text(size = 18, hjust = 1),
@@ -869,13 +869,13 @@ dev.off()
 ###   Description: Lineplot with speedup against number of threads
 ###
 
-p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = speedup)) +
+p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = speedup)) +
     stat_summary(fun = mean, geom = "line", color = 4, linetype = 1, size = 1) +
     stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
     stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
     scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
@@ -901,11 +901,11 @@ dev.off()
 dir.create('plots/pyKVFinder-hydropathy/efficiency')
 
 # Boxplot grouped by software: Time x Number of threads
-p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.factor(nthreads))) +
+p <- ggplot(pyKVFinder.hydropathy, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.factor(nthreads))) +
         geom_boxplot() +
         theme_bw() +
         labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
-        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
+        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]) + 1)) +
         theme(legend.position="none",
             axis.text.x = element_text(size = 14), 
             axis.text.y = element_text(size = 18, hjust = 1),
@@ -929,13 +929,13 @@ dev.off()
 ###   Description: Lineplot with speedup against number of threads
 ###
 
-p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = efficiency*100)) +
+p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = efficiency*100)) +
     stat_summary(fun = mean, geom = "line", color = 4, linetype = 1, size = 1) +
     stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
     stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]) + 1)) +
     scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
