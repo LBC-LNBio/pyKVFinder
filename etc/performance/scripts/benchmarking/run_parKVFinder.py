@@ -15,8 +15,8 @@ with open(fn, 'w') as f:
     f.write("pdb, avg_time, std_time\n")
     for pdb in pdbs:
         print(pdb)
-        t = numpy.zeros(5)
-        for i in range(0, 5):
+        t = numpy.zeros(3)
+        for i in range(0, 3):
             start = time.time()
             os.system(f"./parKVFinder{sys.argv[3]} {os.path.join(sys.argv[1], pdb)}")
             t[i] = time.time() - start

@@ -258,18 +258,18 @@ dir.create('plots/comparison/speedup')
 replicates = ( ncol(raw_time) - 2 ) / as.numeric(args[2])
 
 # Get number of atoms
-natoms = rep(raw_time$natoms, ncol(raw_time) - 2)
+natoms = rep(raw_time$natoms, replicates)
 
 # Get number of threads
-nthreads = colnames(raw_time)[3:(3+replicates-1)]
-for (i in 1:replicates) {
+nthreads = colnames(raw_time)[3:(replicates + 2)]
+for (i in 1:(replicates)) {
     nthreads[i] = strsplit(nthreads[i], "_")[[1]][2]
 }
 nthreads = as.numeric(nthreads)
 nthreads = rep(rep(nthreads, each = 1000))
 
 # Get speedup 
-speedup = raw_time[3:(replicates * as.numeric(args[2]) + 2)]
+speedup = raw_time[3:(2 * replicates + 2)]
 for (i in 1:replicates) {
     speedup[i+replicates] = speedup[i]/speedup[i+replicates]
 }
@@ -358,18 +358,18 @@ dir.create('plots/comparison/efficiency')
 replicates = ( ncol(raw_time) - 2 ) / as.numeric(args[2])
 
 # Get number of atoms
-natoms = rep(raw_time$natoms, ncol(raw_time) - 2)
+natoms = rep(raw_time$natoms, replicates)
 
 # Get number of threads
-nthreads = colnames(raw_time)[3:(3+replicates-1)]
-for (i in 1:replicates) {
+nthreads = colnames(raw_time)[3:(replicates + 2)]
+for (i in 1:(replicates)) {
     nthreads[i] = strsplit(nthreads[i], "_")[[1]][2]
 }
 nthreads = as.numeric(nthreads)
 nthreads = rep(rep(nthreads, each = 1000))
 
 # Get efficiency 
-efficiency = raw_time[3:(replicates * as.numeric(args[2]) + 2)]
+efficiency = raw_time[3:(2 * replicates + 2)]
 for (i in 1:replicates) {
     efficiency[i+replicates] = efficiency[i]/efficiency[i+replicates]
 }
@@ -614,5 +614,341 @@ p
 dev.off()
 
 png('plots/pyKVFinder/efficiency/lineplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> pyKVFinder --depth analysis: time, speedup, efficiency
+###
+
+dir.create('plots/pyKVFinder-depth')
+dir.create('plots/pyKVFinder-depth/time')
+
+pyKVFinder.depth = time[time$software == 'pyKVFinder.depth',]
+pyKVFinder.depth$speedup = pyKVFinder$average_time / pyKVFinder.depth$average_time
+pyKVFinder.depth$efficiency = pyKVFinder.depth$speedup / pyKVFinder.depth$nthreads
+
+###
+### [==> Plotting: plots/pyKVFinder-depth/time/lineplot_time_vs_atoms.svg)
+###   Description: Lineplots with pyKVFinder-depth time against number of atoms for different number of threads
+###
+
+p <- ggplot(pyKVFinder.depth, aes(x=natoms, y=average_time)) +
+
+    geom_jitter(aes(group=as.factor(nthreads), color=as.factor(nthreads)), alpha=0.4, size=0.5) +
+
+    geom_smooth(aes(group=as.factor(nthreads), color=as.factor(nthreads)), method='glm', se=FALSE, fullrange=TRUE) +
+
+    geom_smooth(color='black', method='glm', se=FALSE, fullrange=TRUE) +
+
+    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5) +
+    
+    theme_bw() +
+    labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1)) +
+    scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100 + 100)) +
+    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder.depth$nthreads)), "Average")) +
+
+    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 14, hjust = 1),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size=16)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
+        axis.title.x = element_text(size = 18),
+        legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-depth/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-depth/time/lineplot_time_vs_atoms.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-depth/speedup/boxplot_speedup_vs_nthreads.svg)
+###   Description: Boxplot with speedup against number of threads
+###
+
+dir.create('plots/pyKVFinder-depth/speedup')
+
+# Boxplot grouped by software: Time x Number of threads
+p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthreads))) +
+        geom_boxplot() +
+        theme_bw() +
+        labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
+        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+        theme(legend.position="none",
+            axis.text.x = element_text(size = 14), 
+            axis.text.y = element_text(size = 18, hjust = 1),
+            legend.text = element_text(size = 12)) +
+        theme(axis.title.y = element_text(angle = 90, 
+                                        hjust = 0.5, 
+                                        size = 20),
+            axis.title.x = element_text(size = 20),
+            legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-depth/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-depth/speedup/boxplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-depth/speedup/lineplot_speedup_vs_nthreads.svg)
+###   Description: Lineplot with speedup against number of threads
+###
+
+p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = speedup)) +
+    stat_summary(fun = mean, geom = "line", color = 4, linetype = 1, size = 1) +
+    stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
+    stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
+    theme_bw() + 
+    labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    theme(legend.position="none",
+        axis.text.x = element_text(size = 14), 
+        axis.text.y = element_text(size = 14, hjust = 1),
+        legend.text = element_text(size = 12)) +
+    theme(axis.title.y = element_text(size = 16),
+        axis.title.x = element_text(size = 16),
+        legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-depth/speedup/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-depth/speedup/lineplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-depth/speedup/boxplot_efficiency_vs_nthreads.svg)
+###   Description: Boxplot with efficiency against number of threads
+###
+
+dir.create('plots/pyKVFinder-depth/efficiency')
+
+# Boxplot grouped by software: Time x Number of threads
+p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.factor(nthreads))) +
+        geom_boxplot() +
+        theme_bw() +
+        labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
+        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
+        theme(legend.position="none",
+            axis.text.x = element_text(size = 14), 
+            axis.text.y = element_text(size = 18, hjust = 1),
+            legend.text = element_text(size = 12)) +
+        theme(axis.title.y = element_text(angle = 90, 
+                                        hjust = 0.5, 
+                                        size = 20),
+            axis.title.x = element_text(size = 20),
+            legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-depth/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-depth/efficiency/boxplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-depth/efficiency/lineplot_efficiency_vs_nthreads.svg)
+###   Description: Lineplot with speedup against number of threads
+###
+
+p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = efficiency*100)) +
+    stat_summary(fun = mean, geom = "line", color = 4, linetype = 1, size = 1) +
+    stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
+    stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
+    theme_bw() + 
+    labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
+    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    theme(legend.position="none",
+        axis.text.x = element_text(size = 14), 
+        axis.text.y = element_text(size = 14, hjust = 1),
+        legend.text = element_text(size = 12)) +
+    theme(axis.title.y = element_text(size = 16),
+        axis.title.x = element_text(size = 16),
+        legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-depth/efficiency/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-depth/efficiency/lineplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> pyKVFinder (hydropathy) analysis: time, speedup, efficiency
+###
+
+dir.create('plots/pyKVFinder-hydropathy')
+dir.create('plots/pyKVFinder-hydropathy/time')
+
+pyKVFinder.hydropathy = time[time$software == 'pyKVFinder.hydropathy',]
+pyKVFinder.hydropathy$speedup = pyKVFinder$average_time / pyKVFinder.hydropathy$average_time
+pyKVFinder.hydropathy$efficiency = pyKVFinder.hydropathy$speedup / pyKVFinder.hydropathy$nthreads
+
+###
+### [==> Plotting: plots/pyKVFinder-hydropathy/time/lineplot_time_vs_atoms.svg)
+###   Description: Lineplots with pyKVFinder-hydropathy time against number of atoms for different number of threads
+###
+
+p <- ggplot(pyKVFinder.depth, aes(x=natoms, y=average_time)) +
+
+    geom_jitter(aes(group=as.factor(nthreads), color=as.factor(nthreads)), alpha=0.4, size=0.5) +
+
+    geom_smooth(aes(group=as.factor(nthreads), color=as.factor(nthreads)), method='glm', se=FALSE, fullrange=TRUE) +
+
+    geom_smooth(color='black', method='glm', se=FALSE, fullrange=TRUE) +
+
+    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5) +
+    
+    theme_bw() +
+    labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1)) +
+    scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100 + 100)) +
+    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder.depth$nthreads)), "Average")) +
+
+    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 14, hjust = 1),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size=16)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
+        axis.title.x = element_text(size = 18),
+        legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-hydropathy/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-hydropathy/time/lineplot_time_vs_atoms.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-hydropathy/speedup/boxplot_speedup_vs_nthreads.svg)
+###   Description: Boxplot with speedup against number of threads
+###
+
+dir.create('plots/pyKVFinder-hydropathy/speedup')
+
+# Boxplot grouped by software: Time x Number of threads
+p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthreads))) +
+        geom_boxplot() +
+        theme_bw() +
+        labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
+        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+        theme(legend.position="none",
+            axis.text.x = element_text(size = 14), 
+            axis.text.y = element_text(size = 18, hjust = 1),
+            legend.text = element_text(size = 12)) +
+        theme(axis.title.y = element_text(angle = 90, 
+                                        hjust = 0.5, 
+                                        size = 20),
+            axis.title.x = element_text(size = 20),
+            legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-hydropathy/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-hydropathy/speedup/boxplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-hydropathy/speedup/lineplot_speedup_vs_nthreads.svg)
+###   Description: Lineplot with speedup against number of threads
+###
+
+p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = speedup)) +
+    stat_summary(fun = mean, geom = "line", color = 4, linetype = 1, size = 1) +
+    stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
+    stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
+    theme_bw() + 
+    labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    theme(legend.position="none",
+        axis.text.x = element_text(size = 14), 
+        axis.text.y = element_text(size = 14, hjust = 1),
+        legend.text = element_text(size = 12)) +
+    theme(axis.title.y = element_text(size = 16),
+        axis.title.x = element_text(size = 16),
+        legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-hydropathy/speedup/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-hydropathy/speedup/lineplot_speedup_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-hydropathy/speedup/boxplot_efficiency_vs_nthreads.svg)
+###   Description: Boxplot with efficiency against number of threads
+###
+
+dir.create('plots/pyKVFinder-hydropathy/efficiency')
+
+# Boxplot grouped by software: Time x Number of threads
+p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.factor(nthreads))) +
+        geom_boxplot() +
+        theme_bw() +
+        labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
+        scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
+        theme(legend.position="none",
+            axis.text.x = element_text(size = 14), 
+            axis.text.y = element_text(size = 18, hjust = 1),
+            legend.text = element_text(size = 12)) +
+        theme(axis.title.y = element_text(angle = 90, 
+                                        hjust = 0.5, 
+                                        size = 20),
+            axis.title.x = element_text(size = 20),
+            legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-hydropathy/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-hydropathy/efficiency/boxplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
+p
+dev.off()
+
+###
+### [==> Plotting: plots/pyKVFinder-hydropathy/efficiency/lineplot_efficiency_vs_nthreads.svg)
+###   Description: Lineplot with speedup against number of threads
+###
+
+p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = efficiency*100)) +
+    stat_summary(fun = mean, geom = "line", color = 4, linetype = 1, size = 1) +
+    stat_summary(fun = mean, fun.min = function(x) mean(x) - sd(x), fun.max = function(x) mean(x) + sd(x), geom = "errorbar", width=0.2) +
+    stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
+    theme_bw() + 
+    labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
+    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    theme(legend.position="none",
+        axis.text.x = element_text(size = 14), 
+        axis.text.y = element_text(size = 14, hjust = 1),
+        legend.text = element_text(size = 12)) +
+    theme(axis.title.y = element_text(size = 16),
+        axis.title.x = element_text(size = 16),
+        legend.title = element_text(size = 12))
+
+svg('plots/pyKVFinder-hydropathy/efficiency/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
+p
+dev.off()
+
+png('plots/pyKVFinder-hydropathy/efficiency/lineplot_efficiency_vs_nthreads.png', width = 4400, height = 2475, res = 300)
 p
 dev.off()

@@ -42,7 +42,7 @@ do
 
 done
 
-################## PYKVFINDER V0.1 ANALYSIS ##################
+################## PYKVFINDER V0.1 DEFAULT ANALYSIS ##################
 printf "[===> pyKVFinder v0.1 benchmarking\n"
 mkdir ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder/
 
@@ -52,6 +52,36 @@ do
 
 	# Run KVFinder for PDBs
 	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder ${i}
+
+	# Save PDBs runs inside KVFiles_ncores
+	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
+done
+
+################## PYKVFINDER V0.1 DEPTH ANALYSIS ##################
+printf "[===> pyKVFinder v0.1 --depth benchmarking\n"
+mkdir ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-depth/
+
+for i in "${nthreads[@]}"
+do
+	printf ">>> ${i} cores\n"
+
+	# Run KVFinder for PDBs
+	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-depth ${i} --depth
+
+	# Save PDBs runs inside KVFiles_ncores
+	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
+done
+
+################## PYKVFINDER V0.1 HYDROPATHY ANALYSIS ##################
+printf "[===> pyKVFinder v0.1 --hydropathy benchmarking\n"
+mkdir ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-hydropathy/
+
+for i in "${nthreads[@]}"
+do
+	printf ">>> ${i} cores\n"
+
+	# Run KVFinder for PDBs
+	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-hydropathy ${i} --hydropathy
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
