@@ -1,6 +1,6 @@
-**********
+##########
 pyKVFinder
-**********
+##########
 
 .. image:: https://img.shields.io/pypi/v/pyKVFinder
     :target: https://pypi.org/project/pyKVFinder/
@@ -17,7 +17,7 @@ See also:
 * `pyKVFinder wiki <https://github.com/LBC-LNBio/pyKVFinder/wiki>`_
 
 Installation
-============
+############
 
 To install the latest release on `PyPI <https://pypi.org/project/pyKVFinder>`_, 
 run:
@@ -35,7 +35,7 @@ Or to install the latest developmental version, run:
 
 
 Usage examples
-==============
+##############
 
 For an complete example of usage, we display usage examples with a pdb from `here <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/1FMO.pdb>`_.
 
@@ -46,7 +46,7 @@ First of all, import pyKVFinder module on python:
   >>> import pyKVFinder
 
 Standard pipeline
------------------
+*****************
 
 The standard pipeline for cavity detection with spatial and constitutional characterization (volume, area and interface residues) can be run at once with one command:
 
@@ -129,7 +129,7 @@ We note that the above implementation of the pyKVFinder function uses default pa
 For more information on `pyKVFinder function` and `pyKVFinderResults object` attributes and methods, please refer to the API Reference.
 
 Full pipeline
--------------
+*************
 
 The full pipeline for cavity dectection and full characterization (volume, area, depth, hydropathy and interface residues) can be run with one command by setting some parameters of ``pyKVFinder`` function:
 
@@ -196,12 +196,12 @@ We note that the above implementation of the pyKVFinder function uses default pa
 For more information on `pyKVFinder function` and `pyKVFinderResults object` attributes and methods, please refer to the API Reference.
 
 Separated steps
----------------
+***************
 
 If you prefer, instead of running ``pyKVFinder`` function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each function in detail.
 
 1. Loading van der Waals radii dictionary
-*****************************************
+=========================================
 
 The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. ``pyKVFinder.read_vdw`` takes a `.dat` file and returns a dictionary contaning radii values for each atom of each residue.
 
@@ -218,7 +218,7 @@ The van der Waals radii file define the radius values for each residue and when 
 
 
 2. Loading target PDB coordinates
-*********************************
+=================================
 
 ``pyKVFinder.read_pdb`` takes a target `.pdb` file and returns a tuple of NumPy arrays, the former (`resinfo`) with residue number, chain identifier, residue name and atom name for each atom and the latter (`xyzr`) with xyz coordinates and radius for each atom.
 
@@ -244,7 +244,7 @@ The van der Waals radii file define the radius values for each residue and when 
         [  5.767,  19.234, -13.442,   1.69 ]])
 
 3. Dimensioning the 3D grid
-***************************
+===========================
 
 The pyKVFinder 3D grid must be calculated based on the target `.pdb` file, the Probe Out diameter and the grid spacing. 
 
@@ -295,6 +295,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
   * `cos(b)` = sincos[3]
 
 4. Detecting biomolecular cavities
+==================================
 
 ``pyKVFinder.detect`` takes the grid units in x, y and z dimensions, the NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertices, a NumPy array with sine and cossine and a collection of detection parameters (step, probe_in, probe_out, removal_distance, volume_cutoff, surface), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
 
@@ -347,7 +348,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
     * Bulk points = -1.
 
 4.1 Detecting biomolecular cavities with ligand adjustment
-**********************************************************
+----------------------------------------------------------
 
 The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a `.pdb` file. Thus, the detected cavities are limited within a radius (ligand_cutoff) of the target ligand(s).
 
@@ -411,6 +412,7 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (nx, ny, nz, x
   If the ligand_cutoff is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr)``.
 
 5. Performing spatial characterization
+======================================
 
 A spatial characterization, that includes volume, area and defining surface points, is performed on the detected cavities. 
 
@@ -458,7 +460,7 @@ A spatial characterization, that includes volume, area and defining surface poin
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 6. Performing depth characterization
-************************************
+====================================
 
 A depth characterization, that includes maximum depth, average depth and defining depth of cavity points, is performed on the detected cavities. 
 
@@ -499,7 +501,7 @@ A depth characterization, that includes maximum depth, average depth and definin
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 7. Performing constitutional characterization
-*********************************************
+=============================================
 
 A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.
 
@@ -530,7 +532,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 7.1 Calculating and plotting frequencies
-****************************************
+----------------------------------------
 
 With the interface residues defined, you can also calculate the frequencies of residues and classes of residues. The classes of residues are:
 
@@ -561,7 +563,7 @@ Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the freque
   >>> pyKVFinder.plot_frequencies(frequencies, fn=fn)
 
 8. Performing hydropathy characterization
-*****************************************
+=========================================
 
 A hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy, is performed on the surface points of the detected cavities.
 
@@ -614,12 +616,12 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 9. Exporting cavities
-*********************
+=====================
 
 There are four different ways to export the detected cavities to PDB-formatted files. 
 
 9.1 Exporting only cavity points
-********************************
+--------------------------------
 
 .. code-block:: python
 
@@ -627,7 +629,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, cavities, vertices, sincos, ncav, step=step)
 
 9.2 Exporting cavity and surface points
-***************************************
+---------------------------------------
 
 .. code-block:: python
 
@@ -635,7 +637,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav, step=step)
 
 9.3 Exporting cavity and surface points with depth mapped on B-factor
-*********************************************************************
+---------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -643,7 +645,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav, step=step, B=depths)
 
 9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor
-***************************************************************************************************************************************
+---------------------------------------------------------------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -652,12 +654,12 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav, step=step, B=depths, output_hydropathy=output_hydropathy, scales=scales)
 
 10. Writing results
-*******************
+===================
 
 The function call depends on the characterizations performed on the detected cavities.
 
 10.1 Cavity detection only
-**************************
+--------------------------
 
 .. code-block:: python
 
@@ -665,7 +667,7 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write(output_results, pdb=pdb, ligand=None, output=output_cavity, step=step)
 
 10.2 Spatial characterization
-*****************************
+-----------------------------
 
 .. code-block:: python
 
@@ -673,7 +675,7 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write(output_results, pdb=pdb, ligand=None, output=output_cavity, volume=volume, area=area, step=step)
 
 10.3 Spatial and constitutional characterization
-************************************************
+------------------------------------------------
 
 .. code-block:: python
 
@@ -681,15 +683,15 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write(output_results, pdb=pdb, ligand=None, output=output_cavity, volume=volume, area=area, residues=residues, frequencies=frequencies, step=step)
 
 10.4 Spatial, constitutional and depth characterization
-*******************************************************
+-------------------------------------------------------
 
 .. code-block:: python
 
   >>> output_results = 'results.toml'
   >>> pyKVFinder.write(output_results, pdb=pdb, ligand=None, output=output_cavity, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, residues=residues, frequencies=frequencies, step=step)
 
-10.4 Spatial, constitutional, depth and hydropathy characterization
-*******************************************************************
+10.5 Spatial, constitutional, depth and hydropathy characterization
+-------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -697,18 +699,19 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, output_hydropathy=output_hydropathy, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies, step=step)
 
 Steered detection
------------------
+*****************
 
 All these steps showed so far were performed on whole protein detection; however, we can perform them on a box adjustment detection, where we can explore closed regions with a custom box, which can be defined by a `.toml` file.
 
 There are two methods to define a custom 3D grid as shown in `Box Configuration File Template <https://github.com/LBC-LNBio/pyKVFinder#box-configuration-file-template>`_.
 
-1. Box coordinates
+First, we will create a box `.toml` file with: 
 
-First, we will create a `.toml` file with four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis).
+- Four vertices of the box (origin, X-axis, Y-axis and Z-axis):
 
 .. code-block:: python
 
+  >>> import toml
   >>> box = """
   [box]
   p1 = [3.11, 7.34, 1.59]
@@ -717,10 +720,26 @@ First, we will create a `.toml` file with four vertices of the 3D grid (origin, 
   p4 = [3.11, 7.34, 6.19]
   """
   >>> with open('box.toml', 'w') as f:
-          toml.dump(parsed_toml, f)
+  ...     toml.dump(toml.loads(box), f)
+
+or
+
+- A list of residues and a padding:
+
+.. code-block:: python
+
+  >>> import toml
+  >>> box = """
+  [box]
+  residues = [ ["49", "E",], [ "50", "E",], [ "51", "E",], ]
+  padding =  3.5
+  """
+  >>> with open('box.toml', 'w') as f:
+  ...     toml.dump(toml.loads(box), f)
+
 
 API Reference
-=============
+#############
 
 ``pyKVFinder.pyKVFinder(pdb, ligand, dictionary, box, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, include_depth = False, include_hydropathy = False, hydrophobicity_scale = 'EisenbergWeiss', surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
   Detects and characterizes cavities (volume, area, depth [optional], hydropathy [optional] and interface residues).
@@ -1223,7 +1242,7 @@ API Reference
     A file with PDB-formatted data corresponding to cavity points (H), surface points (HA) and a target variable (B) as B-factor, (optional) a file with PDB-formatted data corresponding to hydropathy mapped as B-factor at surface points (HA), a file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity and (optinal) a PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
 
 Van der Waals Radii File Template
-=================================
+#################################
 
 The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
@@ -1240,7 +1259,7 @@ The van der Waals radii file define the radius values for each residue and when 
   The residue name should be in the standard PDB format and each radius value is separated by two tab characters of the atom name.
 
 Box Configuration File Template
-===============================
+###############################
 
 There are two methods for defining a custom 3D grid in pyKVFinder.
 
@@ -1266,7 +1285,7 @@ The second defines a list of residues and a padding, the template is shown below
 
 
 Hydrophobicity Scale File Template
-==================================
+##################################
 
 The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are five native hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
@@ -1296,7 +1315,7 @@ The hydrophobicity scale file define the scale values for each residue and when 
 
 
 Command Line Interface
-======================
+######################
 
 pyKVFinder's Command Line Interface (CLI) aims to direct the interaction between pyKVFinder and users.
 
@@ -1513,7 +1532,7 @@ The ligand adjustment arguments are:
   :Default: ``5.0``
 
 Licensing
-=========
+#########
 
 This project is released under the terms of the GNU General Public License. View
 *LICENSE.txt* for more information.
