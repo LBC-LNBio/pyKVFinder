@@ -518,12 +518,12 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
 
 With the interface residues defined, you can also calculate the frequencies of residues and classes of residues. The classes of residues are:
 
-  :R1: Alipathic apolar
-  :R2: Aromatic
-  :R3: Polar uncharged
-  :R4: Negatively charged
-  :R5: Positively charged
-  :RX: Non-standard
+:R1: Alipathic apolar
+:R2: Aromatic
+:R3: Polar uncharged
+:R4: Negatively charged
+:R5: Positively charged
+:RX: Non-standard
 
 ``pyKVFinder.calculate_frequencies`` takes the dictionary of interface residues calculated above and returns a dictionary with the frequencies of residues and classes of residues of each detected cavity.
 
