@@ -344,7 +344,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
 
 The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a `.pdb` file. Thus, the detected cavities are limited within a radius (ligand_cutoff) of the target ligand(s).
 
-First, ``pyKVFinder.read_pdb` takes an `adenosine <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/ADN.pdb>`_ as the target ligand and returns a tuple of NumPy arrays, the former (`resinfo`) with residue number, chain identifier, residue name and atom name for each atom of the ligand, which can be ignored, and the latter (`xyzr`) with xyz coordinates and radius for each atom of the ligand.
+First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/ADN.pdb>`_ as the target ligand and returns a tuple of NumPy arrays, the former (`resinfo`) with residue number, chain identifier, residue name and atom name for each atom of the ligand, which can be ignored, and the latter (`xyzr`) with xyz coordinates and radius for each atom of the ligand.
 
 .. code-block:: python
 
@@ -718,7 +718,7 @@ or
   ...     toml.dump(toml.loads(box), f)
 
 Pipelines
----------
+=========
 
 Then, you can explore this mode with the standard and full pipelines, defining the `box` parameter as the newly created `box.toml` file.
 
@@ -731,7 +731,7 @@ Then, you can explore this mode with the standard and full pipelines, defining t
   >>> results = pyKVFinder.pyKVFinder(pdb, box='box.toml', include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
 
 Step-by-Step
-------------
+============
 
 If you are running pyKVFinder module in a step-by-step fashion (`Separated steps <https://github.com/LBC-LNBio/pyKVFinder#separated-steps>`_), the steps `3 <https://github.com/LBC-LNBio/pyKVFinder#3-dimensioning-the-3d-grid>`_ and `4 <https://github.com/LBC-LNBio/pyKVFinder#4-detecting-biomolecular-cavities>`_ are different than before.
 
@@ -739,7 +739,7 @@ If you are running pyKVFinder module in a step-by-step fashion (`Separated steps
 
 ``pyKVFinder.get_vertices_from_file`` takes `.toml` file with box configuration, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (step, probe_in and probe_out), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
 
-.. code-blocks:: python
+.. code-block:: python
 
   >>> vertices, resinfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
 
@@ -748,7 +748,7 @@ If you are running pyKVFinder module in a step-by-step fashion (`Separated steps
 
 - Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the `box_adjustment` parameter as `True`.
 
-.. code-blocks:: python
+.. code-block:: python
 
   >>> ncav, cavities = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
 
