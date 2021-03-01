@@ -107,7 +107,6 @@ Inside the `pyKVFinderResults object`, cavity and surface points, volume, area, 
   {'KAA': {'RESIDUES': {'GLU': 1, 'ILE': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'SER': 1, 'TRP': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 3, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAB': {'RESIDUES': {'ALA': 1, 'ASN': 1, 'ASP': 1, 'LYS': 1, 'PHE': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 2, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAC': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'GLU': 1, 'HIS': 1, 'ILE': 1, 'PHE': 1, 'PRO': 1, 'THR': 1, 'VAL': 1}, 'CLASS': {'R1': 4, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 2, 'RX': 0}}, 'KAD': {'RESIDUES': {'ALA': 1, 'ASP': 1, 'GLN': 1, 'GLY': 1, 'PHE': 1, 'PRO': 1, 'TYR': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 1, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAE': {'RESIDUES': {'ASN': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 1, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAF': {'RESIDUES': {'ALA': 1, 'ASP': 1, 'GLN': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 0, 'R3': 1, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAG': {'RESIDUES': {'GLN': 1, 'GLU': 1, 'LEU': 1, 'PHE': 1, 'SER': 1, 'THR': 1}, 'CLASS': {'R1': 1, 'R2': 1, 'R3': 3, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAH': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'ASN': 1, 'ASP': 1, 'GLN': 1, 'GLU': 1, 'GLY': 1, 'HIS': 1, 'LEU': 1, 'LYS': 1, 'MET': 1, 'PHE': 1, 'SER': 1, 'THR': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 4, 'R2': 2, 'R3': 5, 'R4': 2, 'R5': 3, 'RX': 0}}, 'KAI': {'RESIDUES': {'HIS': 1, 'ILE': 1, 'PHE': 1, 'TYR': 1}, 'CLASS': {'R1': 1, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAJ': {'RESIDUES': {'ARG': 1, 'GLN': 1, 'GLU': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'PRO': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 2, 'RX': 0}}, 'KAK': {'RESIDUES': {'ALA': 1, 'ILE': 1, 'LEU': 1, 'PHE': 1, 'TYR': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 0, 'RX': 0}}, 'KAL': {'RESIDUES': {'ASN': 1, 'ASP': 1, 'GLU': 1, 'LEU': 1, 'PHE': 1, 'SER': 1, 'TYR': 1}, 'CLASS': {'R1': 1, 'R2': 2, 'R3': 2, 'R4': 2, 'R5': 0, 'RX': 0}}, 'KAM': {'RESIDUES': {'ARG': 1, 'ASN': 1, 'ASP': 1, 'GLY': 1, 'ILE': 1, 'LEU': 1, 'THR': 1}, 'CLASS': {'R1': 3, 'R2': 0, 'R3': 2, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAN': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'ASP': 1, 'CYS': 1, 'GLY': 1, 'ILE': 1, 'LEU': 1, 'THR': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 5, 'R2': 1, 'R3': 2, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAO': {'RESIDUES': {'ARG': 1, 'GLU': 1, 'THR': 1, 'TYR': 1}, 'CLASS': {'R1': 0, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAP': {'RESIDUES': {'GLY': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'TRP': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAQ': {'RESIDUES': {'GLU': 1, 'LEU': 1, 'LYS': 1, 'PRO': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 0, 'R3': 0, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAR': {'RESIDUES': {'ARG': 1, 'LYS': 1, 'PHE': 1, 'PRO': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 0, 'R4': 0, 'R5': 2, 'RX': 0}}}
 
 :Note:
-
   The 3D grid points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
     * Biomolecule points = 0;
     * Unsigned cavity points = 1;
@@ -115,7 +114,6 @@ Inside the `pyKVFinderResults object`, cavity and surface points, volume, area, 
     * Bulk points = -1.
 
 :Note:
-
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:
@@ -136,7 +134,7 @@ The full pipeline for cavity dectection and full characterization (volume, area,
 .. code-block:: python
 
   >>> pdb = '1FMO.pdb'
-  >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True,  hydrophobicity_scale='EisenbergWeiss')
+  >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
 
 Inside the `pyKVFinderResults object`, in addition to cavity and surface points, volume, area, and interface residues and their frequencies showed above, depth and hydropathy points, average depth, maximum depth and average hydropathy are also stored as attributes. Below, we show how to access them:
 
@@ -213,7 +211,6 @@ The van der Waals radii file define the radius values for each residue and when 
 
 
 :Note:
-
   The function takes the `builtin dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when a *.dat* file is not specified. Otherwise, user must specify a *.dat* file following `Van der Waals Radii Template <https://github.com/LBC-LNBio/pyKVFinder#van-der-waals-radii-file-template>`_.
 
 
@@ -264,7 +261,6 @@ Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates 
        [-19.911, -32.125,  27.352]])
 
 :Note:
-
   If the probe_out and step values are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices(xyzr)``.
 
 Secondly, ``pyKVFinder.get_dimensions`` takes the vertices calculated above and the grid spacing, and returns a tuple with the grid units in x, y and z dimensions.
@@ -276,7 +272,6 @@ Secondly, ``pyKVFinder.get_dimensions`` takes the vertices calculated above and 
   (101, 126, 97)
 
 :Note:
-
   If step value is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.get_dimensions(vertices)``.
 
 Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and returns a NumPy array with the sine and cossine of the 3D grid angles (a, b).
@@ -288,7 +283,6 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
   array([0., 1., 0., 1.])
 
 :Note:
-
   * `sin(a)` = sincos[0]
   * `cos(a)` = sincos[1]
   * `sin(b)` = sincos[2]
@@ -336,11 +330,9 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
         [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
   
 :Note:
-
   If any of the detection parameters (step, probe_in, probe_out, removal_distance, volume_cutoff, surface) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos)``.
 
 :Note:
-
   The 3D grid points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
     * Biomolecule points = 0;
     * Unsigned cavity points = 1;
@@ -408,7 +400,6 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (nx, ny, nz, x
         [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
 
 :Note:
-
   If the ligand_cutoff is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr)``.
 
 5. Performing spatial characterization
@@ -445,18 +436,15 @@ A spatial characterization, that includes volume, area and defining surface poin
   {'KAA': 120.52, 'KAB': 58.76, 'KAC': 72.06, 'KAD': 17.62, 'KAE': 56.44, 'KAF': 22.53, 'KAG': 15.38, 'KAH': 489.25, 'KAI': 29.87, 'KAJ': 44.85, 'KAK': 30.58, 'KAL': 43.59, 'KAM': 45.25, 'KAN': 129.77, 'KAO': 11.57, 'KAP': 24.8, 'KAQ': 12.59, 'KAR': 15.97}
 
 :Note:
-
   If the step is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.spatial(cavities, ncav)``.
 
 :Note:
-
   The 3D grid surface points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
     * Biomolecule points = 0;
     * Surface points >= 2;
     * Bulk points = -1.
 
 :Note:
-
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 6. Performing depth characterization
@@ -493,11 +481,9 @@ A depth characterization, that includes maximum depth, average depth and definin
   {'KAA': 1.28, 'KAB': 0.86, 'KAC': 0.67, 'KAD': 0.29, 'KAE': 0.98, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.75, 'KAI': 1.5, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.0, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}
 
 :Note:
-
   If the step is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.depth(cavities, ncav)``.
 
 :Note:
-
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 7. Performing constitutional characterization
@@ -524,11 +510,9 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
   {'KAA': [['14', 'E', 'SER'], ['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['97', 'E', 'ALA'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['141', 'E', 'PRO'], ['142', 'E', 'HIS'], ['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE'], ['320', 'E', 'GLY'], ['321', 'E', 'PRO'], ['322', 'E', 'GLY'], ['323', 'E', 'ASP']], 'KAE': [['95', 'E', 'LEU'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['100', 'E', 'PHE'], ['103', 'E', 'LEU'], ['104', 'E', 'VAL'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['124', 'E', 'ALA'], ['175', 'E', 'ASP'], ['176', 'E', 'GLN'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['107', 'E', 'GLU'], ['108', 'E', 'PHE'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['50', 'E', 'GLY'], ['51', 'E', 'THR'], ['52', 'E', 'GLY'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['121', 'E', 'GLU'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['186', 'E', 'GLY'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['163', 'E', 'ILE'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['326', 'E', 'ASN'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['74', 'E', 'LEU'], ['75', 'E', 'ASP'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE'], ['336', 'E', 'ARG']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['200', 'E', 'GLY'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR'], ['331', 'E', 'GLU']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['253', 'E', 'GLY'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['277', 'E', 'LEU']], 'KAR': [['237', 'E', 'PRO'], ['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
 
 :Note:
-
   If the step, probe_in and ignore_backbone are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav)``.
 
 :Note:
-
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 7.1 Calculating and plotting frequencies
@@ -552,7 +536,6 @@ With the interface residues defined, you can also calculate the frequencies of r
   {'KAA': {'RESIDUES': {'GLU': 1, 'ILE': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'SER': 1, 'TRP': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 3, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAB': {'RESIDUES': {'ALA': 1, 'ASN': 1, 'ASP': 1, 'LYS': 1, 'PHE': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 2, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAC': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'GLU': 1, 'HIS': 1, 'ILE': 1, 'PHE': 1, 'PRO': 1, 'THR': 1, 'VAL': 1}, 'CLASS': {'R1': 4, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 2, 'RX': 0}}, 'KAD': {'RESIDUES': {'ALA': 1, 'ASP': 1, 'GLN': 1, 'GLY': 1, 'PHE': 1, 'PRO': 1, 'TYR': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 1, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAE': {'RESIDUES': {'ASN': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 1, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAF': {'RESIDUES': {'ALA': 1, 'ASP': 1, 'GLN': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 0, 'R3': 1, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAG': {'RESIDUES': {'GLN': 1, 'GLU': 1, 'LEU': 1, 'PHE': 1, 'SER': 1, 'THR': 1}, 'CLASS': {'R1': 1, 'R2': 1, 'R3': 3, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAH': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'ASN': 1, 'ASP': 1, 'GLN': 1, 'GLU': 1, 'GLY': 1, 'HIS': 1, 'LEU': 1, 'LYS': 1, 'MET': 1, 'PHE': 1, 'SER': 1, 'THR': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 4, 'R2': 2, 'R3': 5, 'R4': 2, 'R5': 3, 'RX': 0}}, 'KAI': {'RESIDUES': {'HIS': 1, 'ILE': 1, 'PHE': 1, 'TYR': 1}, 'CLASS': {'R1': 1, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAJ': {'RESIDUES': {'ARG': 1, 'GLN': 1, 'GLU': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'PRO': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 2, 'RX': 0}}, 'KAK': {'RESIDUES': {'ALA': 1, 'ILE': 1, 'LEU': 1, 'PHE': 1, 'TYR': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 0, 'RX': 0}}, 'KAL': {'RESIDUES': {'ASN': 1, 'ASP': 1, 'GLU': 1, 'LEU': 1, 'PHE': 1, 'SER': 1, 'TYR': 1}, 'CLASS': {'R1': 1, 'R2': 2, 'R3': 2, 'R4': 2, 'R5': 0, 'RX': 0}}, 'KAM': {'RESIDUES': {'ARG': 1, 'ASN': 1, 'ASP': 1, 'GLY': 1, 'ILE': 1, 'LEU': 1, 'THR': 1}, 'CLASS': {'R1': 3, 'R2': 0, 'R3': 2, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAN': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'ASP': 1, 'CYS': 1, 'GLY': 1, 'ILE': 1, 'LEU': 1, 'THR': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 5, 'R2': 1, 'R3': 2, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAO': {'RESIDUES': {'ARG': 1, 'GLU': 1, 'THR': 1, 'TYR': 1}, 'CLASS': {'R1': 0, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAP': {'RESIDUES': {'GLY': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'TRP': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAQ': {'RESIDUES': {'GLU': 1, 'LEU': 1, 'LYS': 1, 'PRO': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 0, 'R3': 0, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAR': {'RESIDUES': {'ARG': 1, 'LYS': 1, 'PHE': 1, 'PRO': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 0, 'R4': 0, 'R5': 2, 'RX': 0}}}
 
 :Note:
-
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the histograms of calculated frequencies for each detected cavity in a PDF file.
@@ -596,11 +579,9 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
   {'KAA': -0.71, 'KAB': -0.06, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.16, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.35, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]
 
 :Note: 
-
   If the step, probe_in, hydrophobicity_scale and ignore_backbone are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.hydropathy(surface, resinfo, xyzr, vertices, sincos, ncav)``.
 
 :Note:
-
   The `hydropathy` function accepts six builtin hydrophobicity scales:
     * `EisenbergWeiss <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml>`_;
     * `HessaHeijne <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml>`_;
@@ -612,7 +593,6 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
   Otherwise, user must specify a *.toml* file following `Hydrophobicity Scale File Template <https://github.com/LBC-LNBio/pyKVFinder#hydrophobicity-scale-file-template>`_.
 
 :Note:
-
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 9. Exporting cavities
@@ -737,21 +717,60 @@ or
   >>> with open('box.toml', 'w') as f:
   ...     toml.dump(toml.loads(box), f)
 
+Pipelines
+---------
+
+Then, you can explore this mode with the standard and full pipelines, defining the `box` parameter as the newly created `box.toml` file.
+
+.. code-block:: python
+  
+  >>> # Standard pipeline
+  >>> pdb = '1FMO.pdb'
+  >>> results = pyKVFinder.pyKVFinder(pdb, box='box.toml')
+  >>> # Full pipeline
+  >>> results = pyKVFinder.pyKVFinder(pdb, box='box.toml', include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
+
+Step-by-Step
+------------
+
+If you are running pyKVFinder module in a step-by-step fashion (`Separated steps <https://github.com/LBC-LNBio/pyKVFinder#separated-steps>`_), the steps `3 <https://github.com/LBC-LNBio/pyKVFinder#3-dimensioning-the-3d-grid>`_ and `4 <https://github.com/LBC-LNBio/pyKVFinder#4-detecting-biomolecular-cavities>`_ are different than before.
+
+- Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, you can just call ``pyKVFinder.get_vertices_from_file``.
+
+``pyKVFinder.get_vertices_from_file`` takes `.toml` file with box configuration, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (step, probe_in and probe_out), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
+
+.. code-blocks:: python
+
+  >>> vertices, resinfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
+
+:Note: 
+  If the step, probe_in and probe_out are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr)``.
+
+- Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the `box_adjustment` parameter as `True`.
+
+.. code-blocks:: python
+
+  >>> ncav, cavities = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
+
+:Note:
+  If any of the detection parameters (step, probe_in, probe_out, removal_distance, volume_cutoff, surface) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, box_adjustment=True)``.
+
+For more details on all these functions, please refer to our `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
 
 API Reference
 #############
 
-``pyKVFinder.pyKVFinder(pdb, ligand, dictionary, box, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, include_depth = False, include_hydropathy = False, hydrophobicity_scale = 'EisenbergWeiss', surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
+``pyKVFinder.pyKVFinder(pdb, ligand = None, dictionary = 'vdw.dat', box = None, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, ligand_cutoff = 5.0, include_depth = False, include_hydropathy = False, hydrophobicity_scale = 'EisenbergWeiss', surface = 'SES', ignore_backbone = False, nthreads = os.cpu_count() - 1, verbose = False)``
   Detects and characterizes cavities (volume, area, depth [optional], hydropathy [optional] and interface residues).
 
   :Args:
     * ``pdb`` : *str*
         A path to input PDB file
-    * ``ligand`` : *str*
+    * ``ligand`` : *str, default None*
         A path to ligand PDB file
     * ``dictionary`` : *str, default 'vdw.dat'*
         A path to a van der Waals radii file
-    * ``fn`` : *str*
+    * ``box`` : *str, default None*
         A path to a box configuration file (TOML-formatted)
     * ``step`` : *float, default 0.6*
         Grid spacing (A)
