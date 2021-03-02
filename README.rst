@@ -678,6 +678,8 @@ The function call depends on the characterizations performed on the detected cav
   >>> output_results = 'results.toml'
   >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, output_hydropathy=output_hydropathy, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies, step=step)
 
+For more details on these functions, please refer to the `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
+
 Steered detection
 *****************
 
@@ -755,7 +757,7 @@ If you are running pyKVFinder module in a step-by-step fashion (`Separated steps
 :Note:
   If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, box_adjustment=True)``.
 
-For more details on all these functions, please refer to the `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
+For more details on these functions, please refer to the `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
 
 API Reference
 #############
