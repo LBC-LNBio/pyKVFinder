@@ -57,7 +57,7 @@ The standard pipeline for cavity detection with spatial and constitutional chara
   >>> results
   <pyKVFinderResults object>
 
-Inside the `pyKVFinderResults object`, cavity and surface points, volume, area, and interface residues and their frequencies are stored as attributes. Below, we show how to access them:
+Inside the *pyKVFinderResults object*, cavity and surface points, volume, area, and interface residues and their frequencies are stored as attributes. Below, we show how to access them:
 
 .. code-block:: python
   
@@ -107,6 +107,7 @@ Inside the `pyKVFinderResults object`, cavity and surface points, volume, area, 
   {'KAA': {'RESIDUES': {'GLU': 1, 'ILE': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'SER': 1, 'TRP': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 3, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAB': {'RESIDUES': {'ALA': 1, 'ASN': 1, 'ASP': 1, 'LYS': 1, 'PHE': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 2, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAC': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'GLU': 1, 'HIS': 1, 'ILE': 1, 'PHE': 1, 'PRO': 1, 'THR': 1, 'VAL': 1}, 'CLASS': {'R1': 4, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 2, 'RX': 0}}, 'KAD': {'RESIDUES': {'ALA': 1, 'ASP': 1, 'GLN': 1, 'GLY': 1, 'PHE': 1, 'PRO': 1, 'TYR': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 1, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAE': {'RESIDUES': {'ASN': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 1, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAF': {'RESIDUES': {'ALA': 1, 'ASP': 1, 'GLN': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 0, 'R3': 1, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAG': {'RESIDUES': {'GLN': 1, 'GLU': 1, 'LEU': 1, 'PHE': 1, 'SER': 1, 'THR': 1}, 'CLASS': {'R1': 1, 'R2': 1, 'R3': 3, 'R4': 1, 'R5': 0, 'RX': 0}}, 'KAH': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'ASN': 1, 'ASP': 1, 'GLN': 1, 'GLU': 1, 'GLY': 1, 'HIS': 1, 'LEU': 1, 'LYS': 1, 'MET': 1, 'PHE': 1, 'SER': 1, 'THR': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 4, 'R2': 2, 'R3': 5, 'R4': 2, 'R5': 3, 'RX': 0}}, 'KAI': {'RESIDUES': {'HIS': 1, 'ILE': 1, 'PHE': 1, 'TYR': 1}, 'CLASS': {'R1': 1, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAJ': {'RESIDUES': {'ARG': 1, 'GLN': 1, 'GLU': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'PRO': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 2, 'RX': 0}}, 'KAK': {'RESIDUES': {'ALA': 1, 'ILE': 1, 'LEU': 1, 'PHE': 1, 'TYR': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 0, 'RX': 0}}, 'KAL': {'RESIDUES': {'ASN': 1, 'ASP': 1, 'GLU': 1, 'LEU': 1, 'PHE': 1, 'SER': 1, 'TYR': 1}, 'CLASS': {'R1': 1, 'R2': 2, 'R3': 2, 'R4': 2, 'R5': 0, 'RX': 0}}, 'KAM': {'RESIDUES': {'ARG': 1, 'ASN': 1, 'ASP': 1, 'GLY': 1, 'ILE': 1, 'LEU': 1, 'THR': 1}, 'CLASS': {'R1': 3, 'R2': 0, 'R3': 2, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAN': {'RESIDUES': {'ALA': 1, 'ARG': 1, 'ASP': 1, 'CYS': 1, 'GLY': 1, 'ILE': 1, 'LEU': 1, 'THR': 1, 'TYR': 1, 'VAL': 1}, 'CLASS': {'R1': 5, 'R2': 1, 'R3': 2, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAO': {'RESIDUES': {'ARG': 1, 'GLU': 1, 'THR': 1, 'TYR': 1}, 'CLASS': {'R1': 0, 'R2': 1, 'R3': 1, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAP': {'RESIDUES': {'GLY': 1, 'LEU': 1, 'LYS': 1, 'PHE': 1, 'TRP': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 2, 'R3': 0, 'R4': 0, 'R5': 1, 'RX': 0}}, 'KAQ': {'RESIDUES': {'GLU': 1, 'LEU': 1, 'LYS': 1, 'PRO': 1, 'VAL': 1}, 'CLASS': {'R1': 3, 'R2': 0, 'R3': 0, 'R4': 1, 'R5': 1, 'RX': 0}}, 'KAR': {'RESIDUES': {'ARG': 1, 'LYS': 1, 'PHE': 1, 'PRO': 1, 'VAL': 1}, 'CLASS': {'R1': 2, 'R2': 1, 'R3': 0, 'R4': 0, 'R5': 2, 'RX': 0}}}
 
 :Note:
+  
   The 3D grid points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
     * Biomolecule points = 0;
     * Unsigned cavity points = 1;
@@ -114,6 +115,7 @@ Inside the `pyKVFinderResults object`, cavity and surface points, volume, area, 
     * Bulk points = -1.
 
 :Note:
+  
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
 
 With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:
