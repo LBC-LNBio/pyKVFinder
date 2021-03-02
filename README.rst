@@ -108,10 +108,10 @@ Inside the *pyKVFinderResults object*, cavity and surface points, volume, area, 
 
 :Note:
   The 3D grid points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
-    - Biomolecule points = 0;
-    - Unsigned cavity points = 1;
-    - Assigned cavity/surface points >= 2;
-    - Bulk points = -1.
+    * Biomolecule points = 0;
+    * Unsigned cavity points = 1;
+    * Assigned cavity/surface points >= 2;
+    * Bulk points = -1.
 
 :Note:
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
@@ -122,9 +122,9 @@ With these attributes, we can write the detected cavities and the characterizati
 
   >>> results.export_all(fn='results.toml', output='cavity.pdb', include_frequencies_pdf=True, pdf='histograms.pdf')
 
-We note that the above implementation of the pyKVFinder function uses default parameter specifications, and that therefore parameters can be adjusted to users’ needs.
+We note that the above implementation of the ``pyKVFinder`` function uses default parameter specifications, and that therefore parameters can be adjusted to users’ needs.
 
-For more information on `pyKVFinder function` and `pyKVFinderResults object` attributes and methods, please refer to the API Reference.
+For more information on ``pyKVFinder`` function and *pyKVFinderResults object* attributes and methods, please refer to the `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
 
 Full pipeline
 *************
@@ -136,7 +136,7 @@ The full pipeline for cavity dectection and full characterization (volume, area,
   >>> pdb = '1FMO.pdb'
   >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
 
-Inside the `pyKVFinderResults object`, in addition to cavity and surface points, volume, area, and interface residues and their frequencies showed above, depth and hydropathy points, average depth, maximum depth and average hydropathy are also stored as attributes. Below, we show how to access them:
+Inside the *pyKVFinderResults object*, in addition to cavity and surface points, volume, area, and interface residues and their frequencies showed above, depth and hydropathy points, average depth, maximum depth and average hydropathy are also stored as attributes. Below, we show how to access them:
 
 .. code-block:: python
 
@@ -189,9 +189,9 @@ With these attributes, we can write the detected cavities with depth annotated o
 
   >>> results.export_all(fn='results.toml', output='cavity.pdb', output_hydropathy = 'hydropathy.pdb', include_frequencies_pdf=False)
 
-We note that the above implementation of the pyKVFinder function uses default parameter specifications, except for include_depth and include_hydropathy parameters, and that therefore parameters can be adjusted to users’ needs.
+We note that the above implementation of the ``pyKVFinder`` function uses default parameter specifications, except for ``include_depth`` and ``include_hydropathy`` parameters, and that therefore parameters can be adjusted to users’ needs.
 
-For more information on `pyKVFinder function` and `pyKVFinderResults object` attributes and methods, please refer to the API Reference.
+For more information on ``pyKVFinder`` function and *pyKVFinderResults object* attributes and methods, please refer to the `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
 
 Separated steps
 ***************
@@ -201,7 +201,7 @@ If you prefer, instead of running ``pyKVFinder`` function, you can apply the cav
 1. Loading van der Waals radii dictionary
 =========================================
 
-The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. ``pyKVFinder.read_vdw`` takes a `.dat` file and returns a dictionary contaning radii values for each atom of each residue.
+The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. ``pyKVFinder.read_vdw`` takes a *.dat* file and returns a dictionary contaning radii values for each atom of each residue.
 
 .. code-block:: python
 
@@ -217,7 +217,7 @@ The van der Waals radii file define the radius values for each residue and when 
 2. Loading target PDB coordinates
 =================================
 
-``pyKVFinder.read_pdb`` takes a target `.pdb` file and returns a tuple of NumPy arrays, the former (`resinfo`) with residue number, chain identifier, residue name and atom name for each atom and the latter (`xyzr`) with xyz coordinates and radius for each atom.
+``pyKVFinder.read_pdb`` takes a target *.pdb* file and returns a tuple of NumPy arrays, the former (``resinfo``) with residue number, chain identifier, residue name and atom name for each atom and the latter (``xyzr``) with xyz coordinates and radius for each atom.
 
 .. code-block:: python
 
@@ -243,9 +243,9 @@ The van der Waals radii file define the radius values for each residue and when 
 3. Dimensioning the 3D grid
 ===========================
 
-The pyKVFinder 3D grid must be calculated based on the target `.pdb` file, the Probe Out diameter and the grid spacing. 
+The pyKVFinder 3D grid must be calculated based on the target *.pdb* file, the Probe Out diameter and the grid spacing. 
 
-Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (``probe_out``) and grid spacing (``step``) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, Xmax, Ymax, Zmax).
+Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (``probe_out``) and grid spacing (``step``) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis).
 
 .. code-block:: python
 
@@ -261,7 +261,7 @@ Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates 
        [-19.911, -32.125,  27.352]])
 
 :Note:
-  If the probe_out and step values are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices(xyzr)``.
+  If the ``probe_out`` and ``step`` values are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices(xyzr)``.
 
 Secondly, ``pyKVFinder.get_dimensions`` takes the vertices calculated above and the grid spacing, and returns a tuple with the grid units in x, y and z dimensions.
 
@@ -272,7 +272,7 @@ Secondly, ``pyKVFinder.get_dimensions`` takes the vertices calculated above and 
   (101, 126, 97)
 
 :Note:
-  If step value is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.get_dimensions(vertices)``.
+  If ``step`` value is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.get_dimensions(vertices)``.
 
 Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and returns a NumPy array with the sine and cossine of the 3D grid angles (a, b).
 
@@ -291,7 +291,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
 4. Detecting biomolecular cavities
 ==================================
 
-``pyKVFinder.detect`` takes the grid units in x, y and z dimensions, the NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertices, a NumPy array with sine and cossine and a collection of detection parameters (step, probe_in, probe_out, removal_distance, volume_cutoff, surface), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
+``pyKVFinder.detect`` takes the grid units in x, y and z dimensions, the NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertices, a NumPy array with sine and cossine and a collection of detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
 
 .. code-block:: python
   
@@ -330,7 +330,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
         [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
   
 :Note:
-  If any of the detection parameters (step, probe_in, probe_out, removal_distance, volume_cutoff, surface) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos)``.
+  If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos)``.
 
 :Note:
   The 3D grid points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
@@ -342,9 +342,9 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
 4.1 Detecting biomolecular cavities with ligand adjustment
 ----------------------------------------------------------
 
-The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a `.pdb` file. Thus, the detected cavities are limited within a radius (ligand_cutoff) of the target ligand(s).
+The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* file. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).
 
-First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/ADN.pdb>`_ as the target ligand and returns a tuple of NumPy arrays, the former (`resinfo`) with residue number, chain identifier, residue name and atom name for each atom of the ligand, which can be ignored, and the latter (`xyzr`) with xyz coordinates and radius for each atom of the ligand.
+First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/ADN.pdb>`_ as the target ligand and returns a tuple of NumPy arrays, the former (``resinfo``) with residue number, chain identifier, residue name and atom name for each atom of the ligand, which can be ignored, and the latter (``xyzr``) with xyz coordinates and radius for each atom of the ligand.
 
 .. code-block:: python
 
@@ -371,7 +371,7 @@ First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio
        [ 7.374,  9.872,  2.291,  1.66 ],
        [ 7.444, 10.056,  3.646,  1.97 ]])
 
-Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (nx, ny, nz, xyzr, vertices and sincos) and a the ligand adjustment parameters (lxyzr and ligand_cutoff), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
+Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``nx``, ``ny``, ``nz``, ``xyzr``, ``vertices`` and ``sincos``) and a the ligand adjustment parameters (``lxyzr`` and ``ligand_cutoff``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
 
 .. code-block:: python
 
@@ -400,14 +400,14 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (nx, ny, nz, x
         [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
 
 :Note:
-  If the ligand_cutoff is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr)``.
+  If the ``ligand_cutoff`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr)``.
 
 5. Performing spatial characterization
 ======================================
 
 A spatial characterization, that includes volume, area and defining surface points, is performed on the detected cavities. 
 
-``pyKVFinder.spatial`` takes the detected cavities, the number of cavities and the grid spacing (step) and and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.
+``pyKVFinder.spatial`` takes the detected cavities, the number of cavities and the grid spacing (``step``) and and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.
 
 .. code-block:: python
 
@@ -436,7 +436,7 @@ A spatial characterization, that includes volume, area and defining surface poin
   {'KAA': 120.52, 'KAB': 58.76, 'KAC': 72.06, 'KAD': 17.62, 'KAE': 56.44, 'KAF': 22.53, 'KAG': 15.38, 'KAH': 489.25, 'KAI': 29.87, 'KAJ': 44.85, 'KAK': 30.58, 'KAL': 43.59, 'KAM': 45.25, 'KAN': 129.77, 'KAO': 11.57, 'KAP': 24.8, 'KAQ': 12.59, 'KAR': 15.97}
 
 :Note:
-  If the step is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.spatial(cavities, ncav)``.
+  If the ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.spatial(cavities, ncav)``.
 
 :Note:
   The 3D grid surface points belongs to the same cavity are assigned with an integer in the grid. The code numbering is the following:
@@ -452,7 +452,7 @@ A spatial characterization, that includes volume, area and defining surface poin
 
 A depth characterization, that includes maximum depth, average depth and defining depth of cavity points, is performed on the detected cavities. 
 
-``pyKVFinder.depth`` takes the detected cavities, the number of cavities and the grid spacing (step) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.
+``pyKVFinder.depth`` takes the detected cavities, the number of cavities and the grid spacing (``step``) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.
 
 .. code-block:: python
 
@@ -481,7 +481,7 @@ A depth characterization, that includes maximum depth, average depth and definin
   {'KAA': 1.28, 'KAB': 0.86, 'KAC': 0.67, 'KAD': 0.29, 'KAE': 0.98, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.75, 'KAI': 1.5, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.0, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}
 
 :Note:
-  If the step is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.depth(cavities, ncav)``.
+  If the ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.depth(cavities, ncav)``.
 
 :Note:
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
@@ -491,7 +491,7 @@ A depth characterization, that includes maximum depth, average depth and definin
 
 A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.
 
-``pyKVFinder.constitutional`` takes the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, Xmax, Ymax, Zmax), a NumPy array with sine and cossine, the number of cavities detected and a collection of detection parameters (step, probe_in, ignore_backbone), and returns a dictionary with interface residues of each cavity.
+``pyKVFinder.constitutional`` takes the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, the number of cavities detected and a collection of detection parameters (``step``, ``probe_in``, ``ignore_backbone``), and returns a dictionary with interface residues of each cavity.
 
 .. code-block:: python
 
@@ -510,7 +510,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
   {'KAA': [['14', 'E', 'SER'], ['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['97', 'E', 'ALA'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['141', 'E', 'PRO'], ['142', 'E', 'HIS'], ['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE'], ['320', 'E', 'GLY'], ['321', 'E', 'PRO'], ['322', 'E', 'GLY'], ['323', 'E', 'ASP']], 'KAE': [['95', 'E', 'LEU'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['100', 'E', 'PHE'], ['103', 'E', 'LEU'], ['104', 'E', 'VAL'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['124', 'E', 'ALA'], ['175', 'E', 'ASP'], ['176', 'E', 'GLN'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['107', 'E', 'GLU'], ['108', 'E', 'PHE'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['50', 'E', 'GLY'], ['51', 'E', 'THR'], ['52', 'E', 'GLY'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['121', 'E', 'GLU'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['186', 'E', 'GLY'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['163', 'E', 'ILE'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['326', 'E', 'ASN'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['74', 'E', 'LEU'], ['75', 'E', 'ASP'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE'], ['336', 'E', 'ARG']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['200', 'E', 'GLY'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR'], ['331', 'E', 'GLU']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['253', 'E', 'GLY'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['277', 'E', 'LEU']], 'KAR': [['237', 'E', 'PRO'], ['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
 
 :Note:
-  If the step, probe_in and ignore_backbone are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav)``.
+  If the ``step``, ``probe_in`` and ``ignore_backbone`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav)``.
 
 :Note:
   Regarding the cavity nomenclature, cavity tag 2 corresponds to cavity name KAA, cavity tag 3 corresponds to cavity name KAB and so on.
@@ -550,7 +550,7 @@ Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the freque
 
 A hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy, is performed on the surface points of the detected cavities.
 
-``pyKVFinder.hydropathy`` takes the surface points of the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, Xmax, Ymax, Zmax), a NumPy array with sine and cossine, the number of cavities detected, a collection of detection parameters (step, probe_in) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydropobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.
+``pyKVFinder.hydropathy`` takes the surface points of the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, the number of cavities detected, a collection of detection parameters (``step``, ``probe_in``) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydropobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.
 
 .. code-block:: python
   
@@ -579,10 +579,10 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
   {'KAA': -0.71, 'KAB': -0.06, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.16, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.35, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]
 
 :Note: 
-  If the step, probe_in, hydrophobicity_scale and ignore_backbone are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.hydropathy(surface, resinfo, xyzr, vertices, sincos, ncav)``.
+  If the ``step``, ``probe_in``, ``hydrophobicity_scale`` and ``ignore_backbone`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.hydropathy(surface, resinfo, xyzr, vertices, sincos, ncav)``.
 
 :Note:
-  The `hydropathy` function accepts six builtin hydrophobicity scales:
+  The ``hydropathy`` function accepts six builtin hydrophobicity scales:
     * `EisenbergWeiss <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml>`_;
     * `HessaHeijne <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml>`_;
     * `KyteDoolite <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolite.toml>`_;
@@ -681,11 +681,11 @@ The function call depends on the characterizations performed on the detected cav
 Steered detection
 *****************
 
-All these steps showed so far were performed on whole protein detection; however, we can perform them on a box adjustment detection, where we can explore closed regions with a custom box, which can be defined by a `.toml` file.
+All these steps showed so far were performed on whole protein detection; however, we can perform them on a box adjustment detection, where we can explore closed regions with a custom box, which can be defined by a *.toml* file.
 
 There are two methods to define a custom 3D grid as shown in `Box Configuration File Template <https://github.com/LBC-LNBio/pyKVFinder#box-configuration-file-template>`_.
 
-First, we will create a box `.toml` file with: 
+First, we will create a box *.toml* file with: 
 
 - Four vertices of the box (origin, X-axis, Y-axis and Z-axis):
 
@@ -720,7 +720,7 @@ or
 Pipelines
 =========
 
-Then, you can explore this mode with the standard and full pipelines, defining the `box` parameter as the newly created `box.toml` file.
+Then, you can explore this mode with the standard and full pipelines, defining the ``box`` parameter as the newly created *box.toml* file.
 
 .. code-block:: python
   
@@ -737,25 +737,25 @@ If you are running pyKVFinder module in a step-by-step fashion (`Separated steps
 
 - Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, you can just call ``pyKVFinder.get_vertices_from_file``.
 
-``pyKVFinder.get_vertices_from_file`` takes `.toml` file with box configuration, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (step, probe_in and probe_out), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
+``pyKVFinder.get_vertices_from_file`` takes *.toml* file with box configuration, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (``step``, ``probe_in`` and ``probe_out``), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
 
 .. code-block:: python
 
   >>> vertices, resinfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
 
 :Note: 
-  If the step, probe_in and probe_out are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr)``.
+  If the ``step``, ``probe_in`` and ``probe_out`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr)``.
 
-- Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the `box_adjustment` parameter as `True`.
+- Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the ``box_adjustment`` parameter as ``True``.
 
 .. code-block:: python
 
   >>> ncav, cavities = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
 
 :Note:
-  If any of the detection parameters (step, probe_in, probe_out, removal_distance, volume_cutoff, surface) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, box_adjustment=True)``.
+  If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, box_adjustment=True)``.
 
-For more details on all these functions, please refer to our `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
+For more details on all these functions, please refer to the `API Reference <https://github.com/LBC-LNBio/pyKVFinder#api-reference>`_.
 
 API Reference
 #############
@@ -840,7 +840,7 @@ API Reference
 
   :Returns:
     ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
 
 ``pyKVFinder.get_vertices_from_file(fn, resinfo, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads = os.cpu_count() - 1)``
   Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
@@ -870,7 +870,7 @@ API Reference
 
   :Args:
     * ``vertices`` : * numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
     * ``step`` : *float*
         Grid spacing (A)
 
@@ -883,7 +883,7 @@ API Reference
 
   :Args:
     * ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
 
   :Returns:
     ``sincos`` : *numpy.ndarray*
@@ -902,7 +902,7 @@ API Reference
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
     * ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
     * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``step`` : *float, default 0.6*
@@ -987,7 +987,7 @@ API Reference
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
     * ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
     * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``ncav`` : *int*
@@ -1018,7 +1018,7 @@ API Reference
     * ``xyzr`` : *numpy.ndarray*
         A numpy array with xyz coordinates and radii values
     * ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
     * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``ncav`` : *int*
@@ -1051,7 +1051,7 @@ API Reference
     * ``surface`` : *numpy.ndarray*
         A numpy array with surface points of cavities (surface points >= 2; surface[nx][ny][nz])
     * ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
     * ``sincos`` : *numpy.ndarray*
         A numpy array with sine and cossine of 3D grid angles (a, b)
     * ``ncav`` : *int*
@@ -1182,7 +1182,7 @@ API Reference
     * ``frequency`` : *dict*
         A dictionary with frequency of residues and class of residues of each detected cavity
     * ``_vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, Xmax, Ymax, Zmax)
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
     * ``_step`` : *float, default 0.6*
         Grid spacing (A)
     * ``_ncav`` : *int*
