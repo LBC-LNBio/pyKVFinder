@@ -402,7 +402,8 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         else:
             scales, avg_hydropathy = None, None
     else:
-        volume, area, residues, depths, max_depth, avg_depth, scales, avg_hydropathy = None, None, None, None, None, None, None, None
+        print("Warning: No cavities detected, returning None!")
+        return None
 
     # Return dict
     results = pyKVFinderResults(cavities, surface, depths, scales, volume, area, max_depth, avg_depth, avg_hydropathy, residues, frequencies, vertices, step, ncav, pdb, ligand)

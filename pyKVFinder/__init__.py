@@ -13,7 +13,7 @@ For more information: https://github.com/LBC-LNBio/pyKVFinder
 """
 
 __name__ = "pyKVFinder"
-__version__ = "0.1"
+__version__ = "1.0"
 license = "GNU GPL-3.0 License"
 
 try:

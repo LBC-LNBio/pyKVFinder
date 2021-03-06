@@ -590,6 +590,10 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
+    # If surface is None, create an empty grid
+    if surface is None:
+        surface = numpy.zeros(cavities.shape, dtype='int32')
+
     # Export cavities
     if B is None:
         _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
