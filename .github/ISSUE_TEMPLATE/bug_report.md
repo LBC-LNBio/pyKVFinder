@@ -7,25 +7,39 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+<!---
+Please read this!
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. See error
+Before opening a new issue, make sure to search for keywords in the issues
+filtered by the "bug" label and verify the issue you're about to submit isn't a duplicate.
+--->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### Summary
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+<!-- Summarize the bug encountered concisely. -->
 
-**Desktop (please complete the following information):**
+### Setup
+<!-- Please complete the following information. -->
  - OS: [e.g. Linux/MacOS/Windows]
- - Python Version [e.g. v3.8]
- - pyKVFinder Version 
+ - Python Version [e.g. v3.x]
 
-**Additional context**
-Add any other context about the problem here.
+### Steps to reproduce
+
+<!-- Describe how one can reproduce the issue - this is very important. Please use an ordered list. -->
+
+### What is the current *bug* behavior?
+
+<!-- Describe what actually happens. -->
+
+### What is the expected *correct* behavior?
+
+<!-- Describe what you should see instead. -->
+
+### Relevant logs and/or screenshots
+
+<!-- Paste any relevant logs - please use code blocks (```) to format console output, logs, and code
+ as it's tough to read otherwise. -->
+
+### Possible fixes
+
+<!-- If you can, link to the line of code that might be responsible for the problem. -->
