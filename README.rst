@@ -39,7 +39,7 @@ Usage examples
 
 For an complete example of usage, we display usage examples with a pdb from `here <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/1FMO.pdb>`_.
 
-First of all, import pyKVFinder module on python:
+First of all, import pyKVFinder package on python:
 
 .. code-block:: python
 
@@ -735,7 +735,7 @@ Then, you can explore this mode with the standard and full pipelines, defining t
 Step-by-Step
 ============
 
-If you are running pyKVFinder module in a step-by-step fashion (`Separated steps <https://github.com/LBC-LNBio/pyKVFinder#separated-steps>`_), the steps `3 <https://github.com/LBC-LNBio/pyKVFinder#3-dimensioning-the-3d-grid>`_ and `4 <https://github.com/LBC-LNBio/pyKVFinder#4-detecting-biomolecular-cavities>`_ are different than before.
+If you are running pyKVFinder package in a step-by-step fashion (`Separated steps <https://github.com/LBC-LNBio/pyKVFinder#separated-steps>`_), the steps `3 <https://github.com/LBC-LNBio/pyKVFinder#3-dimensioning-the-3d-grid>`_ and `4 <https://github.com/LBC-LNBio/pyKVFinder#4-detecting-biomolecular-cavities>`_ are different than before.
 
 - Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, you can just call ``pyKVFinder.get_grid_from_file``.
 
