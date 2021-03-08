@@ -245,7 +245,7 @@ The van der Waals radii file define the radius values for each residue and when 
 
 The pyKVFinder 3D grid must be calculated based on the target *.pdb* file, the Probe Out diameter and the grid spacing. 
 
-Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (``probe_out``) and grid spacing (``step``) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis).
+Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (``probe_out``) and grid spacing (``step``) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid.
 
 .. code-block:: python
 
@@ -737,16 +737,16 @@ Step-by-Step
 
 If you are running pyKVFinder module in a step-by-step fashion (`Separated steps <https://github.com/LBC-LNBio/pyKVFinder#separated-steps>`_), the steps `3 <https://github.com/LBC-LNBio/pyKVFinder#3-dimensioning-the-3d-grid>`_ and `4 <https://github.com/LBC-LNBio/pyKVFinder#4-detecting-biomolecular-cavities>`_ are different than before.
 
-- Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, you can just call ``pyKVFinder.get_vertices_from_file``.
+- Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, you can just call ``pyKVFinder.get_grid_from_file``.
 
-``pyKVFinder.get_vertices_from_file`` takes *.toml* file with box configuration, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (``step``, ``probe_in`` and ``probe_out``), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
+``pyKVFinder.get_grid_from_file`` takes *.toml* file with box configuration, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (``step``, ``probe_in`` and ``probe_out``), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid, a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
 
 .. code-block:: python
 
-  >>> vertices, resinfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
+  >>> vertices, resinfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_grid_from_file('box.toml', resinfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
 
 :Note: 
-  If the ``step``, ``probe_in`` and ``probe_out`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices_from_file('box.toml', resinfo, xyzr)``.
+  If the ``step``, ``probe_in`` and ``probe_out`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_grid_from_file('box.toml', resinfo, xyzr)``.
 
 - Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the ``box_adjustment`` parameter as ``True``.
 
@@ -844,7 +844,7 @@ API Reference
     ``vertices`` : *numpy.ndarray*
         A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
 
-``pyKVFinder.get_vertices_from_file(fn, resinfo, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads = os.cpu_count() - 1)``
+``pyKVFinder.get_grid_from_file(fn, resinfo, xyzr, step = 0.6, probe_in = 1.4, probe_out = 4.0, nthreads = os.cpu_count() - 1)``
   Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
 
   :Args:
