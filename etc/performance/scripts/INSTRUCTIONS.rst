@@ -56,21 +56,25 @@ The benchmarking generates:
   * ``plots`` directory: contains time, speedup and effiency plots of the benchmarking. 
 
     * ``comparison``: contains time, speedup and effiency plots of pyKVFinder (default, depth, hydropathy) software against parKVFinder.
+      
       :metrics:
         * ``speedup``: ``parKVFinder`` time with ``x`` thread divided by ``pyKVFinder`` time with ``x`` threads
         * ``effiency``: ``speedup```of ``x`` threads divided by ``x`` threads
 
     * ``pyKVFinder`` directory: contains time, speedup and effiency plots of pyKVFinder (default) software against itself.
+      
       :metrics:
         * ``speedup``: ``pyKVFinder`` time with 1 thread divided by ``pyKVFinder`` time with ``x`` threads
         * ``effiency``: ``speedup```of ``x`` threads divided by ``x`` threads
 
     * ``pyKVFinder-depth`` directory: contains time, speedup and effiency plots of pyKVFinder (depth) software against pyKVFinder (default).
+      
       :metrics:
         * ``speedup``: ``pyKVFinder --depth`` time with ``x`` thread divided by ``pyKVFinder`` time with ``x`` threads
         * ``effiency``: ``speedup```of ``x`` threads divided by ``x`` threads
 
     * ``pyKVFinder-hydropathy`` directory: contains time, speedup and effiency plots of pyKVFinder (hydropathy) software against pyKVFinder (default).
+      
       :metrics:
         * ``speedup``: ``pyKVFinder --hydropathy`` time with ``x`` thread divided by ``pyKVFinder`` time with  threads
         * ``effiency``: ``speedup```of ``x`` threads divided by ``x`` threads
