@@ -5,7 +5,7 @@ import numpy
 from datetime import datetime
 from .argparser import argparser
 from .utils import read_vdw, read_pdb, calculate_frequencies, plot_frequencies, write_results, _write_parameters
-from .grid import get_vertices, get_vertices_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, hydropathy, export
+from .grid import get_vertices, get_grid_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, hydropathy, export
 
 __all__ = ['pyKVFinder', 'pyKVFinderResults']
 
@@ -76,7 +76,7 @@ def cli():
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, resinfo, xyzr, args.sincos, nx, ny, nz = get_vertices_from_file(args.box, resinfo, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
+        args.vertices, resinfo, xyzr, args.sincos, nx, ny, nz = get_grid_from_file(args.box, resinfo, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
 
         # Set flag to boolean
         args.box = True
@@ -358,7 +358,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, resinfo, xyzr, sincos, nx, ny, nz = get_vertices_from_file(box, resinfo, xyzr, step, probe_in, probe_out, nthreads)
+        vertices, resinfo, xyzr, sincos, nx, ny, nz = get_grid_from_file(box, resinfo, xyzr, step, probe_in, probe_out, nthreads)
 
         # Set flag to boolean
         box = True

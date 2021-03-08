@@ -1,7 +1,7 @@
 import os
 import numpy
 
-__all__ = ["get_vertices", "get_vertices_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "depth", "constitutional", "hydropathy", "export"]
+__all__ = ["get_vertices", "get_grid_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "depth", "constitutional", "hydropathy", "export"]
 
 
 def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6) -> numpy.ndarray:
@@ -29,7 +29,7 @@ def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6)
     return vertices
 
 
-def get_vertices_from_file(fn: str, resinfo: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
+def get_grid_from_file(fn: str, resinfo: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
     """
     Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units
 
