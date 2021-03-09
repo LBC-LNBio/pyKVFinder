@@ -1362,7 +1362,7 @@ estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *ma
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(cavities, depths, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
+    #pragma omp parallel default(none), shared(cavities, depths, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz, step), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
     {
         #pragma omp for schedule(dynamic)
             for (tag=0; tag < ncav; tag++)
@@ -1380,7 +1380,7 @@ estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *ma
                             if ( abs(cavities[k + nz * (j + ( ny * i ) )]) == (tag + 2) )
                             {   
                                 // Initialize tmp depth value
-                                tmp = sqrt( pow(nx, 2) + pow(ny, 2) + pow(nz, 2));
+                                tmp = sqrt( pow(nx, 2) + pow(ny, 2) + pow(nz, 2)) * step;
 
                                 // Count cavity point
                                 count++;
@@ -1398,7 +1398,7 @@ estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *ma
                                             for (k2=boundaries[tag].Z1; k2<=boundaries[tag].Z2; k2++)
                                                 if ( cavities[k2 + nz * (j2 + ( ny * i2 ) )] == -(tag + 2) )
                                                 {
-                                                    distance = sqrt( pow(i2-i, 2) + pow(j2-j, 2) + pow(k2-k, 2) );
+                                                    distance = sqrt( pow(i2-i, 2) + pow(j2-j, 2) + pow(k2-k, 2) ) * step;
                                                     if (distance < tmp)
                                                         tmp = distance;
                                                 }
@@ -1417,13 +1417,6 @@ estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *ma
                 // Divide sum of depths by number of cavity points for cavity tag
                 avg_depth[tag] /= count;
             }
-    }
-    
-    // Multiply depth values by grid spacing (step)
-    for (i=0; i<ncav; i++)
-    {
-        max_depth[i] *= step;
-        avg_depth[i] *= step;
     }
 }
 
