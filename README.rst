@@ -791,7 +791,7 @@ API Reference
     * ``include_hydropathy`` : *bool, default False*
         Whether to characterize the hydropathy of the detected cavities
     * ``hydrophobicity_scale`` : *str, default EisenbergWeiss*
-        Name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
+        Name of a builtin hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
     * ``surface`` : *str, default 'SES'*
         SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
     * ``ignore_backbone`` :  *bool, default False*
@@ -1030,7 +1030,7 @@ API Reference
     * ``probe_in`` : *float, default 1.4*
         Probe In size (A)
     * ``hydrophobicity_scale`` : *str, default 'EisenbergWeiss'*
-        Name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale file.
+        Name of a builtin hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale file.
     * ``ignore_backbone`` :  *bool, default False*
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
     * ``nthreads`` : *int, default 'number of cpus - 1'*
@@ -1308,7 +1308,7 @@ The second defines a list of residues and a padding, the template is shown below
 Hydrophobicity Scale File Template
 ##################################
 
-The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are five native hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
+The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are six builtin hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
 .. code-block:: TOML
 
@@ -1502,7 +1502,7 @@ The parameters for additional characterization are:
 
     $ pyKVFinder <.pdb> --hydropathy
 
-  In addition, the user can define one of the native hydrophobicity scale. The native hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
+  In addition, the user can define one of the builtin hydrophobicity scale. The builtin hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
 
   .. code-block:: bash
 
