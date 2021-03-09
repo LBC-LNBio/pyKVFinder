@@ -1,7 +1,7 @@
 # Files to ignore
 
 # Debbuging
-tests/output/
+tests/data/output/
 .vscode/
 
 # Virtual environment
