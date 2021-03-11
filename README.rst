@@ -1342,24 +1342,24 @@ The third uses `parKVFinder <https://github.com/LBC-LNBio/parKVFinder>`_'s TOML-
 .. code-block:: python
 
 	[SETTINGS.visiblebox.p1]
-	x = 3.11
-	y = 7.34
-	z = 1.59
+	x = 0.0
+	y = 0.0
+	z = 0.0
 
 	[SETTINGS.visiblebox.p2]
-	x = 11.51
-	y = 7.34
-	z = 1.59
+	x = 1.0
+	y = 0.0
+	z = 0.0
 
 	[SETTINGS.visiblebox.p3]
-	x = 3.11
-	y = 10.74
-	z = 1.59
+	x = 0.0
+	y = 1.0
+	z = 0.0
 
 	[SETTINGS.visiblebox.p4]
-	x = 3.11
-	y = 7.34
-	z = 6.19
+	x = 0.0
+	y = 0.0
+	z = 1.0
 
 Hydrophobicity Scale File Template
 ##################################
