@@ -685,7 +685,7 @@ Steered detection
 
 All these steps showed so far were performed on whole protein detection; however, we can perform them on a box adjustment detection, where we can explore closed regions with a custom box, which can be defined by a *.toml* file.
 
-There are two methods to define a custom 3D grid as shown in `Box Configuration File Template <https://github.com/LBC-LNBio/pyKVFinder#box-configuration-file-template>`_, and a third one that defines a custom 3D grid based on [parKVFinder](https://github.com/LBC-LNBio/parKVFinder)'s TOML-formatted parameters file.
+There are three methods to define a custom 3D grid as shown in `Box Configuration File Template <https://github.com/LBC-LNBio/pyKVFinder#box-configuration-file-template>`_.
 
 First, we will create a box *.toml* file with: 
 
@@ -719,9 +719,8 @@ or
   >>> with open('box.toml', 'w') as f:
   ...     toml.dump(toml.loads(box), f)
 
-or 
 
-- parKVFinder's parameters file:
+A third way is to define a custom 3D grid with [parKVFinder](https://github.com/LBC-LNBio/parKVFinder)'s TOML-formatted parameters file.
 
 .. code-block:: python
 
@@ -1316,7 +1315,7 @@ The van der Waals radii file define the radius values for each atom by residue a
 Box Configuration File Template
 ###############################
 
-There are two methods for defining a custom 3D grid in pyKVFinder.
+There are three methods for defining a custom 3D grid in pyKVFinder.
 
 The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown below:
 
@@ -1338,6 +1337,34 @@ The second defines a list of residues and a padding, the template is shown below
   residues = [ ["resname", "chain",], ["resname", "chain",], ]
   padding =  3.5
 
+The third uses [parKVFinder](https://github.com/LBC-LNBio/parKVFinder)'s TOML-formatted parameters file created by its PyMOL plugin.
+
+.. code-block:: python
+
+  >>> import toml
+  >>> box = """
+	[SETTINGS.visiblebox.p1]
+	x = 3.11
+	y = 7.34
+	z = 1.59
+
+	[SETTINGS.visiblebox.p2]
+	x = 11.51
+	y = 7.34
+	z = 1.59
+
+	[SETTINGS.visiblebox.p3]
+	x = 3.11
+	y = 10.74
+	z = 1.59
+
+	[SETTINGS.visiblebox.p4]
+	x = 3.11
+	y = 7.34
+	z = 6.19
+  """
+  >>> with open('box.toml', 'w') as f:
+  ...     toml.dump(toml.loads(box), f)
 
 Hydrophobicity Scale File Template
 ##################################
