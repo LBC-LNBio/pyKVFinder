@@ -685,7 +685,7 @@ Steered detection
 
 All these steps showed so far were performed on whole protein detection; however, we can perform them on a box adjustment detection, where we can explore closed regions with a custom box, which can be defined by a *.toml* file.
 
-There are two methods to define a custom 3D grid as shown in `Box Configuration File Template <https://github.com/LBC-LNBio/pyKVFinder#box-configuration-file-template>`_.
+There are two methods to define a custom 3D grid as shown in `Box Configuration File Template <https://github.com/LBC-LNBio/pyKVFinder#box-configuration-file-template>`_, and a third one that defines a custom 3D grid based on [parKVFinder](https://github.com/LBC-LNBio/parKVFinder)'s TOML-formatted parameters file.
 
 First, we will create a box *.toml* file with: 
 
@@ -718,6 +718,40 @@ or
   """
   >>> with open('box.toml', 'w') as f:
   ...     toml.dump(toml.loads(box), f)
+
+or 
+
+- parKVFinder's parameters file:
+
+.. code-block:: python
+
+  >>> import toml
+  >>> box = """
+	[SETTINGS.visiblebox.p1]
+	x = 3.11
+	y = 7.34
+	z = 1.59
+
+	[SETTINGS.visiblebox.p2]
+	x = 11.51
+	y = 7.34
+	z = 1.59
+
+	[SETTINGS.visiblebox.p3]
+	x = 3.11
+	y = 10.74
+	z = 1.59
+
+	[SETTINGS.visiblebox.p4]
+	x = 3.11
+	y = 7.34
+	z = 6.19
+  """
+  >>> with open('box.toml', 'w') as f:
+  ...     toml.dump(toml.loads(box), f)
+
+:Note:
+  You can create this box with parKVFinder's PyMOL plugin (PyMOL2 parKVFinder Tools) and save the parameters file from it.
 
 Pipelines
 =========
@@ -1265,7 +1299,7 @@ API Reference
 Van der Waals Radii File Template
 #################################
 
-The van der Waals radii file define the radius values for each residue and when not defined, it uses a generic value based on the atom type. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
+The van der Waals radii file define the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
 .. code-block::
 
