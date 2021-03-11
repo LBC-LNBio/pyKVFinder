@@ -1341,8 +1341,6 @@ The third uses `parKVFinder <https://github.com/LBC-LNBio/parKVFinder>`_'s TOML-
 
 .. code-block:: python
 
-  >>> import toml
-  >>> box = """
 	[SETTINGS.visiblebox.p1]
 	x = 3.11
 	y = 7.34
@@ -1362,9 +1360,6 @@ The third uses `parKVFinder <https://github.com/LBC-LNBio/parKVFinder>`_'s TOML-
 	x = 3.11
 	y = 7.34
 	z = 6.19
-  """
-  >>> with open('box.toml', 'w') as f:
-  ...     toml.dump(toml.loads(box), f)
 
 Hydrophobicity Scale File Template
 ##################################
