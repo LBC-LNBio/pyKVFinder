@@ -31,7 +31,7 @@ def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6)
 
 def get_grid_from_file(fn: str, resinfo: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
     """
-    Gets 3D grid vertices from box configuration file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units
+    Gets 3D grid vertices from box configuration file or parKVFinder parameters file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units
 
     Parameters
     ----------
@@ -66,27 +66,55 @@ def get_grid_from_file(fn: str, resinfo: numpy.ndarray, xyzr: numpy.ndarray, ste
     [box]
     residues = [ ["resname", "chain",], ["resname", "chain",], ]
     padding =  3.5
+
+    ParKVFinder Parameters File 
+    ---------------------------
+    [SETTINGS.visiblebox.p1]
+    x = x1
+    y = y1
+    z = z1
+
+    [SETTINGS.visiblebox.p2]
+    x = x2
+    y = y2
+    z = z2
+    
+    [SETTINGS.visiblebox.p3]
+    x = x3
+    y = y3
+    z = z3
+
+    [SETTINGS.visiblebox.p4]
+    x = x4
+    y = y4
+    z = z4
     """
     from _grid import _filter_pdb
     from toml import load
 
     # Read box file
     tmp = load(fn)
-    box = tmp['box'] if 'box' in tmp.keys() else tmp
-
-    # Check conditions
-    if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
-        if all([key in box.keys() for key in ['padding', 'residues']]):
-            raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
-        vertices = _get_vertices_from_box(box, probe_out)
-    elif 'residues' in box.keys():
-        if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
-            raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
-        if 'padding' not in box.keys():
-            box['padding'] = 3.5
-        vertices = _get_vertices_from_residues(box, resinfo, xyzr, probe_out)
+    if 'SETTINGS' in tmp.keys():
+        if 'visiblebox' in tmp['SETTINGS'].keys():
+            box = tmp['SETTINGS']['visiblebox']
+            box = {key:list(box[key].values()) for key in box.keys()}
+            vertices = _get_vertices_from_box(box, probe_out)
     else:
-        raise Exception(f"Box not properly defined in {fn}")
+        box = tmp['box'] if 'box' in tmp.keys() else tmp
+
+        # Check conditions
+        if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
+            if all([key in box.keys() for key in ['padding', 'residues']]):
+                raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
+            vertices = _get_vertices_from_box(box, probe_out)
+        elif 'residues' in box.keys():
+            if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
+                raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
+            if 'padding' not in box.keys():
+                box['padding'] = 3.5
+            vertices = _get_vertices_from_residues(box, resinfo, xyzr, probe_out)
+        else:
+            raise Exception(f"Box not properly defined in {fn}")
 
     # Get atoms inside box only
     sincos = numpy.round(get_sincos(vertices), 4)
