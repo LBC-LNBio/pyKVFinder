@@ -720,7 +720,7 @@ or
   ...     toml.dump(toml.loads(box), f)
 
 
-A third way is to define a custom 3D grid with [parKVFinder](https://github.com/LBC-LNBio/parKVFinder)'s TOML-formatted parameters file.
+A third way is to define a custom 3D grid with `parKVFinder <https://github.com/LBC-LNBio/parKVFinder>`_'s TOML-formatted parameters file.
 
 .. code-block:: python
 
@@ -1337,7 +1337,7 @@ The second defines a list of residues and a padding, the template is shown below
   residues = [ ["resname", "chain",], ["resname", "chain",], ]
   padding =  3.5
 
-The third uses [parKVFinder](https://github.com/LBC-LNBio/parKVFinder)'s TOML-formatted parameters file created by its PyMOL plugin.
+The third uses `parKVFinder <https://github.com/LBC-LNBio/parKVFinder>`_'s TOML-formatted parameters file created by its PyMOL plugin.
 
 .. code-block:: python
 
