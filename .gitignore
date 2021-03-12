@@ -9,6 +9,8 @@ venv/
 
 # Molecular dynamics analysis data
 etc/md-analysis/data/
+etc/md-analysis/results/
+etc/md-analysis/box.toml
 
 # Benchmarking data (kv1000, raw, plots)
 etc/performance/data/
