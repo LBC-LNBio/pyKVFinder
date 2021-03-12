@@ -650,7 +650,7 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
     from _grid import _export, _export_b
 
     # Check and convert data types
-    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+
     vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
     sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
     if B is not None:
@@ -659,7 +659,10 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         scales = scales.astype('float64') if scales.dtype != 'float64' else scales
 
     # Create base directories of results
-    os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
+    if fn is not None:
+        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
+    if output_hydropathy is not None:
+        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
@@ -670,14 +673,23 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
     else:
         surface = surface.astype('int32') if surface.dtype != 'int32' else surface
 
-    # Export cavities
-    if B is None:
-        _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
+    if cavities is None:
+        if surface is None:
+            raise Exception(f"You must define surface when not defining cavities.")
+        else:
+            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
     else:
-        _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append)
+        # Check and convert cavities dtype
+        cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+        
+        # Export cavities
+        if B is None:
+            _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
+        else:
+            _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append)
 
-    # Export hydropathy surface points
-    if scales is None:
-        pass
-    else:
-        _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
+        # Export hydropathy surface points
+        if scales is None:
+            pass
+        else:
+            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
