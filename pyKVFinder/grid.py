@@ -346,7 +346,7 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
     xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
     vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
     sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
-    if lxyzr:
+    if lxyzr is not None:
         lxyzr = lxyzr.astype('float64') if lxyzr.dtype != 'float64' else lxyzr
     
     # Unpack vertices
