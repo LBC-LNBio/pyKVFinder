@@ -1761,6 +1761,7 @@ project_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz,
     // Initiliaze 3D grid for residues distances
     ref = (double *) calloc (nxx * nyy * nzz, sizeof (double));
     dgrid(ref, nxx * nyy * nzz);
+    dgrid(hydropathy, nxx * nyy * nzz);
 
     // Get hydrophobicity value for each surface point
     for (atom=0; atom<natoms; atom++)
