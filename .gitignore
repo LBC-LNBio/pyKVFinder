@@ -7,6 +7,9 @@ tests/data/output/
 # Virtual environment
 venv/
 
+# Molecular dynamics analysis data
+etc/md-analysis/data/
+
 # Benchmarking data (kv1000, raw, plots)
 etc/performance/data/
 
