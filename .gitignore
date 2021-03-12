@@ -12,6 +12,11 @@ etc/md-analysis/data/
 etc/md-analysis/results/
 etc/md-analysis/box.toml
 
+# Molecular dynamics analysis data
+etc/evolutive-analysis/data/
+etc/evolutive-analysis/results/
+etc/evolutive-analysis/box.toml
+
 # Benchmarking data (kv1000, raw, plots)
 etc/performance/data/
 
