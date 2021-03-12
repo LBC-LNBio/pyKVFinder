@@ -364,6 +364,10 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, output_hydropathy
         None
     """
     import toml
+
+    # Create base directories of results
+    os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
+
     # Prepare paths
     pdb = os.path.abspath(pdb)
     if ligand:

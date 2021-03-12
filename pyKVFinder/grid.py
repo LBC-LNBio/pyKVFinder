@@ -615,6 +615,10 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         None
     """
     from _grid import _export, _export_b
+
+    # Create base directories of results
+    os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
+
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 

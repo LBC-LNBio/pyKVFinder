@@ -268,7 +268,7 @@ class pyKVFinderResults(object):
             None
         """
         output = os.path.abspath(output) if output else None
-        output_hydropathy = os.path.abspath(output_hydropathy) if output else None
+        output_hydropathy = os.path.abspath(output_hydropathy) if output_hydropathy else None
         write_results(fn, self._pdb, self._ligand, output, output_hydropathy, self.volume, self.area, self.max_depth, self.avg_depth, self.avg_hydropathy, self.residues, self.frequencies, self._step)
 
     def plot_frequencies(self, pdf: str = 'histograms.pdf'):
