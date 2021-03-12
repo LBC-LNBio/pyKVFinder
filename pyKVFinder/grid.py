@@ -341,6 +341,14 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
         cavities (numpy.ndarray): cavities 3D grid (cavities[nx][ny][nz])
     """
     from _grid import _detect, _detect_ladj
+    
+    # Check and convert data types
+    xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
+    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
+    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+    if lxyzr:
+        lxyzr = lxyzr.astype('float64') if lxyzr.dtype != 'float64' else lxyzr
+    
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -389,7 +397,13 @@ def spatial(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int
         area (dict): dictionary with cavity name/area pairs
     """
     from _grid import _spatial
+
+    # Check and convert data types
+    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+
+    # Get cavities shape
     nx, ny, nz = cavities.shape
+    
     # Get surface points, volume and area
     surface, volume, area = _spatial(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
     volume, area = _process_spatial(volume, area, ncav)
@@ -439,7 +453,13 @@ def depth(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int =
         avg_depth (dict): dictionary with cavity name/average depth pairs
     """
     from _grid import _depth
+    
+    # Check and convert data types
+    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+
+    # Get cavities shape
     nx, ny, nz = cavities.shape
+    
     # Get depth of cavity points, maximum depth and average depth
     depths, max_depth, avg_depth = _depth(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
     max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav)
@@ -493,6 +513,13 @@ def constitutional(cavities: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.
         residues (dict): dictionary with cavity name/list of interface residues pairs
     """
     from _grid import _constitutional
+
+    # Check and convert data types
+    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+    xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
+    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
+    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -559,6 +586,12 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
     import toml
     from _grid import _hydropathy
 
+    # Check and convert data types
+    surface = surface.astype('int32') if surface.dtype != 'int32' else surface
+    xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
+    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
+    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+
     # Get dimensions
     nx, ny, nz = surface.shape
     nvoxels = nx * ny * nz
@@ -615,6 +648,16 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         None
     """
     from _grid import _export, _export_b
+
+    # Check and convert data types
+    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+    surface = surface.astype('int32') if surface.dtype != 'int32' else surface
+    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
+    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+    if B is not None:
+        B = B.astype('float64') if B.dtype != 'float64' else B
+    if scales is not None:
+        scales = scales.astype('float64') if scales.dtype != 'float64' else scales
 
     # Create base directories of results
     os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
