@@ -651,7 +651,6 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
 
     # Check and convert data types
     cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
-    surface = surface.astype('int32') if surface.dtype != 'int32' else surface
     vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
     sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
     if B is not None:
@@ -668,6 +667,8 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
     # If surface is None, create an empty grid
     if surface is None:
         surface = numpy.zeros(cavities.shape, dtype='int32')
+    else:
+        surface = surface.astype('int32') if surface.dtype != 'int32' else surface
 
     # Export cavities
     if B is None:
