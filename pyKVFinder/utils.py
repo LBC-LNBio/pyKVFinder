@@ -234,10 +234,12 @@ def calculate_frequencies(residues: dict) -> dict:
             'CLASS': {},
         }
         # Get unique residues names
-        reslist = sorted(list(set([res[2] for res in reslist])))
+        residues = [res[2] for res in reslist]
+        reslist = sorted(list(set(residues)))
+        
         # Get residues frequencies
         for res in reslist:
-            frequencies[name]['RESIDUES'][res] = reslist.count(res)
+            frequencies[name]['RESIDUES'][res] = residues.count(res)
 
         # Get class frequencies
         frequencies[name]['CLASS']['R1'] = frequencies[name]['RESIDUES'].get('ALA', 0) + frequencies[name]['RESIDUES'].get('GLY', 0) + frequencies[name]['RESIDUES'].get('ILE', 0) + frequencies[name]['RESIDUES'].get('LEU', 0) + frequencies[name]['RESIDUES'].get('PRO', 0) + frequencies[name]['RESIDUES'].get('VAL', 0)
@@ -245,7 +247,7 @@ def calculate_frequencies(residues: dict) -> dict:
         frequencies[name]['CLASS']['R3'] = frequencies[name]['RESIDUES'].get('ASN', 0) + frequencies[name]['RESIDUES'].get('CYS', 0) + frequencies[name]['RESIDUES'].get('GLN', 0) + frequencies[name]['RESIDUES'].get('MET', 0) + frequencies[name]['RESIDUES'].get('SER', 0) + frequencies[name]['RESIDUES'].get('THR', 0)
         frequencies[name]['CLASS']['R4'] = frequencies[name]['RESIDUES'].get('ASP', 0) + frequencies[name]['RESIDUES'].get('GLU', 0)
         frequencies[name]['CLASS']['R5'] = frequencies[name]['RESIDUES'].get('ARG', 0) + frequencies[name]['RESIDUES'].get('HIS', 0) + frequencies[name]['RESIDUES'].get('LYS', 0)
-        frequencies[name]['CLASS']['RX'] = len(reslist) - sum(frequencies[name]['CLASS'].values())
+        frequencies[name]['CLASS']['RX'] = len(residues) - sum(frequencies[name]['CLASS'].values())
 
     return frequencies
 
