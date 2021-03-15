@@ -7,27 +7,28 @@ tests/data/output/
 # Virtual environment
 venv/
 
-# Molecular dynamics analysis data
+# Molecular dynamics analysis
 etc/examples/md-analysis/data/
 etc/examples/md-analysis/results/
 etc/examples/md-analysis/box.toml
 
-# Molecular dynamics analysis data
+# Evolutive analysis 
 etc/examples/evolutive-analysis/data/
 etc/examples/evolutive-analysis/results/
 etc/examples/evolutive-analysis/box.toml
 
-# Benchmarking data (kv1000, raw, plots)
-etc/performance/data/
+# Visualization 
+etc/examples/visualization/data/
 
-# Benchmarking scripts
+# Benchmarking 
+etc/performance/data/
 !etc/performance/scripts/
 etc/performance/scripts/parKVFinder*
 
 # Cavity templates (.pdb and .cif)
 etc/templates/cavities/
 
-# Cavity templates (.pdb and .cif)
+# Formatted-files
 etc/formats
 
 # Box configuration file template
