@@ -525,9 +525,9 @@ def constitutional(cavities: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.
 
     # Remove backbone from resinfo
     if ignore_backbone:
-        mask = numpy.where(resinfo[:, 1] != 'C') and numpy.where(resinfo[:, 1] != 'CA') and numpy.where(resinfo[:, 1] != 'N') and numpy.where(resinfo[:, 1] != 'O')
+        mask = numpy.where((resinfo[:, 1] != 'C') & (resinfo[:, 1] != 'CA') & (resinfo[:, 1] != 'N') & (resinfo[:, 1] != 'O'))
         resinfo = resinfo[mask[0], ]
-        xyzr = xyzr[mask[0]]
+        xyzr = xyzr[mask[0], ]
 
     # Prepare resinfo
     resinfo = resinfo[:, 0].tolist()
@@ -608,9 +608,9 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
 
     # Remove backbone from resinfo
     if ignore_backbone:
-        mask = numpy.where(resinfo[:, 1] != 'C') and numpy.where(resinfo[:, 1] != 'CA') and numpy.where(resinfo[:, 1] != 'N') and numpy.where(resinfo[:, 1] != 'O')
+        mask = numpy.where((resinfo[:, 1] != 'C') & (resinfo[:, 1] != 'CA') & (resinfo[:, 1] != 'N') & (resinfo[:, 1] != 'O'))
         resinfo = resinfo[mask[0], ]
-        xyzr = xyzr[mask[0]]
+        xyzr = xyzr[mask[0], ]
 
     # Get residue name from resinfo
     resname = list(map(lambda x: x.split("_")[2], resinfo[:, 0]))
