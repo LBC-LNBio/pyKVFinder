@@ -1075,7 +1075,7 @@ API Reference
     ``(scales, avg_hydropathy)`` : *tuple*
         A tuple with two elements: numpy array with hydrophobicity scale values mapped at surface points (scales[nx][ny][nz]) and a dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
 
-``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, output_hydropathy = 'hydropathy.pdb', scales = None, nthreads = os.cpu_count() - 1, append = False)``
+``pyKVFinder.export(fn, cavities, surface, vertices, sincos, ncav, step = 0.6, B = None, output_hydropathy = 'hydropathy.pdb', scales = None, nthreads = os.cpu_count() - 1, append = False, model = 0)``
   Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points.
 
   :Args:
@@ -1103,6 +1103,8 @@ API Reference
         Number of threads
     * ``append`` : *bool, default False*
         Append cavities to PDB file
+    * ``model`` : *int, default 0*
+        Model number
   
   :Returns:
     A file with PDB-formatted data corresponding to cavity points (H), surface points (HA) and a target variable (B) as B-factor, and (optional) a file with PDB-formatted data corresponding to hydropathy mapped as B-factor at surface points (HA).
