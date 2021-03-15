@@ -7,6 +7,9 @@ tests/data/output/
 # Virtual environment
 venv/
 
+# Examples checkpoints
+etc/examples/*/.ipynb_checkpoints/
+
 # Molecular dynamics analysis
 etc/examples/md-analysis/data/
 etc/examples/md-analysis/results/
