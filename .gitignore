@@ -8,14 +8,14 @@ tests/data/output/
 venv/
 
 # Molecular dynamics analysis data
-etc/md-analysis/data/
-etc/md-analysis/results/
-etc/md-analysis/box.toml
+etc/examples/md-analysis/data/
+etc/examples/md-analysis/results/
+etc/examples/md-analysis/box.toml
 
 # Molecular dynamics analysis data
-etc/evolutive-analysis/data/
-etc/evolutive-analysis/results/
-etc/evolutive-analysis/box.toml
+etc/examples/evolutive-analysis/data/
+etc/examples/evolutive-analysis/results/
+etc/examples/evolutive-analysis/box.toml
 
 # Benchmarking data (kv1000, raw, plots)
 etc/performance/data/
