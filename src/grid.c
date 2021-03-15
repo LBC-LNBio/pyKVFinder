@@ -644,9 +644,9 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
         grid[ k + nz * (j + ( ny * i ) ) ] = tag;
         vol++;
         #pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
-        for (x=i-1 ; x<=i+1 ; x++)
-            for (y=j-1 ; y<=j+1 ; y++)
-                for (z = k-1; z<=k+1; z++)
+        for (x=i-1; x<=i+1; x++)
+            for (y=j-1; y<=j+1; y++)
+                for (z=k-1; z<=k+1; z++)
                     DFS(grid, nx, ny, nz, x, y, z, tag);
     }
 }
@@ -676,9 +676,9 @@ remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
 
     #pragma omp parallel default(shared)
         #pragma omp for schedule(static) collapse(3) //nowait
-            for (i = 0; i < nx; i++)
-                for (j = 0; j < ny; j++)
-                    for (k = 0; k < nz; k++)
+            for (i=0; i<nx; i++)
+                for (j=0; j<ny; j++)
+                    for (k=0; k<nz; k++)
                         // Remove points based on tag
                         if (grid[ k + nz * (j + ( ny * i ) ) ] == tag)
                             grid[ k + nz * (j + ( ny * i ) ) ] = 0;
@@ -1941,10 +1941,11 @@ _hydropathy (double *hydropathy, int size, double *avgh, int ncav, int *surface,
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
  * append: append cavities to PDB file
+ * model: model number
  * 
  */
 void
-_export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
+_export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -1959,6 +1960,10 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx,
         output = fopen (fn, "a+");
     else
 	    output = fopen (fn, "w");
+    
+    // Write model number
+    if (abs(model) > 0)
+        fprintf (output, "MODEL     %4.d\n", model);
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
         #pragma omp parallel default(none) shared(cavities, surface, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
@@ -1990,7 +1995,14 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx,
                         }
                     }
         }
-        fclose (output);
+    // Write ENDMDL
+    if (abs(model) > 0)
+        fprintf (output, "ENDMDL\n");
+    // Write END
+    if (model < 0)
+        fprintf (output, "END\n");
+    // Close file
+    fclose (output);
 }
 
 /*
@@ -2020,10 +2032,11 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx,
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
  * append: append cavities to PDB file
+ * model: model number
  * 
  */
 void 
-_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append)
+_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
 {
 	int i, j, k, count, tag;
 	double x, y, z, xaux, yaux, zaux;
@@ -2038,6 +2051,10 @@ _export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nx
         output = fopen (fn, "a+");
     else
 	    output = fopen (fn, "w");
+
+    // Write model number
+    if (abs(model) > 0)
+        fprintf (output, "MODEL     %4.d\n", model);
 
     for (count=1, tag=2; tag<=ncav+2; tag++)
         #pragma omp parallel default(none) shared(cavities, surface, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
@@ -2069,5 +2086,12 @@ _export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nx
                         }
                     }
         }
-        fclose (output);
+    // Write ENDMDL
+    if (abs(model) > 0)
+        fprintf (output, "ENDMDL\n");
+    // Write END
+    if (model < 0)
+        fprintf (output, "END\n");
+    // Close file
+    fclose (output);
 }

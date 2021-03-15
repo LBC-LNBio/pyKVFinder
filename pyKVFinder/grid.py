@@ -623,7 +623,7 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
     return scales.reshape(nx, ny, nz), avg_hydropathy
 
 
-def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, output_hydropathy: str = 'hydropathy.pdb', scales: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False) -> None:
+def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, output_hydropathy: str = 'hydropathy.pdb', scales: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False, model: int = 0) -> None:
     """
     Exports cavities to PDB-formatted file with variable (B; optional) as B-factor, and hydropathy to PDB-formatted file as B-factor at surface points (scales; optional)
 
@@ -642,6 +642,7 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         scales (numpy.ndarray): hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])
         nthreads (int): number of threads
         append (bool): append cavities PDB to `fn`
+        model (int): model number
 
     Returns
     -------
@@ -677,19 +678,19 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
         if surface is None:
             raise Exception(f"You must define surface when not defining cavities.")
         else:
-            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
+            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append, model)
     else:
         # Check and convert cavities dtype
         cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
         
         # Export cavities
         if B is None:
-            _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append)
+            _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append, model)
         else:
-            _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append)
+            _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append, model)
 
         # Export hydropathy surface points
         if scales is None:
             pass
         else:
-            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append)
+            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append, model)
