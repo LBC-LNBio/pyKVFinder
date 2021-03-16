@@ -16,7 +16,7 @@ def _check_hydropathy_options(x: str) -> str:
     -------
         x (str): accepted option
     """
-    if x in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolitte', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
+    if x in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolittle', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
         return x
     elif os.path.exists(x):
         import toml
@@ -27,7 +27,7 @@ def _check_hydropathy_options(x: str) -> str:
             raise(argparse.ArgumentTypeError(msg))
         return x
     else:
-        msg = f"invalid choice: {x} (choose from \'EisenbergWeiss\', \'HessaHeijne\', \'KyteDoolitte\', \'MoonFleming\', \'WimleyWhite\', \'ZhaoLondon\' or define a TOML-formatted file with hydrophobicity values for standard residues)"
+        msg = f"invalid choice: {x} (choose from \'EisenbergWeiss\', \'HessaHeijne\', \'KyteDoolittle\', \'MoonFleming\', \'WimleyWhite\', \'ZhaoLondon\' or define a TOML-formatted file with hydrophobicity values for standard residues)"
         raise(argparse.ArgumentTypeError(msg))
 
 
@@ -208,7 +208,7 @@ def argparser() -> argparse.ArgumentParser:
                              help="Plot histograms of calculated frequencies of the detected cavities in a PDF file. (default: %(default)s)")
     extra_modes.add_argument("--hydropathy",
                              type=_check_hydropathy_options,
-                             metavar="{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}",
+                             metavar="{EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}",
                              nargs='?',
                              const='EisenbergWeiss',
                              default=None,
