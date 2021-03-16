@@ -824,7 +824,7 @@ API Reference
     * ``include_hydropathy`` : *bool, default False*
         Whether to characterize the hydropathy of the detected cavities
     * ``hydrophobicity_scale`` : *str, default EisenbergWeiss*
-        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
+        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
     * ``surface`` : *str, default 'SES'*
         SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
     * ``ignore_backbone`` :  *bool, default False*
@@ -1063,7 +1063,7 @@ API Reference
     * ``probe_in`` : *float, default 1.4*
         Probe In size (A)
     * ``hydrophobicity_scale`` : *str, default 'EisenbergWeiss'*
-        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale file.
+        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale file.
     * ``ignore_backbone`` :  *bool, default False*
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
     * ``nthreads`` : *int, default 'number of cpus - 1'*
@@ -1366,7 +1366,7 @@ The third uses `parKVFinder <https://github.com/LBC-LNBio/parKVFinder>`_'s TOML-
 Hydrophobicity Scale File Template
 ##################################
 
-The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are six built-in hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
+The hydrophobicity scale file define the scale values for each residue and when not defined, it assigns 0.0 to missing residues. There are six built-in hydrophobicity scales: EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite and ZhaoLondon. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
 .. code-block:: TOML
 
@@ -1554,19 +1554,19 @@ The parameters for additional characterization are:
 
   :Default: ``None``
 
-* ``--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]``: Characterize the hydropathy of the detected cavities. This mode maps a target hydrophobicity scale as B-factor at surface points of the detected cavities. Also, it calculates the average hydropathy of each detected cavity. The constant hydrophobicity scale is EisenbergWeiss.
+* ``--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]``: Characterize the hydropathy of the detected cavities. This mode maps a target hydrophobicity scale as B-factor at surface points of the detected cavities. Also, it calculates the average hydropathy of each detected cavity. The constant hydrophobicity scale is EisenbergWeiss.
 
   .. code-block:: bash
 
     $ pyKVFinder <.pdb> --hydropathy
 
-  In addition, the user can define one of the built-in hydrophobicity scale. The built-in hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite and ZhaoLondon.
+  In addition, the user can define one of the built-in hydrophobicity scale. The built-in hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite and ZhaoLondon.
 
   .. code-block:: bash
 
     $ pyKVFinder <.pdb> --hydropathy EisenbergWeiss
     $ pyKVFinder <.pdb> --hydropathy HessaHeijne
-    $ pyKVFinder <.pdb> --hydropathy KyteDoolitte
+    $ pyKVFinder <.pdb> --hydropathy KyteDoolittle
     $ pyKVFinder <.pdb> --hydropathy MoonFleming
     $ pyKVFinder <.pdb> --hydropathy WimleyWhite
     $ pyKVFinder <.pdb> --hydropathy ZhaoLondon
