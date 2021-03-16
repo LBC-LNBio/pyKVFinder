@@ -573,7 +573,7 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
         ncav (int): number of cavities
         step (float): grid spacing (A)
         probe_in (float): Probe In size (A)
-        hydrophobicity_scale (str): name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
+        hydrophobicity_scale (str): name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
         ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
         nthreads (int): number of threads
         verbose: print extra information to standard output
@@ -597,7 +597,7 @@ def hydropathy(surface: numpy.ndarray, resinfo: numpy.ndarray, xyzr: numpy.ndarr
     nvoxels = nx * ny * nz
 
     # Load hydrophobicity scales
-    if hydrophobicity_scale in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolitte', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
+    if hydrophobicity_scale in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolittle', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
         hydrophobicity_scale = os.path.join(os.path.abspath(os.path.dirname(__file__)), f"data/{hydrophobicity_scale}.toml")
     f = toml.load(hydrophobicity_scale)
     data, name = list(f.values())[0], list(f.keys())[0]
