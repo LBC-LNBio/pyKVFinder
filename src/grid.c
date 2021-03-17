@@ -304,7 +304,7 @@ subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_
 	omp_set_num_threads (nthreads);
     omp_set_nested (1);
 
-    /* Create a parallel region */
+    // Create a parallel region */
     #pragma omp parallel default(none), shared(PI, PO, nx, ny, nz, i, j, k, step, rd, removal_distance), private(j2,i2,k2)
     {
         #pragma omp for schedule(dynamic) collapse(3)
@@ -616,6 +616,49 @@ filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, in
 int vol;
 
 /*
+ * Variable: big
+ * 
+ * Flag that marks big cavities on clustering
+ * 
+ */
+int big;
+
+/*
+ * Function: check_unclustered_neighbours
+ * --------------------------------------
+ * 
+ * Checks if a cavity point on the grid is next to a unclustered cavity point (1)
+ * 
+ * grid: 3D grid
+ * dx: x grid units
+ * dy: y grid units
+ * dz: z grid units
+ * i: x coordinate of cavity point
+ * j: y coordinate of cavity point
+ * k: z coordinate of cavity point
+ * 
+ * returns: true (int 1) or false (int 0)
+ */
+int
+check_unclustered_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k)
+{
+	int x, y, z;
+	
+    // Loop around neighboring points
+	for (x=i-1; x<=i+1; x++)
+        for (y=j-1; y<=j+1; y++)
+			for (z=k-1; z<=k+1; z++) 
+            {
+			    // Check if point is inside 3D grid
+				if (x < 0 || y < 0 || z < 0 || x > nx-1 || y > ny-1 || z > nz-1);
+                else
+    			    if (grid[ z + nz * (y + ( ny * x ) ) ] > 1)
+                        return grid[ z + nz * (y + ( ny * x ) ) ];
+			}
+	return 0;
+}
+
+/*
  * Function: DFS
  * -------------
  * 
@@ -639,15 +682,22 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
     if (i == 0 || i == nx-1 || j == 0 || j == ny-1 || k == 0 || k == nz-1)
         return;
 
-    if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
+    if (grid[ k + nz * (j + ( ny * i ) ) ] == 1 && !big)
     {
         grid[ k + nz * (j + ( ny * i ) ) ] = tag;
         vol++;
-        #pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
-        for (x=i-1; x<=i+1; x++)
-            for (y=j-1; y<=j+1; y++)
-                for (z=k-1; z<=k+1; z++)
-                    DFS(grid, nx, ny, nz, x, y, z, tag);
+
+        if (vol == 10000)
+            big = 1;
+
+        if (!big)
+        {
+            #pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
+                for (x=i-1; x<=i+1; x++)
+                    for (y=j-1; y<=j+1; y++)
+                        for (z=k-1; z<=k+1; z++)
+                            DFS(grid, nx, ny, nz, x, y, z, tag);
+        }
     }
 }
 
@@ -702,9 +752,12 @@ remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
 int
 cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
 {
-    int i, j, k, tag;
+    int i, j, k, i2, j2, k2, tag, vol_aux;
 
+    // Initialize variables
     tag = 1;
+    vol_aux = 0;
+    big = 0;
 
     for (i=0; i<nx; i++)
         for (j=0; j<ny; j++)
@@ -716,6 +769,25 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
                     
                     // Clustering procedure
                     DFS(grid, nx, ny, nz, i, j, k, tag);
+                    vol_aux = vol;
+
+					// Loop for big cavities
+					while (big) 
+                    {
+						vol_aux = 0;
+
+						for (i2=0; i2<nx; i2++)
+							for (j2=0; j2<ny; j2++)
+								for (k2=0; k2<nz; k2++) 
+                                {
+									big = 0;
+									vol_aux += vol;
+									vol = 0;
+									if (grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] == 1 && check_unclustered_neighbours (grid, nx, ny, nz, i2, j2, k2) == tag)
+									    DFS(grid, nx, ny, nz, i2, j2, k2, tag);
+								}
+					}
+                    vol = vol_aux;
 
                     // Check if cavity reached cutoff
                     if ( (double) vol * pow(step, 3) < volume_cutoff )

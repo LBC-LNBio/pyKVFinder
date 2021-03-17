@@ -25,6 +25,7 @@ void _filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, d
 void filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads);
 
 /* Cavity clustering */
+int  check_unclustered_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k);
 void DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag);
 void remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads);
 int cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads);
