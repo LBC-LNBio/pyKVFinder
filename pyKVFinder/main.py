@@ -63,7 +63,7 @@ def cli():
 
     if args.verbose:
         print("> Reading PDB coordinates")
-    resinfo, xyzr = read_pdb(args.pdb, vdw)
+    atominfo, xyzr = read_pdb(args.pdb, vdw)
 
     if args.ligand:
         if args.verbose:
@@ -76,7 +76,7 @@ def cli():
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, resinfo, xyzr, args.sincos, nx, ny, nz = get_grid_from_file(args.box, resinfo, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
+        args.vertices, atominfo, xyzr, args.sincos, nx, ny, nz = get_grid_from_file(args.box, atominfo, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
 
         # Set flag to boolean
         args.box = True
@@ -122,7 +122,7 @@ def cli():
             depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
-        residues = constitutional(cavities, resinfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        residues = constitutional(cavities, atominfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
         frequencies = calculate_frequencies(residues)
 
         # Plot histograms of frequencies
@@ -133,7 +133,7 @@ def cli():
         # Hydropathy characterization
         if args.hydropathy:
             # Map hydrophobicity scales
-            scales, avg_hydropathy = hydropathy(surface, resinfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.hydropathy, args.ignore_backbone, args.nthreads, args.verbose)
+            scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.hydropathy, args.ignore_backbone, args.nthreads, args.verbose)
             output_hydropathy = os.path.join(args.output_directory, f"{args.base_name}.{list(avg_hydropathy.keys())[-1]}.pdb")
         else:
             scales, avg_hydropathy, output_hydropathy = None, None, None
@@ -345,7 +345,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
     if verbose:
         print("> Reading PDB coordinates")
-    resinfo, xyzr = read_pdb(pdb, vdw)
+    atominfo, xyzr = read_pdb(pdb, vdw)
 
     if ligand:
         if verbose:
@@ -358,7 +358,7 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, resinfo, xyzr, sincos, nx, ny, nz = get_grid_from_file(box, resinfo, xyzr, step, probe_in, probe_out, nthreads)
+        vertices, atominfo, xyzr, sincos, nx, ny, nz = get_grid_from_file(box, atominfo, xyzr, step, probe_in, probe_out, nthreads)
 
         # Set flag to boolean
         box = True
@@ -393,12 +393,12 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
             depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
-        residues = constitutional(cavities, resinfo, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
+        residues = constitutional(cavities, atominfo, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
         frequencies = calculate_frequencies(residues)
 
         # Hydropathy hydrophobicity scales
         if include_hydropathy:
-            scales, avg_hydropathy = hydropathy(surface, resinfo, xyzr, vertices, sincos, ncav, step, probe_in, hydrophobicity_scale, ignore_backbone, nthreads, verbose)
+            scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, vertices, sincos, ncav, step, probe_in, hydrophobicity_scale, ignore_backbone, nthreads, verbose)
         else:
             scales, avg_hydropathy = None, None
     else:
