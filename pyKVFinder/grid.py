@@ -206,11 +206,11 @@ def _get_vertices_from_residues(box: dict, atominfo: numpy.ndarray, xyzr: numpy.
     Box File
     --------
     [box]
-    residues = [ ["resname", "chain",], ["resname", "chain",], ]
+    residues = [ ["resnum", "chain", "resname",], ["resnum", "chain", "resname"], ]
     padding =  3.5
     """
     # Prepare residues list
-    box['residues'] = numpy.array(['_'.join(item[0:2]) for item in box['residues']])
+    box['residues'] = numpy.array(['_'.join(item[0:3]) for item in box['residues']])
 
     # Get coordinates of residues
     indexes = numpy.in1d(atominfo[:, 0], box['residues'])
