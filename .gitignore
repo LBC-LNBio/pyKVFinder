@@ -1,7 +1,7 @@
 # Files to ignore
 
 # Debbuging
-tests/data/output/
+pyKVFinder/data/tests/output/
 .vscode/
 
 # Virtual environment
@@ -29,13 +29,10 @@ etc/performance/data/
 etc/performance/scripts/parKVFinder*
 
 # Cavity templates (.pdb and .cif)
-etc/templates/cavities/
+etc/templates/
 
 # Formatted-files
 etc/formats
-
-# Box configuration file template
-!etc/templates/box.toml
 
 # Ignore __pycache__
 */__pycache__/
