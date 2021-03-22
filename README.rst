@@ -1267,7 +1267,7 @@ API Reference
   :Returns:
     A file with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity
 
-``pyKVFinder.plot_frequencies(pdf = 'histogram.pdf')``
+``pyKVFinder.pyKVFinderResults.plot_frequencies(pdf = 'histogram.pdf')``
   Plot histograms of frequencies in PDF file
 
   :Args:
