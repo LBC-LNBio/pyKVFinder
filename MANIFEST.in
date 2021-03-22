@@ -4,6 +4,10 @@ include pyKVFinder/data/vdw.dat
 # Include hydrophobicity scales
 include pyKVFinder/data/*.toml
 
+# Include examples
+include pyKVFinder/data/tests/*.toml
+include pyKVFinder/data/tests/*.pdb
+
 # Include the license file
 include LICENSE.txt
 
