@@ -13,11 +13,24 @@ def read_vdw(fn: str = here) -> dict:
 
     Parameters
     ----------
-        fn (str): van der Waals radii file
+        fn (str): a path to a van der Waals radii file
 
     Returns
     -------
-        vdw (dict): A dictionary containing radii values with residue name and atom name as keys
+        vdw (dict): a dictionary containing radii values (vdw[resname][atom])
+
+    Note
+    ----
+        The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type (check van der Waals File Template). The package contains a built-in van der Waals radii file: `vdw.dat`.
+
+    van der Waals File Template
+    ---------------------------
+        >RES
+        C       1.66
+        CA      2.00
+        N       1.97
+        O       1.69
+        H       0.91
     """
     vdw = {}
     with open(fn, 'r') as f:
@@ -36,17 +49,21 @@ def read_vdw(fn: str = here) -> dict:
 
 def read_pdb(fn: str, vdw: dict) -> tuple:
     """
-    Reads PDB file into numpy arrays
+    Reads PDB file into Numpy arrays
 
     Parameters
     ----------
-        fn (str): Path to PDB file
-        vdw (dict): Dictionary with radii values (vdw[resname][atom])
+        fn (str): a path to PDB file
+        vdw (dict): a dictionary with radii values (vdw[resname][atom])
 
     Returns
     -------
-        atominfo (numpy.ndarray): an array with resnum, chain, resname and atom name
-        xyzr (numpy.ndarray): an array with xyz coordinates and radii values
+        atominfo (numpy.ndarray): a numpy array with atomic information (residue number, chain, residue name, atom name)
+        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius)
+
+    Note
+    ----
+        The vdW radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type.
     """
     import numpy as np
     atominfo = []
@@ -216,12 +233,16 @@ def calculate_frequencies(residues: dict) -> dict:
 
     Note
     ----
-    R1: Aliphatic apolar
-    R2: Aromatic
-    R3: Polar Uncharged
-    R4: Negatively charged
-    R5: Positively charged
-    RX: Non-standard
+        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+
+    Classes
+    -------
+        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
+        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
+        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
+        Negatively charged (R4): Aspartate, Glutamate
+        Positively charged (R5): Arginine, Histidine, Lysine
+        Non-standard (RX): Non-standard residues
     """
     # Create a dict for frequencies
     frequencies = {}
@@ -236,7 +257,7 @@ def calculate_frequencies(residues: dict) -> dict:
         # Get unique residues names
         residues = [res[2] for res in reslist]
         reslist = sorted(list(set(residues)))
-        
+
         # Get residues frequencies
         for res in reslist:
             frequencies[name]['RESIDUES'][res] = residues.count(res)
@@ -254,12 +275,12 @@ def calculate_frequencies(residues: dict) -> dict:
 
 def plot_frequencies(frequencies: dict, fn: str = 'histograms.pdf') -> None:
     """
-    Plot histograms of calculated frequencies (residues and classes of residues) for each detected cavity in a target PDF file
+    Plot histograms of calculated frequencies (residues and classes of residues) for each detected cavity in a target PDF file.
 
     Parameters
     ----------
-        frequencies (dict): A dictionary with frequencies of residues and class of residues of each detected cavity
-        fn (str): A path to a PDF file
+        frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
+        fn (str): a path to PDF file for plotting histograms of frequencies.
 
     Returns
     -------
@@ -267,12 +288,16 @@ def plot_frequencies(frequencies: dict, fn: str = 'histograms.pdf') -> None:
 
     Note
     ----
-    R1: Aliphatic apolar
-    R2: Aromatic
-    R3: Polar Uncharged
-    R4: Negatively charged
-    R5: Positively charged
-    RX: Non-standard
+        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+
+    Classes
+    -------
+        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
+        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
+        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
+        Negatively charged (R4): Aspartate, Glutamate
+        Positively charged (R5): Arginine, Histidine, Lysine
+        Non-standard (RX): Non-standard residues
     """
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_pdf import PdfPages
@@ -347,23 +372,27 @@ def write_results(fn: str, pdb: str, ligand: str, output: str, output_hydropathy
 
     Parameters
     ----------
-        fn (str): path to KVFinder results TOML-formatted file
-        pdb (str): path to input PDB file
-        ligand (str): path to ligand PDB file
-        output (str): path to cavity PDB file
-        output_hydropathy (str): path to hydropathy PDB file
-        volume (dict): dictionary with cavity name/volume pairs
-        area (dict): dictionary with cavity name/area pairs
-        max_depth (dict): dictionary with cavity name/maximum depth pairs
-        avg_depth (dict): dictionary with cavity name/average depth pairs
-        avg_hydropapthy: dictionary with cavity name/average hydropathy pairs
-        residues (dict): dictionary with cavity name/list of interface residues pairs
-        frequencies (dict): dictionary with frequencies of residues and class of residues of each detected cavity
+        fn (str): a path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected
+        pdb (str): a path to input PDB file
+        ligand (str): a path to ligand PDB file
+        output (str): a path to cavity PDB file
+        output_hydropathy (str): a path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
+        volume (dict): a dictionary with volume of each detected cavity
+        area (dict): a dictionary with area of each detected cavity
+        max_depth (dict): a dictionary with maximum depth of each detected cavity
+        avg_depth (dict): a dictionary with average depth of each detected cavity
+        avg_hydropapthy: a dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
+        residues (dict): a dictionary with interface residues of each detected cavity
+        frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
         step (float): grid spacing (A)
 
     Returns
     -------
         None
+
+    Note
+    ----
+        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
     """
     import toml
 
