@@ -16,8 +16,9 @@ See also:
 * `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder/>`_
 * `Documentation and tutorial <https://jvsguerra.github.io/pyKVFinder-webpage>`_
 
+************
 Installation
-############
+************
 
 To install the latest release on `PyPI <https://pypi.org/project/pyKVFinder>`_, 
 run:
@@ -33,9 +34,8 @@ Or to install the latest developmental version, run:
   git clone https://github.com/LBC-LNBio/pyKVFinder.git
   pip install -e pyKVFinder
 
+*******
+License
+*******
 
-Licensing
-#########
-
-This project is released under the terms of the GNU General Public License. View
-*LICENSE.txt* for more information.
+The software is licensed under the terms of the GNU General Public License version 3 (GPL3) and is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
