@@ -16,6 +16,24 @@ See also:
 * `pyKVFinder GitHub repository <https://github.com/LBC-LNBio/pyKVFinder/>`_
 * `pyKVFinder documentation <https://jvsguerra.github.io/pyKVFinder-webpage>`_
 
+Installation
+############
+
+To install the latest release on `PyPI <https://pypi.org/project/pyKVFinder>`_, 
+run:
+
+::
+
+  pip install pyKVFinder
+
+Or to install the latest developmental version, run:
+
+::
+
+  git clone https://github.com/LBC-LNBio/pyKVFinder.git
+  pip install -e pyKVFinder
+
+
 Licensing
 #########
 
