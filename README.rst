@@ -9,7 +9,7 @@ pyKVFinder
     :target: https://pypi.org/project/pyKVFinder/
 
 
-A python package for detecting and characterizing biomolecular cavities.
+A Python package for detecting and characterizing biomolecular cavities.
 
 See also:
 
