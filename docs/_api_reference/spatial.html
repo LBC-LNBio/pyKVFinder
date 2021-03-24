@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyKVFinder.spatial &mdash; pyKVFinder 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyKVFinder.depth" href="depth.html" />
+    <link rel="prev" title="pyKVFinder.detect" href="detect.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#workflows">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#separated-steps">Separated steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.spatial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constitutional.html">pyKVFinder.constitutional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">pyKVFinder.export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#classes">Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Functions</a> &raquo;</li>
+        
+      <li>pyKVFinder.spatial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/_api_reference/spatial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pykvfinder-spatial">
+<h1>pyKVFinder.spatial<a class="headerlink" href="#pykvfinder-spatial" title="Permalink to this headline">¶</a></h1>
+<p>Spatial characterization (volume and area) of the detected cavities.</p>
+<p>Surface points that belongs to the same cavity are assigned with an integer in the grid. Biomolecule or unsigned cavity points = 0, Assigned cavity points &gt;= 2 and Bulk points = -1.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><dl class="first last docutils">
+<dt>A numpy array with integer labels in each position, that are:</dt>
+<dd><ul class="first last simple">
+<li>-1: bulk point.</li>
+<li>0: biomolecule point.</li>
+<li>1: empty space point.</li>
+<li>&gt;=2: cavity point.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
+<dd><p class="first last">Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> numpy array</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 0.6</em></span></dt>
+<dd><p class="first last">Grid spacing (A)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt>
+<dd><p class="first last">Number of threads</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
+<dd><p class="first last">Print extra information to standard output</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><dl class="first last docutils">
+<dt>A numpy array with integer labels in each position, that are:</dt>
+<dd><ul class="first last simple">
+<li>-1: bulk point.</li>
+<li>0: biomolecule or empty space point.</li>
+<li>&gt;=2: surface point.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">volume</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
+<dd><p class="first last">A dictionary with volume of each detected cavity</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">area</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
+<dd><p class="first last">A dictionary with area of each detected cavity</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="spatial.html">pyKVFinder.detect</a></li>
+<li><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li><a class="reference external" href="export.html">pyKVFinder.export</a></li>
+</ul>
+</div>
+<h4><u>Example</u></h4><p>With the cavity points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect</span></code>, we can perform a spatial characterization, that includes volume, area and defining surface points:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">spatial</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">ncav</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
+
+<span class="go">    ...,</span>
+
+<span class="go">    [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volume</span>
+<span class="go">{&#39;KAA&#39;: 137.16, &#39;KAB&#39;: 47.52, &#39;KAC&#39;: 66.96, &#39;KAD&#39;: 8.21, &#39;KAE&#39;: 43.63, &#39;KAF&#39;: 12.53, &#39;KAG&#39;: 6.26, &#39;KAH&#39;: 520.13, &#39;KAI&#39;: 12.31, &#39;KAJ&#39;: 26.57, &#39;KAK&#39;: 12.31, &#39;KAL&#39;: 33.91, &#39;KAM&#39;: 23.11, &#39;KAN&#39;: 102.82, &#39;KAO&#39;: 6.05, &#39;KAP&#39;: 15.55, &#39;KAQ&#39;: 7.99, &#39;KAR&#39;: 7.78}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">area</span>
+<span class="go">{&#39;KAA&#39;: 120.52, &#39;KAB&#39;: 58.76, &#39;KAC&#39;: 72.06, &#39;KAD&#39;: 17.62, &#39;KAE&#39;: 56.44, &#39;KAF&#39;: 22.53, &#39;KAG&#39;: 15.38, &#39;KAH&#39;: 489.25, &#39;KAI&#39;: 29.87, &#39;KAJ&#39;: 44.85, &#39;KAK&#39;: 30.58, &#39;KAL&#39;: 43.59, &#39;KAM&#39;: 45.25, &#39;KAN&#39;: 129.77, &#39;KAO&#39;: 11.57, &#39;KAP&#39;: 24.8, &#39;KAQ&#39;: 12.59, &#39;KAR&#39;: 15.97}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="depth.html" class="btn btn-neutral float-right" title="pyKVFinder.depth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="detect.html" class="btn btn-neutral float-left" title="pyKVFinder.detect" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LBC-LNBio.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

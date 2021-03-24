@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyKVFinder.constitutional &mdash; pyKVFinder 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyKVFinder.calculate_frequencies" href="calculate_frequencies.html" />
+    <link rel="prev" title="pyKVFinder.hydropathy" href="hydropathy.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#workflows">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#separated-steps">Separated steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.constitutional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">pyKVFinder.export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#classes">Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Functions</a> &raquo;</li>
+        
+      <li>pyKVFinder.constitutional</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/_api_reference/constitutional.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pykvfinder-constitutional">
+<h1>pyKVFinder.constitutional<a class="headerlink" href="#pykvfinder-constitutional" title="Permalink to this headline">¶</a></h1>
+<p>Constitutional characterization (interface residues) of the detected cavities.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">probe_in</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span> <span class="n">ignore_backbone</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><dl class="first last docutils">
+<dt>A numpy array with integer labels in each position, that are:</dt>
+<dd><ul class="first last simple">
+<li>-1: bulk point.</li>
+<li>0: biomolecule point.</li>
+<li>1: empty space.</li>
+<li>&gt;=2: cavity point.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">atominfo</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><p class="first last">A numpy array with atomic information (residue number, chain, residue name, atom name)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><p class="first last">A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><p class="first last">A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
+<dd><p class="first last">A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
+<dd><p class="first last">Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> numpy array</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 0.6</em></span></dt>
+<dd><p class="first last">Grid spacing (A)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 1.4</em></span></dt>
+<dd><p class="first last">Probe In size (A)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
+<dd><p class="first last">Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt>
+<dd><p class="first last">Number of threads</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
+<dd><p class="first last">Print extra information to standard output</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
+<dd><p class="first last">A dictionary of list of interface residues pairs of each detected cavity</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p>The classes of residues are:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">R1</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Alipathic apolar</span></dt>
+<dd>Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">R2</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Aromatic</span></dt>
+<dd>Phenylalanine, Tryptophan, Tyrosine</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">R3</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Polar Uncharged</span></dt>
+<dd>Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">R4</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Negatively charged</span></dt>
+<dd>Aspartate, Glutamate</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">R5</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Positively charged</span></dt>
+<dd>Arginine, Histidine, Lysine</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">RX</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Non-standard</span></dt>
+<dd>Non-standard residues</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="detect.html">pyKVFinder.detect</a></li>
+<li><a class="reference external" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</div>
+<h4><u>Example</u></h4><p>With the cavity points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect</span></code>, atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>, we can perform a constitutional characterization, that identifies the interface residues surrounding the cavities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">constitutional</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
+<span class="go">{&#39;KAA&#39;: [[&#39;14&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;97&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;141&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;320&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;321&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;322&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;323&#39;, &#39;E&#39;, &#39;ASP&#39;]], &#39;KAE&#39;: [[&#39;95&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;107&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;108&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;163&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;326&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;75&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;336&#39;, &#39;E&#39;, &#39;ARG&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;199&#39;, &#39;E&#39;, &#39;CYS&#39;], [&#39;200&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;331&#39;, &#39;E&#39;, &#39;GLU&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;253&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;275&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;237&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
+</pre></div>
+</div>
+<p>However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when defining interface residues. Then, users must set <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
+<span class="go">{&#39;KAA&#39;: [[&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAE&#39;: [[&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="calculate_frequencies.html" class="btn btn-neutral float-right" title="pyKVFinder.calculate_frequencies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="hydropathy.html" class="btn btn-neutral float-left" title="pyKVFinder.hydropathy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LBC-LNBio.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1168 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Prerequisites &mdash; pyKVFinder 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functions" href="../_api_reference/index.html" />
+    <link rel="prev" title="Requirements" href="../_installation/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#workflows">Workflows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#standard-workflow">Standard workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-workflow">Full workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#separated-steps">Separated steps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#loading-van-der-waals-radii-dictionary">1. Loading van der Waals radii dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-target-pdb-coordinates">2. Loading target PDB coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dimensioning-the-3d-grid">3. Dimensioning the 3D grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detecting-biomolecular-cavities">4. Detecting biomolecular cavities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#detecting-biomolecular-cavities-with-ligand-adjustment">4.1 Detecting biomolecular cavities with ligand adjustment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performing-spatial-characterization">5. Performing spatial characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performing-constitutional-characterization">6. Performing constitutional characterization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-and-plotting-frequencies">6.1 Calculating and plotting frequencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performing-hydropathy-characterization">7. Performing hydropathy characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performing-depth-characterization">8. Performing depth characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exporting-cavities">9. Exporting cavities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-only-cavity-points">9.1 Exporting only cavity points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-cavity-and-surface-points">9.2 Exporting cavity and surface points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor">9.3 Exporting cavity and surface points with depth mapped on B-factor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-surface-points-with-hydrophobicity-scale-mapped-on-b-factor">9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-results">10. Writing results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cavity-detection-only">10.1 Cavity detection only</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-characterization">10.2 Spatial characterization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-and-constitutional-characterization">10.3 Spatial and constitutional characterization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-constitutional-and-depth-characterization">10.4 Spatial, constitutional and depth characterization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-constitutional-depth-and-hydropathy-characterization">10.5 Spatial, constitutional, depth and hydropathy characterization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#steered-detection">Steered detection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">Separated steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/evolutive-analysis/evolutive-analysis.ipynb">Evolutive analysis</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/md-analysis/md-analysis.ipynb">Molecular dynamics analysis</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/visualization/ngl-visualization.ipynb">Data visualization</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_api_reference/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_api_reference/index.html#classes">Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Prerequisites</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/_tutorial/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Tutorial</h1><p>This section is an introductory overview of pyKVFinder features. For detailed reference documentation of the functions and classes contained in the package, see the <a class="reference external" href="../_api_reference/index.html">API reference</a>.</p>
+<div class="section" id="prerequisites">
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h1>
+<p>Before reading this section, you should know a bit of Python. If you would like to refresh your memory, refer to this <a class="reference external" href="https://docs.python.org/3/tutorial/">Python tutorial</a>.</p>
+<p>If you want to run all examples in this tutorial, you should also have toml package installed.</p>
+<p>All files used on this tutorial can be found in our package and in our <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder">GitHub repository</a>:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/1FMO.pdb">1FMO.pdb</a></li>
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb">ADN.pdb</a></li>
+</ul>
+</div>
+<div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we will use pyKVFinder on a catalytic subunit of a cAMP-dependent protein kinase (cADK) to identify and characterize its cavities.</p>
+<p>pyKVFinder can be imported as a Python package in Python environment and users can decide to run the full pyKVFinder <a class="reference external" href="index.html#workflows">workflow</a> through the single pyKVFinder function or run pyKVFinder functions in a <a class="reference external" href="index.html#separated-steps">stepwise</a> fashion.</p>
+<p>First of all, import pyKVFinder package on Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyKVFinder</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="workflows">
+<h1>Workflows<a class="headerlink" href="#workflows" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="standard-workflow">
+<h2>Standard workflow<a class="headerlink" href="#standard-workflow" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>standard workflow</strong> for cavity detection with spatial and constitutional characterization (volume, area and interface residues) can be run at once with one command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
+<span class="go">&lt;pyKVFinderResults object&gt;</span>
+</pre></div>
+</div>
+<p>Inside the <em>pyKVFinderResults object</em>, cavity and surface points, volume, area, and interface residues and their frequencies are stored as attributes. Below, we show how to access them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">cavities</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
+
+<span class="go">      ...,</span>
+
+<span class="go">      [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">surface</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
+
+<span class="go">      ...,</span>
+
+<span class="go">      [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">volume</span>
+<span class="go">{&#39;KAA&#39;: 137.16, &#39;KAB&#39;: 47.52, &#39;KAC&#39;: 66.96, &#39;KAD&#39;: 8.21, &#39;KAE&#39;: 43.63, &#39;KAF&#39;: 12.53, &#39;KAG&#39;: 6.26, &#39;KAH&#39;: 520.13, &#39;KAI&#39;: 12.31, &#39;KAJ&#39;: 26.57, &#39;KAK&#39;: 12.31, &#39;KAL&#39;: 33.91, &#39;KAM&#39;: 23.11, &#39;KAN&#39;: 102.82, &#39;KAO&#39;: 6.05, &#39;KAP&#39;: 15.55, &#39;KAQ&#39;: 7.99, &#39;KAR&#39;: 7.78}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">area</span>
+<span class="go">{&#39;KAA&#39;: 120.52, &#39;KAB&#39;: 58.76, &#39;KAC&#39;: 72.06, &#39;KAD&#39;: 17.62, &#39;KAE&#39;: 56.44, &#39;KAF&#39;: 22.53, &#39;KAG&#39;: 15.38, &#39;KAH&#39;: 489.25, &#39;KAI&#39;: 29.87, &#39;KAJ&#39;: 44.85, &#39;KAK&#39;: 30.58, &#39;KAL&#39;: 43.59, &#39;KAM&#39;: 45.25, &#39;KAN&#39;: 129.77, &#39;KAO&#39;: 11.57, &#39;KAP&#39;: 24.8, &#39;KAQ&#39;: 12.59, &#39;KAR&#39;: 15.97}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">residues</span>
+<span class="go">{&#39;KAA&#39;: [[&#39;14&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;97&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;141&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;320&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;321&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;322&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;323&#39;, &#39;E&#39;, &#39;ASP&#39;]], &#39;KAE&#39;: [[&#39;95&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;107&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;108&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;163&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;326&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;75&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;336&#39;, &#39;E&#39;, &#39;ARG&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;199&#39;, &#39;E&#39;, &#39;CYS&#39;], [&#39;200&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;331&#39;, &#39;E&#39;, &#39;GLU&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;253&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;275&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;237&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">frequencies</span>
+<span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;GLU&#39;: 1, &#39;ILE&#39;: 1, &#39;LEU&#39;: 2, &#39;LYS&#39;: 1, &#39;PHE&#39;: 2, &#39;SER&#39;: 1, &#39;TRP&#39;: 1, &#39;TYR&#39;: 2, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 5, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAB&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 2, &#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;LYS&#39;: 1, &#39;PHE&#39;: 2, &#39;TYR&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 3, &#39;R2&#39;: 3, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAC&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;GLU&#39;: 1, &#39;HIS&#39;: 1, &#39;ILE&#39;: 1, &#39;PHE&#39;: 1, &#39;PRO&#39;: 2, &#39;THR&#39;: 2, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 5, &#39;R2&#39;: 1, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAD&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ASP&#39;: 1, &#39;GLN&#39;: 1, &#39;GLY&#39;: 2, &#39;PHE&#39;: 1, &#39;PRO&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 2, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAE&#39;: {&#39;RESIDUES&#39;: {&#39;ASN&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 1, &#39;PHE&#39;: 1, &#39;VAL&#39;: 2}, &#39;CLASS&#39;: {&#39;R1&#39;: 5, &#39;R2&#39;: 1, &#39;R3&#39;: 1, &#39;R4&#39;: 0, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAF&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ASP&#39;: 1, &#39;GLN&#39;: 2, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 2, &#39;R2&#39;: 0, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAG&#39;: {&#39;RESIDUES&#39;: {&#39;GLN&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;PHE&#39;: 1, &#39;SER&#39;: 2, &#39;THR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 1, &#39;R3&#39;: 4, &#39;R4&#39;: 1, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAH&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;ASN&#39;: 1, &#39;ASP&#39;: 2, &#39;GLN&#39;: 1, &#39;GLU&#39;: 4, &#39;GLY&#39;: 4, &#39;HIS&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 2, &#39;MET&#39;: 1, &#39;PHE&#39;: 3, &#39;SER&#39;: 1, &#39;THR&#39;: 4, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 11, &#39;R2&#39;: 4, &#39;R3&#39;: 8, &#39;R4&#39;: 6, &#39;R5&#39;: 4, &#39;RX&#39;: 0}}, &#39;KAI&#39;: {&#39;RESIDUES&#39;: {&#39;HIS&#39;: 2, &#39;ILE&#39;: 1, &#39;PHE&#39;: 2, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 3, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAJ&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 1, &#39;GLN&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;LYS&#39;: 1, &#39;PHE&#39;: 1, &#39;PRO&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 2, &#39;R2&#39;: 1, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAK&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ILE&#39;: 1, &#39;LEU&#39;: 2, &#39;PHE&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 2, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAL&#39;: {&#39;RESIDUES&#39;: {&#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;PHE&#39;: 2, &#39;SER&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 3, &#39;R3&#39;: 2, &#39;R4&#39;: 2, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAM&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 2, &#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;GLY&#39;: 1, &#39;ILE&#39;: 2, &#39;LEU&#39;: 1, &#39;THR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 0, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAN&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 2, &#39;ARG&#39;: 1, &#39;ASP&#39;: 2, &#39;CYS&#39;: 1, &#39;GLY&#39;: 1, &#39;ILE&#39;: 1, &#39;LEU&#39;: 2, &#39;THR&#39;: 1, &#39;TYR&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 7, &#39;R2&#39;: 1, &#39;R3&#39;: 2, &#39;R4&#39;: 2, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAO&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 1, &#39;GLU&#39;: 1, &#39;THR&#39;: 2, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 0, &#39;R2&#39;: 1, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAP&#39;: {&#39;RESIDUES&#39;: {&#39;GLY&#39;: 1, &#39;LEU&#39;: 1, &#39;LYS&#39;: 1, &#39;PHE&#39;: 1, &#39;TRP&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 3, &#39;R2&#39;: 2, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAQ&#39;: {&#39;RESIDUES&#39;: {&#39;GLU&#39;: 1, &#39;LEU&#39;: 2, &#39;LYS&#39;: 1, &#39;PRO&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 0, &#39;R3&#39;: 0, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAR&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 1, &#39;LYS&#39;: 2, &#39;PHE&#39;: 1, &#39;PRO&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 2, &#39;R2&#39;: 1, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 3, &#39;RX&#39;: 0}}}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p>The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>-1: bulk points.</li>
+<li>0: biomolecule points.</li>
+<li>1: empty space points.</li>
+<li>&gt;=2: cavity points.</li>
+</ul>
+</div></blockquote>
+<p>The surface points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>-1: bulk points.</li>
+<li>0: biomolecule or empty space points.</li>
+<li>&gt;=2: cavity points.</li>
+</ul>
+</div></blockquote>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+</ul>
+</div>
+<p>With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">export_all</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavity.pdb&#39;</span><span class="p">,</span> <span class="n">include_frequencies_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pdf</span><span class="o">=</span><span class="s1">&#39;histograms.pdf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinderResults.export_all</span></code> methods uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_frequencies_pdf</span></code> parameter, and therefore parameters can be adjusted to users’ needs.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="full-workflow">
+<h2>Full workflow<a class="headerlink" href="#full-workflow" title="Permalink to this headline">¶</a></h2>
+<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (volume and area), constitutional (interface residues), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Inside the <em>pyKVFinderResults object</em>, in addition to cavity and surface points, volume, area, and interface residues and their frequencies showed above, depth and hydropathy points, average depth, maximum depth and average hydropathy are also stored as attributes. Below, we show how to access them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">depths</span>
+<span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        ...,</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
+
+<span class="go">      ...,</span>
+
+<span class="go">      [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        ...,</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">scales</span>
+<span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        ...,</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
+
+<span class="go">      ...,</span>
+
+<span class="go">      [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        ...,</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">avg_depth</span>
+<span class="go">{&#39;KAA&#39;: 1.28, &#39;KAB&#39;: 0.86, &#39;KAC&#39;: 0.67, &#39;KAD&#39;: 0.29, &#39;KAE&#39;: 0.98, &#39;KAF&#39;: 0.24, &#39;KAG&#39;: 0.1, &#39;KAH&#39;: 3.75, &#39;KAI&#39;: 1.5, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 1.0, &#39;KAM&#39;: 0.24, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 0.29, &#39;KAP&#39;: 0.7, &#39;KAQ&#39;: 0.22, &#39;KAR&#39;: 0.12}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">max_depth</span>
+<span class="go">{&#39;KAA&#39;: 3.79, &#39;KAB&#39;: 2.68, &#39;KAC&#39;: 2.62, &#39;KAD&#39;: 0.85, &#39;KAE&#39;: 3.0, &#39;KAF&#39;: 0.85, &#39;KAG&#39;: 0.6, &#39;KAH&#39;: 10.73, &#39;KAI&#39;: 2.55, &#39;KAJ&#39;: 2.24, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 3.0, &#39;KAM&#39;: 1.2, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 1.04, &#39;KAP&#39;: 2.08, &#39;KAQ&#39;: 0.85, &#39;KAR&#39;: 0.6}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">avg_hydropathy</span>
+<span class="go">{&#39;KAA&#39;: -0.73, &#39;KAB&#39;: -0.06, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.16, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.35, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_depth</span></code> and <code class="docutils literal notranslate"><span class="pre">include_hydropathy</span></code> parameters, and therefore parameters can be adjusted to users’ needs.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+</ul>
+</div>
+<p>With these attributes, we can write the detected cavities with depth annotated on B-factor column, the surface cavity points with hydrophobicity scale annotated on B-factor column, and the characterization to files. Below, we illustrate the usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">export_all</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavity.pdb&#39;</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">include_frequencies_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinderResults.export_all</span></code> methods uses default parameter specifications, and therefore parameters can be adjusted to users’ needs.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="separated-steps">
+<h1>Separated steps<a class="headerlink" href="#separated-steps" title="Permalink to this headline">¶</a></h1>
+<p>If users prefer, instead of running <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each step in detail.</p>
+<div class="section" id="loading-van-der-waals-radii-dictionary">
+<h2>1. Loading van der Waals radii dictionary<a class="headerlink" href="#loading-van-der-waals-radii-dictionary" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals radii file</a> define the radius values for each residue and when not defined, it uses a generic value based on the atom type. <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> takes a vdW radii file (<em>.dat</em>) and returns a dictionary contaning radii values for each atom of each residue.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">read_vdw</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span>
+<span class="go">{&#39;ALA&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB1&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;3HB&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ARG&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.387, &#39;1HD&#39;: 1.387, &#39;2HD&#39;: 1.387, &#39;HD3&#39;: 1.387, &#39;HD1&#39;: 1.387, &#39;NE&#39;: 1.75, &#39;HE&#39;: 0.6, &#39;CZ&#39;: 1.908, &#39;NH1&#39;: 1.75, &#39;HH11&#39;: 0.6, &#39;1HH1&#39;: 0.6, &#39;HH12&#39;: 0.6, &#39;2HH1&#39;: 0.6, &#39;NH2&#39;: 1.75, &#39;HH21&#39;: 0.6, &#39;2HH2&#39;: 0.6, &#39;HH22&#39;: 0.6, &#39;1HH2&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ASH&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;OD1&#39;: 1.6612, &#39;OD2&#39;: 1.721, &#39;HD2&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ASN&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;OD1&#39;: 1.6612, &#39;ND2&#39;: 1.824, &#39;HD21&#39;: 0.6, &#39;1HD2&#39;: 0.6, &#39;HD22&#39;: 0.6, &#39;2HD2&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ASP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;OD1&#39;: 1.6612, &#39;OD2&#39;: 1.6612, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;CYM&#39;: {&#39;N&#39;: 1.824, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB3&#39;: 1.387, &#39;HB2&#39;: 1.387, &#39;SG&#39;: 2.0, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;CYS&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;2HB&#39;: 1.387, &#39;1HB&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;HB1&#39;: 1.387, &#39;SG&#39;: 2.0, &#39;HG&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;CYX&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;SG&#39;: 2.0, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLH&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;OE1&#39;: 1.6612, &#39;OE2&#39;: 1.721, &#39;HE2&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLN&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;OE1&#39;: 1.6612, &#39;NE2&#39;: 1.824, &#39;HE21&#39;: 0.6, &#39;1HE2&#39;: 0.6, &#39;HE22&#39;: 0.6, &#39;2HE2&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLU&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;OE1&#39;: 1.6612, &#39;OE2&#39;: 1.6612, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLY&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA2&#39;: 1.387, &#39;HA1&#39;: 1.387, &#39;1HA&#39;: 1.387, &#39;2HA&#39;: 1.387, &#39;HA3&#39;: 1.387, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HID&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;HD1&#39;: 0.6, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HIE&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;HE2&#39;: 0.6, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HIP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;HD1&#39;: 0.6, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;HE2&#39;: 0.6, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ILE&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.487, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;CG1&#39;: 1.908, &#39;HG12&#39;: 1.487, &#39;2HG1&#39;: 1.487, &#39;HG13&#39;: 1.487, &#39;HG11&#39;: 1.487, &#39;1HG1&#39;: 1.487, &#39;CD1&#39;: 1.908, &#39;HD11&#39;: 1.487, &#39;1HD1&#39;: 1.487, &#39;HD12&#39;: 1.487, &#39;2HD1&#39;: 1.487, &#39;HD13&#39;: 1.487, &#39;3HD1&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;LEU&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG&#39;: 1.487, &#39;CD1&#39;: 1.908, &#39;HD11&#39;: 1.487, &#39;1HD1&#39;: 1.487, &#39;HD12&#39;: 1.487, &#39;2HD1&#39;: 1.487, &#39;HD13&#39;: 1.487, &#39;3HD1&#39;: 1.487, &#39;CD2&#39;: 1.908, &#39;HD21&#39;: 1.487, &#39;1HD2&#39;: 1.487, &#39;HD22&#39;: 1.487, &#39;2HD2&#39;: 1.487, &#39;HD23&#39;: 1.487, &#39;3HD2&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;LYN&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.487, &#39;HD3&#39;: 1.487, &#39;CE&#39;: 1.908, &#39;HE2&#39;: 1.1, &#39;HE3&#39;: 1.1, &#39;NZ&#39;: 1.824, &#39;HZ2&#39;: 0.6, &#39;HZ3&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;LYS&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.487, &#39;1HD&#39;: 1.487, &#39;2HD&#39;: 1.487, &#39;HD3&#39;: 1.487, &#39;HD1&#39;: 1.487, &#39;CE&#39;: 1.908, &#39;HE2&#39;: 1.1, &#39;2HE&#39;: 1.1, &#39;HE3&#39;: 1.1, &#39;1HE&#39;: 1.1, &#39;HE1&#39;: 1.1, &#39;NZ&#39;: 1.824, &#39;HZ1&#39;: 0.6, &#39;1HZ&#39;: 0.6, &#39;HZ2&#39;: 0.6, &#39;2HZ&#39;: 0.6, &#39;HZ3&#39;: 0.6, &#39;3HZ&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;MET&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.387, &#39;2HG&#39;: 1.387, &#39;HG3&#39;: 1.387, &#39;HG1&#39;: 1.387, &#39;1HG&#39;: 1.387, &#39;SD&#39;: 2.0, &#39;CE&#39;: 1.908, &#39;HE1&#39;: 1.387, &#39;1HE&#39;: 1.387, &#39;HE2&#39;: 1.387, &#39;2HE&#39;: 1.387, &#39;HE3&#39;: 1.387, &#39;3HE&#39;: 1.387, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;PHE&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;HZ&#39;: 1.459, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;PRO&#39;: {&#39;N&#39;: 1.824, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.387, &#39;1HD&#39;: 1.387, &#39;2HD&#39;: 1.387, &#39;HD3&#39;: 1.387, &#39;HD1&#39;: 1.387, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;SER&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;2HB&#39;: 1.387, &#39;1HB&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;HB1&#39;: 1.387, &#39;OG&#39;: 1.721, &#39;HG&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;THR&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.387, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;OG1&#39;: 1.721, &#39;HG1&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;TRP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;CD1&#39;: 2.0, &#39;HD1&#39;: 1.409, &#39;NE1&#39;: 1.75, &#39;HE1&#39;: 0.6, &#39;CE2&#39;: 1.85, &#39;CZ2&#39;: 1.908, &#39;HZ2&#39;: 1.459, &#39;CH2&#39;: 1.908, &#39;HH2&#39;: 1.459, &#39;CZ3&#39;: 1.908, &#39;HZ3&#39;: 1.459, &#39;CE3&#39;: 1.908, &#39;HE3&#39;: 1.459, &#39;CD2&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;TYR&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;OH&#39;: 1.721, &#39;HH&#39;: 0.0001, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;VAL&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.487, &#39;CG1&#39;: 1.908, &#39;CG2&#39;: 1.908, &#39;HG11&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;1HG1&#39;: 1.487, &#39;HG21&#39;: 1.487, &#39;HG12&#39;: 1.487, &#39;2HG1&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;HG13&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;3HG1&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HIS&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;HD1&#39;: 0.6, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;PTR&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;OH&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;SEP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;1HB&#39;: 1.387, &#39;2HB&#39;: 1.387, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;TPO&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.387, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;OG1&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;H2D&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;HE2&#39;: 0.6, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;Y1P&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.721, &#39;O2P&#39;: 1.6612, &#39;O3P&#39;: 1.6612, &#39;H1P&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;T1P&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.387, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.721, &#39;O2P&#39;: 1.6612, &#39;O3P&#39;: 1.6612, &#39;H1P&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;S1P&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.721, &#39;O2P&#39;: 1.6612, &#39;O3P&#39;: 1.6612, &#39;H1P&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GEN&#39;: {&#39;AC&#39;: 2.0, &#39;AG&#39;: 1.72, &#39;AL&#39;: 2.0, &#39;AM&#39;: 2.0, &#39;AR&#39;: 1.88, &#39;AS&#39;: 1.85, &#39;AT&#39;: 2.0, &#39;AU&#39;: 1.66, &#39;B&#39;: 2.0, &#39;BA&#39;: 2.0, &#39;BE&#39;: 2.0, &#39;BH&#39;: 2.0, &#39;BI&#39;: 2.0, &#39;BK&#39;: 2.0, &#39;BR&#39;: 1.85, &#39;C&#39;: 1.66, &#39;CA&#39;: 2.0, &#39;CD&#39;: 1.58, &#39;CE&#39;: 2.0, &#39;CF&#39;: 2.0, &#39;CL&#39;: 1.75, &#39;CM&#39;: 2.0, &#39;CO&#39;: 2.0, &#39;CR&#39;: 2.0, &#39;CS&#39;: 2.0, &#39;CU&#39;: 1.4, &#39;DB&#39;: 2.0, &#39;DS&#39;: 2.0, &#39;DY&#39;: 2.0, &#39;ER&#39;: 2.0, &#39;ES&#39;: 2.0, &#39;EU&#39;: 2.0, &#39;F&#39;: 1.47, &#39;FE&#39;: 2.0, &#39;FM&#39;: 2.0, &#39;FR&#39;: 2.0, &#39;GA&#39;: 1.87, &#39;GD&#39;: 2.0, &#39;GE&#39;: 2.0, &#39;H&#39;: 0.91, &#39;HE&#39;: 1.4, &#39;HF&#39;: 2.0, &#39;HG&#39;: 1.55, &#39;HO&#39;: 2.0, &#39;HS&#39;: 2.0, &#39;I&#39;: 1.98, &#39;IN&#39;: 1.93, &#39;IR&#39;: 2.0, &#39;K&#39;: 2.75, &#39;KR&#39;: 2.02, &#39;LA&#39;: 2.0, &#39;LI&#39;: 1.82, &#39;LR&#39;: 2.0, &#39;LU&#39;: 2.0, &#39;MD&#39;: 2.0, &#39;MG&#39;: 1.73, &#39;MN&#39;: 2.0, &#39;MO&#39;: 2.0, &#39;MT&#39;: 2.0, &#39;N&#39;: 1.97, &#39;NA&#39;: 2.27, &#39;NB&#39;: 2.0, &#39;ND&#39;: 2.0, &#39;NE&#39;: 1.54, &#39;NI&#39;: 1.63, &#39;NO&#39;: 2.0, &#39;NP&#39;: 2.0, &#39;O&#39;: 1.69, &#39;OS&#39;: 2.0, &#39;P&#39;: 2.1, &#39;PA&#39;: 2.0, &#39;PB&#39;: 2.02, &#39;PD&#39;: 1.63, &#39;PM&#39;: 2.0, &#39;PO&#39;: 2.0, &#39;PR&#39;: 2.0, &#39;PT&#39;: 1.72, &#39;PU&#39;: 2.0, &#39;RA&#39;: 2.0, &#39;RB&#39;: 2.0, &#39;RE&#39;: 2.0, &#39;RF&#39;: 2.0, &#39;RH&#39;: 2.0, &#39;RN&#39;: 2.0, &#39;RU&#39;: 2.0, &#39;S&#39;: 2.09, &#39;SB&#39;: 2.0, &#39;SC&#39;: 2.0, &#39;SE&#39;: 1.9, &#39;SG&#39;: 2.0, &#39;SI&#39;: 2.1, &#39;SM&#39;: 2.0, &#39;SN&#39;: 2.17, &#39;SR&#39;: 2.0, &#39;TA&#39;: 2.0, &#39;TB&#39;: 2.0, &#39;TC&#39;: 2.0, &#39;TE&#39;: 2.06, &#39;TH&#39;: 2.0, &#39;TI&#39;: 2.0, &#39;TL&#39;: 1.96, &#39;TM&#39;: 2.0, &#39;U&#39;: 1.86, &#39;V&#39;: 2.0, &#39;W&#39;: 2.0, &#39;XE&#39;: 2.16, &#39;Y&#39;: 2.0, &#39;YB&#39;: 2.0, &#39;ZN&#39;: 1.39, &#39;ZR&#39;: 2.0}}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when a <em>.dat</em> file is not specified. Otherwise, user must specify a <em>.dat</em> file following template of <a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals radii file</a>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/read_vdw.html">pyKVFinder.read_vdw</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="loading-target-pdb-coordinates">
+<h2>2. Loading target PDB coordinates<a class="headerlink" href="#loading-target-pdb-coordinates" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> takes a target <em>.pdb</em> file and returns a tuple of NumPy arrays, the former (<code class="docutils literal notranslate"><span class="pre">atominfo</span></code>) with residue number, chain identifier, residue name and atom name for each atom and the latter (<code class="docutils literal notranslate"><span class="pre">xyzr</span></code>) with xyz coordinates and radius for each atom.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">read_pdb</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="o">=</span><span class="n">vdw</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atominfo</span>
+<span class="go">array([[&#39;13_E_GLU&#39;, &#39;N&#39;],</span>
+<span class="go">     [&#39;13_E_GLU&#39;, &#39;CA&#39;],</span>
+<span class="go">     [&#39;13_E_GLU&#39;, &#39;C&#39;],</span>
+<span class="go">     ...,</span>
+<span class="go">     [&#39;350_E_PHE&#39;, &#39;CE2&#39;],</span>
+<span class="go">     [&#39;350_E_PHE&#39;, &#39;CZ&#39;],</span>
+<span class="go">     [&#39;350_E_PHE&#39;, &#39;OXT&#39;]], dtype=&#39;&lt;U9&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xyzr</span>
+<span class="go">array([[ -6.693, -15.642, -14.858,   1.824],</span>
+<span class="go">      [ -6.73 , -14.62 , -15.897,   1.908],</span>
+<span class="go">      [ -7.49 , -13.357, -15.508,   1.908],</span>
+<span class="go">      ...,</span>
+<span class="go">      [  7.216,  18.878,  -9.885,   1.908],</span>
+<span class="go">      [  7.735,  17.624,  -9.558,   1.908],</span>
+<span class="go">      [  5.767,  19.234, -13.442,   1.69 ]])</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/read_pdb.html">pyKVFinder.read_pdb</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dimensioning-the-3d-grid">
+<h2>3. Dimensioning the 3D grid<a class="headerlink" href="#dimensioning-the-3d-grid" title="Permalink to this headline">¶</a></h2>
+<p>The pyKVFinder 3D grid must be calculated based on the target <em>.pdb</em> file, the Probe Out diameter and the grid spacing.</p>
+<p>Firstly, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code> takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (<code class="docutils literal notranslate"><span class="pre">probe_out</span></code>) and grid spacing (<code class="docutils literal notranslate"><span class="pre">step</span></code>) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Probe Out (probe_out): 4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Grid Spacing (step): 0.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span>
+<span class="go">array([[-19.911, -32.125, -30.806],</span>
+<span class="go">     [ 40.188, -32.125, -30.806],</span>
+<span class="go">     [-19.911,  43.446, -30.806],</span>
+<span class="go">     [-19.911, -32.125,  27.352]])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> and <code class="docutils literal notranslate"><span class="pre">step</span></code> values are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices(xyzr)</span></code>.</p>
+</div>
+<p>Secondly, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions</span></code> takes the vertices calculated above and the grid spacing, and returns a tuple with the grid units in x, y and z dimensions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
+<span class="go">(101, 126, 97)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If <code class="docutils literal notranslate"><span class="pre">step</span></code> value is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions(vertices)</span></code>.</p>
+</div>
+<p>Lastly, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_sincos</span></code> takes the vertices calculated above and returns a NumPy array with the sine and cossine of the 3D grid angles (a, b).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sincos</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sincos</span>
+<span class="go">array([0., 1., 0., 1.])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>sincos[0]: sin(a)</li>
+<li>sincos[1]: cos(a)</li>
+<li>sincos[2]: sin(b)</li>
+<li>sincos[3]: cos(b)</li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li><a class="reference external" href="../_api_reference/get_sincos.html">pyKVFinder.get_sincos</a></li>
+<li><a class="reference external" href="../_api_reference/get_dimensions.html">pyKVFinder.get_dimensions</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="detecting-biomolecular-cavities">
+<h2>4. Detecting biomolecular cavities<a class="headerlink" href="#detecting-biomolecular-cavities" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect</span></code> takes the grid units in x, y and z dimensions, the NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertices, a NumPy array with sine and cossine and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Grid Spacing (step): 0.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Probe In (probe_in): 1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probe_in</span> <span class="o">=</span> <span class="mf">1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Probe Out (probe_out): 4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Removal Distance (removal_distance): 2.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">removal_distance</span> <span class="o">=</span> <span class="mf">2.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Volume Cutoff (volume_cutoff): 5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volume_cutoff</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Surface Representation (surface): &#39;SES&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span> <span class="o">=</span> <span class="s1">&#39;SES&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">removal_distance</span><span class="o">=</span><span class="n">removal_distance</span><span class="p">,</span> <span class="n">volume_cutoff</span><span class="o">=</span><span class="n">volume_cutoff</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span>
+<span class="go">18</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cavities</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      ...,</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1]],</span>
+
+<span class="go">     ...,</span>
+
+<span class="go">     [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      ...,</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If any of the detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>) are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(nx,</span> <span class="pre">ny,</span> <span class="pre">nz,</span> <span class="pre">xyzr,</span> <span class="pre">vertices,</span> <span class="pre">sincos)</span></code>.</p>
+<p>The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>-1: bulk points.</li>
+<li>0: biomolecule points.</li>
+<li>1: empty space points.</li>
+<li>&gt;=2: cavity points.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></li>
+</ul>
+</div>
+<div class="section" id="detecting-biomolecular-cavities-with-ligand-adjustment">
+<h3>4.1 Detecting biomolecular cavities with ligand adjustment<a class="headerlink" href="#detecting-biomolecular-cavities-with-ligand-adjustment" title="Permalink to this headline">¶</a></h3>
+<p>The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a <em>.pdb</em> file. Thus, the detected cavities are limited within a radius (<code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code>) of the target ligand(s).</p>
+<p>First, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> takes an <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/ADN.pdb">adenosine</a> as the target ligand and returns a tuple of NumPy arrays, the former (<code class="docutils literal notranslate"><span class="pre">atominfo</span></code>) with residue number, chain identifier, residue name and atom name for each atom of the ligand, which can be ignored, and the latter (<code class="docutils literal notranslate"><span class="pre">xyzr</span></code>) with xyz coordinates and radius for each atom of the ligand.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">read_pdb</span><span class="p">(</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxyzr</span>
+<span class="go">array([[11.087,  9.79 ,  2.052,  1.66 ],</span>
+<span class="go">     [11.545,  8.52 ,  1.545,  1.69 ],</span>
+<span class="go">     [10.688,  9.68 ,  3.523,  1.66 ],</span>
+<span class="go">     [ 9.714, 10.725,  3.81 ,  1.69 ],</span>
+<span class="go">     [ 9.973,  8.374,  3.903,  1.66 ],</span>
+<span class="go">     [10.879,  7.361,  4.304,  1.69 ],</span>
+<span class="go">     [ 9.115,  8.82 ,  5.059,  1.66 ],</span>
+<span class="go">     [ 9.887,  9.034,  6.232,  1.69 ],</span>
+<span class="go">     [ 8.625, 10.16 ,  4.5  ,  1.66 ],</span>
+<span class="go">     [ 3.499, 10.104,  4.402,  1.97 ],</span>
+<span class="go">     [ 4.376, 10.259,  5.387,  1.66 ],</span>
+<span class="go">     [ 5.705, 10.249,  5.351,  1.97 ],</span>
+<span class="go">     [ 6.136, 10.087,  4.094,  1.66 ],</span>
+<span class="go">     [ 5.353,  9.952,  2.974,  1.66 ],</span>
+<span class="go">     [ 3.957,  9.957,  3.146,  1.66 ],</span>
+<span class="go">     [ 3.083,  9.826,  2.142,  1.97 ],</span>
+<span class="go">     [ 6.146,  9.791,  1.843,  1.97 ],</span>
+<span class="go">     [ 7.374,  9.872,  2.291,  1.66 ],</span>
+<span class="go">     [ 7.444, 10.056,  3.646,  1.97 ]])</span>
+</pre></div>
+</div>
+<p>Afterwards, <code class="docutils literal notranslate"><span class="pre">parKVFinder.detect</span></code> takes the mandatory parameters (<code class="docutils literal notranslate"><span class="pre">nx</span></code>, <code class="docutils literal notranslate"><span class="pre">ny</span></code>, <code class="docutils literal notranslate"><span class="pre">nz</span></code>, <code class="docutils literal notranslate"><span class="pre">xyzr</span></code>, <code class="docutils literal notranslate"><span class="pre">vertices</span></code> and <code class="docutils literal notranslate"><span class="pre">sincos</span></code>) and a the ligand adjustment parameters (<code class="docutils literal notranslate"><span class="pre">lxyzr</span></code> and <code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code>), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Ligand Cutoff (ligand_cutoff): 5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ligand_cutoff</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncav_la</span><span class="p">,</span> <span class="n">cavities_la</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">lxyzr</span><span class="o">=</span><span class="n">lxyzr</span><span class="p">,</span> <span class="n">ligand_cutoff</span><span class="o">=</span><span class="n">ligand_cutoff</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncav_la</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cavities_la</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      ...,</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1]],</span>
+
+<span class="go">     ...,</span>
+
+<span class="go">     [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      ...,</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(nx,</span> <span class="pre">ny,</span> <span class="pre">nz,</span> <span class="pre">xyzr,</span> <span class="pre">vertices,</span> <span class="pre">sincos,</span> <span class="pre">lxyzr=lxyzr)</span></code>.</p>
+<p>The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>-1: bulk points.</li>
+<li>0: biomolecule points.</li>
+<li>1: empty space points.</li>
+<li>&gt;=2: cavity points.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="performing-spatial-characterization">
+<h2>5. Performing spatial characterization<a class="headerlink" href="#performing-spatial-characterization" title="Permalink to this headline">¶</a></h2>
+<p>A spatial characterization, that includes volume, area and defining surface points, is performed on the detected cavities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial</span></code> takes the detected cavities, the number of cavities and the grid spacing (<code class="docutils literal notranslate"><span class="pre">step</span></code>) and and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      ...,</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1]],</span>
+
+<span class="go">     ...,</span>
+
+<span class="go">     [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      ...,</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">      [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volume</span>
+<span class="go">{&#39;KAA&#39;: 137.16, &#39;KAB&#39;: 47.52, &#39;KAC&#39;: 66.96, &#39;KAD&#39;: 8.21, &#39;KAE&#39;: 43.63, &#39;KAF&#39;: 12.53, &#39;KAG&#39;: 6.26, &#39;KAH&#39;: 520.13, &#39;KAI&#39;: 12.31, &#39;KAJ&#39;: 26.57, &#39;KAK&#39;: 12.31, &#39;KAL&#39;: 33.91, &#39;KAM&#39;: 23.11, &#39;KAN&#39;: 102.82, &#39;KAO&#39;: 6.05, &#39;KAP&#39;: 15.55, &#39;KAQ&#39;: 7.99, &#39;KAR&#39;: 7.78}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">area</span>
+<span class="go">{&#39;KAA&#39;: 120.52, &#39;KAB&#39;: 58.76, &#39;KAC&#39;: 72.06, &#39;KAD&#39;: 17.62, &#39;KAE&#39;: 56.44, &#39;KAF&#39;: 22.53, &#39;KAG&#39;: 15.38, &#39;KAH&#39;: 489.25, &#39;KAI&#39;: 29.87, &#39;KAJ&#39;: 44.85, &#39;KAK&#39;: 30.58, &#39;KAL&#39;: 43.59, &#39;KAM&#39;: 45.25, &#39;KAN&#39;: 129.77, &#39;KAO&#39;: 11.57, &#39;KAP&#39;: 24.8, &#39;KAQ&#39;: 12.59, &#39;KAR&#39;: 15.97}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p>The surface points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>-1: bulk points.</li>
+<li>0: biomolecule or empty space points.</li>
+<li>&gt;=2: cavity points.</li>
+</ul>
+</div></blockquote>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial(cavities,</span> <span class="pre">ncav)</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/spatial.html">pyKVFinder.spatial</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="performing-constitutional-characterization">
+<h2>6. Performing constitutional characterization<a class="headerlink" href="#performing-constitutional-characterization" title="Permalink to this headline">¶</a></h2>
+<p>A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.constitutional</span></code> takes the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, the number of cavities detected and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code>), and returns a dictionary with interface residues of each cavity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default ignore backbone contacts flag (ignore_backbone): False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ignore_backbone</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="n">ignore_backbone</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
+<span class="go">{&#39;KAA&#39;: [[&#39;14&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;97&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;141&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;320&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;321&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;322&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;323&#39;, &#39;E&#39;, &#39;ASP&#39;]], &#39;KAE&#39;: [[&#39;95&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;107&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;108&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;163&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;326&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;75&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;336&#39;, &#39;E&#39;, &#39;ARG&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;199&#39;, &#39;E&#39;, &#39;CYS&#39;], [&#39;200&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;331&#39;, &#39;E&#39;, &#39;GLU&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;253&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;275&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;237&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
+</pre></div>
+</div>
+<p>If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defining interface residues, you must set <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residues_ib</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues_ib</span>
+<span class="go">{&#39;KAA&#39;: [[&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAE&#39;: [[&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.constitutional(cavities,</span> <span class="pre">atominfo,</span> <span class="pre">xyzr,</span> <span class="pre">vertices,</span> <span class="pre">sincos,</span> <span class="pre">ncav)</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/constitutional.html">pyKVFinder.constitutional</a></li>
+</ul>
+</div>
+<div class="section" id="calculating-and-plotting-frequencies">
+<h3>6.1 Calculating and plotting frequencies<a class="headerlink" href="#calculating-and-plotting-frequencies" title="Permalink to this headline">¶</a></h3>
+<p>With the interface residues defined, you can also calculate the frequencies of residues and classes of residues. The classes of residues are:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">R1:</th><td class="field-body"><strong>Alipathic apolar:</strong> Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</td>
+</tr>
+<tr class="field-even field"><th class="field-name">R2:</th><td class="field-body"><strong>Aromatic:</strong> Phenylalanine, Tryptophan, Tyrosine</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">R3:</th><td class="field-body"><strong>Polar uncharged</strong>: Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</td>
+</tr>
+<tr class="field-even field"><th class="field-name">R4:</th><td class="field-body"><strong>Negatively charged</strong>: Aspartate, Glutamate</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">R5:</th><td class="field-body"><strong>Positively charged</strong>: Arginine, Histidine, Lysine</td>
+</tr>
+<tr class="field-even field"><th class="field-name">RX:</th><td class="field-body"><strong>Non-standard</strong>: Non-standard residues</td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.calculate_frequencies</span></code> takes the dictionary of interface residues calculated above and returns a dictionary with the frequencies of residues and classes of residues of each detected cavity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span>
+<span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;GLU&#39;: 1, &#39;ILE&#39;: 1, &#39;LEU&#39;: 2, &#39;LYS&#39;: 1, &#39;PHE&#39;: 2, &#39;SER&#39;: 1, &#39;TRP&#39;: 1, &#39;TYR&#39;: 2, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 5, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAB&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 2, &#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;LYS&#39;: 1, &#39;PHE&#39;: 2, &#39;TYR&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 3, &#39;R2&#39;: 3, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAC&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;GLU&#39;: 1, &#39;HIS&#39;: 1, &#39;ILE&#39;: 1, &#39;PHE&#39;: 1, &#39;PRO&#39;: 2, &#39;THR&#39;: 2, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 5, &#39;R2&#39;: 1, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAD&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ASP&#39;: 1, &#39;GLN&#39;: 1, &#39;GLY&#39;: 2, &#39;PHE&#39;: 1, &#39;PRO&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 2, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAE&#39;: {&#39;RESIDUES&#39;: {&#39;ASN&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 1, &#39;PHE&#39;: 1, &#39;VAL&#39;: 2}, &#39;CLASS&#39;: {&#39;R1&#39;: 5, &#39;R2&#39;: 1, &#39;R3&#39;: 1, &#39;R4&#39;: 0, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAF&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ASP&#39;: 1, &#39;GLN&#39;: 2, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 2, &#39;R2&#39;: 0, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAG&#39;: {&#39;RESIDUES&#39;: {&#39;GLN&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;PHE&#39;: 1, &#39;SER&#39;: 2, &#39;THR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 1, &#39;R3&#39;: 4, &#39;R4&#39;: 1, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAH&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;ASN&#39;: 1, &#39;ASP&#39;: 2, &#39;GLN&#39;: 1, &#39;GLU&#39;: 4, &#39;GLY&#39;: 4, &#39;HIS&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 2, &#39;MET&#39;: 1, &#39;PHE&#39;: 3, &#39;SER&#39;: 1, &#39;THR&#39;: 4, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 11, &#39;R2&#39;: 4, &#39;R3&#39;: 8, &#39;R4&#39;: 6, &#39;R5&#39;: 4, &#39;RX&#39;: 0}}, &#39;KAI&#39;: {&#39;RESIDUES&#39;: {&#39;HIS&#39;: 2, &#39;ILE&#39;: 1, &#39;PHE&#39;: 2, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 3, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAJ&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 1, &#39;GLN&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;LYS&#39;: 1, &#39;PHE&#39;: 1, &#39;PRO&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 2, &#39;R2&#39;: 1, &#39;R3&#39;: 1, &#39;R4&#39;: 1, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAK&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ILE&#39;: 1, &#39;LEU&#39;: 2, &#39;PHE&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 2, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAL&#39;: {&#39;RESIDUES&#39;: {&#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;PHE&#39;: 2, &#39;SER&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 3, &#39;R3&#39;: 2, &#39;R4&#39;: 2, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}, &#39;KAM&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 2, &#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;GLY&#39;: 1, &#39;ILE&#39;: 2, &#39;LEU&#39;: 1, &#39;THR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 0, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 2, &#39;RX&#39;: 0}}, &#39;KAN&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 2, &#39;ARG&#39;: 1, &#39;ASP&#39;: 2, &#39;CYS&#39;: 1, &#39;GLY&#39;: 1, &#39;ILE&#39;: 1, &#39;LEU&#39;: 2, &#39;THR&#39;: 1, &#39;TYR&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 7, &#39;R2&#39;: 1, &#39;R3&#39;: 2, &#39;R4&#39;: 2, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAO&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 1, &#39;GLU&#39;: 1, &#39;THR&#39;: 2, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 0, &#39;R2&#39;: 1, &#39;R3&#39;: 2, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAP&#39;: {&#39;RESIDUES&#39;: {&#39;GLY&#39;: 1, &#39;LEU&#39;: 1, &#39;LYS&#39;: 1, &#39;PHE&#39;: 1, &#39;TRP&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 3, &#39;R2&#39;: 2, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAQ&#39;: {&#39;RESIDUES&#39;: {&#39;GLU&#39;: 1, &#39;LEU&#39;: 2, &#39;LYS&#39;: 1, &#39;PRO&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 4, &#39;R2&#39;: 0, &#39;R3&#39;: 0, &#39;R4&#39;: 1, &#39;R5&#39;: 1, &#39;RX&#39;: 0}}, &#39;KAR&#39;: {&#39;RESIDUES&#39;: {&#39;ARG&#39;: 1, &#39;LYS&#39;: 2, &#39;PHE&#39;: 1, &#39;PRO&#39;: 1, &#39;VAL&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 2, &#39;R2&#39;: 1, &#39;R3&#39;: 0, &#39;R4&#39;: 0, &#39;R5&#39;: 3, &#39;RX&#39;: 0}}}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+</div>
+<p>Afterwards, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies</span></code> takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the histograms of calculated frequencies for each detected cavity in a PDF file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;histograms.pdf&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">fn</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies(frequencies)</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li><a class="reference external" href="../_api_reference/plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="performing-hydropathy-characterization">
+<h2>7. Performing hydropathy characterization<a class="headerlink" href="#performing-hydropathy-characterization" title="Permalink to this headline">¶</a></h2>
+<p>A hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy, is performed on the surface points of the detected cavities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.hydropathy</span></code> takes the surface points of the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, the number of cavities detected, a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydropobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Hydrophobicity Scale (hydropathy): &#39;EisenbergWeiss&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hydrophobicity_scale</span> <span class="o">=</span> <span class="s1">&#39;EisenbergWeiss&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="n">hydrophobicity_scale</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="n">ignore_backbone</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span>
+<span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      ...,</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.]],</span>
+
+<span class="go">     ...,</span>
+
+<span class="go">     [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      ...,</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">avg_hydropathy</span>
+<span class="go">{&#39;KAA&#39;: -0.71, &#39;KAB&#39;: -0.06, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.16, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.35, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.hydropathy</span></code> function accepts six built-in hydrophobicity scales:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml">EisenbergWeiss</a>;</li>
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml">HessaHeijne</a>;</li>
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolite.toml">KyteDoolite</a>;</li>
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml">MoonFleming</a>;</li>
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml">WimleyWhite</a>;</li>
+<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml">ZhaoLondon</a>.</li>
+</ul>
+</div></blockquote>
+<p>Otherwise, user must specify a <em>.toml</em> file following <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder#hydrophobicity-scale-file-template">Hydrophobicity Scale File Template</a>.</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">hydrophobicity_scale</span></code> and <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.hydropathy(surface,</span> <span class="pre">atominfo,</span> <span class="pre">xyzr,</span> <span class="pre">vertices,</span> <span class="pre">sincos,</span> <span class="pre">ncav)</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/hydropathy.html">pyKVFinder.hydropathy</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="performing-depth-characterization">
+<h2>8. Performing depth characterization<a class="headerlink" href="#performing-depth-characterization" title="Permalink to this headline">¶</a></h2>
+<p>A depth characterization, that includes maximum depth, average depth and defining depth of cavity points, is performed on the detected cavities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.depth</span></code> takes the detected cavities, the number of cavities and the grid spacing (<code class="docutils literal notranslate"><span class="pre">step</span></code>) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">depths</span>
+<span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      ...,</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.]],</span>
+
+<span class="go">     ...,</span>
+
+<span class="go">     [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      ...,</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_depth</span>
+<span class="go">{&#39;KAA&#39;: 3.79, &#39;KAB&#39;: 2.68, &#39;KAC&#39;: 2.62, &#39;KAD&#39;: 0.85, &#39;KAE&#39;: 3.0, &#39;KAF&#39;: 0.85, &#39;KAG&#39;: 0.6, &#39;KAH&#39;: 10.73, &#39;KAI&#39;: 2.55, &#39;KAJ&#39;: 2.24, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 3.0, &#39;KAM&#39;: 1.2, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 1.04, &#39;KAP&#39;: 2.08, &#39;KAQ&#39;: 0.85, &#39;KAR&#39;: 0.6}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">avg_depth</span>
+<span class="go">{&#39;KAA&#39;: 1.28, &#39;KAB&#39;: 0.86, &#39;KAC&#39;: 0.67, &#39;KAD&#39;: 0.29, &#39;KAE&#39;: 0.98, &#39;KAF&#39;: 0.24, &#39;KAG&#39;: 0.1, &#39;KAH&#39;: 3.75, &#39;KAI&#39;: 1.5, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 1.0, &#39;KAM&#39;: 0.24, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 0.29, &#39;KAP&#39;: 0.7, &#39;KAQ&#39;: 0.22, &#39;KAR&#39;: 0.12}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.depth(cavities,</span> <span class="pre">ncav)</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/depth.html">pyKVFinder.depth</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="exporting-cavities">
+<h2>9. Exporting cavities<a class="headerlink" href="#exporting-cavities" title="Permalink to this headline">¶</a></h2>
+<p>There are four different ways to export the detected cavities to PDB-formatted files.</p>
+<div class="section" id="exporting-only-cavity-points">
+<h3>9.1 Exporting only cavity points<a class="headerlink" href="#exporting-only-cavity-points" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_cavity</span> <span class="o">=</span> <span class="s1">&#39;cavity_wo_surface.pdb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exporting-cavity-and-surface-points">
+<h3>9.2 Exporting cavity and surface points<a class="headerlink" href="#exporting-cavity-and-surface-points" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_cavity</span> <span class="o">=</span> <span class="s1">&#39;cavity.pdb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor">
+<h3>9.3 Exporting cavity and surface points with depth mapped on B-factor<a class="headerlink" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_cavity</span> <span class="o">=</span> <span class="s1">&#39;cavity_with_depth.pdb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-surface-points-with-hydrophobicity-scale-mapped-on-b-factor">
+<h3>9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor<a class="headerlink" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-surface-points-with-hydrophobicity-scale-mapped-on-b-factor" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_cavity</span> <span class="o">=</span> <span class="s1">&#39;cavity_with_depth.pdb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_hydropathy</span> <span class="o">=</span> <span class="s1">&#39;hydropathy.pdb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="n">output_hydropathy</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">scales</span></code> and <code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.export(output_cavity,</span> <span class="pre">cavities,</span> <span class="pre">surface,</span> <span class="pre">vertices,</span> <span class="pre">sincos,</span> <span class="pre">ncav)</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/export.html">pyKVFinder.export</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="writing-results">
+<h2>10. Writing results<a class="headerlink" href="#writing-results" title="Permalink to this headline">¶</a></h2>
+<p>The function call depends on the characterizations performed on the detected cavities.</p>
+<div class="section" id="cavity-detection-only">
+<h3>10.1 Cavity detection only<a class="headerlink" href="#cavity-detection-only" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_results</span> <span class="o">=</span> <span class="s1">&#39;results.toml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="n">pdb</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="spatial-characterization">
+<h3>10.2 Spatial characterization<a class="headerlink" href="#spatial-characterization" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_results</span> <span class="o">=</span> <span class="s1">&#39;results.toml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="n">pdb</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="spatial-and-constitutional-characterization">
+<h3>10.3 Spatial and constitutional characterization<a class="headerlink" href="#spatial-and-constitutional-characterization" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_results</span> <span class="o">=</span> <span class="s1">&#39;results.toml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="n">pdb</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="n">residues</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">=</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="spatial-constitutional-and-depth-characterization">
+<h3>10.4 Spatial, constitutional and depth characterization<a class="headerlink" href="#spatial-constitutional-and-depth-characterization" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_results</span> <span class="o">=</span> <span class="s1">&#39;results.toml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="n">pdb</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span><span class="o">=</span><span class="n">avg_depth</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="n">residues</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">=</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="spatial-constitutional-depth-and-hydropathy-characterization">
+<h3>10.5 Spatial, constitutional, depth and hydropathy characterization<a class="headerlink" href="#spatial-constitutional-depth-and-hydropathy-characterization" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_results</span> <span class="o">=</span> <span class="s1">&#39;results.toml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="n">pdb</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="n">output_hydropathy</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span><span class="o">=</span><span class="n">avg_depth</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="o">=</span><span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="n">residues</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">=</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/export.html">pyKVFinder.export</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="steered-detection">
+<h1>Steered detection<a class="headerlink" href="#steered-detection" title="Permalink to this headline">¶</a></h1>
+<p>All these steps showed so far were performed the detection on the whole target biomolecule; however, we can perform them on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a <em>.toml</em> file.</p>
+<p>There are three methods to define a custom 3D grid as shown in <a class="reference external" href="box_file_template.html">Box configuration file template</a>.</p>
+<p>First, we will create a box <em>.toml</em> file with:</p>
+<ul class="simple">
+<li>Four vertices of the box (origin, X-axis, Y-axis and Z-axis):</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">toml</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">toml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span>
+<span class="go">{&#39;box&#39;: {&#39;p1&#39;: [3.11, 7.34, 1.59], &#39;p2&#39;: [11.51, 7.34, 1.59], &#39;p3&#39;: [3.11, 10.74, 1.59], &#39;p4&#39;: [3.11, 7.34, 6.19]}}</span>
+</pre></div>
+</div>
+<p>or</p>
+<ul class="simple">
+<li>A list of residues and a padding:</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;residues-box.toml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">toml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span>
+<span class="go">{&#39;box&#39;: {&#39;residues&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;]], &#39;padding&#39;: 3.5}}</span>
+</pre></div>
+</div>
+<p>A third way is to define a custom 3D grid with <a class="reference external" href="https://github.com/LBC-LNBio/parKVFinder">parKVFinder</a>’s TOML-formatted parameters file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;box.toml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="go">      [SETTINGS.visiblebox.p1]</span>
+<span class="go">      x = 3.11</span>
+<span class="go">      y = 7.34</span>
+<span class="go">      z = 1.59</span>
+
+<span class="go">      [SETTINGS.visiblebox.p2]</span>
+<span class="go">      x = 11.51</span>
+<span class="go">      y = 7.34</span>
+<span class="go">      z = 1.59</span>
+
+<span class="go">      [SETTINGS.visiblebox.p3]</span>
+<span class="go">      x = 3.11</span>
+<span class="go">      y = 10.74</span>
+<span class="go">      z = 1.59</span>
+
+<span class="go">      [SETTINGS.visiblebox.p4]</span>
+<span class="go">      x = 3.11</span>
+<span class="go">      y = 7.34</span>
+<span class="go">      z = 6.19</span>
+<span class="go">&quot;&quot;&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">toml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">toml</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">box</span><span class="p">),</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Users can create this box with parKVFinder PyMOL plugin (PyMOL2 parKVFinder Tools) and save the parameters file from it.</p>
+</div>
+<div class="section" id="id7">
+<h2>Workflows<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<p>Then, you can explore the box adjustment mode with the standard and full workflows, defining the <code class="docutils literal notranslate"><span class="pre">box</span></code> parameter as the filepath of one box configuration file from above (<em>custom-box.toml</em>, <em>residues-box.toml</em> or <em>box.toml</em>).</p>
+<p>For instance, with <em>custom-box.toml</em>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Box configuration filepath</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Standard workflow</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Full workflow</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>Separated steps<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<p>If you are running pyKVFinder package in a step-by-step fashion (<a class="reference external" href="index.hmtl#separated-steps">Separated steps</a>), the steps <a class="reference external" href="index.hmtl#dimensioning-the-3d-grid">3</a> and <a class="reference external" href="index.hmtl#detecting-biomolecular-cavities">4</a> are different than before.</p>
+<ul class="simple">
+<li>Dimensioning the 3D grid: Instead of calling <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code>, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions</span></code> and <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_sincos</span></code>, you can just call <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_grid_from_file</span></code>.</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_grid_from_file</span></code> takes <em>.toml</em> file with box configuration or parKVFinder parameters file, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid, a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.</p>
+<p>Users can define the <code class="docutils literal notranslate"><span class="pre">box</span></code> parameter as the filepath of one box configuration file from above (<em>custom-box.toml</em>, <em>residues-box.toml</em> or <em>box.toml</em>). For instance, with <em>custom-box.toml</em>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_grid_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_grid_from_file('box.toml',</span> <span class="pre">atominfo,</span> <span class="pre">xyzr)</span></code>.</p>
+</div>
+<ul class="simple">
+<li>Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> parameter as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">removal_distance</span><span class="o">=</span><span class="n">removal_distance</span><span class="p">,</span> <span class="n">volume_cutoff</span><span class="o">=</span><span class="n">volume_cutoff</span><span class="p">,</span> <span class="n">box_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any of the detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>) are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(nx,</span> <span class="pre">ny,</span> <span class="pre">nz,</span> <span class="pre">xyzr,</span> <span class="pre">vertices,</span> <span class="pre">sincos,</span> <span class="pre">box_adjustment=True)</span></code>.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="../_api_reference/get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></li>
+<li><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>Jupyter notebook <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/tree/master/etc/examples">examples</a> are available for:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/evolutive-analysis/evolutive-analysis.ipynb">Evolutive analysis</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/md-analysis/md-analysis.ipynb">Molecular dynamics analysis</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/visualization/ngl-visualization.ipynb">Data visualization</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../_api_reference/index.html" class="btn btn-neutral float-right" title="Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../_installation/index.html" class="btn btn-neutral float-left" title="Requirements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LBC-LNBio.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
