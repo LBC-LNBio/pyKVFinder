@@ -32,7 +32,7 @@ Or to install the latest developmental version, run:
 ::
 
   git clone https://github.com/LBC-LNBio/pyKVFinder.git
-  pip install -e pyKVFinder
+  pip install pyKVFinder
 
 *******
 License
