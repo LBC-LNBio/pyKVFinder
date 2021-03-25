@@ -14,7 +14,7 @@ A Python package for detecting and characterizing biomolecular cavities.
 See also:
 
 * `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder/>`_
-* `Documentation and tutorial <https://jvsguerra.github.io/pyKVFinder-webpage>`_
+* `Documentation and tutorial <https://lbc-lnbio.github.io/pyKVFinder/>`_
 
 ************
 Installation
