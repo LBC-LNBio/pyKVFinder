@@ -905,6 +905,6 @@ Jupyter notebook `examples <https://github.com/LBC-LNBio/pyKVFinder/tree/master/
 .. toctree::
   :maxdepth: 0
 
-  Evolutive analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/evolutive-analysis/evolutive-analysis.ipynb>
+  Evolutive analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/conservation-analysis/conservation-analysis.ipynb>
   Molecular dynamics analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/md-analysis/md-analysis.ipynb>
   Data visualization <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/visualization/ngl-visualization.ipynb>
