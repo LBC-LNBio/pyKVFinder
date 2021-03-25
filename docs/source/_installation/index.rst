@@ -23,7 +23,7 @@ On macOS:
 Conda
 -----
 
-If you use conda, you can install Python v3 and SWIG from the defaults channels:
+If you use conda, you can install Python v3 and SWIG from the defaults channel:
 
 .. code-block:: bash
     
@@ -36,7 +36,7 @@ If you use conda, you can install Python v3 and SWIG from the defaults channels:
 Installation
 ============
 
-The prerequisites for installing pyKVFinder is Python v3 and SWIG. If you don’t have Python and/or SWIG yet, please refer to this `section <requirements.html>`_.
+The prerequisites for installing pyKVFinder is Python v3 and SWIG. If you don’t have Python and/or SWIG yet, please refer to this `section <index.html#requirements>`_.
 
 To install the latest release on `PyPI <https://pypi.org/project/pyKVFinder>`_, 
 run:

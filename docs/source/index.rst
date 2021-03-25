@@ -5,8 +5,9 @@ Welcome to the **Python-C parallel KVFinder (pyKVFinder)** documentation, this p
 
 * `Installation <_installation/index.html>`_
 * `Tutorial <_tutorial/index.html>`_
-* `API Reference <_api_reference/index.html>`_
+* `API reference <_api_reference/index.html>`_
 * `Command-line interface <_cli/index.html>`_
+* `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>`_
 * `About <_about/index.html>`_
 
 .. toctree::
