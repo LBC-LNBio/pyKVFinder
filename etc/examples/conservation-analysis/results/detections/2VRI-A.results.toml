@@ -1,0 +1,50 @@
+# pyKVFinder results
+
+[FILES]
+INPUT = "/home/jvsguerra/remote-repos/pyKVFinder/etc/examples/conservation-analysis/2VRI-A.pdb"
+OUTPUT = "/home/jvsguerra/remote-repos/pyKVFinder/etc/examples/conservation-analysis/results/detections/2VRI-A.cavities.pdb"
+HYDROPATHY = "/home/jvsguerra/remote-repos/pyKVFinder/etc/examples/conservation-analysis/results/detections/2VRI-A.EisenbergWeiss.pdb"
+
+[PARAMETERS]
+STEP = 0.6
+
+[RESULTS.VOLUME]
+KAA = 486.65
+
+[RESULTS.AREA]
+KAA = 358.77
+
+[RESULTS.MAX_DEPTH]
+KAA = 4.8
+
+[RESULTS.AVG_DEPTH]
+KAA = 1.9
+
+[RESULTS.AVG_HYDROPATHY]
+KAA = -0.53
+EisenbergWeiss = [ -1.42, 2.6,]
+
+[RESULTS.RESIDUES]
+KAA = [ [ "15", "A", "ASP",], [ "31", "A", "ALA",], [ "33", "A", "ASN",], [ "42", "A", "VAL",], [ "43", "A", "ALA",], [ "45", "A", "ALA",], [ "116", "A", "PRO",], [ "117", "A", "LEU",], [ "118", "A", "LEU",], [ "119", "A", "SER",], [ "120", "A", "CYS",], [ "122", "A", "ILE",], [ "123", "A", "PHE",], [ "127", "A", "ILE",], [ "146", "A", "PHE",], [ "147", "A", "VAL",], [ "148", "A", "TYR",], [ "152", "A", "GLU",],]
+
+[RESULTS.FREQUENCY.KAA.RESIDUES]
+ALA = 3
+ASN = 1
+ASP = 1
+CYS = 1
+GLU = 1
+ILE = 2
+LEU = 2
+PHE = 2
+PRO = 1
+SER = 1
+TYR = 1
+VAL = 2
+
+[RESULTS.FREQUENCY.KAA.CLASS]
+R1 = 10
+R2 = 3
+R3 = 3
+R4 = 2
+R5 = 0
+RX = 0
