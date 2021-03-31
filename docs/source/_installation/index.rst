@@ -12,13 +12,17 @@ On Linux:
 
 .. code-block:: bash
     
-    sudo apt install python3 swig
+  sudo apt install python3 swig
 
 On macOS:
 
 .. code-block:: bash
     
-    brew install python3 swig
+  brew install python3 swig
+
+.. note:: 
+
+  Users can use their preferred package manager to install SWIG and Python v3.
 
 Conda
 -----
@@ -27,11 +31,11 @@ If you use conda, you can install Python v3 and SWIG from the defaults channel:
 
 .. code-block:: bash
     
-    # Use an environment rather than install in base environement (recommended)
-    conda create -n myenv python=3
-    conda activate myenv
-    # The SWIG install command
-    conda install swig
+  # Use an environment rather than install in base environement (recommended)
+  conda create -n myenv python=3
+  conda activate myenv
+  # The SWIG install command
+  conda install swig
 
 Installation
 ============
