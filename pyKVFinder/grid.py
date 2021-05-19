@@ -1,5 +1,6 @@
 import os
 import numpy
+from typing import Union, Tuple, Dict, List
 
 __all__ = [
     "get_vertices",
@@ -16,27 +17,63 @@ __all__ = [
 
 
 def get_vertices(
-    xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6
+    xyzr: Union[numpy.ndarray, List],
+    probe_out: Union[float, int] = 4.0,
+    step: Union[float, int] = 0.6,
 ) -> numpy.ndarray:
     """
     Gets 3D grid vertices
 
     Parameters
     ----------
-        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius)
-        probe_out (float): Probe Out size (A)
-        step (float): grid spacing (A)
+    xyzrc : Union[numpy.ndarray, List]
+        A numpy array with xyz atomic coordinates and radii
+        values for each atom
+    probe_out : Union[float, int], optional
+        Probe Out size (A)
+    step : Union[float, int], optional
+        Grid spacing (A)
 
     Returns
     -------
-        vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
+    vertices : numpy.ndarray
+        A numpy array with xyz vertices coordinates
+        (origin, X-axis, Y-axis, Z-axis)
+
+    Raises
+    ------
+    TypeError
+        `xyzr` must be a list or a numpy.ndarray
+    TypeError
+        `probe_out` must be a non-negative real number
+    TypeError
+        `step` must be a non-negative real number
+    ValueError
+        `xyzr` has incorrect shape. It must be (, 5)
     """
+    if type(xyzr) not in [numpy.ndarray, list]:
+        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
+    if type(probe_out) not in [int, float]:
+        raise TypeError("`probe_out` must be a non-negative real number.")
+    if type(step) not in [int, float]:
+        raise TypeError("`step` must be a non-negative real number.")
+    if len(numpy.asarray(xyzr).shape) != 2:
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4)")
+    elif numpy.asarray(xyzr).shape[1] != 4:
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+
+    # Convert xyzr type
+    if type(xyzr) == list:
+        xyzr = numpy.asarray(xyzr)
+
+    # Prepare vertices
     P1 = numpy.min(xyzr[:, 0:3], axis=0) - probe_out - step
     xmax, ymax, zmax = numpy.max(xyzr[:, 0:3], axis=0) + probe_out + step
     P2 = numpy.array([xmax, P1[1], P1[2]])
     P3 = numpy.array([P1[0], ymax, P1[2]])
     P4 = numpy.array([P1[0], P1[1], zmax])
 
+    # Pack vertices
     vertices = numpy.array([P1, P2, P3, P4])
 
     return vertices
@@ -44,74 +81,151 @@ def get_vertices(
 
 def get_grid_from_file(
     fn: str,
-    atominfo: numpy.ndarray,
-    xyzr: numpy.ndarray,
-    step: float = 0.6,
-    probe_in: float = 1.4,
-    probe_out: float = 4.0,
+    atominfo: Union[numpy.ndarray, List],
+    xyzr: Union[numpy.ndarray, List],
+    step: Union[float, int] = 0.6,
+    probe_in: Union[float, int] = 1.4,
+    probe_out: Union[float, int] = 4.0,
     nthreads: int = os.cpu_count() - 1,
-) -> tuple:
-    """
-    Gets 3D grid vertices from box configuration file or parKVFinder parameters file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
+) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, int, int, int]:
+    f"""Gets 3D grid vertices from box configuration file or parKVFinder
+    parameters file, selects atoms inside custom 3D grid, define sine
+    and cosine of 3D grid angles and define xyz grid units.
 
     Parameters
     ----------
-        fn (str): a path to box configuration file (TOML-formatted)
-        atominfo (numpy.ndarray): a numpy array with atomic information (residue number, chain, residue name, atom name)
-        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius)
-        step (float): grid spacing (A)
-        probe_in (float): Probe In size (A)
-        probe_out (float): Probe Out size (A)
-        nthreads (int): number of threads
+    fn : str
+        A path to box configuration file (TOML-formatted)
+    atominfo : Union[numpy.ndarray, List]
+        A numpy array with atomic information (residue number, chain, residue
+        name, atom name)
+    xyzr : Union[numpy.ndarray, List]
+        A numpy array with xyz atomic coordinates and radii values for each
+        atom (x, y, z, radius)
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6
+    probe_in : Union[float, int], optional
+        Probe In size (A), by default 1.4
+    probe_out : Union[float, int], optional
+        Probe Out size (A), by default 4.0
+    nthreads : int, optional
+        Number of threads, by default {os.cpu_count()-1}
 
     Returns
     -------
-        vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis) of the custom box
-        atominfo (numpy.ndarray): a numpy array with atomic information (residue number, chain, residue name, atom name) of atoms inside the custom box
-        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of atoms inside the custom box
-        sincos (numpy.ndarray): a numpy array with sine and cossine of the custom box rotation angles (sina, cosa, sinb, cosb)
-        nx (int): x grid units
-        ny (int): y grid units
-        nz (int): z grid units
+    vertices : numpy.ndarray
+        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis,
+        Z-axis) of the custom box
+    atominfo : numpy.ndarray
+        A numpy array with atomic information (residue number, chain, residue
+        name, atom name) of atoms inside the custom box
+    xyzr : numpy.ndarray
+        A numpy array with xyz atomic coordinates and radii values (x, y, z,
+        radius) of atoms inside the custom boxx
+    sincos : numpy.ndarray
+        A numpy array with sine and cossine of the custom box rotation angles
+        (sina, cosa, sinb, cosb)
+    nx : int
+        x grid units
+    ny : int
+        y grid units
+    nz : int
+        z grid units
+
+    Raises
+    ------
+    TypeError
+        `fn` must be a str
+    TypeError
+        `atominfo` must be a list or a numpy.ndarray
+    TypeError
+        `xyzr` must be a list or a numpy.ndarray
+    TypeError
+        `step` must be a non-negative real number
+    TypeError
+        `probe_in` must be a non-negative real number
+    TypeError
+        `probe_out` must be a non-negative real number
+    TypeError
+        `nthreads` must be a positive integer
+    ValueError
+        `xyzr` has incorrect shape. It must be (n, 4)
+    ValueError
+        `atominfo` has incorrect shape. It must be (n, 2)
+    ValueError
+        You must define (p1, p2, p3, p4) or (residues, padding) keys in `fn`
+    ValueError
+        Box not properly defined in `fn`
 
     Box Configuration File Template
     -------------------------------
-        [box]
-        p1 = [x1, y1, z1]
-        p2 = [x2, y2, z2]
-        p3 = [x3, y3, z3]
-        p4 = [x4, y4, z4]
+    [box]
+    p1 = [x1, y1, z1]
+    p2 = [x2, y2, z2]
+    p3 = [x3, y3, z3]
+    p4 = [x4, y4, z4]
 
-        or
+    or
 
-        [box]
-        residues = [ ["resnum", "chain", "resname", ], ["resnum", "chain", "resname"], ]
-        padding =  3.5
+    [box]
+    residues = [ ["resnum", "chain", "resname", ], ["resnum", "chain",
+    "resname"], ]
+    padding =  3.5
 
     ParKVFinder Parameters File
     ---------------------------
-        [SETTINGS.visiblebox.p1]
-        x = x1
-        y = y1
-        z = z1
+    [SETTINGS.visiblebox.p1]
+    x = x1
+    y = y1
+    z = z1
 
-        [SETTINGS.visiblebox.p2]
-        x = x2
-        y = y2
-        z = z2
+    [SETTINGS.visiblebox.p2]
+    x = x2
+    y = y2
+    z = z2
 
-        [SETTINGS.visiblebox.p3]
-        x = x3
-        y = y3
-        z = z3
+    [SETTINGS.visiblebox.p3]
+    x = x3
+    y = y3
+    z = z3
 
-        [SETTINGS.visiblebox.p4]
-        x = x4
-        y = y4
-        z = z4
+    [SETTINGS.visiblebox.p4]
+    x = x4
+    y = y4
+    z = z4
     """
     from _grid import _filter_pdb
     from toml import load
+
+    # Check arguments types
+    if type(fn) not in [str]:
+        raise TypeError("`fn` must be a str.")
+    if type(atominfo) not in [numpy.ndarray, List]:
+        raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
+    if type(xyzr) not in [numpy.ndarray, List]:
+        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
+    if type(step) not in [float, int]:
+        raise TypeError("`step` must be a non-negative real number.")
+    if type(probe_in) not in [float, int]:
+        raise TypeError("`probe_in` must be a non-negative real number.")
+    if type(probe_out) not in [float, int]:
+        raise TypeError("`probe_out` must be a non-negative real number.")
+    if type(nthreads) not in [int]:
+        raise TypeError("`nthreads` must be a positive integer.")
+    if len(numpy.asarray(xyzr).shape) != 2:
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    elif numpy.asarray(xyzr).shape[1] != 4:
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if len(numpy.asarray(atominfo).shape) != 2:
+        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
+    elif numpy.asarray(atominfo).shape[1] != 4:
+        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
+
+    # Convert type
+    if type(atominfo) == list:
+        atominfo = numpy.asarray(atominfo)
+    if type(xyzr) == list:
+        xyzr = numpy.asarray(xyzr)
 
     # Read box file
     tmp = load(fn)
@@ -126,20 +240,20 @@ def get_grid_from_file(
         # Check conditions
         if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
             if all([key in box.keys() for key in ["padding", "residues"]]):
-                raise Exception(
+                raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
             vertices = _get_vertices_from_box(box, probe_out)
         elif "residues" in box.keys():
             if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
-                raise Exception(
+                raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
             if "padding" not in box.keys():
                 box["padding"] = 3.5
             vertices = _get_vertices_from_residues(box, atominfo, xyzr, probe_out)
         else:
-            raise Exception(f"Box not properly defined in {fn}")
+            raise ValueError(f"Box not properly defined in {fn}.")
 
     # Get atoms inside box only
     sincos = numpy.round(get_sincos(vertices), 4)
@@ -154,18 +268,22 @@ def get_grid_from_file(
     return vertices, atominfo, xyzr, sincos, nx, ny, nz
 
 
-def _get_vertices_from_box(box: dict, probe_out: float = 4.0) -> numpy.ndarray:
-    """
-    Gets 3D grid vertices from box coordinates
+def _get_vertices_from_box(
+    box: Dict[str, List[float]], probe_out: Union[float, int] = 4.0
+) -> numpy.ndarray:
+    """Gets 3D grid vertices from box coordinates
 
     Parameters
     ----------
-        box (dict): an dict with xyzr coordinates of p1, p2, p3 and p4 keys
-        probe_out (float): Probe Out size (A)
+    box : Dict[str, List[float]]
+        A dictionary with xyz coordinates of p1, p2, p3 and p4
+    probe_out : Union[float, int], optional
+        Probe Out size (A), by default 4.0
 
     Returns
     -------
-        vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
+    vertices : numpy.ndarray
+        A numpy.ndarray of vertices coordinates (origin, Xmax, Ymax, Zmax)
 
     Box File
     --------
@@ -246,26 +364,37 @@ def _get_vertices_from_box(box: dict, probe_out: float = 4.0) -> numpy.ndarray:
 
 
 def _get_vertices_from_residues(
-    box: dict, atominfo: numpy.ndarray, xyzr: numpy.ndarray, probe_out: float = 4.0
+    box: Dict[str, List[float]],
+    atominfo: numpy.ndarray,
+    xyzr: numpy.ndarray,
+    probe_out: Union[float, int] = 4.0,
 ) -> numpy.ndarray:
-    """
-    Gets 3D grid vertices based on a list of residues (name and chain) and a padding value
+    """Gets 3D grid vertices based on a list of residues (name and chain)
+    and a padding value
 
     Parameters
     ----------
-        box (dict): dictionary with a list of residues (name and chain) and a padding value
-        atominfo (numpy.ndarray): an array with residue number, chain, residue name and atom name
-        xyzr (numpy.ndarray): an array with xyz coordinates and radius of input atoms
-        probe_out (float): Probe Out size (A)
+    box : Dict[str, List[float]]
+        A dictionary with a list of residues (name and chain) and a
+        padding value
+    atominfo : numpy.ndarray
+        A numpy.ndarray with residue number, chain, residue name and
+        atom name
+    xyzr : numpy.ndarray
+        A numpy.ndarray with xyz coordinates and radius of input atoms
+    probe_out : Union[float, int], optional
+        Probe Out size (A), by default 4.0
 
     Returns
     -------
-        vertices (numpy.ndarray): an array of vertices coordinates (origin, Xmax, Ymax, Zmax)
+    vertices : numpy.ndarray
+        A numpy.ndarray of vertices coordinates (origin, Xmax, Ymax, Zmax)
 
     Box File
     --------
     [box]
-    residues = [ ["resnum", "chain", "resname",], ["resnum", "chain", "resname"], ]
+    residues = [ ["resnum", "chain", "resname",], ["resnum", "chain",
+    "resname"], ]
     padding =  3.5
     """
     # Prepare residues list
@@ -287,21 +416,49 @@ def _get_vertices_from_residues(
     return vertices
 
 
-def get_dimensions(vertices: numpy.ndarray, step: float = 0.6) -> tuple:
-    """
-    Gets dimensions of 3D grid from vertices
+def get_dimensions(
+    vertices: Union[numpy.ndarray, List], step: Union[float, int] = 0.6
+) -> Tuple[int, int, int]:
+    """Gets dimensions of 3D grid from vertices
 
     Parameters
     ----------
-        vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-        step (float): grid spacing (A)
+    vertices : Union[numpy.ndarray, List]
+        A numpy.ndarray with xyz vertices coordinates
+        (origin, X-axis, Y-axis, Z-axis)
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6
 
     Returns
     -------
-        nx (int): x grid units
-        ny (int): y grid units
-        nz (int): z grid units
+    nx : int
+        x grid units
+    ny : int
+        y grid units
+    nz : int
+        z grid units
+
+    Raises
+    ------
+    TypeError
+        `vertices` must be a list or a numpy.ndarray
+    ValueError
+        `vertices` has incorrect shape
+    TypeError
+        `step` must be a non-negative real number
     """
+    # Check arguments
+    if type(vertices) not in [numpy.ndarray, list]:
+        raise TypeError("`vertices` must be a list or a numpy.ndarray.")
+    if numpy.asarray(vertices).shape != (4, 3):
+        raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
+    if type(step) not in [float, int] and step > 0.0:
+        raise TypeError("`step` must be a non-negative real number.")
+
+    # Convert type
+    if type(vertices) == list:
+        vertices = numpy.asarray(vertices)
+
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -314,21 +471,42 @@ def get_dimensions(vertices: numpy.ndarray, step: float = 0.6) -> tuple:
     nx = int(norm1 / step) + 1 if norm1 % step != 0 else int(norm1 / step)
     ny = int(norm2 / step) + 1 if norm1 % step != 0 else int(norm1 / step)
     nz = int(norm3 / step) + 1 if norm1 % step != 0 else int(norm1 / step)
+
     return nx, ny, nz
 
 
-def get_sincos(vertices: numpy.ndarray):
-    """
-    Gets sine and cossine of the grid rotation angles
+def get_sincos(vertices: Union[numpy.ndarray, List]) -> numpy.ndarray:
+    """Gets sine and cossine of the grid rotation angles from a list of vertices
+    coordinates
 
     Parameters
     ----------
-        vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
+    vertices : Union[numpy.ndarray, List]
+        A list of xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
 
     Returns
     -------
-        sincos (numpy.ndarray): a numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    numpy.ndarray
+        A numpy.ndarray with sine and cossine of the grid rotation
+        angles (sina, cosa, sinb, cosb)
+
+    Raises
+    ------
+    TypeError
+        `vertices` must be a list or a numpy.ndarray
+    ValueError
+        `vertices` has incorrect shape
     """
+    # Check arguments
+    if type(vertices) not in [numpy.ndarray, list]:
+        raise TypeError("`vertices` must be a list or a numpy.ndarray.")
+    if numpy.asarray(vertices).shape != (4, 3):
+        raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
+
+    # Convert type
+    if type(vertices) == list:
+        vertices = numpy.asarray(vertices)
+
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -349,77 +527,76 @@ def get_sincos(vertices: numpy.ndarray):
     return sincos
 
 
-def _process_spatial(
-    raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: int
-) -> tuple:
-    """
-    Processes arrays of volumes and areas
-
-    Parameters
-    ----------
-        raw_volume (numpy.ndarray): an array of volumes
-        raw_area (numpy.ndarray): an array of areas
-        ncav (int): number of cavities
-
-    Returns
-    -------
-        volume (dict): dictionary with cavity name/volume pairs
-        area (dict): dictionary with cavity name/area pairs
-    """
-    volume, area = {}, {}
-    for index in range(ncav):
-        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
-        volume[key] = float(round(raw_volume[index], 2))
-        area[key] = float(round(raw_area[index], 2))
-    return volume, area
-
-
 def detect(
     nx: int,
     ny: int,
     nz: int,
-    xyzr: numpy.ndarray,
-    vertices: numpy.ndarray,
-    sincos: numpy.ndarray,
-    step: float = 0.6,
-    probe_in: float = 1.4,
-    probe_out: float = 4.0,
-    removal_distance: float = 2.4,
-    volume_cutoff: float = 5.0,
-    lxyzr: numpy.ndarray = None,
-    ligand_cutoff: float = 5.0,
+    xyzr: Union[numpy.ndarray, List],
+    vertices: Union[numpy.ndarray, List],
+    sincos: Union[numpy.ndarray, List],
+    step: Union[float, int] = 0.6,
+    probe_in: Union[float, int] = 1.4,
+    probe_out: Union[float, int] = 4.0,
+    removal_distance: Union[float, int] = 2.4,
+    volume_cutoff: Union[float, int] = 5.0,
+    lxyzr: Union[numpy.ndarray, List, None] = None,
+    ligand_cutoff: Union[float, int] = 5.0,
     box_adjustment: bool = False,
     surface: str = "SES",
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
-) -> tuple:
-    """
-    Detects biomolecular cavities
+) -> Tuple[int, numpy.ndarray]:
+    """Detects biomolecular cavities
 
     Parameters
     ----------
-        nx (int): x 3D grid units
-        ny (int): y 3D grid units
-        nz (int): z 3D grid units
-        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius)
-        vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-        sincos (numpy.ndarray): a numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
-        step (float): grid spacing (A)
-        probe_in (float): Probe In size (A)
-        probe_out (float): Probe Out size (A)
-        removal_distance (float): length to be removed from the cavity-bulk frontier (A)
-        volume_cutoff (float): cavities volume filter (A3)
-        lxyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of ligand atoms
-        ligand_cutoff (float): radius value to limit a space around a ligand (A)
-        box_adjustment (bool): whether a custom 3D grid is applied
-        surface (str): keywords options are SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
-        nthreads (int): number of threads
-        verbose: print extra information to standard output
+    nx : int
+        x grid units
+    ny : int
+        y grid units
+    nz : int
+        z grid units
+    xyzr : Union[numpy.ndarray, List]
+        A numpy.ndarray with xyz atomic coordinates and radii values
+        (x, y, z, radius) for each atom
+    vertices : Union[numpy.ndarray, List]
+        A numpy.ndarray with xyz vertices coordinates (origin, X-axis,
+        Y-axis, Z-axis)
+    sincos : Union[numpy.ndarray, List]
+        A numpy.ndarray with sine and cossine of the grid rotation
+        angles (sina, cosa, sinb, cosb)
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6
+    probe_in : Union[float, int], optional
+        Probe In size (A), by default 1.4
+    probe_out : Union[float, int], optional
+        Probe Out size (A), by default 4.0
+    removal_distance : Union[float, int], optional
+        A length to be removed from the cavity-bulk frontier (A), by
+        default 2.4
+    volume_cutoff : Union[float, int], optional
+        Volume filter for detected cavities (A3), by default 5.0
+    lxyzr : Union[numpy.ndarray, List, None]
+        A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,
+        radius) for each atom of a target ligand, by default None
+    ligand_cutoff : Union[float, int], optional
+        A radius to limit a space around a ligand (A), by default 5.0
+    box_adjustment : bool, optional
+        Whether a custom 3D grid is applied, by default False
+    surface : str, optional
+        Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+        Accessible Surface), by default SES
+    nthreads : int
+        Number of threads
+    verbose : bool
+        Print extra information to standard output
 
     Returns
     -------
-        ncav (int): number of cavities
-        cavities (numpy.ndarray): cavity points in the 3D grid (cavities[nx][ny][nz])
+    ncav : int
+        Number of cavities
+    cavities : numpy.ndarray
+        Cavity points in the 3D grid (cavities[nx][ny][nz])
 
     Notes
     -----
@@ -433,17 +610,135 @@ def detect(
 
     Warnings
     --------
-        If you are using box adjustment mode, do not forget to set box_adjustment flag to True and read the box configuration file with 'get_grid_from_file' function
+    If you are using box adjustment mode, do not forget to set box_adjustment
+    flag to True and read the box configuration file with 'get_grid_from_file'
+    function
 
-        If you are using ligand adjustment mode, do not forget to read ligand atom coordinates with 'read_pdb' function
+    If you are using ligand adjustment mode, do not forget to read ligand atom
+    coordinates with 'read_pdb' function
+
+    Raises
+    ------
+    TypeError
+        `nx` must be a positive integer
+    TypeError
+        `ny` must be a positive integer
+    TypeError
+        `nz` must be a positive integer
+    TypeError
+        `xyzr` must be a list or a numpy.ndarray
+    TypeError
+        `vertices` must be a list or a numpy.ndarray
+    TypeError
+        `sincos` must be a list or a numpy.ndarray
+    TypeError
+        `step` must be a non-negative real number
+    TypeError
+        `probe_in` must be a non-negative real number
+    TypeError
+        `probe_out` must be a non-negative real number
+    TypeError
+        `removal_distance` must be a non-negative real number
+    TypeError
+        `volume_cutoff` must be a non-negative real number
+    TypeError
+        `lxyzr` must be a list, a numpy.ndarray or None
+    TypeError
+        `ligand_cutoff` must be a non-negative real number
+    TypeError
+        `box_adjustment` must be a boolean
+    TypeError
+        `surface` must be a str
+    TypeError
+        `nthreads` must be a positive integer
+    ValueError
+        `xyzr` has incorrect shape. It must be (n, 4)
+    ValueError
+        `vertices` has incorrect shape. It must be (4, 3)
+    ValueError
+        `sincos` has incorrect shape. It must be (4,)
+    ValueError
+        `lxyzr` has incorrect shape. It must be (n, 4)
+    ValueError
+        `surface` must be SAS or SES, not `surface`
     """
     from _grid import _detect, _detect_ladj
 
-    # Check and convert data types
+    # Check types
+    if type(nx) not in [int]:
+        raise TypeError("`nx` must be a positive integer.")
+    if type(ny) not in [int]:
+        raise TypeError("`ny` must be a positive integer.")
+    if type(nz) not in [int]:
+        raise TypeError("`nz` must be a positive integer.")
+    if type(xyzr) not in [numpy.ndarray, list]:
+        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
+    if type(vertices) not in [numpy.ndarray, list]:
+        raise TypeError("`vertices` must be a list or a numpy.ndarray.")
+    if type(sincos) not in [numpy.ndarray, list]:
+        raise TypeError("`sincos` must be a list or a numpy.ndarray.")
+    if type(step) not in [float, int]:
+        raise TypeError("`step` must be a non-negative real number.")
+    if type(probe_in) not in [float, int]:
+        raise TypeError("`probe_in` must be a non-negative real number.")
+    if type(probe_out) not in [float, int]:
+        raise TypeError("`probe_out` must be a non-negative real number.")
+    if type(removal_distance) not in [float, int]:
+        raise TypeError("`removal_distance` must be a non-negative real number.")
+    if type(volume_cutoff) not in [float, int]:
+        raise TypeError("`volume_cutoff` must be a non-negative real number.")
+    if type(lxyzr) not in [numpy.ndarray, list, None]:
+        raise TypeError("`lxyzr` must be a list, a numpy.ndarray or None.")
+    if type(ligand_cutoff) not in [float, int]:
+        raise TypeError("`ligand_cutoff` must be a non-negative real number.")
+    if type(box_adjustment) not in [bool]:
+        raise TypeError("`box_adjustment` must be a boolean.")
+    if type(surface) not in [str]:
+        raise TypeError("`surface` must be a str.")
+    if type(nthreads) not in [int]:
+        raise TypeError("`nthreads` must be a positive integer.")
+    if len(numpy.asarray(xyzr).shape) != 2:
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    elif numpy.asarray(xyzr).shape[1] != 4:
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if numpy.asarray(vertices).shape != (4, 3):
+        raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
+    if len(numpy.asarray(sincos).shape) != 1:
+        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
+    elif numpy.asarray(sincos).shape[0] != 4:
+        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
+
+    # Convert types
+    if type(xyzr) == list:
+        xyzr = numpy.asarray(xyzr)
+    if type(vertices) == list:
+        vertices = numpy.asarray(vertices)
+    if type(sincos) == list:
+        sincos = numpy.asarray(sincos)
+    if type(step) == int:
+        step = float(step)
+    if type(probe_in) == int:
+        probe_in = float(probe_in)
+    if type(probe_out) == int:
+        probe_out = float(probe_out)
+    if type(removal_distance) == int:
+        removal_distance = float(removal_distance)
+    if type(volume_cutoff) == int:
+        volume_cutoff = float(volume_cutoff)
+    if type(ligand_cutoff) == int:
+        ligand_cutoff = float(ligand_cutoff)
+    if type(lxyzr) == list:
+        lxyzr = numpy.asarray(lxyzr)
+
+    # Convert numpy.ndarray data types
     xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
     sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
     if lxyzr is not None:
+        if len(lxyzr.shape) != 2:
+            raise ValueError("`lxyzr` has incorrect shape. It must be (n, 4).")
+        elif lxyzr.shape[1] != 4:
+            raise ValueError("`lxyzr` has incorrect shape. It must be (n, 4).")
         lxyzr = lxyzr.astype("float64") if lxyzr.dtype != "float64" else lxyzr
 
     # Unpack vertices
@@ -464,7 +759,7 @@ def detect(
             print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
-        raise Exception(f"surface variable should be SAS or SES, not {surface}")
+        raise ValueError(f"`surface` must be SAS or SES, not {surface}")
 
     # Detect cavities
     if ligand_adjustment:
@@ -512,6 +807,37 @@ def detect(
         )
 
     return ncav, cavities.reshape(nx, ny, nz)
+
+
+def _process_spatial(
+    raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: int
+) -> Tuple[Dict[str, float], Dict[str, float]]:
+    """Processes arrays of volumes and areas
+
+    Parameters
+    ----------
+    raw_volume : numpy.ndarray
+        A numpy.ndarray of volumes
+    raw_area : numpy.ndarray
+        A numpy.ndarray of areas
+    ncav : int
+        Number of cavities
+
+    Returns
+    -------
+    volume : Dict[str, float]
+        A dictionary with cavity name/volume pairs
+    area : Dict[str, float]
+        A dictionary with cavity name/area pairs
+    """
+    volume, area = {}, {}
+
+    for index in range(ncav):
+        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        volume[key] = float(round(raw_volume[index], 2))
+        area[key] = float(round(raw_area[index], 2))
+
+    return volume, area
 
 
 def spatial(

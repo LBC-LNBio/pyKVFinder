@@ -3,31 +3,43 @@ import logging
 import argparse
 
 __all__ = [
-    "read_pdb",
     "read_vdw",
+    "read_pdb",
     "calculate_frequencies",
     "plot_frequencies",
     "write_results",
 ]
 
-here = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
+here = os.path.abspath(os.path.dirname(__file__))
+vdw_cfg = os.path.join(here, "data/vdw.dat")
 
 
-def read_vdw(fn: str = here) -> dict:
-    """
+def read_vdw(fn: str = vdw_cfg) -> dict:
+    f"""
     Reads van der Waals radii from .dat file
 
     Parameters
     ----------
-        fn (str): a path to a van der Waals radii file
+        fn (str): a path to a van der Waals radii file, by default {vdw_cfg}
 
     Returns
     -------
         vdw (dict): a dictionary containing radii values (vdw[resname][atom])
 
+    Raises
+    ------
+    ValueError
+        A line in `vdw` has incorrect format. The values must be double
+        tab-separated
+    ValueError
+        A line in `vdw` has an incorrect radius type for an atom
+
     Note
     ----
-        The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type (check van der Waals File Template). The package contains a built-in van der Waals radii file: `vdw.dat`.
+        The van der Waals radii file defines the radius values for each
+        atom by residue and when not defined, it uses a generic value
+        based on the atom type (check van der Waals File Template).
+        The package contains a built-in van der Waals radii file: `vdw.dat`.
 
     van der Waals File Template
     ---------------------------
@@ -49,43 +61,25 @@ def read_vdw(fn: str = here) -> dict:
         for line in lines:
             if line:
                 if line.startswith(">"):
-                    res = line.replace(">", "").replace("\t\t", "")
+                    res = line.replace(">", "").replace("\t\t", "").replace(" ", "")
                     vdw[res] = {}
                 else:
-                    atom, radius = line.split("\t\t")
-                    vdw[res][atom] = float(radius)
+                    try:
+                        atom, radius = line.split("\t\t")
+                    except ValueError:
+                        if len(line.split("\t\t")) != 2:
+                            raise ValueError(
+                                "A line in `vdw` has incorrect format. \
+                                    The values must be double tab-separated."
+                            )
+                    try:
+                        vdw[res][atom] = float(radius)
+                    except ValueError:
+                        raise ValueError(
+                            "A line in `vdw` has an incorrect radius type for \
+                                an atom."
+                        )
     return vdw
-
-
-def read_pdb(fn: str, vdw: dict) -> tuple:
-    """
-    Reads PDB file into Numpy arrays
-
-    Parameters
-    ----------
-        fn (str): a path to PDB file
-        vdw (dict): a dictionary with radii values (vdw[resname][atom])
-
-    Returns
-    -------
-        atominfo (numpy.ndarray): a numpy array with atomic information (residue number, chain, residue name, atom name)
-        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and radii values (x, y, z, radius)
-
-    Note
-    ----
-        The vdW radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type.
-    """
-    import numpy as np
-
-    atominfo = []
-    xyzr = []
-    with open(fn, "r") as f:
-        for line in f.readlines():
-            if line[:4] == "ATOM" or line[:6] == "HETATM":
-                atom, coords = _process_pdb_line(line, vdw)
-                atominfo.append(atom)
-                xyzr.append(coords)
-    return np.asarray(atominfo), np.asarray(xyzr)
 
 
 def _process_pdb_line(line: str, vdw: dict) -> tuple:
@@ -125,7 +119,41 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
     return atominfo, coords
 
 
-def _process_box(args: argparse.Namespace):
+def read_pdb(fn: str, vdw: dict) -> tuple:
+    """
+    Reads PDB file into Numpy arrays
+
+    Parameters
+    ----------
+        fn (str): a path to PDB file
+        vdw (dict): a dictionary with radii values (vdw[resname][atom])
+
+    Returns
+    -------
+        atominfo (numpy.ndarray): a numpy array with atomic information
+        (residue number, chain, residue name, atom name)
+        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and
+        radii values (x, y, z, radius)
+
+    Note
+    ----
+        The vdW radii file defines the radius values for each atom by residue
+        and when not defined, it uses a generic value based on the atom type.
+    """
+    import numpy as np
+
+    atominfo = []
+    xyzr = []
+    with open(fn, "r") as f:
+        for line in f.readlines():
+            if line[:4] == "ATOM" or line[:6] == "HETATM":
+                atom, coords = _process_pdb_line(line, vdw)
+                atominfo.append(atom)
+                xyzr.append(coords)
+    return np.asarray(atominfo), np.asarray(xyzr)
+
+
+def _process_box(args: argparse.Namespace) -> dict:
     """
     Gets xyz coordinates of 3D grid vertices
 
@@ -216,8 +244,8 @@ def _process_box(args: argparse.Namespace):
 
 def _write_parameters(args: argparse.Namespace) -> None:
     """
-    Writes parameters used in cavity detection and characterization of pyKVFinder
-    to TOML-formatted file
+    Writes parameters used in cavity detection and characterization of
+    pyKVFinder to TOML-formatted file
 
     Parameters
     ----------
@@ -270,25 +298,32 @@ def _write_parameters(args: argparse.Namespace) -> None:
 
 def calculate_frequencies(residues: dict) -> dict:
     """
-    Calculate frequencies of residues and class of residues (R1, R2, R3, R4 and R5) for detected cavities.
+    Calculate frequencies of residues and class of residues
+    (R1, R2, R3, R4 and R5) for detected cavities.
 
     Parameters
     ----------
-        residues (dict): a dictionary with a list of interface residues of each detected cavity
+        residues (dict): a dictionary with a list of interface residues of
+        each detected cavity
 
     Returns
     -------
-        frequencies (dict): a dictionary with frequencies of residues and class of residues of each detected cavity
+        frequencies (dict): a dictionary with frequencies of residues and
+        class of residues of each detected cavity
 
     Note
     ----
-        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA, the
+        cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
     Classes
     -------
-        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
+        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+        Methionine, Valine
         Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
+        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
+        Threonine
         Negatively charged (R4): Aspartate, Glutamate
         Positively charged (R5): Arginine, Histidine, Lysine
         Non-standard (RX): Non-standard residues
@@ -350,11 +385,13 @@ def calculate_frequencies(residues: dict) -> dict:
 
 def plot_frequencies(frequencies: dict, fn: str = "histograms.pdf") -> None:
     """
-    Plot histograms of calculated frequencies (residues and classes of residues) for each detected cavity in a target PDF file.
+    Plot histograms of calculated frequencies (residues and classes of
+    residues) for each detected cavity in a target PDF file.
 
     Parameters
     ----------
-        frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
+        frequencies (dict): a dictionary with frequencies of interface
+        residues and classes of residues of each detected cavity
         fn (str): a path to PDF file for plotting histograms of frequencies.
 
     Returns
@@ -363,13 +400,17 @@ def plot_frequencies(frequencies: dict, fn: str = "histograms.pdf") -> None:
 
     Note
     ----
-        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA, the
+        cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
     Classes
     -------
-        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
+        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+        Methionine, Valine
         Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
+        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
+        Threonine
         Negatively charged (R4): Aspartate, Glutamate
         Positively charged (R5): Arginine, Histidine, Lysine
         Non-standard (RX): Non-standard residues
@@ -510,18 +551,26 @@ def write_results(
 
     Parameters
     ----------
-        fn (str): a path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected
+        fn (str): a path to TOML-formatted file for writing file paths and
+        cavity characterization (volume, area, depth [optional] and interface
+        residues) per cavity detected
         pdb (str): a path to input PDB file
         ligand (str): a path to ligand PDB file
         output (str): a path to cavity PDB file
-        output_hydropathy (str): a path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
+        output_hydropathy (str): a path to hydropathy PDB file (surface points
+        mapped with a hydrophobicity scale)
         volume (dict): a dictionary with volume of each detected cavity
         area (dict): a dictionary with area of each detected cavity
-        max_depth (dict): a dictionary with maximum depth of each detected cavity
-        avg_depth (dict): a dictionary with average depth of each detected cavity
-        avg_hydropapthy: a dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
-        residues (dict): a dictionary with interface residues of each detected cavity
-        frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
+        max_depth (dict): a dictionary with maximum depth of each detected
+        cavity
+        avg_depth (dict): a dictionary with average depth of each detected
+        cavity
+        avg_hydropapthy: a dictionary with average hydropathy of each detected
+        cavity and range of the hydrophobicity scale mapped
+        residues (dict): a dictionary with interface residues of each detected
+        cavity
+        frequencies (dict): a dictionary with frequencies of interface
+        residues and classes of residues of each detected cavity
         step (float): grid spacing (A)
 
     Returns
@@ -530,7 +579,9 @@ def write_results(
 
     Note
     ----
-        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA, the
+        cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
     """
     import toml
 
