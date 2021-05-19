@@ -4,10 +4,28 @@ import logging
 import numpy
 from datetime import datetime
 from .argparser import argparser
-from .utils import read_vdw, read_pdb, calculate_frequencies, plot_frequencies, write_results, _write_parameters
-from .grid import get_vertices, get_grid_from_file, get_dimensions, get_sincos, detect, spatial, depth, constitutional, hydropathy, export
+from .utils import (
+    read_vdw,
+    read_pdb,
+    calculate_frequencies,
+    plot_frequencies,
+    write_results,
+    _write_parameters,
+)
+from .grid import (
+    get_vertices,
+    get_grid_from_file,
+    get_dimensions,
+    get_sincos,
+    detect,
+    spatial,
+    depth,
+    constitutional,
+    hydropathy,
+    export,
+)
 
-__all__ = ['pyKVFinder', 'pyKVFinderResults']
+__all__ = ["pyKVFinder", "pyKVFinderResults"]
 
 here = os.path.abspath(os.path.dirname(__file__))
 _dictionary = os.path.join(here, "data/vdw.dat")
@@ -42,7 +60,7 @@ def cli():
 
     # Get base name from pdb file if not defined by user
     if not args.base_name:
-        args.base_name = os.path.basename(args.pdb.replace('.pdb', ''))
+        args.base_name = os.path.basename(args.pdb.replace(".pdb", ""))
 
     # Create output directory
     os.makedirs(args.output_directory, exist_ok=True)
@@ -51,9 +69,15 @@ def cli():
     print(f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
 
     # Start logging
-    logging.basicConfig(filename=f"{os.path.join(args.output_directory, 'KVFinder.log')}", level=logging.INFO, format='%(message)s')
+    logging.basicConfig(
+        filename=f"{os.path.join(args.output_directory, 'KVFinder.log')}",
+        level=logging.INFO,
+        format="%(message)s",
+    )
     logging.info("=" * 80)
-    logging.info(f"Date: {datetime.now().strftime('%a %d %B, %Y')}\nTime: {datetime.now().strftime('%H:%M:%S')}\n")
+    logging.info(
+        f"Date: {datetime.now().strftime('%a %d %B, %Y')}\nTime: {datetime.now().strftime('%H:%M:%S')}\n"
+    )
     logging.info(f"[ Running pyKVFinder for: {args.pdb} ]")
     logging.info(f"> vdW radii file: {args.dictionary}")
 
@@ -76,7 +100,15 @@ def cli():
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, atominfo, xyzr, args.sincos, nx, ny, nz = get_grid_from_file(args.box, atominfo, xyzr, args.step, args.probe_in, args.probe_out, args.nthreads)
+        args.vertices, atominfo, xyzr, args.sincos, nx, ny, nz = get_grid_from_file(
+            args.box,
+            atominfo,
+            xyzr,
+            args.step,
+            args.probe_in,
+            args.probe_out,
+            args.nthreads,
+        )
 
         # Set flag to boolean
         args.box = True
@@ -108,43 +140,125 @@ def cli():
     logging.info(f"> sinb: {args.sincos[2]:.2f}\tcosb: {args.sincos[3]:.2f}")
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, args.vertices, args.sincos, args.step, args.probe_in, args.probe_out, args.removal_distance, args.volume_cutoff, lxyzr, args.ligand_cutoff, args.box, args.surface, args.nthreads, args.verbose)
+    ncav, cavities = detect(
+        nx,
+        ny,
+        nz,
+        xyzr,
+        args.vertices,
+        args.sincos,
+        args.step,
+        args.probe_in,
+        args.probe_out,
+        args.removal_distance,
+        args.volume_cutoff,
+        lxyzr,
+        args.ligand_cutoff,
+        args.box,
+        args.surface,
+        args.nthreads,
+        args.verbose,
+    )
 
     # Cavities were found
     if ncav > 0:
         # Spatial characterization
-        surface, volume, area = spatial(cavities, ncav, args.step, args.nthreads, args.verbose)
+        surface, volume, area = spatial(
+            cavities, ncav, args.step, args.nthreads, args.verbose
+        )
 
         # Depth characterization
         if args.depth:
-            depths, max_depth, avg_depth = depth(cavities, ncav, args.step, args.nthreads, args.verbose)
+            depths, max_depth, avg_depth = depth(
+                cavities, ncav, args.step, args.nthreads, args.verbose
+            )
         else:
             depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
-        residues = constitutional(cavities, atominfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.ignore_backbone, args.nthreads, args.verbose)
+        residues = constitutional(
+            cavities,
+            atominfo,
+            xyzr,
+            args.vertices,
+            args.sincos,
+            ncav,
+            args.step,
+            args.probe_in,
+            args.ignore_backbone,
+            args.nthreads,
+            args.verbose,
+        )
         frequencies = calculate_frequencies(residues)
 
         # Plot histograms of frequencies
         if args.plot_frequencies:
-            output_plot = os.path.join(args.output_directory, f"{args.base_name}.histograms.pdf")
+            output_plot = os.path.join(
+                args.output_directory, f"{args.base_name}.histograms.pdf"
+            )
             plot_frequencies(frequencies, output_plot)
 
         # Hydropathy characterization
         if args.hydropathy:
             # Map hydrophobicity scales
-            scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, args.vertices, args.sincos, ncav, args.step, args.probe_in, args.hydropathy, args.ignore_backbone, args.nthreads, args.verbose)
-            output_hydropathy = os.path.join(args.output_directory, f"{args.base_name}.{list(avg_hydropathy.keys())[-1]}.pdb")
+            scales, avg_hydropathy = hydropathy(
+                surface,
+                atominfo,
+                xyzr,
+                args.vertices,
+                args.sincos,
+                ncav,
+                args.step,
+                args.probe_in,
+                args.hydropathy,
+                args.ignore_backbone,
+                args.nthreads,
+                args.verbose,
+            )
+            output_hydropathy = os.path.join(
+                args.output_directory,
+                f"{args.base_name}.{list(avg_hydropathy.keys())[-1]}.pdb",
+            )
         else:
             scales, avg_hydropathy, output_hydropathy = None, None, None
 
         # Export cavities
-        output_cavity = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.output.pdb")
-        export(output_cavity, cavities, surface, args.vertices, args.sincos, ncav, args.step, depths, output_hydropathy, scales, args.nthreads)
+        output_cavity = os.path.join(
+            args.output_directory, f"{args.base_name}.KVFinder.output.pdb"
+        )
+        export(
+            output_cavity,
+            cavities,
+            surface,
+            args.vertices,
+            args.sincos,
+            ncav,
+            args.step,
+            depths,
+            output_hydropathy,
+            scales,
+            args.nthreads,
+        )
 
         # Write results
-        output_results = os.path.join(args.output_directory, f"{args.base_name}.KVFinder.results.toml")
-        write_results(output_results, args.pdb, args.ligand, output_cavity, output_hydropathy, volume, area, max_depth, avg_depth, avg_hydropathy, residues, frequencies, args.step)
+        output_results = os.path.join(
+            args.output_directory, f"{args.base_name}.KVFinder.results.toml"
+        )
+        write_results(
+            output_results,
+            args.pdb,
+            args.ligand,
+            output_cavity,
+            output_hydropathy,
+            volume,
+            area,
+            max_depth,
+            avg_depth,
+            avg_hydropathy,
+            residues,
+            frequencies,
+            args.step,
+        )
 
         # Write parameters
         _write_parameters(args)
@@ -194,7 +308,25 @@ class pyKVFinderResults(object):
             Exports cavities and characterizations to PDB-formatted files, writes file paths and characterizations to a TOML-formatted results file, and optionally plot histograms of frequencies in a PDF file
     """
 
-    def __init__(self, cavities: numpy.ndarray, surface: numpy.ndarray, depths: numpy.ndarray, scales: numpy.ndarray, volume: dict, area: dict, max_depth: dict, avg_depth: dict, avg_hydropathy: dict, residues: dict, frequencies: dict, _vertices: numpy.ndarray, _step: float, _ncav: int, _pdb: str = None, _ligand: str = None):
+    def __init__(
+        self,
+        cavities: numpy.ndarray,
+        surface: numpy.ndarray,
+        depths: numpy.ndarray,
+        scales: numpy.ndarray,
+        volume: dict,
+        area: dict,
+        max_depth: dict,
+        avg_depth: dict,
+        avg_hydropathy: dict,
+        residues: dict,
+        frequencies: dict,
+        _vertices: numpy.ndarray,
+        _step: float,
+        _ncav: int,
+        _pdb: str = None,
+        _ligand: str = None,
+    ):
         """
         Constructs attributes for pyKVFinderResults object
 
@@ -235,9 +367,14 @@ class pyKVFinderResults(object):
         self._ligand = os.path.abspath(_ligand) if _ligand else None
 
     def __repr__(self):
-        return '<pyKVFinderResults object>'
+        return "<pyKVFinderResults object>"
 
-    def export(self, output: str = 'cavity.pdb', output_hydropathy: str = 'hydropathy.pdb', nthreads: int = os.cpu_count() - 1) -> None:
+    def export(
+        self,
+        output: str = "cavity.pdb",
+        output_hydropathy: str = "hydropathy.pdb",
+        nthreads: int = os.cpu_count() - 1,
+    ) -> None:
         """
         Exports cavitiy (H) and surface (HA) points to PDB-formatted file with a variable (B; optional) in B-factor column, and hydropathy to PDB-formatted file in B-factor column at surface points (HA)
 
@@ -256,31 +393,64 @@ class pyKVFinderResults(object):
             The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
         """
         sincos = get_sincos(self._vertices)
-        export(output, self.cavities, self.surface, self._vertices, sincos, self._ncav, self._step, self.depths, output_hydropathy, self.scales, nthreads)
+        export(
+            output,
+            self.cavities,
+            self.surface,
+            self._vertices,
+            sincos,
+            self._ncav,
+            self._step,
+            self.depths,
+            output_hydropathy,
+            self.scales,
+            nthreads,
+        )
 
-    def write(self, fn: str = 'results.toml', output: str = None, output_hydropathy: str = None) -> None:
+    def write(
+        self,
+        fn: str = "results.toml",
+        output: str = None,
+        output_hydropathy: str = None,
+    ) -> None:
         """
-       Writes file paths and cavity characterization to TOML-formatted file
+        Writes file paths and cavity characterization to TOML-formatted file
 
-        Parameters
-        ----------
-            fn (str): a path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected
-            output (str): a path to a cavity PDB file
-            output_hydropathy (str): a path to PDB file for writing hydropathy at surface points
+         Parameters
+         ----------
+             fn (str): a path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected
+             output (str): a path to a cavity PDB file
+             output_hydropathy (str): a path to PDB file for writing hydropathy at surface points
 
-        Returns
-        -------
-            None
+         Returns
+         -------
+             None
 
-        Note
-        ----
-            The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+         Note
+         ----
+             The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
         """
         output = os.path.abspath(output) if output else None
-        output_hydropathy = os.path.abspath(output_hydropathy) if output_hydropathy else None
-        write_results(fn, self._pdb, self._ligand, output, output_hydropathy, self.volume, self.area, self.max_depth, self.avg_depth, self.avg_hydropathy, self.residues, self.frequencies, self._step)
+        output_hydropathy = (
+            os.path.abspath(output_hydropathy) if output_hydropathy else None
+        )
+        write_results(
+            fn,
+            self._pdb,
+            self._ligand,
+            output,
+            output_hydropathy,
+            self.volume,
+            self.area,
+            self.max_depth,
+            self.avg_depth,
+            self.avg_hydropathy,
+            self.residues,
+            self.frequencies,
+            self._step,
+        )
 
-    def plot_frequencies(self, pdf: str = 'histograms.pdf'):
+    def plot_frequencies(self, pdf: str = "histograms.pdf"):
         """
         Plot histograms of frequencies (residues and classes of residues) in a PDF file
 
@@ -307,7 +477,15 @@ class pyKVFinderResults(object):
         """
         plot_frequencies(self.frequencies, pdf)
 
-    def export_all(self, fn: str = 'results.toml', output: str = 'cavity.pdb', output_hydropathy: str = 'hydropathy.pdb', include_frequencies_pdf: bool = False, pdf: str = 'histograms.pdf', nthreads: int = os.cpu_count() - 1) -> None:
+    def export_all(
+        self,
+        fn: str = "results.toml",
+        output: str = "cavity.pdb",
+        output_hydropathy: str = "hydropathy.pdb",
+        include_frequencies_pdf: bool = False,
+        pdf: str = "histograms.pdf",
+        nthreads: int = os.cpu_count() - 1,
+    ) -> None:
         """
         Exports cavities and characterization to PDB-formatted files, writes file paths and characterization to a TOML-formatted file, and optionally plot histograms of frequencies (residues and classes of residues) in a PDF file
 
@@ -346,7 +524,25 @@ class pyKVFinderResults(object):
             self.plot_frequencies(pdf)
 
 
-def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box: str = None, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, ligand_cutoff: float = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: str = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> pyKVFinderResults:
+def pyKVFinder(
+    pdb: str,
+    ligand: str = None,
+    dictionary: str = _dictionary,
+    box: str = None,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
+    removal_distance: float = 2.4,
+    volume_cutoff: float = 5.0,
+    ligand_cutoff: float = 5.0,
+    include_depth: bool = False,
+    include_hydropathy: bool = False,
+    hydrophobicity_scale: str = "EisenbergWeiss",
+    surface: str = "SES",
+    ignore_backbone: bool = False,
+    nthreads: int = os.cpu_count() - 1,
+    verbose: bool = False,
+) -> pyKVFinderResults:
     """
     Detects and characterizes cavities (volume, area, depth [optional], hydropathy [optional] and interface residues)
 
@@ -433,7 +629,9 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, atominfo, xyzr, sincos, nx, ny, nz = get_grid_from_file(box, atominfo, xyzr, step, probe_in, probe_out, nthreads)
+        vertices, atominfo, xyzr, sincos, nx, ny, nz = get_grid_from_file(
+            box, atominfo, xyzr, step, probe_in, probe_out, nthreads
+        )
 
         # Set flag to boolean
         box = True
@@ -455,7 +653,25 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         box = False
 
     # Cavity detection
-    ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, lxyzr, ligand_cutoff, box, surface, nthreads, verbose)
+    ncav, cavities = detect(
+        nx,
+        ny,
+        nz,
+        xyzr,
+        vertices,
+        sincos,
+        step,
+        probe_in,
+        probe_out,
+        removal_distance,
+        volume_cutoff,
+        lxyzr,
+        ligand_cutoff,
+        box,
+        surface,
+        nthreads,
+        verbose,
+    )
 
     if ncav > 0:
         # Spatial characterization
@@ -463,17 +679,44 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
 
         # Depth characterization
         if include_depth:
-            depths, max_depth, avg_depth = depth(cavities, ncav, step, nthreads, verbose)
+            depths, max_depth, avg_depth = depth(
+                cavities, ncav, step, nthreads, verbose
+            )
         else:
             depths, max_depth, avg_depth = None, None, None
 
         # Constitutional characterization
-        residues = constitutional(cavities, atominfo, xyzr, vertices, sincos, ncav, step, probe_in, ignore_backbone, nthreads, verbose)
+        residues = constitutional(
+            cavities,
+            atominfo,
+            xyzr,
+            vertices,
+            sincos,
+            ncav,
+            step,
+            probe_in,
+            ignore_backbone,
+            nthreads,
+            verbose,
+        )
         frequencies = calculate_frequencies(residues)
 
         # Hydropathy hydrophobicity scales
         if include_hydropathy:
-            scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, vertices, sincos, ncav, step, probe_in, hydrophobicity_scale, ignore_backbone, nthreads, verbose)
+            scales, avg_hydropathy = hydropathy(
+                surface,
+                atominfo,
+                xyzr,
+                vertices,
+                sincos,
+                ncav,
+                step,
+                probe_in,
+                hydrophobicity_scale,
+                ignore_backbone,
+                nthreads,
+                verbose,
+            )
         else:
             scales, avg_hydropathy = None, None
     else:
@@ -481,6 +724,23 @@ def pyKVFinder(pdb: str, ligand: str = None, dictionary: str = _dictionary, box:
         return None
 
     # Return dict
-    results = pyKVFinderResults(cavities, surface, depths, scales, volume, area, max_depth, avg_depth, avg_hydropathy, residues, frequencies, vertices, step, ncav, pdb, ligand)
+    results = pyKVFinderResults(
+        cavities,
+        surface,
+        depths,
+        scales,
+        volume,
+        area,
+        max_depth,
+        avg_depth,
+        avg_hydropathy,
+        residues,
+        frequencies,
+        vertices,
+        step,
+        ncav,
+        pdb,
+        ligand,
+    )
 
     return results

@@ -5,11 +5,11 @@ from setuptools import setup, Extension, dist
 from pyKVFinder import __name__, __version__
 
 # Prepare reqs from requirements.txt
-with open('requirements.txt') as f:
+with open("requirements.txt") as f:
     reqs = f.read().splitlines()
 
 # Third-party modules - we depend on numpy for everything
-np_req = [req for req in reqs if req.find('numpy') != -1]
+np_req = [req for req in reqs if req.find("numpy") != -1]
 dist.Distribution().fetch_build_eggs(np_req)
 import numpy
 
@@ -23,9 +23,9 @@ except AttributeError:
 _grid = Extension(
     name="_grid",
     sources=["src/grid.i", "src/grid.c"],
-    include_dirs=[numpy_include, 'src'],
-    extra_compile_args=['-fopenmp', '-Ofast', '-lm'],
-    extra_link_args=['-lgomp'],
+    include_dirs=[numpy_include, "src"],
+    extra_compile_args=["-fopenmp", "-Ofast", "-lm"],
+    extra_link_args=["-lgomp"],
 )
 
 # Setup
@@ -35,6 +35,6 @@ setup(
     ext_modules=[_grid],
     include_package_data=True,
     install_requires=reqs,
-    packages=['pyKVFinder'],
-    entry_points={'console_scripts': ['pyKVFinder=pyKVFinder.main:cli']},
+    packages=["pyKVFinder"],
+    entry_points={"console_scripts": ["pyKVFinder=pyKVFinder.main:cli"]},
 )

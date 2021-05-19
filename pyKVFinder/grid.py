@@ -1,10 +1,23 @@
 import os
 import numpy
 
-__all__ = ["get_vertices", "get_grid_from_file", "get_dimensions", "get_sincos", "detect", "spatial", "depth", "constitutional", "hydropathy", "export"]
+__all__ = [
+    "get_vertices",
+    "get_grid_from_file",
+    "get_dimensions",
+    "get_sincos",
+    "detect",
+    "spatial",
+    "depth",
+    "constitutional",
+    "hydropathy",
+    "export",
+]
 
 
-def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6) -> numpy.ndarray:
+def get_vertices(
+    xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6
+) -> numpy.ndarray:
     """
     Gets 3D grid vertices
 
@@ -29,7 +42,15 @@ def get_vertices(xyzr: numpy.ndarray, probe_out: float = 4.0, step: float = 0.6)
     return vertices
 
 
-def get_grid_from_file(fn: str, atominfo: numpy.ndarray, xyzr: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, nthreads: int = os.cpu_count() - 1) -> tuple:
+def get_grid_from_file(
+    fn: str,
+    atominfo: numpy.ndarray,
+    xyzr: numpy.ndarray,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
+    nthreads: int = os.cpu_count() - 1,
+) -> tuple:
     """
     Gets 3D grid vertices from box configuration file or parKVFinder parameters file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.
 
@@ -94,24 +115,28 @@ def get_grid_from_file(fn: str, atominfo: numpy.ndarray, xyzr: numpy.ndarray, st
 
     # Read box file
     tmp = load(fn)
-    if 'SETTINGS' in tmp.keys():
-        if 'visiblebox' in tmp['SETTINGS'].keys():
-            box = tmp['SETTINGS']['visiblebox']
+    if "SETTINGS" in tmp.keys():
+        if "visiblebox" in tmp["SETTINGS"].keys():
+            box = tmp["SETTINGS"]["visiblebox"]
             box = {key: list(box[key].values()) for key in box.keys()}
             vertices = _get_vertices_from_box(box, probe_out)
     else:
-        box = tmp['box'] if 'box' in tmp.keys() else tmp
+        box = tmp["box"] if "box" in tmp.keys() else tmp
 
         # Check conditions
-        if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
-            if all([key in box.keys() for key in ['padding', 'residues']]):
-                raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
+        if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
+            if all([key in box.keys() for key in ["padding", "residues"]]):
+                raise Exception(
+                    f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
+                )
             vertices = _get_vertices_from_box(box, probe_out)
-        elif 'residues' in box.keys():
-            if all([key in box.keys() for key in ['p1', 'p2', 'p3', 'p4']]):
-                raise Exception(f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}.")
-            if 'padding' not in box.keys():
-                box['padding'] = 3.5
+        elif "residues" in box.keys():
+            if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
+                raise Exception(
+                    f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
+                )
+            if "padding" not in box.keys():
+                box["padding"] = 3.5
             vertices = _get_vertices_from_residues(box, atominfo, xyzr, probe_out)
         else:
             raise Exception(f"Box not properly defined in {fn}")
@@ -120,7 +145,7 @@ def get_grid_from_file(fn: str, atominfo: numpy.ndarray, xyzr: numpy.ndarray, st
     sincos = numpy.round(get_sincos(vertices), 4)
     nx, ny, nz = get_dimensions(vertices, step)
     _filter_pdb(nx, ny, nz, xyzr, vertices[0], sincos, step, probe_in, nthreads)
-    indexes = (xyzr[:, 3] != 0)
+    indexes = xyzr[:, 3] != 0
 
     # Slice atominfo and xyzr
     atominfo = atominfo[indexes, :]
@@ -151,31 +176,63 @@ def _get_vertices_from_box(box: dict, probe_out: float = 4.0) -> numpy.ndarray:
     p4 = [x4, y4, z4]
     """
     # Get vertices
-    P1 = numpy.array(box['p1'])
-    P2 = numpy.array(box['p2'])
-    P3 = numpy.array(box['p3'])
-    P4 = numpy.array(box['p4'])
+    P1 = numpy.array(box["p1"])
+    P2 = numpy.array(box["p2"])
+    P3 = numpy.array(box["p3"])
+    P4 = numpy.array(box["p4"])
 
     # Get sincos
     sincos = numpy.round(get_sincos(numpy.array([P1, P2, P3, P4])), 4)
 
     # Get probe out additions
     # p1 = (x1, y1, z1)
-    x1 = - (probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2])
-    y1 = - (probe_out * sincos[1]) - (probe_out * sincos[0])
-    z1 = - (probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3])
+    x1 = (
+        -(probe_out * sincos[3])
+        - (probe_out * sincos[0] * sincos[2])
+        + (probe_out * sincos[1] * sincos[2])
+    )
+    y1 = -(probe_out * sincos[1]) - (probe_out * sincos[0])
+    z1 = (
+        -(probe_out * sincos[2])
+        + (probe_out * sincos[0] * sincos[3])
+        - (probe_out * sincos[1] * sincos[3])
+    )
     # p2 = (x2, y2, z2)
-    x2 = (probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2])
-    y2 = - (probe_out * sincos[1]) - (probe_out * sincos[0])
-    z2 = (probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3])
+    x2 = (
+        (probe_out * sincos[3])
+        - (probe_out * sincos[0] * sincos[2])
+        + (probe_out * sincos[1] * sincos[2])
+    )
+    y2 = -(probe_out * sincos[1]) - (probe_out * sincos[0])
+    z2 = (
+        (probe_out * sincos[2])
+        + (probe_out * sincos[0] * sincos[3])
+        - (probe_out * sincos[1] * sincos[3])
+    )
     # p3 = (x3, y3, z3)
-    x3 = - (probe_out * sincos[3]) + (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2])
+    x3 = (
+        -(probe_out * sincos[3])
+        + (probe_out * sincos[0] * sincos[2])
+        + (probe_out * sincos[1] * sincos[2])
+    )
     y3 = (probe_out * sincos[1]) - (probe_out * sincos[0])
-    z3 = - (probe_out * sincos[2]) - (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3])
+    z3 = (
+        -(probe_out * sincos[2])
+        - (probe_out * sincos[0] * sincos[3])
+        - (probe_out * sincos[1] * sincos[3])
+    )
     # p4 = (x4, y4, z4)
-    x4 = - (probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) - (probe_out * sincos[1] * sincos[2])
-    y4 = - (probe_out * sincos[1]) + (probe_out * sincos[0])
-    z4 = - (probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) + (probe_out * sincos[1] * sincos[3])
+    x4 = (
+        -(probe_out * sincos[3])
+        - (probe_out * sincos[0] * sincos[2])
+        - (probe_out * sincos[1] * sincos[2])
+    )
+    y4 = -(probe_out * sincos[1]) + (probe_out * sincos[0])
+    z4 = (
+        -(probe_out * sincos[2])
+        + (probe_out * sincos[0] * sincos[3])
+        + (probe_out * sincos[1] * sincos[3])
+    )
 
     # Adjust vertices
     P1 += numpy.array([x1, y1, z1])
@@ -188,7 +245,9 @@ def _get_vertices_from_box(box: dict, probe_out: float = 4.0) -> numpy.ndarray:
     return vertices
 
 
-def _get_vertices_from_residues(box: dict, atominfo: numpy.ndarray, xyzr: numpy.ndarray, probe_out: float = 4.0) -> numpy.ndarray:
+def _get_vertices_from_residues(
+    box: dict, atominfo: numpy.ndarray, xyzr: numpy.ndarray, probe_out: float = 4.0
+) -> numpy.ndarray:
     """
     Gets 3D grid vertices based on a list of residues (name and chain) and a padding value
 
@@ -210,15 +269,15 @@ def _get_vertices_from_residues(box: dict, atominfo: numpy.ndarray, xyzr: numpy.
     padding =  3.5
     """
     # Prepare residues list
-    box['residues'] = numpy.array(['_'.join(item[0:3]) for item in box['residues']])
+    box["residues"] = numpy.array(["_".join(item[0:3]) for item in box["residues"]])
 
     # Get coordinates of residues
-    indexes = numpy.in1d(atominfo[:, 0], box['residues'])
+    indexes = numpy.in1d(atominfo[:, 0], box["residues"])
     xyzr = xyzr[indexes, 0:3]
 
     # Calculate vertices
-    P1 = numpy.min(xyzr[:, 0:3], axis=0) - probe_out - box['padding']
-    xmax, ymax, zmax = numpy.max(xyzr[:, 0:3], axis=0) + probe_out + box['padding']
+    P1 = numpy.min(xyzr[:, 0:3], axis=0) - probe_out - box["padding"]
+    xmax, ymax, zmax = numpy.max(xyzr[:, 0:3], axis=0) + probe_out + box["padding"]
     P2 = numpy.array([xmax, P1[1], P1[2]])
     P3 = numpy.array([P1[0], ymax, P1[2]])
     P4 = numpy.array([P1[0], P1[1], zmax])
@@ -252,9 +311,9 @@ def get_dimensions(vertices: numpy.ndarray, step: float = 0.6) -> tuple:
     norm3 = numpy.linalg.norm(P4 - P1)
 
     # Calculate grid dimensions
-    nx = int(norm1 / step) + 1
-    ny = int(norm2 / step) + 1
-    nz = int(norm3 / step) + 1
+    nx = int(norm1 / step) + 1 if norm1 % step != 0 else int(norm1 / step)
+    ny = int(norm2 / step) + 1 if norm1 % step != 0 else int(norm1 / step)
+    nz = int(norm3 / step) + 1 if norm1 % step != 0 else int(norm1 / step)
     return nx, ny, nz
 
 
@@ -279,16 +338,20 @@ def get_sincos(vertices: numpy.ndarray):
     norm3 = numpy.linalg.norm(P4 - P1)
 
     # Calculate sin and cos of angles a and b
-    sincos = numpy.array([
-        (P4[1] - P1[1]) / norm3,  # sin a
-        (P3[1] - P1[1]) / norm2,  # cos a
-        (P2[2] - P1[2]) / norm1,  # sin b
-        (P2[0] - P1[0]) / norm1   # cos b
-    ])
+    sincos = numpy.array(
+        [
+            (P4[1] - P1[1]) / norm3,  # sin a
+            (P3[1] - P1[1]) / norm2,  # cos a
+            (P2[2] - P1[2]) / norm1,  # sin b
+            (P2[0] - P1[0]) / norm1,  # cos b
+        ]
+    )
     return sincos
 
 
-def _process_spatial(raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: int) -> tuple:
+def _process_spatial(
+    raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: int
+) -> tuple:
     """
     Processes arrays of volumes and areas
 
@@ -311,7 +374,25 @@ def _process_spatial(raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: i
     return volume, area
 
 
-def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, step: float = 0.6, probe_in: float = 1.4, probe_out: float = 4.0, removal_distance: float = 2.4, volume_cutoff: float = 5.0, lxyzr: numpy.ndarray = None, ligand_cutoff: float = 5.0, box_adjustment: bool = False, surface: str = 'SES', nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def detect(
+    nx: int,
+    ny: int,
+    nz: int,
+    xyzr: numpy.ndarray,
+    vertices: numpy.ndarray,
+    sincos: numpy.ndarray,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
+    removal_distance: float = 2.4,
+    volume_cutoff: float = 5.0,
+    lxyzr: numpy.ndarray = None,
+    ligand_cutoff: float = 5.0,
+    box_adjustment: bool = False,
+    surface: str = "SES",
+    nthreads: int = os.cpu_count() - 1,
+    verbose: bool = False,
+) -> tuple:
     """
     Detects biomolecular cavities
 
@@ -359,11 +440,11 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
     from _grid import _detect, _detect_ladj
 
     # Check and convert data types
-    xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
-    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
-    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+    xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
+    vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
     if lxyzr is not None:
-        lxyzr = lxyzr.astype('float64') if lxyzr.dtype != 'float64' else lxyzr
+        lxyzr = lxyzr.astype("float64") if lxyzr.dtype != "float64" else lxyzr
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
@@ -374,27 +455,72 @@ def detect(nx: int, ny: int, nz: int, xyzr: numpy.ndarray, vertices: numpy.ndarr
     # Calculate number of voxels
     nvoxels = nx * ny * nz
 
-    if surface == 'SES':
+    if surface == "SES":
         if verbose:
             print("> Surface representation: Solvent Excluded Surface (SES)")
         surface = True
-    elif surface == 'SAS':
+    elif surface == "SAS":
         if verbose:
             print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
-        raise Exception(f'surface variable should be SAS or SES, not {surface}')
+        raise Exception(f"surface variable should be SAS or SES, not {surface}")
 
     # Detect cavities
     if ligand_adjustment:
-        ncav, cavities = _detect_ladj(nvoxels, nx, ny, nz, xyzr, lxyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_adjustment, ligand_cutoff, box_adjustment, P2, surface, nthreads, verbose)
+        ncav, cavities = _detect_ladj(
+            nvoxels,
+            nx,
+            ny,
+            nz,
+            xyzr,
+            lxyzr,
+            P1,
+            sincos,
+            step,
+            probe_in,
+            probe_out,
+            removal_distance,
+            volume_cutoff,
+            ligand_adjustment,
+            ligand_cutoff,
+            box_adjustment,
+            P2,
+            surface,
+            nthreads,
+            verbose,
+        )
     else:
-        ncav, cavities = _detect(nvoxels, nx, ny, nz, xyzr, P1, sincos, step, probe_in, probe_out, removal_distance, volume_cutoff, box_adjustment, P2, surface, nthreads, verbose)
+        ncav, cavities = _detect(
+            nvoxels,
+            nx,
+            ny,
+            nz,
+            xyzr,
+            P1,
+            sincos,
+            step,
+            probe_in,
+            probe_out,
+            removal_distance,
+            volume_cutoff,
+            box_adjustment,
+            P2,
+            surface,
+            nthreads,
+            verbose,
+        )
 
     return ncav, cavities.reshape(nx, ny, nz)
 
 
-def spatial(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def spatial(
+    cavities: numpy.ndarray,
+    ncav: int,
+    step: float = 0.6,
+    nthreads: int = os.cpu_count() - 1,
+    verbose: bool = False,
+) -> tuple:
     """
     Spatial characterization (volume and area) of the detected cavities
 
@@ -424,19 +550,23 @@ def spatial(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int
     from _grid import _spatial
 
     # Check and convert data types
-    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+    cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
 
     # Get cavities shape
     nx, ny, nz = cavities.shape
 
     # Get surface points, volume and area
-    surface, volume, area = _spatial(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
+    surface, volume, area = _spatial(
+        cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose
+    )
     volume, area = _process_spatial(volume, area, ncav)
 
     return surface.reshape(nx, ny, nz), volume, area
 
 
-def _process_depth(raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, ncav: int) -> tuple:
+def _process_depth(
+    raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, ncav: int
+) -> tuple:
     """
     Processes arrays of maximum and average depths
 
@@ -459,7 +589,13 @@ def _process_depth(raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, n
     return max_depth, avg_depth
 
 
-def depth(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def depth(
+    cavities: numpy.ndarray,
+    ncav: int,
+    step: float = 0.6,
+    nthreads: int = os.cpu_count() - 1,
+    verbose: bool = False,
+) -> tuple:
     """
     Characterization of the depth of the detected cavities, including depth per cavity point and maximum and average depths of detected cavities.
 
@@ -490,13 +626,15 @@ def depth(cavities: numpy.ndarray, ncav: int, step: float = 0.6, nthreads: int =
     from _grid import _depth
 
     # Check and convert data types
-    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+    cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
 
     # Get cavities shape
     nx, ny, nz = cavities.shape
 
     # Get depth of cavity points, maximum depth and average depth
-    depths, max_depth, avg_depth = _depth(cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose)
+    depths, max_depth, avg_depth = _depth(
+        cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose
+    )
     max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav)
 
     return depths.reshape(nx, ny, nz), max_depth, avg_depth
@@ -515,17 +653,32 @@ def _process_residues(raw: list) -> dict:
         residues (dict): a dictionary with cavity name/list of interface residues pairs
     """
     from itertools import groupby
+
     residues = {}
     index = 0
     for flag, cavity_residues in groupby(raw, lambda res: res == "-1"):
         if not flag:
             key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
-            residues[key] = [item.split('_') for item in list(dict.fromkeys(cavity_residues))]
+            residues[key] = [
+                item.split("_") for item in list(dict.fromkeys(cavity_residues))
+            ]
             index += 1
     return residues
 
 
-def constitutional(cavities: numpy.ndarray, atominfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> dict:
+def constitutional(
+    cavities: numpy.ndarray,
+    atominfo: numpy.ndarray,
+    xyzr: numpy.ndarray,
+    vertices: numpy.ndarray,
+    sincos: numpy.ndarray,
+    ncav: int,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    ignore_backbone: bool = False,
+    nthreads: int = os.cpu_count() - 1,
+    verbose: bool = False,
+) -> dict:
     """
     Constitutional characterization (interface residues) of the detected cavities
 
@@ -569,25 +722,36 @@ def constitutional(cavities: numpy.ndarray, atominfo: numpy.ndarray, xyzr: numpy
     from _grid import _constitutional
 
     # Check and convert data types
-    cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
-    xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
-    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
-    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+    cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
+    xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
+    vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
     # Remove backbone from atominfo
     if ignore_backbone:
-        mask = numpy.where((atominfo[:, 1] != 'C') & (atominfo[:, 1] != 'CA') & (atominfo[:, 1] != 'N') & (atominfo[:, 1] != 'O'))
-        atominfo = atominfo[mask[0], ]
-        xyzr = xyzr[mask[0], ]
+        mask = numpy.where(
+            (atominfo[:, 1] != "C")
+            & (atominfo[:, 1] != "CA")
+            & (atominfo[:, 1] != "N")
+            & (atominfo[:, 1] != "O")
+        )
+        atominfo = atominfo[
+            mask[0],
+        ]
+        xyzr = xyzr[
+            mask[0],
+        ]
 
     # Prepare atominfo
     atominfo = atominfo[:, 0].tolist()
 
     # Get interface residues
-    residues = _constitutional(cavities, atominfo, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose)
+    residues = _constitutional(
+        cavities, atominfo, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose
+    )
     residues = _process_residues(residues)
 
     return residues
@@ -613,7 +777,20 @@ def _process_hydropathy(raw_avg_hydropathy: numpy.ndarray, ncav: int) -> tuple:
     return avg_hydropathy
 
 
-def hydropathy(surface: numpy.ndarray, atominfo: numpy.ndarray, xyzr: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, probe_in: float = 1.4, hydrophobicity_scale: str = 'EisenbergWeiss', ignore_backbone: bool = False, nthreads: int = os.cpu_count() - 1, verbose: bool = False) -> tuple:
+def hydropathy(
+    surface: numpy.ndarray,
+    atominfo: numpy.ndarray,
+    xyzr: numpy.ndarray,
+    vertices: numpy.ndarray,
+    sincos: numpy.ndarray,
+    ncav: int,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    hydrophobicity_scale: str = "EisenbergWeiss",
+    ignore_backbone: bool = False,
+    nthreads: int = os.cpu_count() - 1,
+    verbose: bool = False,
+) -> tuple:
     """
     Hydropathy characterization of the detected cavities.
 
@@ -673,18 +850,28 @@ def hydropathy(surface: numpy.ndarray, atominfo: numpy.ndarray, xyzr: numpy.ndar
     from _grid import _hydropathy
 
     # Check and convert data types
-    surface = surface.astype('int32') if surface.dtype != 'int32' else surface
-    xyzr = xyzr.astype('float64') if xyzr.dtype != 'float64' else xyzr
-    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
-    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+    surface = surface.astype("int32") if surface.dtype != "int32" else surface
+    xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
+    vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
 
     # Get dimensions
     nx, ny, nz = surface.shape
     nvoxels = nx * ny * nz
 
     # Load hydrophobicity scales
-    if hydrophobicity_scale in ['EisenbergWeiss', 'HessaHeijne', 'KyteDoolittle', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon']:
-        hydrophobicity_scale = os.path.join(os.path.abspath(os.path.dirname(__file__)), f"data/{hydrophobicity_scale}.toml")
+    if hydrophobicity_scale in [
+        "EisenbergWeiss",
+        "HessaHeijne",
+        "KyteDoolittle",
+        "MoonFleming",
+        "WimleyWhite",
+        "ZhaoLondon",
+    ]:
+        hydrophobicity_scale = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)),
+            f"data/{hydrophobicity_scale}.toml",
+        )
     f = toml.load(hydrophobicity_scale)
     data, name = list(f.values())[0], list(f.keys())[0]
     resn, scale = list(data.keys()), numpy.asarray(list(data.values()))
@@ -694,22 +881,59 @@ def hydropathy(surface: numpy.ndarray, atominfo: numpy.ndarray, xyzr: numpy.ndar
 
     # Remove backbone from atominfo
     if ignore_backbone:
-        mask = numpy.where((atominfo[:, 1] != 'C') & (atominfo[:, 1] != 'CA') & (atominfo[:, 1] != 'N') & (atominfo[:, 1] != 'O'))
-        atominfo = atominfo[mask[0], ]
-        xyzr = xyzr[mask[0], ]
+        mask = numpy.where(
+            (atominfo[:, 1] != "C")
+            & (atominfo[:, 1] != "CA")
+            & (atominfo[:, 1] != "N")
+            & (atominfo[:, 1] != "O")
+        )
+        atominfo = atominfo[
+            mask[0],
+        ]
+        xyzr = xyzr[
+            mask[0],
+        ]
 
     # Get residue name from atominfo
     resname = list(map(lambda x: x.split("_")[2], atominfo[:, 0]))
 
     # Get hydrophobicity scales in 3D grid and average hydropathy
-    scales, avg_hydropathy = _hydropathy(nvoxels, ncav, surface, xyzr, P1, sincos, resname, resn, scale, step, probe_in, nthreads, verbose)
+    scales, avg_hydropathy = _hydropathy(
+        nvoxels,
+        ncav,
+        surface,
+        xyzr,
+        P1,
+        sincos,
+        resname,
+        resn,
+        scale,
+        step,
+        probe_in,
+        nthreads,
+        verbose,
+    )
     avg_hydropathy = _process_hydropathy(avg_hydropathy, ncav)
     avg_hydropathy[f"{name}"] = [float(scale.min()), float(scale.max())]
 
     return scales.reshape(nx, ny, nz), avg_hydropathy
 
 
-def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: numpy.ndarray, sincos: numpy.ndarray, ncav: int, step: float = 0.6, B: numpy.ndarray = None, output_hydropathy: str = 'hydropathy.pdb', scales: numpy.ndarray = None, nthreads: int = os.cpu_count() - 1, append: bool = False, model: int = 0) -> None:
+def export(
+    fn: str,
+    cavities: numpy.ndarray,
+    surface: numpy.ndarray,
+    vertices: numpy.ndarray,
+    sincos: numpy.ndarray,
+    ncav: int,
+    step: float = 0.6,
+    B: numpy.ndarray = None,
+    output_hydropathy: str = "hydropathy.pdb",
+    scales: numpy.ndarray = None,
+    nthreads: int = os.cpu_count() - 1,
+    append: bool = False,
+    model: int = 0,
+) -> None:
     """
     Exports cavitiy (H) and surface (HA) points to PDB-formatted file with a variable (B; optional) in B-factor column, and hydropathy to PDB-formatted file in B-factor column at surface points (HA).
 
@@ -742,12 +966,12 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
 
     # Check and convert data types
 
-    vertices = vertices.astype('float64') if vertices.dtype != 'float64' else vertices
-    sincos = sincos.astype('float64') if sincos.dtype != 'float64' else sincos
+    vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
     if B is not None:
-        B = B.astype('float64') if B.dtype != 'float64' else B
+        B = B.astype("float64") if B.dtype != "float64" else B
     if scales is not None:
-        scales = scales.astype('float64') if scales.dtype != 'float64' else scales
+        scales = scales.astype("float64") if scales.dtype != "float64" else scales
 
     # Create base directories of results
     if fn is not None:
@@ -760,27 +984,65 @@ def export(fn: str, cavities: numpy.ndarray, surface: numpy.ndarray, vertices: n
 
     # If surface is None, create an empty grid
     if surface is None:
-        surface = numpy.zeros(cavities.shape, dtype='int32')
+        surface = numpy.zeros(cavities.shape, dtype="int32")
     else:
-        surface = surface.astype('int32') if surface.dtype != 'int32' else surface
+        surface = surface.astype("int32") if surface.dtype != "int32" else surface
 
     if cavities is None:
         if surface is None:
             raise Exception(f"You must define surface when not defining cavities.")
         else:
-            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append, model)
+            _export_b(
+                output_hydropathy,
+                surface,
+                surface,
+                scales,
+                P1,
+                sincos,
+                step,
+                ncav,
+                nthreads,
+                append,
+                model,
+            )
     else:
         # Check and convert cavities dtype
-        cavities = cavities.astype('int32') if cavities.dtype != 'int32' else cavities
+        cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
 
         # Export cavities
         if B is None:
-            _export(fn, cavities, surface, P1, sincos, step, ncav, nthreads, append, model)
+            _export(
+                fn, cavities, surface, P1, sincos, step, ncav, nthreads, append, model
+            )
         else:
-            _export_b(fn, cavities, surface, B, P1, sincos, step, ncav, nthreads, append, model)
+            _export_b(
+                fn,
+                cavities,
+                surface,
+                B,
+                P1,
+                sincos,
+                step,
+                ncav,
+                nthreads,
+                append,
+                model,
+            )
 
         # Export hydropathy surface points
         if scales is None:
             pass
         else:
-            _export_b(output_hydropathy, surface, surface, scales, P1, sincos, step, ncav, nthreads, append, model)
+            _export_b(
+                output_hydropathy,
+                surface,
+                surface,
+                scales,
+                P1,
+                sincos,
+                step,
+                ncav,
+                nthreads,
+                append,
+                model,
+            )
