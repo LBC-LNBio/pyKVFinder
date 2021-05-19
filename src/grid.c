@@ -4,8 +4,8 @@
 #include <math.h>
 #include <omp.h>
 
-# define min(x,y) ( ((x) < (y)) ? (x) : (y))
-# define max(x,y) ( ((x) > (y)) ? (x) : (y))
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+#define max(x, y) (((x) > (y)) ? (x) : (y))
 
 /******* sincos ******
 * sincos[0] = sin a  *
@@ -26,14 +26,12 @@
  * size: number of voxels
  * 
  */
-void
-igrid (int *grid, int size)
+void igrid(int *grid, int size)
 {
     int i;
 
-    for (i=0; i<size; i++)
-        grid[i] = 1;              
-
+    for (i = 0; i < size; i++)
+        grid[i] = 1;
 }
 
 /*
@@ -46,14 +44,12 @@ igrid (int *grid, int size)
  * size: number of voxels
  * 
  */
-void
-fgrid (float *grid, int size)
+void fgrid(float *grid, int size)
 {
     int i;
 
-    for (i=0; i<size; i++)
+    for (i = 0; i < size; i++)
         grid[i] = 0.0;
-               
 }
 
 /*
@@ -66,14 +62,12 @@ fgrid (float *grid, int size)
  * size: number of voxels
  * 
  */
-void 
-dgrid (double *grid, int size)
+void dgrid(double *grid, int size)
 {
     int i;
 
-    for (i=0; i<size; i++)
+    for (i = 0; i < size; i++)
         grid[i] = 0.0;
-               
 }
 
 /*
@@ -86,14 +80,12 @@ dgrid (double *grid, int size)
  * size: number of voxels
  * 
  */
-void 
-cgrid (int *grid, int size)
+void cgrid(int *grid, int size)
 {
     int i;
 
-    for (i=0; i<size; i++)
+    for (i = 0; i < size; i++)
         grid[i] = '\0';
-               
 }
 
 /* Grid filling */
@@ -120,50 +112,49 @@ cgrid (int *grid, int size)
  * nthreads: number of threads for OpenMP
  * 
  */
-void 
-fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
+void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
 {
     int i, j, k, atom;
     double x, y, z, xaux, yaux, zaux, distance, H;
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
+#pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
     {
-        #pragma omp for schedule(dynamic) nowait
-            for (atom=0; atom<natoms; atom++)
-            {
-                // Convert atom coordinates in 3D grid coordinates
-                x = ( atoms[atom * 4] - reference[0] ) / step; 
-                y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
-                z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+#pragma omp for schedule(dynamic) nowait
+        for (atom = 0; atom < natoms; atom++)
+        {
+            // Convert atom coordinates in 3D grid coordinates
+            x = (atoms[atom * 4] - reference[0]) / step;
+            y = (atoms[1 + (atom * 4)] - reference[1]) / step;
+            z = (atoms[2 + (atom * 4)] - reference[2]) / step;
 
-                xaux = x * sincos[3] + z * sincos[2];
-                yaux = y;
-                zaux = (-x) * sincos[2] + z * sincos[3];
+            xaux = x * sincos[3] + z * sincos[2];
+            yaux = y;
+            zaux = (-x) * sincos[2] + z * sincos[3];
 
-                x = xaux;
-                y = yaux * sincos[1] - zaux * sincos[0];
-                z = yaux * sincos[0] + zaux * sincos[1];
+            x = xaux;
+            y = yaux * sincos[1] - zaux * sincos[0];
+            z = yaux * sincos[0] + zaux * sincos[1];
 
-                // Create a radius (H) for space occupied by probe and atom
-                H = ( probe + atoms[3 + (atom * 4)] ) / step;
-            
-                // Loop around radius from atom center
-                for (i=floor(x - H); i<=ceil(x + H); i++)
-                    for (j=floor(y - H); j<=ceil(y + H); j++)
-                        for (k=floor(z - H); k<=ceil(z + H); k++) 
-                        {
-                            // Get distance between atom center and point inspected
-                            distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
-                            if (distance < H)
-                                if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && k < nz)
-                                    grid[ k + nz * (j + ( ny * i ) ) ] = 0;
-                        }
-            }
+            // Create a radius (H) for space occupied by probe and atom
+            H = (probe + atoms[3 + (atom * 4)]) / step;
+
+            // Loop around radius from atom center
+            for (i = floor(x - H); i <= ceil(x + H); i++)
+                for (j = floor(y - H); j <= ceil(y + H); j++)
+                    for (k = floor(z - H); k <= ceil(z + H); k++)
+                    {
+                        // Get distance between atom center and point inspected
+                        distance = sqrt(pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
+                        if (distance < H)
+                            if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && k < nz)
+                                grid[k + nz * (j + (ny * i))] = 0;
+                    }
         }
+    }
 }
 
 /* Biomolecular surface representation */
@@ -184,23 +175,22 @@ fill (int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
  * 
  * returns: true (int 1) or false (int 0)
  */
-int
-check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k)
+int check_protein_neighbours(int *grid, int nx, int ny, int nz, int i, int j, int k)
 {
-	int x, y, z;
-	
+    int x, y, z;
+
     // Loop around neighboring points
-	for (x=i-1; x<=i+1; x++)
-        for (y=j-1; y<=j+1; y++)
-			for (z=k-1; z<=k+1; z++) 
+    for (x = i - 1; x <= i + 1; x++)
+        for (y = j - 1; y <= j + 1; y++)
+            for (z = k - 1; z <= k + 1; z++)
             {
-			    // Check if point is inside 3D grid
-				if (x < 0 || y < 0 || z < 0 || x > nx-1 || y > ny-1 || z > nz-1);
-                else
-    			    if (grid[ z + nz * (y + ( ny * x ) ) ] == 0 || grid[ z + nz * (y + ( ny * x ) ) ] == -2)
-                        return 1;
-			}
-	return 0;
+                // Check if point is inside 3D grid
+                if (x < 0 || y < 0 || z < 0 || x > nx - 1 || y > ny - 1 || z > nz - 1)
+                    ;
+                else if (grid[z + nz * (y + (ny * x))] == 0 || grid[z + nz * (y + (ny * x))] == -2)
+                    return 1;
+            }
+    return 0;
 }
 
 /*
@@ -218,60 +208,59 @@ check_protein_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k
  * nthreads: number of threads for OpenMP
  * 
  */
-void 
-ses (int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
+void ses(int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
 {
     int i, j, k, i2, j2, k2, aux;
-    double distance;    
+    double distance;
 
     // Calculate sas limit in 3D grid units
     aux = ceil(probe / step);
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (nthreads);
-    omp_set_nested (1);
-    
-    #pragma omp parallel default(none), shared(grid,step,probe,aux,nx,ny,nz), private(i,j,k,i2,j2,k2,distance)
-    {   
-        #pragma omp for schedule(dynamic) collapse(3) nowait
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+#pragma omp parallel default(none), shared(grid, step, probe, aux, nx, ny, nz), private(i, j, k, i2, j2, k2, distance)
+    {
+#pragma omp for schedule(dynamic) collapse(3) nowait
         // Loop around 3D grid
-        for (i=0; i<nx; i++)
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++) 
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
                 {
                     // Check if a cavity point
-                    if (grid[ k + nz * (j + ( ny * i ) ) ] == 1) 
-                        if ( check_protein_neighbours(grid, nx, ny, nz, i, j, k) )
+                    if (grid[k + nz * (j + (ny * i))] == 1)
+                        if (check_protein_neighbours(grid, nx, ny, nz, i, j, k))
                         {
                             // Loop around sas limit from cavity point next to protein point
-                            for (i2=i-aux; i2<=i+aux; i2++)
-                                for (j2=j-aux; j2<=j+aux; j2++)
-                                    for (k2=k-aux; k2<=k+aux; k2++)
-                                    { 
-                                        if (i2>0 && j2>0 && k2>0 && i2<nx && j2<ny && k2<nz)
+                            for (i2 = i - aux; i2 <= i + aux; i2++)
+                                for (j2 = j - aux; j2 <= j + aux; j2++)
+                                    for (k2 = k - aux; k2 <= k + aux; k2++)
+                                    {
+                                        if (i2 > 0 && j2 > 0 && k2 > 0 && i2 < nx && j2 < ny && k2 < nz)
                                         {
                                             // Get distance between point inspected and cavity point
-                                            distance = sqrt ( pow(i - i2, 2) + pow(j - j2, 2) + pow(k - k2, 2));
+                                            distance = sqrt(pow(i - i2, 2) + pow(j - j2, 2) + pow(k - k2, 2));
                                             // Check if inspected point is inside sas limit
-                                            if ( distance < (probe / step) )
-                                                if (grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] == 0)
+                                            if (distance < (probe / step))
+                                                if (grid[k2 + nz * (j2 + (ny * i2))] == 0)
                                                     // Mark cavity point
-                                                    grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] = -2;
+                                                    grid[k2 + nz * (j2 + (ny * i2))] = -2;
                                         }
                                     }
                         }
                 }
 
-        #pragma omp for collapse(3)
-            // Loop around 3D grid
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++) 
-                    {
-                        // Mark space occupied by sas limit from protein surface
-                        if (grid[ k + nz * (j + ( ny * i ) ) ] == -2)
-                            grid[ k + nz * (j + ( ny * i ) ) ] = 1;
-                    }
+#pragma omp for collapse(3)
+        // Loop around 3D grid
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                {
+                    // Mark space occupied by sas limit from protein surface
+                    if (grid[k + nz * (j + (ny * i))] == -2)
+                        grid[k + nz * (j + (ny * i))] = 1;
+                }
     }
 }
 
@@ -293,39 +282,38 @@ ses (int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_distance, int nthreads)
+void subtract(int *PI, int *PO, int nx, int ny, int nz, double step, double removal_distance, int nthreads)
 {
-	int i, j, k, i2, j2, k2, rd;
+    int i, j, k, i2, j2, k2, rd;
 
-    rd = ceil (removal_distance / step);
+    rd = ceil(removal_distance / step);
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
-    // Create a parallel region */
-    #pragma omp parallel default(none), shared(PI, PO, nx, ny, nz, i, j, k, step, rd, removal_distance), private(j2,i2,k2)
+// Create a parallel region */
+#pragma omp parallel default(none), shared(PI, PO, nx, ny, nz, i, j, k, step, rd, removal_distance), private(j2, i2, k2)
     {
-        #pragma omp for schedule(dynamic) collapse(3)
-            // Loop around the search box
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++) 
+#pragma omp for schedule(dynamic) collapse(3)
+        // Loop around the search box
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                {
+                    // Check if point is a cavity point in grid filled with PO
+                    if (PO[k + nz * (j + (ny * i))])
                     {
-                        // Check if point is a cavity point in grid filled with PO
-                        if ( PO[ k + nz * (j + ( ny * i ) ) ] ) 
-                        {
-                            // Loops around space occupied by probe from atom position
-                            for(i2=i-rd; i2<=i+rd; i2++)
-                                for(j2=j-rd; j2<=j+rd; j2++)
-                                    for(k2=k-rd; k2<=k+rd; k2++)
-                                        // Check if inside 3D grid
-                                        if(i2>=0 && i2<nx && j2>=0 && j2<ny && k2>=0 && k2<nz)
-                                            // Mark points in grid filled with Probe In, where Probe Out reached
-                                            PI[ k2 + nz * (j2 + ( ny * i2 ) ) ] = -1;
-                        }
+                        // Loops around space occupied by probe from atom position
+                        for (i2 = i - rd; i2 <= i + rd; i2++)
+                            for (j2 = j - rd; j2 <= j + rd; j2++)
+                                for (k2 = k - rd; k2 <= k + rd; k2++)
+                                    // Check if inside 3D grid
+                                    if (i2 >= 0 && i2 < nx && j2 >= 0 && j2 < ny && k2 >= 0 && k2 < nz)
+                                        // Mark points in grid filled with Probe In, where Probe Out reached
+                                        PI[k2 + nz * (j2 + (ny * i2))] = -1;
                     }
+                }
     }
 }
 
@@ -344,38 +332,37 @@ subtract (int *PI, int *PO, int nx, int ny, int nz, double step, double removal_
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-filter_noise (int *grid, int nx, int ny, int nz, int nthreads)
+void filter_noise(int *grid, int nx, int ny, int nz, int nthreads)
 {
     int i, j, k, contacts;
 
-    for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-            for (k=0; k<nz; k++)
+    for (i = 0; i < nx; i++)
+        for (j = 0; j < ny; j++)
+            for (k = 0; k < nz; k++)
             {
-                if (grid[ k + nz * (j + ( ny * i ) ) ] == 1) 
+                if (grid[k + nz * (j + (ny * i))] == 1)
                 {
                     contacts = 0;
-                    
+
                     // Check if a protein point (0) or a medium point (-1) is next to a cavity point (==1)
-                    if (i-1>=0 && i+1<nx && j-1>=0 && j+1<ny && k-1>=0 && k+1<nz)
+                    if (i - 1 >= 0 && i + 1 < nx && j - 1 >= 0 && j + 1 < ny && k - 1 >= 0 && k + 1 < nz)
                     {
-                        if (grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0 || grid[ k + nz * (j + ( ny * (i - 1) ) ) ] == -1)
+                        if (grid[k + nz * (j + (ny * (i - 1)))] == 0 || grid[k + nz * (j + (ny * (i - 1)))] == -1)
                             contacts++;
-                        if (grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0 || grid[ k + nz * (j + ( ny * (i + 1) ) ) ] == -1)
+                        if (grid[k + nz * (j + (ny * (i + 1)))] == 0 || grid[k + nz * (j + (ny * (i + 1)))] == -1)
                             contacts++;
-                        if (grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0 || grid[ k + nz * ( (j - 1) + ( ny * i ) ) ] == -1)
+                        if (grid[k + nz * ((j - 1) + (ny * i))] == 0 || grid[k + nz * ((j - 1) + (ny * i))] == -1)
                             contacts++;
-                        if (grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0 || grid[ k + nz * ( (j + 1) + ( ny * i ) ) ] == -1)
+                        if (grid[k + nz * ((j + 1) + (ny * i))] == 0 || grid[k + nz * ((j + 1) + (ny * i))] == -1)
                             contacts++;
-                        if (grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0 || grid[ (k - 1) + nz * (j + ( ny * i ) ) ] == -1)
+                        if (grid[(k - 1) + nz * (j + (ny * i))] == 0 || grid[(k - 1) + nz * (j + (ny * i))] == -1)
                             contacts++;
-                        if (grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0 || grid[ (k + 1) + nz * (j + ( ny * i ) ) ] == -1)
+                        if (grid[(k + 1) + nz * (j + (ny * i))] == 0 || grid[(k + 1) + nz * (j + (ny * i))] == -1)
                             contacts++;
 
                         // Cavity point is a medium point
                         if (contacts == 6)
-                            grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+                            grid[k + nz * (j + (ny * i))] = -1;
                     }
                 }
             }
@@ -405,45 +392,43 @@ filter_noise (int *grid, int nx, int ny, int nz, int nthreads)
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double ligand_cutoff, int nthreads)
+void adjust(int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double ligand_cutoff, int nthreads)
 {
     int i, j, k, atom, inside;
     double x, y, z, xaux, yaux, zaux, distance;
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(grid, nx, ny, nz, step, sincos, reference, ligand, ligand_cutoff, lnatoms), private(inside, i, j, k, x, y, z, xaux, yaux, zaux, atom, distance)
+#pragma omp parallel default(none), shared(grid, nx, ny, nz, step, sincos, reference, ligand, ligand_cutoff, lnatoms), private(inside, i, j, k, x, y, z, xaux, yaux, zaux, atom, distance)
     {
-        #pragma omp for collapse(3) schedule(static) nowait
-        for (i=0; i<nx; i++)
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++)
+#pragma omp for collapse(3) schedule(static) nowait
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
                 {
                     inside = 0;
-                    for (atom=0; atom<lnatoms; atom++)
+                    for (atom = 0; atom < lnatoms; atom++)
                     {
                         // Get 3D grid point coordinate
-                        x = i * step; 
-                        y = j * step; 
+                        x = i * step;
+                        y = j * step;
                         z = k * step;
 
                         xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
-                        yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                        yaux = (y * sincos[1]) + (z * sincos[0]) + reference[1];
                         zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
 
                         // Get distance between ligand and 3D grid point evaluated
-                        distance = sqrt ( pow(xaux - ligand[atom * 4], 2) + pow(yaux - ligand[1 + (atom * 4)], 2) + pow(zaux - ligand[2 + (atom * 4)], 2) );
+                        distance = sqrt(pow(xaux - ligand[atom * 4], 2) + pow(yaux - ligand[1 + (atom * 4)], 2) + pow(zaux - ligand[2 + (atom * 4)], 2));
 
                         if (distance < ligand_cutoff)
                             inside = 1;
-
                     }
-                    if (inside == 0 && grid[ k + nz * (j + ( ny * i ) ) ])
-                        grid[ k + nz * (j + ( ny * i ) ) ] = -1;
-                }             
+                    if (inside == 0 && grid[k + nz * (j + (ny * i))])
+                        grid[k + nz * (j + (ny * i))] = -1;
+                }
     }
 }
 
@@ -470,47 +455,46 @@ adjust (int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyz
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-_filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int nthreads)
+void _filter_pdb(int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int nthreads)
 {
     int atom;
     double x, y, z, xaux, yaux, zaux;
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (nthreads);
+    omp_set_num_threads(nthreads);
 
-    #pragma omp parallel default(none), shared(atoms, natoms, reference, sincos, step, probe_in, nx, ny, nz), private(atom, x, y, z, xaux, yaux, zaux)
-    {   
-        #pragma omp for schedule(static) //nowait
-            for (atom=0; atom<natoms; atom++)
+#pragma omp parallel default(none), shared(atoms, natoms, reference, sincos, step, probe_in, nx, ny, nz), private(atom, x, y, z, xaux, yaux, zaux)
+    {
+#pragma omp for schedule(static) //nowait
+        for (atom = 0; atom < natoms; atom++)
+        {
+            x = (atoms[atom * 4] - reference[0]) / step;
+            y = (atoms[1 + (atom * 4)] - reference[1]) / step;
+            z = (atoms[2 + (atom * 4)] - reference[2]) / step;
+
+            xaux = x * sincos[3] + z * sincos[2];
+            yaux = y;
+            zaux = (-x) * sincos[2] + z * sincos[3];
+
+            x = xaux;
+            y = yaux * sincos[1] - zaux * sincos[0];
+            z = yaux * sincos[0] + zaux * sincos[1];
+
+            if (x > 0.0 - (probe_in + atoms[3 + (atom * 4)]) / step &&
+                x < (double)nx + (probe_in + atoms[3 + (atom * 4)]) / step &&
+                y > 0.0 - (probe_in + atoms[3 + (atom * 4)]) / step &&
+                y < (double)ny + (probe_in + atoms[3 + (atom * 4)]) / step &&
+                z > 0.0 - (probe_in + atoms[3 + (atom * 4)]) / step &&
+                z < (double)nz + (probe_in + atoms[3 + (atom * 4)]) / step)
+                ;
+            else
             {
-                x = ( atoms[atom * 4] - reference[0] ) / step; 
-                y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
-                z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
-
-                xaux = x * sincos[3] + z * sincos[2];
-                yaux = y;
-                zaux = (-x) * sincos[2] + z * sincos[3];
-
-                x = xaux;
-                y = yaux * sincos[1] - zaux * sincos[0];
-                z = yaux * sincos[0] + zaux * sincos[1];
-
-                if (x >  0.0 - (probe_in + atoms[3 + (atom * 4)]) / step && 
-                    x < (double)nx + (probe_in + atoms[3 + (atom * 4)]) / step && 
-                    y > 0.0 - (probe_in + atoms[3 + (atom * 4)]) / step && 
-                    y < (double)ny + (probe_in + atoms[3 + (atom * 4)]) / step && 
-                    z >  0.0 - (probe_in + atoms[3 + (atom * 4)]) / step && 
-                    z < (double)nz + (probe_in + atoms[3 + (atom * 4)]) / step);
-                else
-                {
-                    atoms[atom * 4] = 0.0;
-                    atoms[1 + (atom * 4)] = 0.0;
-                    atoms[2 + (atom * 4)] = 0.0;
-                    atoms[3 + (atom * 4)] = 0.0;
-                }
-
+                atoms[atom * 4] = 0.0;
+                atoms[1 + (atom * 4)] = 0.0;
+                atoms[2 + (atom * 4)] = 0.0;
+                atoms[3 + (atom * 4)] = 0.0;
             }
+        }
     }
 }
 
@@ -535,72 +519,75 @@ _filter_pdb (int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-filter (int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads)
+void filter(int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads)
 {
     int i, j, k;
     double aux, normB, norm1, X1, Y1, Z1, X2, Y2, Z2;
 
     // Set number of processes in OpenMP
-	omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
     // Get norm between X1 and X2 in 3D grid
-    X1 = P1[0]; Y1 = P1[1]; Z1 = P1[2];
-    X2 = P2[0]; Y2 = P2[1]; Z2 = P2[2];
-    norm1 = sqrt (pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
+    X1 = P1[0];
+    Y1 = P1[1];
+    Z1 = P1[2];
+    X2 = P2[0];
+    Y2 = P2[1];
+    Z2 = P2[2];
+    norm1 = sqrt(pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
 
     // Remove Probe out from grid to recreate box
-    X1 -= (- (probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2]));
-    Y1 -= (- (probe_out * sincos[1]) - (probe_out * sincos[0]));
-    Z1 -= (- (probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3]));
+    X1 -= (-(probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2]));
+    Y1 -= (-(probe_out * sincos[1]) - (probe_out * sincos[0]));
+    Z1 -= (-(probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3]));
     X2 -= ((probe_out * sincos[3]) - (probe_out * sincos[0] * sincos[2]) + (probe_out * sincos[1] * sincos[2]));
-    Y2 -= (- (probe_out * sincos[1]) - (probe_out * sincos[0]));
+    Y2 -= (-(probe_out * sincos[1]) - (probe_out * sincos[0]));
     Z2 -= ((probe_out * sincos[2]) + (probe_out * sincos[0] * sincos[3]) - (probe_out * sincos[1] * sincos[3]));
 
     // Get norm between X1 and X2 in box
-	normB = sqrt (pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
+    normB = sqrt(pow(X2 - X1, 2) + pow(Y2 - Y1, 2) + pow(Z2 - Z1, 2));
 
     // Prepare grid units
-    aux = floor ( (norm1 - normB) / (2 * step) );
+    aux = floor((norm1 - normB) / (2 * step));
 
-    #pragma omp parallel default(shared), private(i, j, k)
+#pragma omp parallel default(shared), private(i, j, k)
     {
-        for (i=0; i<=aux; i++)
-            #pragma omp for collapse(2) nowait
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++)
-                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+        for (i = 0; i <= aux; i++)
+#pragma omp for collapse(2) nowait
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    grid[k + nz * (j + (ny * i))] = -1;
 
-        for (i=nx-1; i>=nx-aux-1; i--)
-            #pragma omp for collapse(2) nowait
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++)
-                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;    
+        for (i = nx - 1; i >= nx - aux - 1; i--)
+#pragma omp for collapse(2) nowait
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    grid[k + nz * (j + (ny * i))] = -1;
 
-        for (j=0; j<=aux; j++)
-            #pragma omp for collapse(2) nowait
-            for (i=0; i<nx; i++)
-                for (k=0; k<nz; k++)
-                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+        for (j = 0; j <= aux; j++)
+#pragma omp for collapse(2) nowait
+            for (i = 0; i < nx; i++)
+                for (k = 0; k < nz; k++)
+                    grid[k + nz * (j + (ny * i))] = -1;
 
-        for (j=ny-1; j>=ny-aux-1; j--)
-            #pragma omp for collapse(2) nowait
-            for (i=0; i<nx; i++)
-                for (k=0; k<nz; k++)
-                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;    
+        for (j = ny - 1; j >= ny - aux - 1; j--)
+#pragma omp for collapse(2) nowait
+            for (i = 0; i < nx; i++)
+                for (k = 0; k < nz; k++)
+                    grid[k + nz * (j + (ny * i))] = -1;
 
-        for (k=0; k<=aux; k++)
-            #pragma omp for collapse(2) nowait
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;
+        for (k = 0; k <= aux; k++)
+#pragma omp for collapse(2) nowait
+            for (i = 0; i < nx; i++)
+                for (j = 0; j < ny; j++)
+                    grid[k + nz * (j + (ny * i))] = -1;
 
-        for (k=nz-1; k>=nz-aux-1; k--)
-            #pragma omp for collapse(2) nowait
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    grid[ k + nz * (j + ( ny * i ) ) ] = -1;  
+        for (k = nz - 1; k >= nz - aux - 1; k--)
+#pragma omp for collapse(2) nowait
+            for (i = 0; i < nx; i++)
+                for (j = 0; j < ny; j++)
+                    grid[k + nz * (j + (ny * i))] = -1;
     }
 }
 
@@ -639,23 +626,22 @@ int big;
  * 
  * returns: true (int 1) or false (int 0)
  */
-int
-check_unclustered_neighbours (int *grid, int nx, int ny, int nz, int i, int j, int k)
+int check_unclustered_neighbours(int *grid, int nx, int ny, int nz, int i, int j, int k)
 {
-	int x, y, z;
-	
+    int x, y, z;
+
     // Loop around neighboring points
-	for (x=i-1; x<=i+1; x++)
-        for (y=j-1; y<=j+1; y++)
-			for (z=k-1; z<=k+1; z++) 
+    for (x = i - 1; x <= i + 1; x++)
+        for (y = j - 1; y <= j + 1; y++)
+            for (z = k - 1; z <= k + 1; z++)
             {
-			    // Check if point is inside 3D grid
-				if (x < 0 || y < 0 || z < 0 || x > nx-1 || y > ny-1 || z > nz-1);
-                else
-    			    if (grid[ z + nz * (y + ( ny * x ) ) ] > 1)
-                        return grid[ z + nz * (y + ( ny * x ) ) ];
-			}
-	return 0;
+                // Check if point is inside 3D grid
+                if (x < 0 || y < 0 || z < 0 || x > nx - 1 || y > ny - 1 || z > nz - 1)
+                    ;
+                else if (grid[z + nz * (y + (ny * x))] > 1)
+                    return grid[z + nz * (y + (ny * x))];
+            }
+    return 0;
 }
 
 /*
@@ -674,17 +660,16 @@ check_unclustered_neighbours (int *grid, int nx, int ny, int nz, int i, int j, i
  * tag: cavity integer identifier
  * 
  */
-void 
-DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
+void DFS(int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
 {
     int x, y, z;
 
-    if (i == 0 || i == nx-1 || j == 0 || j == ny-1 || k == 0 || k == nz-1)
+    if (i == 0 || i == nx - 1 || j == 0 || j == ny - 1 || k == 0 || k == nz - 1)
         return;
 
-    if (grid[ k + nz * (j + ( ny * i ) ) ] == 1 && !big)
+    if (grid[k + nz * (j + (ny * i))] == 1 && !big)
     {
-        grid[ k + nz * (j + ( ny * i ) ) ] = tag;
+        grid[k + nz * (j + (ny * i))] = tag;
         vol++;
 
         if (vol == 10000)
@@ -692,11 +677,11 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
 
         if (!big)
         {
-            #pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
-                for (x=i-1; x<=i+1; x++)
-                    for (y=j-1; y<=j+1; y++)
-                        for (z=k-1; z<=k+1; z++)
-                            DFS(grid, nx, ny, nz, x, y, z, tag);
+#pragma omp taskloop shared(i, j, k, nx, ny, nz, tag, grid), private(x, y, z)
+            for (x = i - 1; x <= i + 1; x++)
+                for (y = j - 1; y <= j + 1; y++)
+                    for (z = k - 1; z <= k + 1; z++)
+                        DFS(grid, nx, ny, nz, x, y, z, tag);
         }
     }
 }
@@ -715,23 +700,22 @@ DFS (int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
+void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
 {
     int i, j, k;
 
     // Set number of threads in OpenMP
-	omp_set_num_threads (nthreads);
+    omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(shared)
-        #pragma omp for schedule(static) collapse(3) //nowait
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++)
-                        // Remove points based on tag
-                        if (grid[ k + nz * (j + ( ny * i ) ) ] == tag)
-                            grid[ k + nz * (j + ( ny * i ) ) ] = 0;
+#pragma omp parallel default(shared)
+#pragma omp for schedule(static) collapse(3) //nowait
+    for (i = 0; i < nx; i++)
+        for (j = 0; j < ny; j++)
+            for (k = 0; k < nz; k++)
+                // Remove points based on tag
+                if (grid[k + nz * (j + (ny * i))] == tag)
+                    grid[k + nz * (j + (ny * i))] = 0;
 }
 
 /*
@@ -749,8 +733,7 @@ remove_cavity (int *grid, int nx, int ny, int nz, int tag, int nthreads)
  * nthreads: number of threads for OpenMP
  * 
  */
-int
-cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
+int cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
 {
     int i, j, k, i2, j2, k2, tag, vol_aux;
 
@@ -759,44 +742,44 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
     vol_aux = 0;
     big = 0;
 
-    for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-            for (k=0; k<nz; k++)
-                if (grid[ k + nz * (j + ( ny * i ) ) ] == 1)
+    for (i = 0; i < nx; i++)
+        for (j = 0; j < ny; j++)
+            for (k = 0; k < nz; k++)
+                if (grid[k + nz * (j + (ny * i))] == 1)
                 {
                     tag++;
                     vol = 0;
-                    
+
                     // Clustering procedure
                     DFS(grid, nx, ny, nz, i, j, k, tag);
                     vol_aux = vol;
 
-					// Loop for big cavities
-					while (big) 
+                    // Loop for big cavities
+                    while (big)
                     {
-						vol_aux = 0;
+                        vol_aux = 0;
 
-						for (i2=0; i2<nx; i2++)
-							for (j2=0; j2<ny; j2++)
-								for (k2=0; k2<nz; k2++) 
+                        for (i2 = 0; i2 < nx; i2++)
+                            for (j2 = 0; j2 < ny; j2++)
+                                for (k2 = 0; k2 < nz; k2++)
                                 {
-									big = 0;
-									vol_aux += vol;
-									vol = 0;
-									if (grid[ k2 + nz * (j2 + ( ny * i2 ) ) ] == 1 && check_unclustered_neighbours (grid, nx, ny, nz, i2, j2, k2) == tag)
-									    DFS(grid, nx, ny, nz, i2, j2, k2, tag);
-								}
-					}
+                                    big = 0;
+                                    vol_aux += vol;
+                                    vol = 0;
+                                    if (grid[k2 + nz * (j2 + (ny * i2))] == 1 && check_unclustered_neighbours(grid, nx, ny, nz, i2, j2, k2) == tag)
+                                        DFS(grid, nx, ny, nz, i2, j2, k2, tag);
+                                }
+                    }
                     vol = vol_aux;
 
                     // Check if cavity reached cutoff
-                    if ( (double) vol * pow(step, 3) < volume_cutoff )
+                    if ((double)vol * pow(step, 3) < volume_cutoff)
                     {
                         remove_cavity(grid, nx, ny, nz, tag, nthreads);
                         tag--;
                     }
                 }
-    return tag-1;
+    return tag - 1;
 }
 
 /* Cavity detection */
@@ -833,8 +816,7 @@ cluster (int *grid, int nx, int ny, int nz, double step, double volume_cutoff, i
  * 
  * returns: PI[size] (cavities 3D grid) and ncav (number of cavities)
  */
-int 
-_detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
+int _detect(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
 {
     int *PO, ncav;
 
@@ -845,7 +827,7 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
 
     if (verbose)
         fprintf(stdout, "> Filling grid with Probe Out\n");
-    PO = (int *) calloc (size, sizeof (int));
+    PO = (int *)calloc(size, sizeof(int));
     igrid(PO, size);
     fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
 
@@ -854,20 +836,20 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
     ses(PO, nx, ny, nz, step, probe_out, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Defining biomolecular cavities\n");
+        fprintf(stdout, "> Defining biomolecular cavities\n");
     subtract(PI, PO, nx, ny, nz, step, removal_distance, nthreads);
 
     if (box_adjustment)
     {
         if (verbose)
-            fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
-        filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+            fprintf(stdout, "> Adjusting biomolecular cavities to box\n");
+        filter(PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
     }
 
     filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Clustering cavity points\n");
+        fprintf(stdout, "> Clustering cavity points\n");
     ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
 
     // Free PO
@@ -913,8 +895,7 @@ _detect (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, i
  * 
  * returns: PI[size] (cavities 3D grid) and ncav (number of cavities)
  */
-int 
-_detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
+int _detect_ladj(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
 {
     int *PO, ncav;
 
@@ -925,7 +906,7 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
 
     if (verbose)
         fprintf(stdout, "> Filling grid with Probe Out\n");
-    PO = (int *) calloc (size, sizeof (int));
+    PO = (int *)calloc(size, sizeof(int));
     igrid(PO, size);
     fill(PO, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_out, nthreads);
 
@@ -934,27 +915,27 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
     ses(PO, nx, ny, nz, step, probe_out, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Defining biomolecular cavities\n");
+        fprintf(stdout, "> Defining biomolecular cavities\n");
     subtract(PI, PO, nx, ny, nz, step, removal_distance, nthreads);
 
     if (ligand_adjustment)
     {
         if (verbose)
-            fprintf (stdout, "> Adjusting biomolecular cavities to ligand\n");
+            fprintf(stdout, "> Adjusting biomolecular cavities to ligand\n");
         adjust(PI, nx, ny, nz, ligand, lnatoms, lxyzr, reference, ndims, sincos, nvalues, step, ligand_cutoff, nthreads);
     }
 
     if (box_adjustment)
     {
         if (verbose)
-            fprintf (stdout, "> Adjusting biomolecular cavities to box\n");
-        filter (PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
+            fprintf(stdout, "> Adjusting biomolecular cavities to box\n");
+        filter(PI, nx, ny, nz, reference, ndims, P2, nndims, sincos, nvalues, step, probe_out, nthreads);
     }
 
     filter_noise(PI, nx, ny, nz, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Clustering cavity points\n");
+        fprintf(stdout, "> Clustering cavity points\n");
     ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
 
     // Free PO
@@ -981,29 +962,28 @@ _detect_ladj (int *PI, int size, int nx, int ny, int nz, double *atoms, int nato
  * 
  * returns: cavity identifier (>1) or medium point (-1)
  */
-int
-define_surface_points (int *cavities, int nx, int ny, int nz, int i, int j, int k)
+int define_surface_points(int *cavities, int nx, int ny, int nz, int i, int j, int k)
 {
-    if (i-1>=0)
-        if (cavities[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
-            return cavities[k + nz * (j + ( ny * i ) )];
-    if (i+1<nx)
-        if (cavities[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
-            return cavities[k + nz * (j + ( ny * i ) )];
-    if (j-1>=0)
-        if (cavities[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
-            return cavities[k + nz * (j + ( ny * i ) )];
-    if (j+1<ny)
-        if (cavities[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
-            return cavities[k + nz * (j + ( ny * i ) )];
-    if (k-1>=0)
-        if (cavities[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
-            return cavities[k + nz * (j + ( ny * i ) )];
-    if (k+1<nz)
-        if (cavities[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
-            return cavities[k + nz * (j + ( ny * i ) )];
+    if (i - 1 >= 0)
+        if (cavities[k + nz * (j + (ny * (i - 1)))] == 0)
+            return cavities[k + nz * (j + (ny * i))];
+    if (i + 1 < nx)
+        if (cavities[k + nz * (j + (ny * (i + 1)))] == 0)
+            return cavities[k + nz * (j + (ny * i))];
+    if (j - 1 >= 0)
+        if (cavities[k + nz * ((j - 1) + (ny * i))] == 0)
+            return cavities[k + nz * (j + (ny * i))];
+    if (j + 1 < ny)
+        if (cavities[k + nz * ((j + 1) + (ny * i))] == 0)
+            return cavities[k + nz * (j + (ny * i))];
+    if (k - 1 >= 0)
+        if (cavities[(k - 1) + nz * (j + (ny * i))] == 0)
+            return cavities[k + nz * (j + (ny * i))];
+    if (k + 1 < nz)
+        if (cavities[(k + 1) + nz * (j + (ny * i))] == 0)
+            return cavities[k + nz * (j + (ny * i))];
 
-	return -1;
+    return -1;
 }
 
 /*
@@ -1020,8 +1000,7 @@ define_surface_points (int *cavities, int nx, int ny, int nz, int i, int j, int 
  * nthreads: number of threads for OpenMP
  * 
  */
-void 
-filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nthreads)
+void filter_surface(int *cavities, int *surface, int nx, int ny, int nz, int nthreads)
 {
     int i, j, k;
 
@@ -1029,23 +1008,23 @@ filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nthread
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(cavities, surface, nx, ny, nz), private(i, j, k)
+#pragma omp parallel default(none), shared(cavities, surface, nx, ny, nz), private(i, j, k)
     {
-        #pragma omp for collapse(3) schedule(static)
-        for (i=0; i<nx; i++)
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++)
-                    if (cavities[k + nz * (j + ( ny * i ) )] > 1)
+#pragma omp for collapse(3) schedule(static)
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (cavities[k + nz * (j + (ny * i))] > 1)
                     {
                         // Define surface cavity points
-                        surface[k + nz * (j + ( ny * i ) )] = define_surface_points (cavities, nx, ny, nz, i, j, k);
+                        surface[k + nz * (j + (ny * i))] = define_surface_points(cavities, nx, ny, nz, i, j, k);
                     }
                     else
                     {
-                        if (cavities[k + nz * (j + ( ny * i ) )] == 0)
-                            surface[k + nz * (j + ( ny * i ) )] = 0;
+                        if (cavities[k + nz * (j + (ny * i))] == 0)
+                            surface[k + nz * (j + (ny * i))] = 0;
                         else
-                            surface[k + nz * (j + ( ny * i ) )] = -1;
+                            surface[k + nz * (j + (ny * i))] = -1;
                     }
     }
 }
@@ -1068,52 +1047,52 @@ filter_surface (int *cavities, int *surface, int nx, int ny, int nz, int nthread
  * 
  * returns: voxel class weight (double)
  */
-double 
-check_voxel_class (int *surface, int nx, int ny, int nz, int i, int j, int k)
+double
+check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j, int k)
 {
     int contacts = 0;
     double weight = 1.0;
 
     // Count face contacts
-    if (surface[ k + nz * (j + ( ny * (i - 1) ) ) ] == 0)
+    if (surface[k + nz * (j + (ny * (i - 1)))] == 0)
         contacts++;
-    if (surface[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0)
+    if (surface[k + nz * (j + (ny * (i + 1)))] == 0)
         contacts++;
-    if (surface[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0)
+    if (surface[k + nz * ((j - 1) + (ny * i))] == 0)
         contacts++;
-    if (surface[ k + nz * ( (j + 1) + ( ny * i ) ) ] == 0)
+    if (surface[k + nz * ((j + 1) + (ny * i))] == 0)
         contacts++;
-    if (surface[ (k - 1) + nz * (j + ( ny * i ) ) ] == 0)
+    if (surface[(k - 1) + nz * (j + (ny * i))] == 0)
         contacts++;
-    if (surface[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0)
+    if (surface[(k + 1) + nz * (j + (ny * i))] == 0)
         contacts++;
 
     // Get weight
     switch (contacts)
     {
-        // One face in contact with biomolecule
-        case 1:
-			weight = 0.894;
-			break;
-        // Two faces in contact with biomolecule
-		case 2:
-			weight = 1.3409;
-			break;
-		// Three faces in contact with biomolecule
-		case 3:
-			if ( ( surface[ k + nz * (j + ( ny * (i + 1) ) ) ] == 0 && surface[ k + nz * (j + ( ny * (i - 1) ) ) ] ) || ( surface[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0 && surface[ k + nz * ( (j - 1) + ( ny * i ) ) ] == 0 ) || ( surface[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0 && surface[ (k + 1) + nz * (j + ( ny * i ) ) ] == 0 ) )
-			    weight = 2;
-			else
-			    weight = 1.5879;
-			break;
-	    // Four faces in contact with biomolecule
-		case 4:
-			weight = 2.6667;
-			break;
-        // Five in contact with biomolecule
-		case 5:
-			weight = 3.3333;
-			break;
+    // One face in contact with biomolecule
+    case 1:
+        weight = 0.894;
+        break;
+    // Two faces in contact with biomolecule
+    case 2:
+        weight = 1.3409;
+        break;
+    // Three faces in contact with biomolecule
+    case 3:
+        if ((surface[k + nz * (j + (ny * (i + 1)))] == 0 && surface[k + nz * (j + (ny * (i - 1)))]) || (surface[k + nz * ((j - 1) + (ny * i))] == 0 && surface[k + nz * ((j - 1) + (ny * i))] == 0) || (surface[(k + 1) + nz * (j + (ny * i))] == 0 && surface[(k + 1) + nz * (j + (ny * i))] == 0))
+            weight = 2;
+        else
+            weight = 1.5879;
+        break;
+    // Four faces in contact with biomolecule
+    case 4:
+        weight = 2.6667;
+        break;
+    // Five in contact with biomolecule
+    case 5:
+        weight = 3.3333;
+        break;
     }
     return weight;
 }
@@ -1134,23 +1113,22 @@ check_voxel_class (int *surface, int nx, int ny, int nz, int i, int j, int k)
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads)
+void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads)
 {
     int i, j, k;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
-    for (i=0; i<ncav; i++)
+    for (i = 0; i < ncav; i++)
         areas[i] = 0.0;
 
-    for (i=0; i<nx; i++)
-        for (j=0; j<ny; j++)
-            for (k=0; k<nz; k++)
-                if (surface[k + nz * (j + ( ny * i ) )] > 1)
-                    areas[surface[k + nz * (j + ( ny * i ) )] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow (step, 2);
+    for (i = 0; i < nx; i++)
+        for (j = 0; j < ny; j++)
+            for (k = 0; k < nz; k++)
+                if (surface[k + nz * (j + (ny * i))] > 1)
+                    areas[surface[k + nz * (j + (ny * i))] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow(step, 2);
 }
 
 /* Estimate volume */
@@ -1171,8 +1149,7 @@ area (int *surface, int nx, int ny, int nz, int ncav, double step, double *areas
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads) 
+void volume(int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads)
 {
     int i, j, k;
 
@@ -1181,16 +1158,17 @@ volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *vo
     omp_set_nested(1);
 
     // Initialize volumes array
-    dgrid (volumes, ncav);
+    dgrid(volumes, ncav);
 
-    #pragma omp parallel default(none), shared(volumes, cavities, ncav, step, nx, ny, nz), private(i, j, k)
+#pragma omp parallel default(none), shared(volumes, cavities, ncav, step, nx, ny, nz), private(i, j, k)
     {
-        #pragma omp for collapse(3) reduction(+:volumes[:ncav])
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++)
-                        if (cavities[k + nz * (j + ( ny * i ) )] > 1)
-                            volumes[cavities[k + nz * (j + ( ny * i ) )] - 2] += pow (step, 3);
+#pragma omp for collapse(3) reduction(+ \
+                                      : volumes[:ncav])
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (cavities[k + nz * (j + (ny * i))] > 1)
+                        volumes[cavities[k + nz * (j + (ny * i))] - 2] += pow(step, 3);
     }
 }
 
@@ -1218,29 +1196,28 @@ volume (int *cavities, int nx, int ny, int nz, int ncav, double step, double *vo
  * 
  * returns: surface (surface points 3D grid), volumes (array of volumes) and area (array of areas)
  */
-void 
-_spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int nthreads, int verbose)
+void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int nthreads, int verbose)
 {
     if (verbose)
-        fprintf (stdout, "> Defining surface points\n");
-    filter_surface (cavities, surface, nx, ny, nz, nthreads);
+        fprintf(stdout, "> Defining surface points\n");
+    filter_surface(cavities, surface, nx, ny, nz, nthreads);
 
-    #pragma omp sections
+#pragma omp sections
     {
-        #pragma omp section
+#pragma omp section
         {
             if (verbose)
-                fprintf (stdout, "> Estimating volume\n");
-            volume (cavities, nx, ny, nz, nvol, step, volumes, nthreads);
+                fprintf(stdout, "> Estimating volume\n");
+            volume(cavities, nx, ny, nz, nvol, step, volumes, nthreads);
         }
 
-        #pragma omp section
+#pragma omp section
         {
             if (verbose)
-                fprintf (stdout, "> Estimating area\n");
-            area (surface, nx, ny, nz, narea, step, areas, nthreads);
+                fprintf(stdout, "> Estimating area\n");
+            area(surface, nx, ny, nz, narea, step, areas, nthreads);
         }
-    }    
+    }
 }
 
 /* Bulk-cavity boundary points */
@@ -1259,7 +1236,7 @@ _spatial (int *cavities, int nx, int ny, int nz, int *surface, int size, double 
  * Z2: z coordinate of P2
  *  
  */
-typedef struct POINTS 
+typedef struct POINTS
 {
     double X1;
     double Y1;
@@ -1285,29 +1262,28 @@ typedef struct POINTS
  * 
  * returns: cavity identifier (tag) or cavity-bulk boundary identifier (-tag)
  */
-int 
-define_boundary_points (int *cavities, int nx, int ny, int nz, int i, int j, int k)
+int define_boundary_points(int *cavities, int nx, int ny, int nz, int i, int j, int k)
 {
-    if (i-1>=0)
-        if (cavities[ k + nz * (j + ( ny * (i - 1) ) ) ] == -1)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
-    if (i+1<nx)
-        if (cavities[ k + nz * (j + ( ny * (i + 1) ) ) ] == -1)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
-    if (j-1>=0)
-        if (cavities[ k + nz * ( (j - 1) + ( ny * i ) ) ] == -1)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
-    if (j+1<ny)
-        if (cavities[ k + nz * ( (j + 1) + ( ny * i ) ) ] == -1)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
-    if (k-1>=0)
-        if (cavities[ (k - 1) + nz * (j + ( ny * i ) ) ] == -1)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
-    if (k+1<nz)
-        if (cavities[ (k + 1) + nz * (j + ( ny * i ) ) ] == -1)
-            return -(cavities[k + nz * (j + ( ny * i ) )]);
+    if (i - 1 >= 0)
+        if (cavities[k + nz * (j + (ny * (i - 1)))] == -1)
+            return -(cavities[k + nz * (j + (ny * i))]);
+    if (i + 1 < nx)
+        if (cavities[k + nz * (j + (ny * (i + 1)))] == -1)
+            return -(cavities[k + nz * (j + (ny * i))]);
+    if (j - 1 >= 0)
+        if (cavities[k + nz * ((j - 1) + (ny * i))] == -1)
+            return -(cavities[k + nz * (j + (ny * i))]);
+    if (j + 1 < ny)
+        if (cavities[k + nz * ((j + 1) + (ny * i))] == -1)
+            return -(cavities[k + nz * (j + (ny * i))]);
+    if (k - 1 >= 0)
+        if (cavities[(k - 1) + nz * (j + (ny * i))] == -1)
+            return -(cavities[k + nz * (j + (ny * i))]);
+    if (k + 1 < nz)
+        if (cavities[(k + 1) + nz * (j + (ny * i))] == -1)
+            return -(cavities[k + nz * (j + (ny * i))]);
 
-	return cavities[k + nz * (j + ( ny * i ) )];
+    return cavities[k + nz * (j + (ny * i))];
 }
 
 /*
@@ -1323,8 +1299,7 @@ define_boundary_points (int *cavities, int nx, int ny, int nz, int i, int j, int
  * nthreads: number of threads for OpenMP
  * 
  */
-void 
-filter_boundary (int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundaries, int nthreads)
+void filter_boundary(int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundaries, int nthreads)
 {
     int i, j, k, tag;
 
@@ -1332,17 +1307,17 @@ filter_boundary (int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundari
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(cavities, nx, ny, nz, cavs, boundaries), private(i, j, k, tag)
+#pragma omp parallel default(none), shared(cavities, nx, ny, nz, cavs, boundaries), private(i, j, k, tag)
     {
-        #pragma omp for collapse(3) schedule(static)
-        for (i=0; i<nx; i++)
-            for (j=0; j<ny; j++)
-                for (k=0; k<nz; k++)
-                    if (cavities[k + nz * (j + ( ny * i ) )] > 1)
+#pragma omp for collapse(3) schedule(static)
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (cavities[k + nz * (j + (ny * i))] > 1)
                     {
                         // Get cavity identifier
-                        tag = cavities[k + nz * (j + ( ny * i ) )] - 2;
-                        
+                        tag = cavities[k + nz * (j + (ny * i))] - 2;
+
                         // Get min and max coordinates of each cavity
                         cavs[tag].X1 = min(cavs[tag].X1, i);
                         cavs[tag].Y1 = min(cavs[tag].Y1, j);
@@ -1352,10 +1327,10 @@ filter_boundary (int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundari
                         cavs[tag].Z2 = max(cavs[tag].Z2, k);
 
                         // Define cavity-bulk boundary points
-                        cavities[k + nz * (j + ( ny * i ) )] = define_boundary_points (cavities, nx, ny, nz, i, j, k);
-                        
+                        cavities[k + nz * (j + (ny * i))] = define_boundary_points(cavities, nx, ny, nz, i, j, k);
+
                         // Get min and max coordinates of each cavity-bulk boundary
-                        if (cavities[k + nz * (j + ( ny * i ) )] < -1)
+                        if (cavities[k + nz * (j + (ny * i))] < -1)
                         {
                             boundaries[tag].X1 = min(boundaries[tag].X1, i);
                             boundaries[tag].Y1 = min(boundaries[tag].Y1, j);
@@ -1381,8 +1356,7 @@ filter_boundary (int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundari
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundaries, int nthreads)
+void remove_boundary(int *cavities, int nx, int ny, int nz, int ncav, pts *boundaries, int nthreads)
 {
     int i, j, k, tag;
 
@@ -1390,15 +1364,15 @@ remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundarie
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(cavities, boundaries, ncav, nx, ny, nz), private(tag, i, j, k)
-        #pragma omp for schedule(dynamic)
-            for (tag=0; tag < ncav; tag++)
-                for (i=boundaries[tag].X1; i<=boundaries[tag].X2; i++)
-                    for (j=boundaries[tag].Y1; j<=boundaries[tag].Y2; j++)
-                        for (k=boundaries[tag].Z1; k<=boundaries[tag].Z2; k++)
-                            if ( cavities[k + nz * (j + ( ny * i ) )] < -1 )
-                                // Untag cavity-bulk boundary points
-                                cavities[k + nz * (j + ( ny * i ) )] = abs(cavities[k + nz * (j + ( ny * i ) )]);
+#pragma omp parallel default(none), shared(cavities, boundaries, ncav, nx, ny, nz), private(tag, i, j, k)
+#pragma omp for schedule(dynamic)
+    for (tag = 0; tag < ncav; tag++)
+        for (i = boundaries[tag].X1; i <= boundaries[tag].X2; i++)
+            for (j = boundaries[tag].Y1; j <= boundaries[tag].Y2; j++)
+                for (k = boundaries[tag].Z1; k <= boundaries[tag].Z2; k++)
+                    if (cavities[k + nz * (j + (ny * i))] < -1)
+                        // Untag cavity-bulk boundary points
+                        cavities[k + nz * (j + (ny * i))] = abs(cavities[k + nz * (j + (ny * i))]);
 }
 
 /* Estimate depth */
@@ -1424,8 +1398,7 @@ remove_boundary (int *cavities, int nx, int ny, int nz, int ncav, pts *boundarie
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *max_depth, double *avg_depth, int ncav, pts *cavs, pts *boundaries, double step, int nthreads)
+void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *max_depth, double *avg_depth, int ncav, pts *cavs, pts *boundaries, double step, int nthreads)
 {
     int i, j, k, i2, j2, k2, count, tag;
     double distance, tmp;
@@ -1434,61 +1407,61 @@ estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *ma
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(cavities, depths, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz, step), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
+#pragma omp parallel default(none), shared(cavities, depths, max_depth, avg_depth, cavs, boundaries, ncav, nx, ny, nz, step), private(tmp, tag, i, j, k, i2, j2, k2, distance, count)
     {
-        #pragma omp for schedule(dynamic)
-            for (tag=0; tag < ncav; tag++)
-            {
-                // Initialize depths for cavity tag
-                max_depth[tag] = 0.0;
-                avg_depth[tag] = 0.0;
+#pragma omp for schedule(dynamic)
+        for (tag = 0; tag < ncav; tag++)
+        {
+            // Initialize depths for cavity tag
+            max_depth[tag] = 0.0;
+            avg_depth[tag] = 0.0;
 
-                // Initialize number of cavity points in cavity
-                count = 0;
-                
-                for (i=cavs[tag].X1; i<=cavs[tag].X2; i++)
-                    for (j=cavs[tag].Y1; j<=cavs[tag].Y2; j++)
-                        for (k=cavs[tag].Z1; k<=cavs[tag].Z2; k++)
-                            if ( abs(cavities[k + nz * (j + ( ny * i ) )]) == (tag + 2) )
-                            {   
-                                // Initialize tmp depth value
-                                tmp = sqrt( pow(nx, 2) + pow(ny, 2) + pow(nz, 2)) * step;
+            // Initialize number of cavity points in cavity
+            count = 0;
 
-                                // Count cavity point
-                                count++;
+            for (i = cavs[tag].X1; i <= cavs[tag].X2; i++)
+                for (j = cavs[tag].Y1; j <= cavs[tag].Y2; j++)
+                    for (k = cavs[tag].Z1; k <= cavs[tag].Z2; k++)
+                        if (abs(cavities[k + nz * (j + (ny * i))]) == (tag + 2))
+                        {
+                            // Initialize tmp depth value
+                            tmp = sqrt(pow(nx, 2) + pow(ny, 2) + pow(nz, 2)) * step;
 
-                                if (boundaries[tag].X1 == nx && boundaries[tag].Y1 == ny && boundaries[tag].Z1 == nz && boundaries[tag].X2 == 0.0 && boundaries[tag].Y2 == 0.0 && boundaries[tag].Z2 == 0.0)
-                                {
-                                    // Cavity without boundary (void)
-                                    tmp = 0.0;
-                                }
-                                else
-                                {
-                                    // Depth is calculate as the minimum distance between cavity point and bulk-cavity boundary
-                                    for (i2=boundaries[tag].X1; i2<=boundaries[tag].X2; i2++)
-                                        for (j2=boundaries[tag].Y1; j2<=boundaries[tag].Y2; j2++)
-                                            for (k2=boundaries[tag].Z1; k2<=boundaries[tag].Z2; k2++)
-                                                if ( cavities[k2 + nz * (j2 + ( ny * i2 ) )] == -(tag + 2) )
-                                                {
-                                                    distance = sqrt( pow(i2-i, 2) + pow(j2-j, 2) + pow(k2-k, 2) ) * step;
-                                                    if (distance < tmp)
-                                                        tmp = distance;
-                                                }
-                                }
+                            // Count cavity point
+                            count++;
 
-                                // Save depth for cavity point
-                                depths[k + nz * (j + ( ny * i ) )] = tmp;
-
-                                // Save maximum depth for cavity tag
-                                if (tmp > max_depth[tag])
-                                    max_depth[tag] = tmp;
-
-                                // Add cavity point depth to average depth for cavity tag
-                                avg_depth[tag] += tmp;
+                            if (boundaries[tag].X1 == nx && boundaries[tag].Y1 == ny && boundaries[tag].Z1 == nz && boundaries[tag].X2 == 0.0 && boundaries[tag].Y2 == 0.0 && boundaries[tag].Z2 == 0.0)
+                            {
+                                // Cavity without boundary (void)
+                                tmp = 0.0;
                             }
-                // Divide sum of depths by number of cavity points for cavity tag
-                avg_depth[tag] /= count;
-            }
+                            else
+                            {
+                                // Depth is calculate as the minimum distance between cavity point and bulk-cavity boundary
+                                for (i2 = boundaries[tag].X1; i2 <= boundaries[tag].X2; i2++)
+                                    for (j2 = boundaries[tag].Y1; j2 <= boundaries[tag].Y2; j2++)
+                                        for (k2 = boundaries[tag].Z1; k2 <= boundaries[tag].Z2; k2++)
+                                            if (cavities[k2 + nz * (j2 + (ny * i2))] == -(tag + 2))
+                                            {
+                                                distance = sqrt(pow(i2 - i, 2) + pow(j2 - j, 2) + pow(k2 - k, 2)) * step;
+                                                if (distance < tmp)
+                                                    tmp = distance;
+                                            }
+                            }
+
+                            // Save depth for cavity point
+                            depths[k + nz * (j + (ny * i))] = tmp;
+
+                            // Save maximum depth for cavity tag
+                            if (tmp > max_depth[tag])
+                                max_depth[tag] = tmp;
+
+                            // Add cavity point depth to average depth for cavity tag
+                            avg_depth[tag] += tmp;
+                        }
+            // Divide sum of depths by number of cavity points for cavity tag
+            avg_depth[tag] /= count;
+        }
     }
 }
 
@@ -1517,8 +1490,7 @@ estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *ma
  * returns: depths (3D grid with depth of cavity points), max_depth (array of maximum depths) and avg_depth (array of average depths)
  * 
  */
-void 
-_depth (int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose)
+void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose)
 {
     int i, ncav;
     pts *cavs, *boundaries;
@@ -1527,16 +1499,16 @@ _depth (int *cavities, int nx, int ny, int nz, double *depths, int size, double 
     ncav = nmax;
 
     // Fill depth 3D grid with 0.0
-    dgrid (depths, size);
+    dgrid(depths, size);
 
     // Allocate memory
-    cavs = (pts*) calloc (ncav, sizeof(pts));
-    boundaries = (pts*) calloc (ncav, sizeof(pts));
+    cavs = (pts *)calloc(ncav, sizeof(pts));
+    boundaries = (pts *)calloc(ncav, sizeof(pts));
 
     // Initialize boundaries and cavs points
-    for (i=0; i<ncav; i++)
+    for (i = 0; i < ncav; i++)
     {
-        boundaries[i].X1 = cavs[i].X1 = nx; 
+        boundaries[i].X1 = cavs[i].X1 = nx;
         boundaries[i].Y1 = cavs[i].Y1 = ny;
         boundaries[i].Z1 = cavs[i].Z1 = nz;
         boundaries[i].X2 = cavs[i].X2 = 0.0;
@@ -1545,19 +1517,19 @@ _depth (int *cavities, int nx, int ny, int nz, double *depths, int size, double 
     }
 
     if (verbose)
-        fprintf (stdout, "> Defining bulk-cavity boundary points\n");
-    filter_boundary (cavities, nx, ny, nz, cavs, boundaries, nthreads);
+        fprintf(stdout, "> Defining bulk-cavity boundary points\n");
+    filter_boundary(cavities, nx, ny, nz, cavs, boundaries, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Estimating depth\n");
-    estimate_depth (cavities, depths, nx, ny, nz, max_depth, avg_depth, ncav, cavs, boundaries, step, nthreads);
+        fprintf(stdout, "> Estimating depth\n");
+    estimate_depth(cavities, depths, nx, ny, nz, max_depth, avg_depth, ncav, cavs, boundaries, step, nthreads);
 
     // Untag bulk-cavity boundary points
-    remove_boundary (cavities, nx, ny, nz, ncav, boundaries, nthreads);
+    remove_boundary(cavities, nx, ny, nz, ncav, boundaries, nthreads);
 
     // Free pts
-    free (cavs);
-    free (boundaries);
+    free(cavs);
+    free(boundaries);
 }
 
 /* Retrieve interface residues */
@@ -1572,10 +1544,10 @@ _depth (int *cavities, int nx, int ny, int nz, double *depths, int size, double 
  * struct node* next: pointer to next linked list node
  *  
  */
-typedef struct node 
-{ 
-    int pos; 
-    struct node* next; 
+typedef struct node
+{
+    int pos;
+    struct node *next;
 } res;
 
 /*
@@ -1588,15 +1560,14 @@ typedef struct node
  * 
  * returns: res node with atom index
  */
-res* 
-create (int pos)
+res *create(int pos)
 {
-    res* new = (res*) malloc (sizeof(res));
+    res *new = (res *)malloc(sizeof(res));
 
     new->pos = pos;
     new->next = NULL;
 
-    return new; 
+    return new;
 }
 
 /*
@@ -1609,20 +1580,19 @@ create (int pos)
  * new: res node
  * 
  */
-void 
-insert (res** head, res* new)
+void insert(res **head, res *new)
 {
-    res* current;
+    res *current;
 
     if (*head == NULL || (*head)->pos >= new->pos)
     {
         new->next = *head;
         *head = new;
-    } 
+    }
     else
     {
         current = *head;
-        while (current->next != NULL && current->next->pos < new->pos) 
+        while (current->next != NULL && current->next->pos < new->pos)
         {
             current = current->next;
         }
@@ -1657,68 +1627,70 @@ insert (res** head, res* new)
  * returns: array of strings with interface residues with cavities separated by '-1'
  */
 char
-**interface (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads)
+    **
+    interface(int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads)
 {
-    int i, j, k, atom, tag, count=0, old_atom=-1, old_tag=-1;
+    int i, j, k, atom, tag, count = 0, old_atom = -1, old_tag = -1;
     double x, y, z, xaux, yaux, zaux, distance, H;
     char **residues;
 
-    // Allocate memory for reslist structure    
+    // Allocate memory for reslist structure
     res *reslist[ncav], *new;
-    
+
     // Initialize linked list
-    for (i=0; i<ncav; i++)
+    for (i = 0; i < ncav; i++)
         reslist[i] = NULL;
 
-    for (atom=0; atom<natoms; atom++)
+    for (atom = 0; atom < natoms; atom++)
     {
-            // Convert atom coordinates in 3D grid coordinates
-            x = ( atoms[atom * 4] - reference[0] ) / step; 
-            y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
-            z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+        // Convert atom coordinates in 3D grid coordinates
+        x = (atoms[atom * 4] - reference[0]) / step;
+        y = (atoms[1 + (atom * 4)] - reference[1]) / step;
+        z = (atoms[2 + (atom * 4)] - reference[2]) / step;
 
-            xaux = x * sincos[3] + z * sincos[2];
-            yaux = y;
-            zaux = (-x) * sincos[2] + z * sincos[3];
+        xaux = x * sincos[3] + z * sincos[2];
+        yaux = y;
+        zaux = (-x) * sincos[2] + z * sincos[3];
 
-            x = xaux;
-            y = yaux * sincos[1] - zaux * sincos[0];
-            z = yaux * sincos[0] + zaux * sincos[1];
+        x = xaux;
+        y = yaux * sincos[1] - zaux * sincos[0];
+        z = yaux * sincos[0] + zaux * sincos[1];
 
-            // Create a radius (H) for space occupied by probe and atom
-            H = ( probe_in + atoms[3 + (atom * 4)] ) / step;
+        // Create a radius (H) for space occupied by probe and atom
+        H = (probe_in + atoms[3 + (atom * 4)]) / step;
 
-            // Loop around radius from atom center        
-            for (i=floor(x - H); i<=ceil(x + H); i++)
-                for (j=floor(y - H); j<=ceil(y + H); j++)
-                    for (k=floor(z - H); k<=ceil(z + H); k++) 
-                    {
-                        if (i < nx && i > 0 && j < ny && j > 0 && k < nz && k > 0)
-                            if (abs(cavities[ k + nz * (j + ( ny * i ) ) ]) > 1)
+        // Loop around radius from atom center
+        for (i = floor(x - H); i <= ceil(x + H); i++)
+            for (j = floor(y - H); j <= ceil(y + H); j++)
+                for (k = floor(z - H); k <= ceil(z + H); k++)
+                {
+                    if (i < nx && i > 0 && j < ny && j > 0 && k < nz && k > 0)
+                        if (abs(cavities[k + nz * (j + (ny * i))]) > 1)
+                        {
+                            tag = cavities[k + nz * (j + (ny * i))] - 2;
+                            distance = sqrt(pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
+                            if (distance <= H)
                             {
-                                tag = cavities[ k + nz * (j + ( ny * i ) ) ] - 2;
-                                distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
-                                if (distance <= H)
-                                {   
-                                    if (old_atom != atom || old_tag != tag)
-                                    {
-                                        new = create(atom);
-                                        insert(&reslist[tag], new);
-                                        count++;
-                                    }
-                                    old_atom = atom;
-                                    old_tag = tag;
+                                if (old_atom != atom || old_tag != tag)
+                                {
+                                    new = create(atom);
+                                    insert(&reslist[tag], new);
+                                    count++;
                                 }
+                                old_atom = atom;
+                                old_tag = tag;
                             }
-                    }
+                        }
+                }
     }
-    
+
     // Pass res information to char **
-    residues = calloc(count + ncav + 1, sizeof(char*));
-    for (i=0, j=0; i<ncav; i++)
-    {   
+    residues = calloc(count + ncav + 1, sizeof(char *));
+    for (i = 0, j = 0; i < ncav; i++)
+    {
         new = reslist[i];
-        while (new != NULL) { 
+        while (new != NULL)
+        {
             residues[j++] = pdb[new->pos];
             new = new->next;
         }
@@ -1759,12 +1731,13 @@ char
  * 
  */
 char
-** _constitutional (int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads, int verbose)
+    **
+    _constitutional(int *cavities, int nx, int ny, int nz, char **pdb, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int ncav, int nthreads, int verbose)
 {
     char **residues;
 
     if (verbose)
-        fprintf (stdout, "> Retrieving interface residues\n");
+        fprintf(stdout, "> Retrieving interface residues\n");
     residues = interface(cavities, nx, ny, nz, pdb, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, ncav, nthreads);
 
     return residues;
@@ -1784,13 +1757,13 @@ char
  * nscales: size of 1D-array of scales and resn
  * 
  */
-double 
-get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscales)
+double
+get_hydrophobicity_value(char *resname, char **resn, double *scales, int nscales)
 {
     int i;
 
     // Get hydrophobicity value
-    for (i=0; i<nscales; i++)
+    for (i = 0; i < nscales; i++)
         if (strcmp(resname, resn[i]) == 0)
             return scales[i];
 
@@ -1824,63 +1797,60 @@ get_hydrophobicity_value (char *resname, char **resn, double *scales, int nscale
  * nthreads: number of threads for OpenMP
  * 
  */
-void 
-project_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads)
+void project_hydropathy(double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads)
 {
     int i, j, k, atom, *ref;
     double x, y, z, xaux, yaux, zaux, distance, H;
 
     // Initiliaze 3D grid for residues distances
-    ref = (double *) calloc (nxx * nyy * nzz, sizeof (double));
+    ref = (double *)calloc(nxx * nyy * nzz, sizeof(double));
     dgrid(ref, nxx * nyy * nzz);
     dgrid(hydropathy, nxx * nyy * nzz);
 
     // Get hydrophobicity value for each surface point
-    for (atom=0; atom<natoms; atom++)
+    for (atom = 0; atom < natoms; atom++)
     {
-            // Convert atom coordinates in 3D grid coordinates
-            x = ( atoms[atom * 4] - reference[0] ) / step; 
-            y = ( atoms[1 + (atom * 4)] - reference[1] ) / step; 
-            z = ( atoms[2 + (atom * 4)] - reference[2] ) / step;
+        // Convert atom coordinates in 3D grid coordinates
+        x = (atoms[atom * 4] - reference[0]) / step;
+        y = (atoms[1 + (atom * 4)] - reference[1]) / step;
+        z = (atoms[2 + (atom * 4)] - reference[2]) / step;
 
-            xaux = x * sincos[3] + z * sincos[2];
-            yaux = y;
-            zaux = (-x) * sincos[2] + z * sincos[3];
+        xaux = x * sincos[3] + z * sincos[2];
+        yaux = y;
+        zaux = (-x) * sincos[2] + z * sincos[3];
 
-            x = xaux;
-            y = yaux * sincos[1] - zaux * sincos[0];
-            z = yaux * sincos[0] + zaux * sincos[1];
+        x = xaux;
+        y = yaux * sincos[1] - zaux * sincos[0];
+        z = yaux * sincos[0] + zaux * sincos[1];
 
-            // Create a radius (H) for space occupied by probe and atom
-            H = ( probe_in + atoms[3 + (atom * 4)] ) / step;
+        // Create a radius (H) for space occupied by probe and atom
+        H = (probe_in + atoms[3 + (atom * 4)]) / step;
 
-            // Loop around radius from atom center        
-            for (i=floor(x - H); i<=ceil(x + H); i++)
-                for (j=floor(y - H); j<=ceil(y + H); j++)
-                    for (k=floor(z - H); k<=ceil(z + H); k++) 
-                    {
-                        if (i < nxx && i > 0 && j < nyy && j > 0 && k < nzz && k > 0)
-                            // Found a surface point
-                            if (surface[ k + nzz * (j + ( nyy * i ) ) ] > 1)
-                            {   
-                                // Calculate distance bewteen atom and surface point
-                                distance = sqrt( pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
-                                // Check if surface point was not checked before
-                                if (ref[ k + nzz * (j + ( nyy * i ) ) ] == 0.0)
-                                {
-                                    ref[ k + nzz * (j + ( nyy * i ) ) ] = distance;
-                                    hydropathy[ k + nzz * (j + ( nyy * i ) ) ] = get_hydrophobicity_value (resname[atom], resn, scales, nscales);
-                                }
-                                // Check if this atom is closer to the previous one assigned
-                                else
-                                    if (ref[ k + nzz * (j + ( nyy * i ) ) ] > distance)
-                                    {
-                                        ref[ k + nzz * (j + ( nyy * i ) ) ] = distance;
-                                        hydropathy[ k + nzz * (j + ( nyy * i ) ) ] = get_hydrophobicity_value (resname[atom], resn, scales, nscales);
-                                    }
-                                    
+        // Loop around radius from atom center
+        for (i = floor(x - H); i <= ceil(x + H); i++)
+            for (j = floor(y - H); j <= ceil(y + H); j++)
+                for (k = floor(z - H); k <= ceil(z + H); k++)
+                {
+                    if (i < nxx && i > 0 && j < nyy && j > 0 && k < nzz && k > 0)
+                        // Found a surface point
+                        if (surface[k + nzz * (j + (nyy * i))] > 1)
+                        {
+                            // Calculate distance bewteen atom and surface point
+                            distance = sqrt(pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
+                            // Check if surface point was not checked before
+                            if (ref[k + nzz * (j + (nyy * i))] == 0.0)
+                            {
+                                ref[k + nzz * (j + (nyy * i))] = distance;
+                                hydropathy[k + nzz * (j + (nyy * i))] = get_hydrophobicity_value(resname[atom], resn, scales, nscales);
                             }
-                    }
+                            // Check if this atom is closer to the previous one assigned
+                            else if (ref[k + nzz * (j + (nyy * i))] > distance)
+                            {
+                                ref[k + nzz * (j + (nyy * i))] = distance;
+                                hydropathy[k + nzz * (j + (nyy * i))] = get_hydrophobicity_value(resname[atom], resn, scales, nscales);
+                            }
+                        }
+                }
     }
 
     // Free 3D grid for residues distances
@@ -1905,36 +1875,35 @@ project_hydropathy (double *hydropathy, int *surface, int nxx, int nyy, int nzz,
  * nthreads: number of threads for OpenMP
  * 
  */
-void
-estimate_average_hydropathy (double *avgh, int ncav, double *hydropathy, int *surface, int nx, int ny, int nz, int nthreads)
+void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy, int *surface, int nx, int ny, int nz, int nthreads)
 {
     int i, j, k, *pts;
 
     // Initialize array to get number of points in each cavity
-    pts = (int *) calloc (ncav, sizeof(int));
-    igrid (pts, ncav);
+    pts = (int *)calloc(ncav, sizeof(int));
+    igrid(pts, ncav);
 
     // Initialize average hydropathy array
-    dgrid (avgh, ncav);
+    dgrid(avgh, ncav);
 
     // Set number of threads in OpenMP
-    omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
-    #pragma omp parallel default(none), shared(avgh, hydropathy, surface, pts, nx, ny, nz), private(i, j, k)
+#pragma omp parallel default(none), shared(avgh, hydropathy, surface, pts, nx, ny, nz), private(i, j, k)
     {
-        #pragma omp for collapse(3)
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++)
-                        if (surface[k + nz * (j + ( ny * i ) )] > 1)
-                        {
-                            pts[surface[k + nz * (j + ( ny * i ) )] - 2]++;
-                            avgh[surface[k + nz * (j + ( ny * i ) )] - 2] += hydropathy[k + nz * (j + ( ny * i ) )];
-                        }
+#pragma omp for collapse(3)
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (surface[k + nz * (j + (ny * i))] > 1)
+                    {
+                        pts[surface[k + nz * (j + (ny * i))] - 2]++;
+                        avgh[surface[k + nz * (j + (ny * i))] - 2] += hydropathy[k + nz * (j + (ny * i))];
+                    }
     }
 
-    for (i=0; i<ncav; i++)
+    for (i = 0; i < ncav; i++)
         avgh[i] /= pts[i];
 
     // Free array with number of points per cavity
@@ -1975,17 +1944,15 @@ estimate_average_hydropathy (double *avgh, int ncav, double *hydropathy, int *su
  * returns: hydropathy (3D grid with hydrophobicity scale of surface points), and avg_h (array of average hydropathy)
  * 
  */
-void 
-_hydropathy (double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose)
+void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose)
 {
     if (verbose)
-        fprintf (stdout, "> Mapping hydrophobicity scale at surface points\n");
-    project_hydropathy (hydropathy, surface, nxx, nyy, nzz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, resname, resn, scales, nscales, step, probe_in, nthreads);
+        fprintf(stdout, "> Mapping hydrophobicity scale at surface points\n");
+    project_hydropathy(hydropathy, surface, nxx, nyy, nzz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, resname, resn, scales, nscales, step, probe_in, nthreads);
 
     if (verbose)
-        fprintf (stdout, "> Estimating average hydropathy\n");
-    estimate_average_hydropathy (avgh, ncav, hydropathy, surface, nxx, nyy, nzz, nthreads);
-    
+        fprintf(stdout, "> Estimating average hydropathy\n");
+    estimate_average_hydropathy(avgh, ncav, hydropathy, surface, nxx, nyy, nzz, nthreads);
 }
 
 /* Export cavity PDB */
@@ -2016,65 +1983,64 @@ _hydropathy (double *hydropathy, int size, double *avgh, int ncav, int *surface,
  * model: model number
  * 
  */
-void
-_export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
+void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
 {
-	int i, j, k, count, tag;
-	double x, y, z, xaux, yaux, zaux;
-	FILE *output;
+    int i, j, k, count, tag;
+    double x, y, z, xaux, yaux, zaux;
+    FILE *output;
 
     // Set number of threads in OpenMP
-    omp_set_num_threads (nthreads);
-    omp_set_nested (1);
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
 
-	// Open cavity PDB file
+    // Open cavity PDB file
     if (append)
-        output = fopen (fn, "a+");
+        output = fopen(fn, "a+");
     else
-	    output = fopen (fn, "w");
-    
+        output = fopen(fn, "w");
+
     // Write model number
     if (abs(model) > 0)
-        fprintf (output, "MODEL     %4.d\n", model);
+        fprintf(output, "MODEL     %4.d\n", model);
 
-    for (count=1, tag=2; tag<=ncav+2; tag++)
-        #pragma omp parallel default(none) shared(cavities, surface, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
-        {
-            #pragma omp for schedule(static) collapse(3) ordered nowait
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++) 
+    for (count = 1, tag = 2; tag <= ncav + 2; tag++)
+#pragma omp parallel default(none) shared(cavities, surface, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+    {
+#pragma omp for schedule(static) collapse(3) ordered nowait
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                {
+                    // Check if cavity point with value tag
+                    if (cavities[k + nz * (j + (ny * i))] == tag)
                     {
-                        // Check if cavity point with value tag
-                        if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
-                        {
-                            // Convert 3D grid coordinates to real coordinates
-                            x = i * step; 
-                            y = j * step; 
-                            z = k * step;
-                            
-                            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
-                            yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
-                            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+                        // Convert 3D grid coordinates to real coordinates
+                        x = i * step;
+                        y = j * step;
+                        z = k * step;
 
-                            // Write cavity point
-                            #pragma omp critical
-                            if ( surface[k + nz * (j + ( ny * i ) )] == tag )
-                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surface[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
-                            else
-                                fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, 0.0);
-                            count++;
-                        }
+                        xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                        yaux = (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                        zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+
+// Write cavity point
+#pragma omp critical
+                        if (surface[k + nz * (j + (ny * i))] == tag)
+                            fprintf(output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + (ny * i))] - 2) / 26) % 26), 65 + ((surface[k + nz * (j + (ny * i))] - 2) % 26), xaux, yaux, zaux, 0.0);
+                        else
+                            fprintf(output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + (ny * i))] - 2) / 26) % 26), 65 + ((cavities[k + nz * (j + (ny * i))] - 2) % 26), xaux, yaux, zaux, 0.0);
+                        count++;
                     }
-        }
+                }
+    }
     // Write ENDMDL
     if (abs(model) > 0)
-        fprintf (output, "ENDMDL\n");
+        fprintf(output, "ENDMDL\n");
     // Write END
     if (model < 0)
-        fprintf (output, "END\n");
+        fprintf(output, "END\n");
     // Close file
-    fclose (output);
+    fclose(output);
 }
 
 /*
@@ -2107,63 +2073,62 @@ _export (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx,
  * model: model number
  * 
  */
-void 
-_export_b (char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
+void _export_b(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
 {
-	int i, j, k, count, tag;
-	double x, y, z, xaux, yaux, zaux;
-	FILE *output;
+    int i, j, k, count, tag;
+    double x, y, z, xaux, yaux, zaux;
+    FILE *output;
 
     // Set number of threads in OpenMP
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-	// Open cavity PDB file
+    // Open cavity PDB file
     if (append)
-        output = fopen (fn, "a+");
+        output = fopen(fn, "a+");
     else
-	    output = fopen (fn, "w");
+        output = fopen(fn, "w");
 
     // Write model number
     if (abs(model) > 0)
-        fprintf (output, "MODEL     %4.d\n", model);
+        fprintf(output, "MODEL     %4.d\n", model);
 
-    for (count=1, tag=2; tag<=ncav+2; tag++)
-        #pragma omp parallel default(none) shared(cavities, surface, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
-        {
-            #pragma omp for schedule(static) collapse(3) ordered nowait
-            for (i=0; i<nx; i++)
-                for (j=0; j<ny; j++)
-                    for (k=0; k<nz; k++) 
+    for (count = 1, tag = 2; tag <= ncav + 2; tag++)
+#pragma omp parallel default(none) shared(cavities, surface, B, reference, sincos, step, ncav, tag, count, nx, ny, nz, output), private(i, j, k, x, y, z, xaux, yaux, zaux)
+    {
+#pragma omp for schedule(static) collapse(3) ordered nowait
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                {
+                    // Check if cavity point with value tag
+                    if (cavities[k + nz * (j + (ny * i))] == tag)
                     {
-                        // Check if cavity point with value tag
-                        if ( cavities[k + nz * (j + ( ny * i ) )] == tag ) 
-                        {
-                            // Convert 3D grid coordinates to real coordinates
-                            x = i * step; 
-                            y = j * step; 
-                            z = k * step;
-                            
-                            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
-                            yaux =  (y * sincos[1]) + (z * sincos[0]) + reference[1];
-                            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+                        // Convert 3D grid coordinates to real coordinates
+                        x = i * step;
+                        y = j * step;
+                        z = k * step;
 
-                            // Write cavity point
-                            #pragma omp critical
-                            if ( surface[k + nz * (j + ( ny * i ) )] == tag )
-                                fprintf (output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((surface[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
-                            else
-                                fprintf (output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + ( ny * i ) )]-2) / 26) % 26), 65 + ((cavities[k + nz * (j + ( ny * i ) )]-2) % 26), xaux, yaux, zaux, B[k + nz * (j + ( ny * i ) )]);
-                            count++;
-                        }
+                        xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) - (z * sincos[1] * sincos[2]) + reference[0];
+                        yaux = (y * sincos[1]) + (z * sincos[0]) + reference[1];
+                        zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) + (z * sincos[1] * sincos[3]) + reference[2];
+
+// Write cavity point
+#pragma omp critical
+                        if (surface[k + nz * (j + (ny * i))] == tag)
+                            fprintf(output, "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((surface[k + nz * (j + (ny * i))] - 2) / 26) % 26), 65 + ((surface[k + nz * (j + (ny * i))] - 2) % 26), xaux, yaux, zaux, B[k + nz * (j + (ny * i))]);
+                        else
+                            fprintf(output, "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf  1.00%6.2lf\n", count % 100000, 65 + (((cavities[k + nz * (j + (ny * i))] - 2) / 26) % 26), 65 + ((cavities[k + nz * (j + (ny * i))] - 2) % 26), xaux, yaux, zaux, B[k + nz * (j + (ny * i))]);
+                        count++;
                     }
-        }
+                }
+    }
     // Write ENDMDL
     if (abs(model) > 0)
-        fprintf (output, "ENDMDL\n");
+        fprintf(output, "ENDMDL\n");
     // Write END
     if (model < 0)
-        fprintf (output, "END\n");
+        fprintf(output, "END\n");
     // Close file
-    fclose (output);
+    fclose(output);
 }
