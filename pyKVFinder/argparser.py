@@ -222,7 +222,7 @@ def argparser() -> argparse.ArgumentParser:
     parameters.add_argument(
         "--ignore_backbone",
         action="store_true",
-        default=None,
+        default=False,
         help="Ignore backbone contacts to cavity when defining interface residues. (default: %(default)s)",
     )
 
