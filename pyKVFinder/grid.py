@@ -220,7 +220,7 @@ def get_grid_from_file(
         raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atominfo).shape) != 2:
         raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    elif numpy.asarray(atominfo).shape[1] != 4:
+    elif numpy.asarray(atominfo).shape[1] != 2:
         raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
     if type(xyzr) not in [numpy.ndarray, list]:
         raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
@@ -1318,7 +1318,7 @@ def constitutional(
         raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atominfo).shape) != 2:
         raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    elif numpy.asarray(atominfo).shape[1] != 4:
+    elif numpy.asarray(atominfo).shape[1] != 2:
         raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
     if type(xyzr) not in [numpy.ndarray, list]:
         raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
@@ -1583,7 +1583,7 @@ def hydropathy(
         raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atominfo).shape) != 2:
         raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    elif numpy.asarray(atominfo).shape[1] != 4:
+    elif numpy.asarray(atominfo).shape[1] != 2:
         raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
     if type(xyzr) not in [numpy.ndarray, list]:
         raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
