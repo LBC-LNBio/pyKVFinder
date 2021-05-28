@@ -1,4 +1,5 @@
 import os
+import pathlib
 import numpy
 from typing import Union, Tuple, Dict, List
 
@@ -88,7 +89,7 @@ def get_vertices(
 
 
 def get_grid_from_file(
-    fn: str,
+    fn: Union[str, pathlib.Path],
     atominfo: Union[numpy.ndarray, List[List[str]]],
     xyzr: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
@@ -102,7 +103,7 @@ def get_grid_from_file(
 
     Parameters
     ----------
-    fn : str
+    fn : Union[str, pathlib.Path]
         A path to box configuration file (TOML-formatted).
     atominfo : Union[numpy.ndarray, List[List[str]]]
         A numpy.ndarray or a list with atomic information (residue number,
@@ -214,7 +215,7 @@ def get_grid_from_file(
     from toml import load
 
     # Check arguments types
-    if type(fn) not in [str]:
+    if type(fn) not in [str, pathlib.Path]:
         raise TypeError("`fn` must be a str.")
     if type(atominfo) not in [numpy.ndarray, list]:
         raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
@@ -1442,7 +1443,7 @@ def hydropathy(
     ncav: int,
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
-    hydrophobicity_scale: str = "EisenbergWeiss",
+    hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
     ignore_backbone: bool = False,
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
@@ -1474,6 +1475,11 @@ def hydropathy(
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
         Probe In size (A), by default 1.4.
+    hydrophobicity_scale : str, optional
+        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
+        KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a
+        TOML-formatted file with a custom hydrophobicity scale, by default
+        `EisenbergWeiss`.
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
@@ -1563,6 +1569,8 @@ def hydropathy(
     ValueError
         `probe_in` must be a non-negative real number.
     TypeError
+        `hydrophobicity_scale` must be a string or a pathlib.Path.
+    TypeError
         `ignore_backbone` must be a boolean.
     TypeError
         `nthreads` must be a positive integer.
@@ -1613,6 +1621,8 @@ def hydropathy(
         raise TypeError("`probe_in` must be a non-negative real number.")
     elif probe_in < 0.0:
         raise ValueError("`probe_in` must be a non-negative real number.")
+    if type(hydrophobicity_scale) not in [str, pathlib.Path]:
+        raise TypeError("`hydrophobicity_scale` must be a string or a pathlib.Path.")
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
     if type(nthreads) not in [int]:
@@ -1707,7 +1717,7 @@ def hydropathy(
 
 
 def export(
-    fn: str,
+    fn: Union[str, pathlib.Path],
     cavities: numpy.ndarray,
     surface: numpy.ndarray,
     vertices: Union[numpy.ndarray, List[List[float]]],
@@ -1715,7 +1725,7 @@ def export(
     ncav: int,
     step: Union[float, int] = 0.6,
     B: Union[numpy.ndarray, None] = None,
-    output_hydropathy: str = "hydropathy.pdb",
+    output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
     scales: Union[numpy.ndarray, None] = None,
     nthreads: int = os.cpu_count() - 1,
     append: bool = False,
@@ -1727,7 +1737,7 @@ def export(
 
     Parameters
     ----------
-    fn : str
+    fn : Union[str, pathlib.Path]
         A path to PDB file for writing cavities.
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
@@ -1746,7 +1756,7 @@ def export(
     B : Union[numpy.ndarray, None], optional
         A numpy.ndarray with values to be mapped on B-factor column in cavity
         points (B[nx][ny][nz]), by default None.
-    output_hydropathy : str, optional
+    output_hydropathy : Union[str, pathlib.Path], optional
         A path to hydropathy PDB file (surface points mapped with a
         hydrophobicity scale), by default `hydropathy.pdb`.
     scales : Union[numpy.ndarray, None], optional
@@ -1893,12 +1903,12 @@ def export(
 
     # Create base directories of results
     if fn is not None:
-        if type(fn) not in [str]:
-            raise TypeError("`fn` must be a string.")
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
         os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
     if output_hydropathy is not None:
-        if type(output_hydropathy) not in [str]:
-            raise TypeError("`output_hydropathy` must be a string.")
+        if type(output_hydropathy) not in [str, pathlib.Path]:
+            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
         os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
 
     # Unpack vertices

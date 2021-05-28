@@ -15,12 +15,12 @@ import pyKVFinder
 
 Command Line Interface
 ----------------------
-Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <path>]
-                [--nthreads <int>] [-d <file>] [-s <float>] [-i <float>]
-                [-o <float>] [-V <float>] [-R <float>] [-S <enum>]
-                [--ignore_backbone] [-B <.toml>] [-L <.pdb>]
-                [--ligand_cutoff <float>]
-                <.pdb>
+Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>]
+                  [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]
+                  [-o <float>] [-V <float>] [-R <float>] [-S <str>]
+                  [--ignore_backbone] [-D] [--plot_frequencies]
+                  [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+                  <.pdb>
 
 GitHub repository: https://github.com/LBC-LNBio/pyKVFinder
 Documentation: https://lbc-lnbio.github.io/pyKVFinder

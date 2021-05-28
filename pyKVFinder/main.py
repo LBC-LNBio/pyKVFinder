@@ -2,7 +2,9 @@ import os
 import time
 import logging
 import numpy
+import pathlib
 from datetime import datetime
+from typing import Union, Dict, List
 from .argparser import argparser
 from .utils import (
     read_vdw,
@@ -27,27 +29,28 @@ from .grid import (
 
 __all__ = ["pyKVFinder", "pyKVFinderResults"]
 
-here = os.path.abspath(os.path.dirname(__file__))
-_dictionary = os.path.join(here, "data/vdw.dat")
+_vdw = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 
-def cli():
-    """
-    pyKVFinder Command Line Interface (CLI)
+def cli() -> None:
+    """pyKVFinder Command Line Interface (CLI).
 
     Parameters
     ----------
-        None
+    None
 
     Returns
     -------
-        None
+    None
 
     Example
     -------
-    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>] [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <str>] [--ignore_backbone]
-                    [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                    <.pdb>
+    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>]
+                      [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]
+                      [-o <float>] [-V <float>] [-R <float>] [-S <str>]
+                      [--ignore_backbone] [-D] [--plot_frequencies]
+                      [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+                      <.pdb>
     """
     # Start time
     start_time = time.time()
@@ -118,23 +121,31 @@ def cli():
 
         # Calculate distance between points
         nx, ny, nz = get_dimensions(args.vertices, args.step)
-        if args.verbose:
-            print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
 
         # Calculate sin and cos of angles a and b
         args.sincos = get_sincos(args.vertices)
-        if args.verbose:
-            print(f"sina: {args.sincos[0]:.2f}\tsinb: {args.sincos[2]:.2f}")
-            print(f"cosa: {args.sincos[1]:.2f}\tcosb: {args.sincos[3]:.2f}")
 
         # Set flag to boolean
         args.box = False
+
+    if args.verbose:
+        print(f"p1: {args.vertices[0]}")
+        print(f"p2: {args.vertices[1]}")
+        print(f"p3: {args.vertices[2]}")
+        print(f"p4: {args.vertices[3]}")
+        print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
+        print(f"sina: {args.sincos[0]:.2f}\tsinb: {args.sincos[2]:.2f}")
+        print(f"cosa: {args.sincos[1]:.2f}\tcosb: {args.sincos[3]:.2f}")
 
     # Logging parameters
     logging.info(f"> Step: {args.step} \u00c5")
     logging.info(f"> Probe In: {args.probe_in} \u00c5")
     logging.info(f"> Probe Out: {args.probe_out} \u00c5")
     logging.info(f"> Voxel volume: {args.step * args.step * args.step} \u00c5\u00b3")
+    logging.info(f"> p1: {args.vertices[0]}")
+    logging.info(f"> p2: {args.vertices[1]}")
+    logging.info(f"> p3: {args.vertices[2]}")
+    logging.info(f"> p4: {args.vertices[3]}")
     logging.info(f"> Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
     logging.info(f"> sina: {args.sincos[0]:.2f}\tcosa: {args.sincos[1]:.2f}")
     logging.info(f"> sinb: {args.sincos[2]:.2f}\tcosb: {args.sincos[3]:.2f}")
@@ -274,80 +285,127 @@ def cli():
 
 
 class pyKVFinderResults(object):
-    f"""
-    A class containing pyKVFinder detection and characterization results
+    f"""A class containing pyKVFinder detection and characterization results.
 
     Attributes
     ----------
-        cavities (numpy.ndarray): cavity points in the 3D grid (cavities[nx][ny][nz])
-        surface (numpy.ndarray): surface points in the 3D grid (surface[nx][ny][nz])
-        depths (numpy.ndarray): a numpy array with depth of cavity points (depth[nx][ny][nz])
-        scales (numpy.ndarray): a numpy array with hydrophobicity scale value mapped at surface points (scales[nx][ny][nz])
-        volume (dict): a dictionary with volume of each detected cavity
-        area (dict): a dictionary with area of each detected cavity
-        max_depth (dict): a dictionary with maximum depth of each detected cavity
-        avg_depth (dict): a dictionary with average depth of each detected cavity
-        avg_hydropathy (dict): a dictionary with average hydropathy of each detected cavity and the range of the hydrophobicity scale (min, max)
-        residues (dict): a dictionary of list of interface residues pairs of each detected cavity
-        frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
-        _vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-        _step (float): grid spacing (A)
-        _ncav (int): number of cavities
-        _pdb (str): a path to input PDB file
-        _ligand (str): a path to ligand PDB file
+    cavities : numpy.ndarray
+        Cavity points in the 3D grid (cavities[nx][ny][nz]).
+    surface : numpy.ndarray
+        Surface points in the 3D grid (surface[nx][ny][nz])
+    depths : Union[numpy.ndarray, None]
+        A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).
+    scales : Union[numpy.ndarray, None]
+        A numpy.ndarray with hydrophobicity scale value mapped at surface
+        points (scales[nx][ny][nz]).
+    volume : Dict[str, float]
+        A dictionary with volume of each detected cavity.
+    area : Dict[str, float]
+        A dictionary with area of each detected cavity.
+    max_depth : Union[Dict[str, float], None]
+        A dictionary with maximum depth of each detected cavity.
+    avg_depth : Union[Dict[str, float], None]
+        A dictionary with average depth of each detected cavity.
+    avg_hydropathy : Union[Dict[str, float], None]
+        A dictionary with average hydropathy for each detected cavity and
+        the range of the hydrophobicity scale (min, max).
+    residues: Dict[str, List[List[str]]]
+        A dictionary with a list of interface residues for each detected
+        cavity.
+    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]
+        A dictionary with frequencies of residues and class for
+        residues of each detected cavity.
+    _vertices : numpy.ndarray
+        A numpy.ndarray or a list with xyz vertices coordinates (origin,
+        X-axis, Y-axis, Z-axis).
+    _step : float
+        Grid spacing (A).
+    _ncav : int
+        Number of cavities.
+    _pdb : Union[str, pathlib.Path, None], optional
+        A path to input PDB file, by default None.
+    _ligand : Union[str, pathlib.Path, None], optional
+        A path to ligand PDB file, by default None.
 
     Methods
     -------
-        export(output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', nthreads = {os.cpu_count() - 1}):
-            Exports cavities and characterizations to PDB-formatted files
-        write(fn = 'results.toml', output = None, output_hydropathy = None):
-            Writes file paths and characterizations to a TOML-formatted results file
-        plot_frequencies(pdf = 'histograms.pdf')
-            Plot histograms of frequencies (residues and classes of residues) in a PDF file
-        export_all(fn = 'results.toml', output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb', include_frequencies_pdf = False, pdf = 'histogtrams.pdf', nthreads = {os.cpu_count() - 1}):
-            Exports cavities and characterizations to PDB-formatted files, writes file paths and characterizations to a TOML-formatted results file, and optionally plot histograms of frequencies in a PDF file
+    export(output = 'cavity.pdb', output_hydropathy = 'hydropathy.pdb',
+    nthreads = {os.cpu_count() - 1})
+        Exports cavities and characterizations to PDB-formatted files.
+    write(fn = 'results.toml', output = None, output_hydropathy = None)
+        Writes file paths and characterizations to a TOML-formatted
+        results file.
+    plot_frequencies(pdf = 'histograms.pdf')
+        Plot histograms of frequencies (residues and classes of residues) in a
+        PDF file.
+    export_all(fn = 'results.toml', output = 'cavity.pdb',
+    output_hydropathy = 'hydropathy.pdb', include_frequencies_pdf = False,
+    pdf = 'histogtrams.pdf', nthreads = {os.cpu_count() - 1})
+        Exports cavities and characterizations to PDB-formatted files, writes
+        file paths and characterizations to a TOML-formatted results file,
+        and optionally plot histograms of frequencies in a PDF file.
     """
 
     def __init__(
         self,
         cavities: numpy.ndarray,
         surface: numpy.ndarray,
-        depths: numpy.ndarray,
-        scales: numpy.ndarray,
-        volume: dict,
-        area: dict,
-        max_depth: dict,
-        avg_depth: dict,
-        avg_hydropathy: dict,
-        residues: dict,
-        frequencies: dict,
+        depths: Union[numpy.ndarray, None],
+        scales: Union[numpy.ndarray, None],
+        volume: Dict[str, float],
+        area: Dict[str, float],
+        max_depth: Union[Dict[str, float], None],
+        avg_depth: Union[Dict[str, float], None],
+        avg_hydropathy: Union[Dict[str, float], None],
+        residues: Dict[str, List[List[str]]],
+        frequencies: Union[Dict[str, Dict[str, Dict[str, int]]], None],
         _vertices: numpy.ndarray,
-        _step: float,
+        _step: Union[float, int],
         _ncav: int,
-        _pdb: str = None,
-        _ligand: str = None,
+        _pdb: Union[str, pathlib.Path, None] = None,
+        _ligand: Union[str, pathlib.Path, None] = None,
     ):
-        """
-        Constructs attributes for pyKVFinderResults object
+        """Constructs attributes for pyKVFinderResults object.
 
         Parameters
         ----------
-            cavities (numpy.ndarray): cavity points in the 3D grid (cavities[nx][ny][nz])
-            surface (numpy.ndarray): surface points in the 3D grid (surface[nx][ny][nz])
-            depths (numpy.ndarray): a numpy array with depth of cavity points (depth[nx][ny][nz])
-            scales (numpy.ndarray): a numpy array with hydrophobicity scale value mapped at surface points (scales[nx][ny][nz])
-            volume (dict): a dictionary with volume of each detected cavity
-            area (dict): a dictionary with area of each detected cavity
-            max_depth (dict): a dictionary with maximum depth of each detected cavity
-            avg_depth (dict): a dictionary with average depth of each detected cavity
-            avg_hydropathy (dict): a dictionary with average hydropathy of each detected cavity and the range of the hydrophobicity scale (min, max)
-            residues (dict): a dictionary of list of interface residues pairs of each detected cavity
-            frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
-            _vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-            _step (float): grid spacing (A)
-            _ncav (int): number of cavities
-            _pdb (str): a path to input PDB file
-            _ligand (str): a path to ligand PDB file
+        cavities : numpy.ndarray
+            Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        surface : numpy.ndarray
+            Surface points in the 3D grid (surface[nx][ny][nz])
+        depths : Union[numpy.ndarray, None]
+            A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).
+        scales : Union[numpy.ndarray, None]
+            A numpy.ndarray with hydrophobicity scale value mapped at surface
+            points (scales[nx][ny][nz]).
+        volume : Dict[str, float]
+            A dictionary with volume of each detected cavity.
+        area : Dict[str, float]
+            A dictionary with area of each detected cavity.
+        max_depth : Union[Dict[str, float], None]
+            A dictionary with maximum depth of each detected cavity.
+        avg_depth : Union[Dict[str, float], None]
+            A dictionary with average depth of each detected cavity.
+        avg_hydropathy : Union[Dict[str, float], None]
+            A dictionary with average hydropathy for each detected cavity and
+            the range of the hydrophobicity scale (min, max).
+        residues: Dict[str, List[List[str]]]
+            A dictionary with a list of interface residues for each detected
+            cavity.
+        frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]
+            A dictionary with frequencies of residues and class for
+            residues of each detected cavity.
+        _vertices : numpy.ndarray
+            A numpy.ndarray or a list with xyz vertices coordinates (origin,
+            X-axis, Y-axis, Z-axis).
+        _step : float
+            Grid spacing (A).
+        _ncav : int
+            Number of cavities.
+        _pdb : Union[str, pathlib.Path, None], optional
+            A path to input PDB file, by default None.
+        _ligand : Union[str, pathlib.Path, None], optional
+            A path to ligand PDB file, by default None.
         """
         self.cavities = cavities
         self.surface = surface
@@ -371,26 +429,34 @@ class pyKVFinderResults(object):
 
     def export(
         self,
-        output: str = "cavity.pdb",
-        output_hydropathy: str = "hydropathy.pdb",
+        output: Union[str, pathlib.Path] = "cavity.pdb",
+        output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
         nthreads: int = os.cpu_count() - 1,
     ) -> None:
-        """
-        Exports cavitiy (H) and surface (HA) points to PDB-formatted file with a variable (B; optional) in B-factor column, and hydropathy to PDB-formatted file in B-factor column at surface points (HA)
+        f"""Exports cavitiy (H) and surface (HA) points to PDB-formatted file
+        with a variable (B; optional) in B-factor column, and hydropathy to
+        PDB-formatted file in B-factor column at surface points (HA).
 
         Parameters
         ----------
-            output (str): a path to PDB file for writing cavities
-            output_hydropathy (str): a path to PDB file for writing hydropathy at surface points
-            nthreads (int): number of threads
+        output : Union[str, pathlib.Path]), optional
+            A path to PDB file for writing cavities, by default `cavity.pdb`.
+        output_hydropathy : Union[str, pathlib.Path], optional
+            A path to PDB file for writing hydropathy at surface points, by
+            default `hydropathy.pdb`.
+        nthreads : int, optional
+            Number of threads, by default {os.cpu_count() - 1}.
 
         Returns
         -------
-            None
+        None
 
         Note
         ----
-            The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA,
+        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
+        and so on.
         """
         sincos = get_sincos(self._vertices)
         export(
@@ -409,31 +475,36 @@ class pyKVFinderResults(object):
 
     def write(
         self,
-        fn: str = "results.toml",
-        output: str = None,
-        output_hydropathy: str = None,
+        fn: Union[str, pathlib.Path] = "results.toml",
+        output: Union[str, pathlib.Path, None] = None,
+        output_hydropathy: Union[str, pathlib.Path, None] = None,
     ) -> None:
         """
         Writes file paths and cavity characterization to TOML-formatted file
 
-         Parameters
-         ----------
-             fn (str): a path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected
-             output (str): a path to a cavity PDB file
-             output_hydropathy (str): a path to PDB file for writing hydropathy at surface points
+        Parameters
+        ----------
+        fn : Union[str, pathlib.Path], optional
+            A path to TOML-formatted file for writing file paths and cavity
+            characterization (volume, area, depth and interface residues)
+            per cavity detected, by default `results.toml`.
+        output : Union[str, pathlib.Path, None], optional
+            A path to a cavity PDB file, by default None.
+        output_hydropathy : Union[str, pathlib.Path, None]
+            A path to PDB file for writing hydropathy at surface points, by
+            default None.
 
-         Returns
-         -------
-             None
+        Returns
+        -------
+        None
 
-         Note
-         ----
-             The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        Note
+        ----
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA,
+        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
+        and so on.
         """
-        output = os.path.abspath(output) if output else None
-        output_hydropathy = (
-            os.path.abspath(output_hydropathy) if output_hydropathy else None
-        )
         write_results(
             fn,
             self._pdb,
@@ -450,70 +521,93 @@ class pyKVFinderResults(object):
             self._step,
         )
 
-    def plot_frequencies(self, pdf: str = "histograms.pdf"):
-        """
-        Plot histograms of frequencies (residues and classes of residues) in a PDF file
+    def plot_frequencies(self, pdf: Union[str, pathlib.Path] = "histograms.pdf"):
+        """Plot histograms of frequencies (residues and classes of residues) in
+        a PDF file.
 
         Parameters
         ----------
-            pdf (str): a path to a PDF file
+        pdf : Union[str, pathlib.Path], optional
+            A path to a PDF file, by default `histograms.pdf`.
 
         Returns
         -------
-            None
+        None
 
         Note
         ----
-            The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA,
+        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
+        and so on.
 
         Classes
         -------
-            Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
-            Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-            Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
-            Negatively charged (R4): Aspartate, Glutamate
-            Positively charged (R5): Arginine, Histidine, Lysine
-            Non-standard (RX): Non-standard residues
+        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+        Methionine, Valine.
+        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
+        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline,
+        Serine, Threonine.
+        Negatively charged (R4): Aspartate, Glutamate.
+        Positively charged (R5): Arginine, Histidine, Lysine.
+        Non-standard (RX): Non-standard residues.
         """
         plot_frequencies(self.frequencies, pdf)
 
     def export_all(
         self,
-        fn: str = "results.toml",
-        output: str = "cavity.pdb",
-        output_hydropathy: str = "hydropathy.pdb",
+        fn: Union[str, pathlib.Path] = "results.toml",
+        output: Union[str, pathlib.Path] = "cavity.pdb",
+        output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
         include_frequencies_pdf: bool = False,
-        pdf: str = "histograms.pdf",
+        pdf: Union[str, pathlib.Path] = "histograms.pdf",
         nthreads: int = os.cpu_count() - 1,
     ) -> None:
-        """
-        Exports cavities and characterization to PDB-formatted files, writes file paths and characterization to a TOML-formatted file, and optionally plot histograms of frequencies (residues and classes of residues) in a PDF file
+        f"""Exports cavities and characterization to PDB-formatted files,
+        writes file paths and characterization to a TOML-formatted file, and
+        optionally plot histograms of frequencies (residues and classes of
+        residues) in a PDF file.
 
         Parameters
         ----------
-            fn (str): a path to TOML-formatted file for writing file paths and cavity characterization (volume, area and interface residues) per cavity detected
-            output (str): a path to PDB file for writing cavities
-            output_hydropathy (str): a path to PDB file for writing hydropathy at surface points
-            include_frequencies_pdf (bool): whether to plot frequencies (residues and classes of residues) to PDF file
-            pdf (str): a path to a PDF file
-            nthreads (int): number of threads
+        fn : Union[str, pathlib.Path], optional
+            A path to TOML-formatted file for writing file paths and
+            cavity characterization (volume, area and interface residues)
+            per cavity detected, by default `results.toml`.
+        output : Union[str, pathlib.Path], optional
+            A path to PDB file for writing cavities, by default `cavity.pdb`.
+        output_hydropathy : Union[str, pathlib.Path], optional
+            A path to PDB file for writing hydropathy at surface points,
+            by default `hydropathy.pdb`.
+        include_frequencies_pdf : bool, optional
+            Whether to plot frequencies (residues and classes of residues)
+            to PDF file, by default False.
+        pdf : Union[str, pathlib.Path], optional
+            A path to a PDF file, by default `histograms.pdf`.
+        nthreads : int, optional
+            Number of threads, by default {os.cpu_count() - 1}.
 
         Returns
         -------
-            None
+        None
 
         Note
         ----
-            The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+        The cavity nomenclature is based on the integer label. The cavity
+        marked with 2, the first integer corresponding to a cavity, is KAA,
+        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
+        and so on.
 
         Classes
         -------
-            Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
-            Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-            Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
-            Negatively charged (R4): Aspartate, Glutamate
-            Positively charged (R5): Arginine, Histidine, Lysine
-            Non-standard (RX): Non-standard residues
+        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+        Methionine, Valine.
+        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
+        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline,
+        Serine, Threonine.
+        Negatively charged (R4): Aspartate, Glutamate.
+        Positively charged (R5): Arginine, Histidine, Lysine.
+        Non-standard (RX): Non-standard residues.
         """
         # Export cavity PDB file
         self.export(output, output_hydropathy, nthreads)
@@ -525,90 +619,140 @@ class pyKVFinderResults(object):
 
 
 def pyKVFinder(
-    pdb: str,
-    ligand: str = None,
-    dictionary: str = _dictionary,
-    box: str = None,
-    step: float = 0.6,
-    probe_in: float = 1.4,
-    probe_out: float = 4.0,
-    removal_distance: float = 2.4,
-    volume_cutoff: float = 5.0,
-    ligand_cutoff: float = 5.0,
+    pdb: Union[str, pathlib.Path],
+    ligand: Union[str, pathlib.Path, None] = None,
+    dictionary: Union[str, pathlib.Path] = _vdw,
+    box: Union[str, pathlib.Path, None] = None,
+    step: Union[float, int] = 0.6,
+    probe_in: Union[float, int] = 1.4,
+    probe_out: Union[float, int] = 4.0,
+    removal_distance: Union[float, int] = 2.4,
+    volume_cutoff: Union[float, int] = 5.0,
+    ligand_cutoff: Union[float, int] = 5.0,
     include_depth: bool = False,
     include_hydropathy: bool = False,
-    hydrophobicity_scale: str = "EisenbergWeiss",
+    hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
     surface: str = "SES",
     ignore_backbone: bool = False,
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
 ) -> pyKVFinderResults:
-    """
-    Detects and characterizes cavities (volume, area, depth [optional], hydropathy [optional] and interface residues)
+    f"""Detects and characterizes cavities (volume, area, depth [optional],
+    hydropathy [optional] and interface residues).
 
     Parameters
     ----------
-        pdb (str): a path to input PDB file
-        ligand (str): a path to ligand PDB file
-        dictionary (str): a path to van der Waals radii file
-        box (str): a path to box configuration file (TOML-formatted)
-        step (float): grid spacing (A)
-        probe_in (float): Probe In size (A)
-        probe_out (float): Probe Out size (A)
-        removal_distance (float): length to be removed from the cavity-bulk frontier (A)
-        volume_cutoff (float): cavities volume filter (A3)
-        ligand_cutoff (float): radius value to limit a space around a ligand (A)
-        include_depth (bool): whether to characterize the depth of the detected cavities
-        include_hydropathy (bool): whether to characterize the hydropathy of the detected cavities
-        hydrophobicity_scale (str): name of a native hydrophobicity scale (EisenbergWeiss, HessaHeijne, KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a TOML-formatted file with a custom hydrophobicity scale.
-        surface (str): keywords options are SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface)
-        ignore_backbone (bool): whether to ignore backbone atoms (C, CA, N, O) when defining interface residues
-        nthreads (int): number of threads
-        verbose: print extra information to standard output
+    pdb : Union[str, pathlib.Path]
+        A path to input PDB file.
+    ligand : Union[str, pathlib.Path], optional
+        A path to ligand PDB file, by default None.
+    dictionary : Union[str, pathlib.Path], optional
+        A path to van der Waals radii file, by default {_vdw}.
+    box : Union[str, pathlib.Path, None], optional
+        A path to box configuration file (TOML-formatted), by default None.
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6.
+    probe_in : Union[float, int], optional
+        Probe In size (A), by default 1.4.
+    probe_out : Union[float, int], optional
+        Probe Out size (A), by default 4.0.
+    removal_distance : Union[float, int], optional
+        Length to be removed from the cavity-bulk frontier (A), by default 2.4.
+    volume_cutoff : Union[float, int], optional
+        Cavities volume filter (A3), by default 5.0.
+    ligand_cutoff : Union[float, int], optional
+        Radius value to limit a space around a ligand (A), by default 5.0.
+    include_depth : bool, optional
+        Whether to characterize the depth of the detected cavities, by
+        default False.
+    include_hydropathy : bool, optional
+        Whether to characterize the hydropathy of the detected cavities, by
+        default False.
+    hydrophobicity_scale : Union[str, pathlib.Path], optional
+        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
+        KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a
+        TOML-formatted file with a custom hydrophobicity scale, by default
+        `EisenbergWeiss`.
+    surface : str, optional
+        Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+        Accessible Surface), by default SES.
+    ignore_backbone : bool, optional
+        Whether to ignore backbone atoms (C, CA, N, O) when defining interface
+        residues, by default False.
+    nthreads : int, optional
+        Number of threads, by default {os.cpu_count()-1}.
+    verbose : bool, optional
+        Print extra information to standard output, by default False.
 
     Returns
     -------
-        results (pyKVFinderResults): a class with the following attributes defined:
-            * cavities (numpy.ndarray): cavity points in the 3D grid (cavities[nx][ny][nz])
-            * surface (numpy.ndarray): surface points in the 3D grid (surface[nx][ny][nz])
-            * depths (numpy.ndarray): a numpy array with depth of cavity points (depth[nx][ny][nz])
-            * scales (numpy.ndarray): a numpy array with hydrophobicity scale value mapped at surface points (scales[nx][ny][nz])
-            * volume (dict): a dictionary with volume of each detected cavity
-            * area (dict): a dictionary with area of each detected cavity
-            * max_depth (dict): a dictionary with maximum depth of each detected cavity
-            * avg_depth (dict): a dictionary with average depth of each detected cavity
-            * avg_hydropathy (dict): a dictionary with average hydropathy of each detected cavity and the range of the hydrophobicity scale (min, max)
-            * residues (dict): a dictionary of list of interface residues pairs of each detected cavity
-            * frequencies (dict): a dictionary with frequencies of interface residues and classes of residues of each detected cavity
-            * _vertices (numpy.ndarray): a numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-            * _step (float): grid spacing (A)
-            * _ncav (int): number of cavities
-            * _pdb (str): a path to input PDB file
-            * _ligand (str): a path to ligand PDB file
+    results : pyKVFinderResults
+        A class with the following attributes defined:
+        * cavities : numpy.ndarray
+            Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        * surface : numpy.ndarray
+            Surface points in the 3D grid (surface[nx][ny][nz])
+        * depths : Union[numpy.ndarray, None]
+            A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).
+        * scales : Union[numpy.ndarray, None]
+            A numpy.ndarray with hydrophobicity scale value mapped at surface
+            points (scales[nx][ny][nz]).
+        * volume : Dict[str, float]
+            A dictionary with volume of each detected cavity.
+        * area : Dict[str, float]
+            A dictionary with area of each detected cavity.
+        * max_depth : Union[Dict[str, float], None]
+            A dictionary with maximum depth of each detected cavity.
+        * avg_depth : Union[Dict[str, float], None]
+            A dictionary with average depth of each detected cavity.
+        * avg_hydropathy : Union[Dict[str, float], None]
+            A dictionary with average hydropathy for each detected cavity and
+            the range of the hydrophobicity scale (min, max).
+        * residues: Dict[str, List[List[str]]]
+            A dictionary with a list of interface residues for each detected
+            cavity.
+        * frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]
+            A dictionary with frequencies of residues and class for
+            residues of each detected cavity.
+        * _vertices : numpy.ndarray
+            A numpy.ndarray or a list with xyz vertices coordinates (origin,
+            X-axis, Y-axis, Z-axis).
+        * _step : float
+            Grid spacing (A).
+        * _ncav : int
+            Number of cavities.
+        * _pdb : Union[str, pathlib.Path]
+            A path to input PDB file.
+        * _ligand : Union[str, pathlib.Path, None]
+            A path to ligand PDB file.
 
     Notes
     -----
-        The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on
+    The cavity nomenclature is based on the integer label. The cavity marked
+    with 2, the first integer corresponding to a cavity, is KAA, the cavity
+    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-        Cavities array has integer labels in each position, that are:
-            * -1: bulk points
-            * 0: biomolecule points
-            * 1: empty space points
-            * >=2: cavity points
+    Cavities array has integer labels in each position, that are:
+        * -1: bulk points;
+        * 0: biomolecule points;
+        * 1: empty space points;
+        * >=2: cavity points.
 
-        Surface array has integer labels in each position, that are:
-            * -1: bulk points
-            * 0: biomolecule or empty space points
-            * >=2: cavity points
+    Surface array has integer labels in each position, that are:
+        * -1: bulk points;
+        * 0: biomolecule or empty space points;
+        * >=2: cavity points.
 
     Classes
     -------
-        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
-        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
-        Negatively charged (R4): Aspartate, Glutamate
-        Positively charged (R5): Arginine, Histidine, Lysine
-        Non-standard (RX): Non-standard residues
+    Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+    Methionine, Valine.
+    Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
+    Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline,
+    Serine, Threonine.
+    Negatively charged (R4): Aspartate, Glutamate.
+    Positively charged (R5): Arginine, Histidine, Lysine.
+    Non-standard (RX): Non-standard residues.
     """
     if verbose:
         print("> Loading atomic dictionary file")

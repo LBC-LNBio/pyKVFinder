@@ -356,7 +356,7 @@ def calculate_frequencies(
     -------
     frequencies : Dict[str, Dict[str, Dict[str, int]]]
         A dictionary with frequencies of residues and class for
-        residues of each detected cavity
+        residues of each detected cavity.
 
     Note
     ----
@@ -685,7 +685,7 @@ def write_results(
     TypeError
         `step` must be a positive real number.
     ValueError
-        [description]
+        `step` must be a positive real number.
     """
     import toml
 
@@ -725,7 +725,7 @@ def write_results(
     if frequencies is not None:
         if type(frequencies) not in [dict]:
             raise TypeError("`frequencies` must be a dictionary.")
-    if type(step) not in [dict]:
+    if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
