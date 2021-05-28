@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -219,76 +221,59 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">volume</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">residues</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">frequencies</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str</em></span></dt>
-<dd><p class="first last">A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected</p>
+<dl class="field-list">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code><span class="classifier"><em>str</em></span></dt><dd><p>A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pdb</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str</em></span></dt>
-<dd><p class="first last">A path to input PDB file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">pdb</span></code><span class="classifier"><em>str</em></span></dt><dd><p>A path to input PDB file</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ligand</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str</em></span></dt>
-<dd><p class="first last">A path to ligand PDB file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ligand</span></code><span class="classifier"><em>str</em></span></dt><dd><p>A path to ligand PDB file</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str</em></span></dt>
-<dd><p class="first last">A path to cavity PDB file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">output</span></code><span class="classifier"><em>str</em></span></dt><dd><p>A path to cavity PDB file</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str</em></span></dt>
-<dd><p class="first last">A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code><span class="classifier"><em>str</em></span></dt><dd><p>A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">volume</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with volume of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">volume</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with volume of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">area</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with area of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">area</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with area of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">max_depth</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with maximum depth of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">max_depth</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with maximum depth of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">avg_depth</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with average depth of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">avg_depth</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with average depth of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">avg_hydropathy</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped</p>
+<dt><code class="docutils literal notranslate"><span class="pre">avg_hydropathy</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with interface residues of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with interface residues of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">frequencies</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with frequencies of interface residues and classes of residues of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">frequencies</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with frequencies of interface residues and classes of residues of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 0.6</em></span></dt>
-<dd><p class="first last">Grid spacing (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">File with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>File with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity.</p>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="detect.html">pyKVFinder.detect</a></li>
-<li><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></li>
-<li><a class="reference external" href="depth.html">pyKVFinder.depth</a></li>
-<li><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></li>
-<li><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
-<li><a class="reference external" href="export.html">pyKVFinder.export</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
+<li><p><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></p></li>
+<li><p><a class="reference external" href="depth.html">pyKVFinder.depth</a></p></li>
+<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
+<li><p><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></p></li>
+<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the cavity and surface points identified and depth and hydrophobicity scale mapped in the 3D grid, we can:</p>
 <ul class="simple">
-<li>Write cavity detection:</li>
+<li><p>Write cavity detection:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">write_results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
@@ -297,7 +282,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Write spatial characterization</li>
+<li><p>Write spatial characterization</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volume</span>
 <span class="go">{&#39;KAA&#39;: 137.16, &#39;KAB&#39;: 47.52, &#39;KAC&#39;: 66.96, &#39;KAD&#39;: 8.21, &#39;KAE&#39;: 43.63, &#39;KAF&#39;: 12.53, &#39;KAG&#39;: 6.26, &#39;KAH&#39;: 520.13, &#39;KAI&#39;: 12.31, &#39;KAJ&#39;: 26.57, &#39;KAK&#39;: 12.31, &#39;KAL&#39;: 33.91, &#39;KAM&#39;: 23.11, &#39;KAN&#39;: 102.82, &#39;KAO&#39;: 6.05, &#39;KAP&#39;: 15.55, &#39;KAQ&#39;: 7.99, &#39;KAR&#39;: 7.78}</span>
@@ -307,7 +292,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Write constitutional characterization</li>
+<li><p>Write constitutional characterization</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
 <span class="go">{&#39;KAA&#39;: [[&#39;14&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;97&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;141&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;320&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;321&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;322&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;323&#39;, &#39;E&#39;, &#39;ASP&#39;]], &#39;KAE&#39;: [[&#39;95&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;107&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;108&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;163&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;326&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;75&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;336&#39;, &#39;E&#39;, &#39;ARG&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;199&#39;, &#39;E&#39;, &#39;CYS&#39;], [&#39;200&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;331&#39;, &#39;E&#39;, &#39;GLU&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;253&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;275&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;237&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
@@ -317,7 +302,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Write depth characterization</li>
+<li><p>Write depth characterization</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">max_depth</span>
 <span class="go">{&#39;KAA&#39;: 3.79, &#39;KAB&#39;: 2.68, &#39;KAC&#39;: 2.62, &#39;KAD&#39;: 0.85, &#39;KAE&#39;: 3.0, &#39;KAF&#39;: 0.85, &#39;KAG&#39;: 0.6, &#39;KAH&#39;: 10.73, &#39;KAI&#39;: 2.55, &#39;KAJ&#39;: 2.24, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 3.0, &#39;KAM&#39;: 1.2, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 1.04, &#39;KAP&#39;: 2.08, &#39;KAQ&#39;: 0.85, &#39;KAR&#39;: 0.6}</span>
@@ -327,7 +312,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Write hydropathy characterization</li>
+<li><p>Write hydropathy characterization</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">avg_hydropathy</span>
 <span class="go">{&#39;KAA&#39;: -0.73, &#39;KAB&#39;: -0.06, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.16, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.35, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
@@ -335,7 +320,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Write all</li>
+<li><p>Write all</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">write_results</span><span class="p">(</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">pdb</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavities.pdb&#39;</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span><span class="o">=</span><span class="n">avg_depth</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="o">=</span><span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="n">residues</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">=</span><span class="n">frequencies</span><span class="p">)</span>
 </pre></div>

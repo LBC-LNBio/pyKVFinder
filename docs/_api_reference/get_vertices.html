@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -219,42 +221,34 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
+<dl class="field-list">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 4.0</em></span></dt>
-<dd><p class="first last">Probe Out size (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code><span class="classifier"><em>float, default 4.0</em></span></dt><dd><p>Probe Out size (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 0.6</em></span></dt>
-<dd><p class="first last">Grid spacing (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
-<li><a class="reference external" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
-<li><a class="reference external" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
-<li><a class="reference external" href="detect.html">pyKVFinder.detect</a></li>
-<li><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></li>
-<li><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
-<li><a class="reference external" href="export.html">pyKVFinder.export</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
+<li><p><a class="reference external" href="get_sincos.html">pyKVFinder.get_sincos</a></p></li>
+<li><p><a class="reference external" href="get_dimensions.html">pyKVFinder.get_dimensions</a></p></li>
+<li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
+<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
+<li><p><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></p></li>
+<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the atomic coordinates read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>, we can get the coordinates of 3D grid vertices (origin, X-axis, Y-axis, Z-axis):</p>

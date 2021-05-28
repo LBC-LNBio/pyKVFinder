@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -210,88 +212,66 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinderResults</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">depths</span><span class="p">,</span> <span class="n">scales</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">residues</span><span class="p">,</span> <span class="n">_vertices</span><span class="p">,</span> <span class="n">_step</span><span class="p">,</span> <span class="n">_ncav</span><span class="p">,</span> <span class="n">_pdb</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_ligand</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><dl class="first last docutils">
-<dt>A numpy array with integer labels in each position, that are:</dt>
-<dd><ul class="first last simple">
-<li>-1: bulk point.</li>
-<li>0: biomolecule point.</li>
-<li>1: empty space.</li>
-<li>&gt;=2: cavity point.</li>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><dl class="simple">
+<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
+<li><p>-1: bulk point.</p></li>
+<li><p>0: biomolecule point.</p></li>
+<li><p>1: empty space.</p></li>
+<li><p>&gt;=2: cavity point.</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><dl class="first last docutils">
-<dt>A numpy array with integer labels in each position, that are:</dt>
-<dd><ul class="first last simple">
-<li>-1: bulk point.</li>
-<li>0: biomolecule or empty space point.</li>
-<li>&gt;=2: cavity point.</li>
+<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><dl class="simple">
+<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
+<li><p>-1: bulk point.</p></li>
+<li><p>0: biomolecule or empty space point.</p></li>
+<li><p>&gt;=2: cavity point.</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">depths</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with depth of cavity points (depth[nx][ny][nz])</p>
+<dt><code class="docutils literal notranslate"><span class="pre">depths</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with depth of cavity points (depth[nx][ny][nz])</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">scales</span></code>: <em>numpy.ndarray</em></dt>
-<dd><p class="first last">Hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])</p>
+<dt><code class="docutils literal notranslate"><span class="pre">scales</span></code>: <em>numpy.ndarray</em></dt><dd><p>Hydrophobicity scale values mapped at surface points (scales[nx][ny][nz])</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">volume</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with volume of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">volume</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with volume of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">area</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with area of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">area</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with area of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">max_depth</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with maximum depth of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">max_depth</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with maximum depth of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">avg_depth</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with average depth of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">avg_depth</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with average depth of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">avg_hydropathy</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped</p>
+<dt><code class="docutils literal notranslate"><span class="pre">avg_hydropathy</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with interface residues of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with interface residues of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">frequency</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with frequency of residues and class of residues of each detected cavity</p>
+<dt><code class="docutils literal notranslate"><span class="pre">frequency</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with frequency of residues and class of residues of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_vertices</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float</em></span></dt>
-<dd><p class="first last">Grid spacing (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_step</span></code><span class="classifier"><em>float</em></span></dt><dd><p>Grid spacing (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_ncav</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
-<dd><p class="first last">Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> and <code class="docutils literal notranslate"><span class="pre">surface</span></code> numpy arrays</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_ncav</span></code><span class="classifier"><em>int</em></span></dt><dd><p>Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> and <code class="docutils literal notranslate"><span class="pre">surface</span></code> numpy arrays</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_pdb</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default None</em></span></dt>
-<dd><p class="first last">A path to input PDB file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_pdb</span></code><span class="classifier"><em>str, default None</em></span></dt><dd><p>A path to input PDB file</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_ligand</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default None</em></span></dt>
-<dd><p class="first last">A path to ligand PDB file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_ligand</span></code><span class="classifier"><em>str, default None</em></span></dt><dd><p>A path to ligand PDB file</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <h3>Methods</h3><div class="toctree-wrapper compound">
 </div>
 <ul class="simple">
-<li><a class="reference external" href="pyKVFinderResults.export.html">pyKVFinder.pyKVFinderResults.export</a>: Exports cavities and characterizations to PDB-formatted files.</li>
-<li><a class="reference external" href="pyKVFinderResults.write.html">pyKVFinder.pyKVFinderResults.write</a>: Writes file paths and characterizations to a TOML-formatted results file.</li>
-<li><a class="reference external" href="pyKVFinderResults.plot_frequencies.html">pyKVFinder.pyKVFinderResults.plot_frequencies</a>: Plot histograms of frequencies (residues and classes of residues) in a PDF file.</li>
-<li><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a>: Exports cavities and characterizations to PDB-formatted files, writes file paths and characterizations to a TOML-formatted results file, and optionally plot histograms of frequencies in a PDF file.</li>
+<li><p><a class="reference external" href="pyKVFinderResults.export.html">pyKVFinder.pyKVFinderResults.export</a>: Exports cavities and characterizations to PDB-formatted files.</p></li>
+<li><p><a class="reference external" href="pyKVFinderResults.write.html">pyKVFinder.pyKVFinderResults.write</a>: Writes file paths and characterizations to a TOML-formatted results file.</p></li>
+<li><p><a class="reference external" href="pyKVFinderResults.plot_frequencies.html">pyKVFinder.pyKVFinderResults.plot_frequencies</a>: Plot histograms of frequencies (residues and classes of residues) in a PDF file.</p></li>
+<li><p><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a>: Exports cavities and characterizations to PDB-formatted files, writes file paths and characterizations to a TOML-formatted results file, and optionally plot histograms of frequencies in a PDF file.</p></li>
 </ul>
 </div>
 

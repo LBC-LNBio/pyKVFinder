@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -212,37 +214,30 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinderResults</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;results.toml, output = None, output_hydropathy = None)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default ‘results.toml’</em></span></dt>
-<dd><p class="first last">A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected</p>
+<dl class="field-list">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code><span class="classifier"><em>str, default ‘results.toml’</em></span></dt><dd><p>A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default None</em></span></dt>
-<dd><p class="first last">A path to a cavity PDB file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">output</span></code><span class="classifier"><em>str, default None</em></span></dt><dd><p>A path to a cavity PDB file</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default None</em></span></dt>
-<dd><p class="first last">A path to PDB file for writing hydropathy at surface points</p>
+<dt><code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code><span class="classifier"><em>str, default None</em></span></dt><dd><p>A path to PDB file for writing hydropathy at surface points</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">File with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>File with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity.</p>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
-<li><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
+<li><p><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">pyKVFinder</span>

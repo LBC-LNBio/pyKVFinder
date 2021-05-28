@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -219,110 +221,93 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">probe_in</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span> <span class="n">ignore_backbone</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><dl class="first last docutils">
-<dt>A numpy array with integer labels in each position, that are:</dt>
-<dd><ul class="first last simple">
-<li>-1: bulk point.</li>
-<li>0: biomolecule point.</li>
-<li>1: empty space.</li>
-<li>&gt;=2: cavity point.</li>
+<dl class="field-list">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><dl class="simple">
+<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
+<li><p>-1: bulk point.</p></li>
+<li><p>0: biomolecule point.</p></li>
+<li><p>1: empty space.</p></li>
+<li><p>&gt;=2: cavity point.</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">atominfo</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with atomic information (residue number, chain, residue name, atom name)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">atominfo</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with atomic information (residue number, chain, residue name, atom name)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
-<dd><p class="first last">Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> numpy array</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code><span class="classifier"><em>int</em></span></dt><dd><p>Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> numpy array</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 0.6</em></span></dt>
-<dd><p class="first last">Grid spacing (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 1.4</em></span></dt>
-<dd><p class="first last">Probe In size (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code><span class="classifier"><em>float, default 1.4</em></span></dt><dd><p>Probe In size (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
-<dd><p class="first last">Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Whether to ignore backbone atoms (C, CA, N, O) when defining interface residues</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt>
-<dd><p class="first last">Number of threads</p>
+<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code><span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt><dd><p>Number of threads</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
-<dd><p class="first last">Print extra information to standard output</p>
+<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Print extra information to standard output</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary of list of interface residues pairs of each detected cavity</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">residues</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary of list of interface residues pairs of each detected cavity</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <p>The classes of residues are:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R1</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Alipathic apolar</span></dt>
-<dd>Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R1</span></code><span class="classifier">Alipathic apolar</span></dt><dd><p>Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R2</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Aromatic</span></dt>
-<dd>Phenylalanine, Tryptophan, Tyrosine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R2</span></code><span class="classifier">Aromatic</span></dt><dd><p>Phenylalanine, Tryptophan, Tyrosine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R3</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Polar Uncharged</span></dt>
-<dd>Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R3</span></code><span class="classifier">Polar Uncharged</span></dt><dd><p>Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R4</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Negatively charged</span></dt>
-<dd>Aspartate, Glutamate</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R4</span></code><span class="classifier">Negatively charged</span></dt><dd><p>Aspartate, Glutamate</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R5</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Positively charged</span></dt>
-<dd>Arginine, Histidine, Lysine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R5</span></code><span class="classifier">Positively charged</span></dt><dd><p>Arginine, Histidine, Lysine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RX</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Non-standard</span></dt>
-<dd>Non-standard residues</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RX</span></code><span class="classifier">Non-standard</span></dt><dd><p>Non-standard residues</p>
+</dd>
 </dl>
 </li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="detect.html">pyKVFinder.detect</a></li>
-<li><a class="reference external" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
-<li><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
+<li><p><a class="reference external" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></p></li>
+<li><p><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the cavity points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect</span></code>, atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>, we can perform a constitutional characterization, that identifies the interface residues surrounding the cavities:</p>
@@ -333,7 +318,7 @@
 </pre></div>
 </div>
 <p>However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when defining interface residues. Then, users must set <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
 <span class="go">{&#39;KAA&#39;: [[&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAE&#39;: [[&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
 </pre></div>

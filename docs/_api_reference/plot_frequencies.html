@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -219,68 +221,62 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;histograms.pdf)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">frequencies</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>dict</em></span></dt>
-<dd><p class="first last">A dictionary with frequencies of interface residues and classes of residues of each detected cavity</p>
+<dl class="field-list">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">frequencies</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with frequencies of interface residues and classes of residues of each detected cavity</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default ‘histograms.pdf’</em></span></dt>
-<dd><p class="first last">A path to PDF file for plotting histograms of frequencies.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code><span class="classifier"><em>str, default ‘histograms.pdf’</em></span></dt><dd><p>A path to PDF file for plotting histograms of frequencies.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.</p>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <p>The classes of residues are:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R1</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Alipathic apolar</span></dt>
-<dd>Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R1</span></code><span class="classifier">Alipathic apolar</span></dt><dd><p>Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R2</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Aromatic</span></dt>
-<dd>Phenylalanine, Tryptophan, Tyrosine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R2</span></code><span class="classifier">Aromatic</span></dt><dd><p>Phenylalanine, Tryptophan, Tyrosine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R3</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Polar Uncharged</span></dt>
-<dd>Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R3</span></code><span class="classifier">Polar Uncharged</span></dt><dd><p>Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R4</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Negatively charged</span></dt>
-<dd>Aspartate, Glutamate</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R4</span></code><span class="classifier">Negatively charged</span></dt><dd><p>Aspartate, Glutamate</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">R5</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Positively charged</span></dt>
-<dd>Arginine, Histidine, Lysine</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">R5</span></code><span class="classifier">Positively charged</span></dt><dd><p>Arginine, Histidine, Lysine</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RX</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">Non-standard</span></dt>
-<dd>Non-standard residues</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RX</span></code><span class="classifier">Non-standard</span></dt><dd><p>Non-standard residues</p>
+</dd>
 </dl>
 </li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the residues and classes of residues frequencies calculated with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.calculate_frequencies</span></code>, we can plot the histograms of these frequencies in a PDF file.</p>

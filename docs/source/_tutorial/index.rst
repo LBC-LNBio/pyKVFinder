@@ -900,11 +900,11 @@ Users can define the ``box`` parameter as the filepath of one box configuration 
 Examples
 ========
 
-Jupyter notebook `examples <https://github.com/LBC-LNBio/pyKVFinder/tree/master/etc/examples>`_ are available for:
+Jupyter notebook `examples <https://github.com/LBC-LNBio/pyKVFinder/tree/master/examples>`_ are available for:
 
 .. toctree::
   :maxdepth: 0
 
-  Conservation analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/conservation-analysis/conservation-analysis.ipynb>
-  Molecular dynamics analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/md-analysis/md-analysis.ipynb>
-  Data visualization <https://github.com/LBC-LNBio/pyKVFinder/blob/master/etc/examples/visualization/ngl-visualization.ipynb>
+  Conservation analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/conservation-analysis/conservation-analysis.ipynb>
+  Molecular dynamics analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/md-analysis/md-analysis.ipynb>
+  Data visualization <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/visualization/ngl-visualization.ipynb>

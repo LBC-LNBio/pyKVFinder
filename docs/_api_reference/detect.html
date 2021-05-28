@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -220,115 +222,90 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vetices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">probe_in</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span> <span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span> <span class="n">removal_distance</span> <span class="o">=</span> <span class="mf">2.4</span><span class="p">,</span> <span class="n">volume_cutoff</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ligand_cutoff</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">box_adjustment</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">surface</span> <span class="o">=</span> <span class="s1">&#39;SES&#39;</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
-<dd><p class="first last">x 3D grid units</p>
+<dl class="field-list">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>x 3D grid units</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
-<dd><p class="first last">y 3D grid units</p>
+<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>y 3D grid units</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int</em></span></dt>
-<dd><p class="first last">z 3D grid units</p>
+<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>z 3D grid units</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 0.6</em></span></dt>
-<dd><p class="first last">Grid spacing (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 1.4</em></span></dt>
-<dd><p class="first last">Probe In size (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code><span class="classifier"><em>float, default 1.4</em></span></dt><dd><p>Probe In size (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 4.0</em></span></dt>
-<dd><p class="first last">Probe Out size (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code><span class="classifier"><em>float, default 4.0</em></span></dt><dd><p>Probe Out size (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">removal_distance</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 2.4</em></span></dt>
-<dd><p class="first last">Length to be removed from the cavity-bulk frontier (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">removal_distance</span></code><span class="classifier"><em>float, default 2.4</em></span></dt><dd><p>Length to be removed from the cavity-bulk frontier (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 5.0</em></span></dt>
-<dd><p class="first last">Cavities volume filter (A3)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code><span class="classifier"><em>float, default 5.0</em></span></dt><dd><p>Cavities volume filter (A3)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lxyzr</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>numpy.ndarray</em></span></dt>
-<dd><p class="first last">A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of ligand atoms</p>
+<dt><code class="docutils literal notranslate"><span class="pre">lxyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of ligand atoms</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>float, default 5.0</em></span></dt>
-<dd><p class="first last">Radius value to limit a space around a ligand (A)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code><span class="classifier"><em>float, default 5.0</em></span></dt><dd><p>Radius value to limit a space around a ligand (A)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
-<dd><p class="first last">Whether a custom 3D grid is applied</p>
+<dt><code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Whether a custom 3D grid is applied</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>str, default ‘SES’</em></span></dt>
-<dd><dl class="first last docutils">
-<dt>Keyword options passed to surface representation:</dt>
-<dd><ul class="first last simple">
-<li>SES: Solvent Excluded Surface.</li>
-<li>SAS: Solvent Accessible Surface</li>
+<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code><span class="classifier"><em>str, default ‘SES’</em></span></dt><dd><dl class="simple">
+<dt>Keyword options passed to surface representation:</dt><dd><ul class="simple">
+<li><p>SES: Solvent Excluded Surface.</p></li>
+<li><p>SAS: Solvent Accessible Surface</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt>
-<dd><p class="first last">Number of threads</p>
+<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code><span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt><dd><p>Number of threads</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code> <span class="classifier-delimiter">:</span> <span class="classifier"><em>bool, default False</em></span></dt>
-<dd><p class="first last">Print extra information to standard output</p>
+<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Print extra information to standard output</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code>: <em>int</em></dt>
-<dd><p class="first last">Number of detected cavities</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code>: <em>numpy.ndarray</em></dt>
-<dd><dl class="first last docutils">
-<dt>A numpy array with integer labels in each position, that are:</dt>
-<dd><ul class="first last simple">
-<li>-1: bulk point.</li>
-<li>0: biomolecule point.</li>
-<li>1: empty space point.</li>
-<li>&gt;=2: cavity point.</li>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code>: <em>int</em></dt><dd><p>Number of detected cavities</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code>: <em>numpy.ndarray</em></dt><dd><dl class="simple">
+<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
+<li><p>-1: bulk point.</p></li>
+<li><p>0: biomolecule point.</p></li>
+<li><p>1: empty space point.</p></li>
+<li><p>&gt;=2: cavity point.</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Points belonging to the same cavity receive the same integer label.</p>
-<p class="last">The empty space points are regions that do not meet the volume cutoff defined in <code class="docutils literal notranslate"><span class="pre">detect</span></code> function.</p>
+<p>The empty space points are regions that do not meet the volume cutoff defined in <code class="docutils literal notranslate"><span class="pre">detect</span></code> function.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="admonition-title">Warning</p>
 <p>If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code> and read box configuration file with <a class="reference external" href="get_grid_from_file.html">get_grid_from_file</a>.</p>
-<p class="last">If you are using ligand adjustment mode, do not forget to read ligand atom coordinates with <a class="reference external" href="read_pdb.html">read_pdb</a>.</p>
+<p>If you are using ligand adjustment mode, do not forget to read ligand atom coordinates with <a class="reference external" href="read_pdb.html">read_pdb</a>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
-<li><a class="reference external" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
-<li><a class="reference external" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
-<li><a class="reference external" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
-<li><a class="reference external" href="get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></li>
-<li><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></li>
-<li><a class="reference external" href="depth.html">pyKVFinder.depth</a></li>
-<li><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></li>
-<li><a class="reference external" href="export.html">pyKVFinder.export</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
+<li><p><a class="reference external" href="get_vertices.html">pyKVFinder.get_vertices</a></p></li>
+<li><p><a class="reference external" href="get_dimensions.html">pyKVFinder.get_dimensions</a></p></li>
+<li><p><a class="reference external" href="get_sincos.html">pyKVFinder.get_sincos</a></p></li>
+<li><p><a class="reference external" href="get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></p></li>
+<li><p><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></p></li>
+<li><p><a class="reference external" href="depth.html">pyKVFinder.depth</a></p></li>
+<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
+<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the grid defined with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code>, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions</span></code> and <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_sincos</span></code>, and atomic coordiantes loaded with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>, we can detect cavities on the whole target biomolecule:</p>
@@ -422,8 +399,8 @@
 </pre></div>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p class="admonition-title">Warning</p>
+<p>If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div>
 </div>
 
