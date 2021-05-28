@@ -27,7 +27,7 @@ Documentation: https://lbc-lnbio.github.io/pyKVFinder
 """
 
 __name__ = "pyKVFinder"
-__version__ = "0.1.0"
+__version__ = "0.1.3"
 license = "GNU GPL-3.0 License"
 
 try:

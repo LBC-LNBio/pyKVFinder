@@ -1,6 +1,9 @@
 import os
 import logging
 import argparse
+import pathlib
+import numpy
+from typing import Dict, List, Union, Tuple
 
 __all__ = [
     "read_vdw",
@@ -14,43 +17,53 @@ here = os.path.abspath(os.path.dirname(__file__))
 vdw_cfg = os.path.join(here, "data/vdw.dat")
 
 
-def read_vdw(fn: str = vdw_cfg) -> dict:
-    f"""
-    Reads van der Waals radii from .dat file
+def read_vdw(fn: Union[str, pathlib.Path] = vdw_cfg) -> Dict[str, Dict[str, float]]:
+    f"""Reads van der Waals radii from .dat file.
 
     Parameters
     ----------
-        fn (str): a path to a van der Waals radii file, by default {vdw_cfg}
+    fn : Union[str, pathlib.Path]
+        A path to a van der Waals radii file, by default {vdw_cfg}.
 
     Returns
     -------
-        vdw (dict): a dictionary containing radii values (vdw[resname][atom])
+    vdw : Dict[str, Dict[str, float]]
+        A dictionary containing radii values.
 
     Raises
     ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
     ValueError
         A line in `vdw` has incorrect format. The values must be double
-        tab-separated
+        tab-separated.
     ValueError
-        A line in `vdw` has an incorrect radius type for an atom
+        A line in `vdw` has an incorrect radius type for an atom.
 
     Note
     ----
-        The van der Waals radii file defines the radius values for each
-        atom by residue and when not defined, it uses a generic value
-        based on the atom type (check van der Waals File Template).
-        The package contains a built-in van der Waals radii file: `vdw.dat`.
+    The van der Waals radii file defines the radius values for each
+    atom by residue and when not defined, it uses a generic value
+    based on the atom type (check van der Waals File Template).
+    The package contains a built-in van der Waals radii file: `vdw.dat`.
 
     van der Waals File Template
     ---------------------------
-        >RES
-        C       1.66
-        CA      2.00
-        N       1.97
-        O       1.69
-        H       0.91
+    >RES
+    C       1.66
+    CA      2.00
+    N       1.97
+    O       1.69
+    H       0.91
     """
+    # Check argument
+    if type(fn) not in [str, pathlib.Path]:
+        raise TypeError("`fn` must be a string or a pathlib.Path.")
+
+    # Create vdw dictionary
     vdw = {}
+
+    # Open fn
     with open(fn, "r") as f:
         # Read line with data only (ignore empty lines)
         lines = [
@@ -70,32 +83,39 @@ def read_vdw(fn: str = vdw_cfg) -> dict:
                         if len(line.split("\t\t")) != 2:
                             raise ValueError(
                                 "A line in `vdw` has incorrect format. \
-                                    The values must be double tab-separated."
+The values must be double tab-separated."
                             )
                     try:
                         vdw[res][atom] = float(radius)
                     except ValueError:
                         raise ValueError(
                             "A line in `vdw` has an incorrect radius type for \
-                                an atom."
+an atom."
                         )
+
     return vdw
 
 
-def _process_pdb_line(line: str, vdw: dict) -> tuple:
-    """
-    Extracts ATOM and HETATM information of PDB line
+def _process_pdb_line(
+    line: str, vdw: Dict[str, Dict[str, float]]
+) -> Tuple[List[str], List[float]]:
+    """Extracts ATOM and HETATM information of PDB line.
 
     Parameters
     ----------
-        line (str): line of PDB file
-        vdw (dict): Dictionary with radii values (vdw[resname][atom])
+    line : str
+        A line of a valid PDB file
+    vdw : Dict[str, Dict[str, Dict[str, float]]]
+        A dictionary containing radii values
 
     Returns
     -------
-        atominfo (list): a list with resnum, chain, resname and atom name
-        coords (list): a list with xyz coordinates and radius
+    atominfo : List[str]
+        A list with resnum, chain, resname and atom name.
+    coords : List[float]
+        A list with xyz coordinates and radius.
     """
+    # Get PDB infomation
     atom = line[12:16].strip()
     resname = line[17:20].strip()
     resnum = int(line[22:26])
@@ -104,69 +124,93 @@ def _process_pdb_line(line: str, vdw: dict) -> tuple:
     y = float(line[38:46])
     z = float(line[46:54])
     atom_symbol = line[76:78].strip().upper()
+
+    # Get atom and radius from vdw
     if resname in vdw.keys() and atom in vdw[resname].keys():
         radius = vdw[resname][atom]
     else:
         radius = vdw["GEN"][atom_symbol]
         logging.info(
-            f"Warning: Atom {atom} of residue {resname} not found in dictionary"
+            f"Warning: Atom {atom} of residue {resname} \
+not found in dictionary."
         )
         logging.info(
-            f"Warning: Using generic atom {atom_symbol} radius: {radius} \u00c5"
+            f"Warning: Using generic atom {atom_symbol} \
+radius: {radius} \u00c5."
         )
+
+    # Prepare output
     atominfo = [f"{resnum}_{chain}_{resname}", atom]
     coords = [x, y, z, radius]
+
     return atominfo, coords
 
 
-def read_pdb(fn: str, vdw: dict) -> tuple:
-    """
-    Reads PDB file into Numpy arrays
+def read_pdb(
+    fn: Union[str, pathlib.Path], vdw: Dict[str, Dict[str, float]] = read_vdw()
+) -> Tuple[numpy.ndarray, numpy.ndarray]:
+    """Reads PDB file into numpy.ndarrays.
 
     Parameters
     ----------
-        fn (str): a path to PDB file
-        vdw (dict): a dictionary with radii values (vdw[resname][atom])
+    fn : Union[str, pathlib.Path]
+        A path to PDB file.
+    vdw : Dict[str, Dict[str, float]
+        A dictionary with radii values.
 
     Returns
     -------
-        atominfo (numpy.ndarray): a numpy array with atomic information
-        (residue number, chain, residue name, atom name)
-        xyzr (numpy.ndarray): a numpy array with xyz atomic coordinates and
-        radii values (x, y, z, radius)
+    atominfo : numpy.ndarray
+        A numpy array with atomic information (residue number, chain,
+        residue name, atom name) for each atom.
+    xyzr : numpy.ndarray
+        A numpy.ndarray with xyz atomic coordinates, radii and barcode
+        for each atom.
 
     Note
     ----
-        The vdW radii file defines the radius values for each atom by residue
-        and when not defined, it uses a generic value based on the atom type.
-    """
-    import numpy as np
+    The van der Waals radii file defines the radius values for each atom
+    by residue and when not defined, it uses a generic value based on the
+    atom type. The function by default loads the built-in van der Waals radii
+    file: `vdw.dat`.
 
+    Raises
+    ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
+    """
+    # Check arguments
+    if type(fn) not in [str, pathlib.Path]:
+        raise TypeError("`fn` must be a string or a pathlib.Path.")
+
+    # Create lists
     atominfo = []
     xyzr = []
+
     with open(fn, "r") as f:
         for line in f.readlines():
             if line[:4] == "ATOM" or line[:6] == "HETATM":
                 atom, coords = _process_pdb_line(line, vdw)
                 atominfo.append(atom)
                 xyzr.append(coords)
-    return np.asarray(atominfo), np.asarray(xyzr)
+
+    return numpy.asarray(atominfo), numpy.asarray(xyzr)
 
 
-def _process_box(args: argparse.Namespace) -> dict:
-    """
-    Gets xyz coordinates of 3D grid vertices
+def _process_box(args: argparse.Namespace) -> Dict[str, List[float]]:
+    """Gets xyz coordinates of 3D grid vertices.
 
     Parameters
     ----------
-        args (argparse.Namespace): arguments passes by argparser CLI
+    args (argparse.Namespace)
+        Arguments passes by argparser CLI.
 
     Returns
     -------
-        box (list): a list of vertices coordinates (origin, Xmax, Ymax, Zmax)
+    box : Dict[str, List[float]]
+        A dictionary with a xyz coordinates (p1: origin,
+        p2: X-axis, p3: Y-axis, p4: Z-axis) for each point.
     """
-    import numpy as np
-
     # Create box parameter
     box = {
         "p1": args.vertices[0],
@@ -228,32 +272,32 @@ def _process_box(args: argparse.Namespace) -> dict:
         )
 
         # Remove probe out addition
-        box["p1"] -= np.array([x1, y1, z1])
-        box["p2"] -= np.array([x2, y2, z2])
-        box["p3"] -= np.array([x3, y3, z3])
-        box["p4"] -= np.array([x4, y4, z4])
+        box["p1"] -= numpy.array([x1, y1, z1])
+        box["p2"] -= numpy.array([x2, y2, z2])
+        box["p3"] -= numpy.array([x3, y3, z3])
+        box["p4"] -= numpy.array([x4, y4, z4])
 
     # Prepare to dict to toml module
-    box["p1"] = np.around(box["p1"], 2).tolist()
-    box["p2"] = np.around(box["p2"], 2).tolist()
-    box["p3"] = np.around(box["p3"], 2).tolist()
-    box["p4"] = np.around(box["p4"], 2).tolist()
+    box["p1"] = numpy.around(box["p1"], 2).tolist()
+    box["p2"] = numpy.around(box["p2"], 2).tolist()
+    box["p3"] = numpy.around(box["p3"], 2).tolist()
+    box["p4"] = numpy.around(box["p4"], 2).tolist()
 
     return box
 
 
 def _write_parameters(args: argparse.Namespace) -> None:
-    """
-    Writes parameters used in cavity detection and characterization of
-    pyKVFinder to TOML-formatted file
+    """Writes parameters used in cavity detection and characterization of
+    pyKVFinder to TOML-formatted file.
 
     Parameters
     ----------
-        args (argparse.Namespace): arguments passes by argparser CLI
+    args : argparse.Namespace
+        Arguments passes by argparser CLI.
 
     Returns
     -------
-        None
+    None
     """
     import toml
 
@@ -263,7 +307,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
     # Parameters dict
     parameters = {
         "FILES": {
-            "INPUT": args.pdb,
+            "input": args.pdb,
             "LIGAND": args.ligand,
             "BASE_NAME": args.base_name,
             "OUTPUT_DIRECTORY": args.output_directory,
@@ -296,37 +340,40 @@ def _write_parameters(args: argparse.Namespace) -> None:
         toml.dump(parameters, param)
 
 
-def calculate_frequencies(residues: dict) -> dict:
-    """
-    Calculate frequencies of residues and class of residues
+def calculate_frequencies(
+    residues: Dict[str, List[List[str]]]
+) -> Dict[str, Dict[str, Dict[str, int]]]:
+    """Calculate frequencies of residues and class of residues
     (R1, R2, R3, R4 and R5) for detected cavities.
 
     Parameters
     ----------
-        residues (dict): a dictionary with a list of interface residues of
-        each detected cavity
+    residues : Dict[str, List[List[str]]]
+        A dictionary with a list of interface residues for each detected
+        cavity.
 
     Returns
     -------
-        frequencies (dict): a dictionary with frequencies of residues and
-        class of residues of each detected cavity
+    frequencies : Dict[str, Dict[str, Dict[str, int]]]
+        A dictionary with frequencies of residues and class for
+        residues of each detected cavity
 
     Note
     ----
-        The cavity nomenclature is based on the integer label. The cavity
-        marked with 2, the first integer corresponding to a cavity, is KAA, the
-        cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+    The cavity nomenclature is based on the integer label. The cavity
+    marked with 2, the first integer corresponding to a cavity, is KAA, the
+    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
     Classes
     -------
-        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
-        Methionine, Valine
-        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
-        Threonine
-        Negatively charged (R4): Aspartate, Glutamate
-        Positively charged (R5): Arginine, Histidine, Lysine
-        Non-standard (RX): Non-standard residues
+    Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+    Methionine, Valine
+    Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
+    Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
+    Threonine
+    Negatively charged (R4): Aspartate, Glutamate
+    Positively charged (R5): Arginine, Histidine, Lysine
+    Non-standard (RX): Non-standard residues
     """
     # Create a dict for frequencies
     frequencies = {}
@@ -383,40 +430,54 @@ def calculate_frequencies(residues: dict) -> dict:
     return frequencies
 
 
-def plot_frequencies(frequencies: dict, fn: str = "histograms.pdf") -> None:
-    """
-    Plot histograms of calculated frequencies (residues and classes of
+def plot_frequencies(
+    frequencies: Dict[str, Dict[str, Dict[str, int]]],
+    fn: Union[str, pathlib.Path] = "histograms.pdf",
+) -> None:
+    """Plot histograms of calculated frequencies (residues and classes of
     residues) for each detected cavity in a target PDF file.
 
     Parameters
     ----------
-        frequencies (dict): a dictionary with frequencies of interface
-        residues and classes of residues of each detected cavity
-        fn (str): a path to PDF file for plotting histograms of frequencies.
+    frequencies : Dict[str, Dict[str, Dict[str, int]]]
+        A dictionary with frequencies of residues and class for
+        residues of each detected cavity.
+    fn : Union[str, pathlib.Path], optional
+        A path to PDF file for plotting histograms of frequencies, by
+        default `histograms.pdf`.
 
     Returns
     -------
-        None
+    None
 
     Note
     ----
-        The cavity nomenclature is based on the integer label. The cavity
-        marked with 2, the first integer corresponding to a cavity, is KAA, the
-        cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+    The cavity nomenclature is based on the integer label. The cavity
+    marked with 2, the first integer corresponding to a cavity, is KAA, the
+    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
     Classes
     -------
-        Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
-        Methionine, Valine
-        Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-        Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
-        Threonine
-        Negatively charged (R4): Aspartate, Glutamate
-        Positively charged (R5): Arginine, Histidine, Lysine
-        Non-standard (RX): Non-standard residues
+    Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
+    Methionine, Valine
+    Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
+    Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
+    Threonine
+    Negatively charged (R4): Aspartate, Glutamate
+    Positively charged (R5): Arginine, Histidine, Lysine
+    Non-standard (RX): Non-standard residues
+
+    Raises
+    ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
     """
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_pdf import PdfPages
+
+    # Check arguments
+    if type(fn) not in [str, pathlib.Path]:
+        raise TypeError("`fn` must be a string or a pathlib.Path.")
 
     # Create base directories of output PDF file
     os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
@@ -532,58 +593,146 @@ def plot_frequencies(frequencies: dict, fn: str = "histograms.pdf") -> None:
 
 
 def write_results(
-    fn: str,
-    pdb: str,
-    ligand: str,
-    output: str,
-    output_hydropathy: str = None,
-    volume: dict = None,
-    area: dict = None,
-    max_depth: dict = None,
-    avg_depth: dict = None,
-    avg_hydropathy: dict = None,
-    residues: dict = None,
-    frequencies: dict = None,
-    step: float = 0.6,
+    fn: Union[str, pathlib.Path],
+    pdb: Union[str, pathlib.Path, None],
+    ligand: Union[str, pathlib.Path, None],
+    output: Union[str, pathlib.Path, None],
+    output_hydropathy: Union[str, pathlib.Path, None] = None,
+    volume: Union[Dict[str, float], None] = None,
+    area: Union[Dict[str, float], None] = None,
+    max_depth: Union[Dict[str, float], None] = None,
+    avg_depth: Union[Dict[str, float], None] = None,
+    avg_hydropathy: Union[Dict[str, float], None] = None,
+    residues: Union[Dict[str, List[List[str]]], None] = None,
+    frequencies: Union[Dict[str, Dict[str, Dict[str, int]]], None] = None,
+    step: Union[float, int] = 0.6,
 ) -> None:
-    """
-    Writes file paths and cavity characterization to TOML-formatted file
+    """Writes file paths and cavity characterization to TOML-formatted file.
 
     Parameters
     ----------
-        fn (str): a path to TOML-formatted file for writing file paths and
+    fn : Union[str, pathlib.Path]
+        A path to TOML-formatted file for writing file paths and
         cavity characterization (volume, area, depth [optional] and interface
-        residues) per cavity detected
-        pdb (str): a path to input PDB file
-        ligand (str): a path to ligand PDB file
-        output (str): a path to cavity PDB file
-        output_hydropathy (str): a path to hydropathy PDB file (surface points
-        mapped with a hydrophobicity scale)
-        volume (dict): a dictionary with volume of each detected cavity
-        area (dict): a dictionary with area of each detected cavity
-        max_depth (dict): a dictionary with maximum depth of each detected
-        cavity
-        avg_depth (dict): a dictionary with average depth of each detected
-        cavity
-        avg_hydropapthy: a dictionary with average hydropathy of each detected
-        cavity and range of the hydrophobicity scale mapped
-        residues (dict): a dictionary with interface residues of each detected
-        cavity
-        frequencies (dict): a dictionary with frequencies of interface
-        residues and classes of residues of each detected cavity
-        step (float): grid spacing (A)
+        residues) per cavity detected.
+    pdb : Union[str, pathlib.Path, None]
+        A path to input PDB file.
+    ligand : Union[str, pathlib.Path, None]
+        A path to ligand PDB file.
+    output : Union[str, pathlib.Path, None]
+        A path to cavity PDB file.
+    output_hydropathy : Union[str, pathlib.Path, None]
+        A path to hydropathy PDB file (surface points mapped with a
+        hydrophobicity scale), by default None.
+    volume : Union[Dict[str, float], None], optional
+        A dictionary with volume of each detected cavity, by default None.
+    area : Union[Dict[str, float], None], optional
+        A dictionary with area of each detected cavity, by default None.
+    max_depth : Union[Dict[str, float], None], optional
+        A dictionary with maximum depth of each detected cavity, by default
+        None.
+    avg_depth : Union[Dict[str, float], None], optional
+        A dictionary with average depth of each detected cavity, by default
+        None.
+    avg_hydropapthy : Union[Dict[str, float], None], optional
+        A dictionary with average hydropathy of each detected cavity and range
+        of the hydrophobicity scale mapped, by default None.
+    residues : Union[Dict[str, List[List[str]]], None], optional
+        A dictionary with interface residues of each detected cavity, by
+        default None.
+    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None], optional
+        A dictionary with frequencies of interface residues and classes of
+        residues of each detected cavity, by default None.
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6.
 
     Returns
     -------
-        None
+    None
 
     Note
     ----
-        The cavity nomenclature is based on the integer label. The cavity
-        marked with 2, the first integer corresponding to a cavity, is KAA, the
-        cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+    The cavity nomenclature is based on the integer label. The cavity
+    marked with 2, the first integer corresponding to a cavity, is KAA, the
+    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+
+    Raises
+    ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
+    TypeError
+        `pdb` must be a string or a pathlib.Path.
+    TypeError
+        `ligand` must be a string or a pathlib.Path.
+    TypeError
+        `output` must be a string or a pathlib.Path.
+    TypeError
+        `output_hydropathy` must be a string or a pathlib.Path.
+    TypeError
+        `volume` must be a dictionary.
+    TypeError
+        `area` must be a dictionary.
+    TypeError
+        `max_depth` must be a dictionary.
+    TypeError
+        `avg_depth` must be a dictionary.
+    TypeError
+        `avg_hydropathy` must be a dictionary.
+    TypeError
+        `residues` must be a dictionary.
+    TypeError
+        `frequencies` must be a dictionary.
+    TypeError
+        `step` must be a positive real number.
+    ValueError
+        [description]
     """
     import toml
+
+    # Check arguments
+    if type(fn) not in [str, pathlib.Path]:
+        raise TypeError("`fn` must be a string or a pathlib.Path.")
+    if pdb is not None:
+        if type(pdb) not in [str, pathlib.Path]:
+            raise TypeError("`pdb` must be a string or a pathlib.Path.")
+    if ligand is not None:
+        if type(ligand) not in [str, pathlib.Path]:
+            raise TypeError("`ligand` must be a string or a pathlib.Path.")
+    if output is not None:
+        if type(output) not in [str, pathlib.Path]:
+            raise TypeError("`output` must be a string or a pathlib.Path.")
+    if output_hydropathy is not None:
+        if type(output_hydropathy) not in [str, pathlib.Path]:
+            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
+    if volume is not None:
+        if type(volume) not in [dict]:
+            raise TypeError("`volume` must be a dictionary.")
+    if area is not None:
+        if type(area) not in [dict]:
+            raise TypeError("`area` must be a dictionary.")
+    if max_depth is not None:
+        if type(max_depth) not in [dict]:
+            raise TypeError("`max_depth` must be a dictionary.")
+    if avg_depth is not None:
+        if type(avg_depth) not in [dict]:
+            raise TypeError("`avg_depth` must be a dictionary.")
+    if avg_hydropathy is not None:
+        if type(avg_hydropathy) not in [dict]:
+            raise TypeError("`avg_hydropathy` must be a dictionary.")
+    if residues is not None:
+        if type(residues) not in [dict]:
+            raise TypeError("`residues` must be a dictionary.")
+    if frequencies is not None:
+        if type(frequencies) not in [dict]:
+            raise TypeError("`frequencies` must be a dictionary.")
+    if type(step) not in [dict]:
+        raise TypeError("`step` must be a positive real number.")
+    elif step <= 0.0:
+        raise ValueError("`step` must be a positive real number.")
+
+    # Convert types
+    if type(step) == int:
+        step = float(step)
 
     # Create base directories of results
     os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)

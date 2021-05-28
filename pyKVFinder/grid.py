@@ -1714,9 +1714,9 @@ def export(
     sincos: Union[numpy.ndarray, List[float]],
     ncav: int,
     step: Union[float, int] = 0.6,
-    B: numpy.ndarray = None,
+    B: Union[numpy.ndarray, None] = None,
     output_hydropathy: str = "hydropathy.pdb",
-    scales: numpy.ndarray = None,
+    scales: Union[numpy.ndarray, None] = None,
     nthreads: int = os.cpu_count() - 1,
     append: bool = False,
     model: int = 0,
@@ -1743,13 +1743,13 @@ def export(
         Number of cavities.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
-    B : numpy.ndarray, optional
+    B : Union[numpy.ndarray, None], optional
         A numpy.ndarray with values to be mapped on B-factor column in cavity
         points (B[nx][ny][nz]), by default None.
     output_hydropathy : str, optional
         A path to hydropathy PDB file (surface points mapped with a
         hydrophobicity scale), by default `hydropathy.pdb`.
-    scales : numpy.ndarray, optional
+    scales : Union[numpy.ndarray, None], optional
         A numpy.ndarray with hydrophobicity scale values to be mapped on
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
