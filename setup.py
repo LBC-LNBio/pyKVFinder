@@ -80,15 +80,11 @@ setup(
     packages=["pyKVFinder"],
     # Python versions support
     python_requires=">=3.7, <4",
-
     # This field lists other packages that your project depends on to run.
     install_requires=reqs,
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     include_package_data=True,
-    
-    
-
     # Command-line interface
     entry_points={"console_scripts": ["pyKVFinder=pyKVFinder.main:cli"]},
     # List additional URLs that are relevant to your project as a dict.
