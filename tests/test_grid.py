@@ -6,8 +6,6 @@ from pyKVFinder import (
     get_sincos
 )
 
-TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
-
 
 class TestGetVertices(unittest.TestCase):
     def setUp(self):
@@ -103,6 +101,7 @@ class TestGetVertices(unittest.TestCase):
         self.assertRaises(
             ValueError, get_vertices, self.xyzr, self.probe_out, -1.0
         )
+
 
 class TestGetDimensions(unittest.TestCase):
     def setUp(self):
