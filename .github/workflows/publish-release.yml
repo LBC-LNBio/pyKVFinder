@@ -1,0 +1,96 @@
+name: Python package build and publish
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  
+  deploy-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install twine flake8
+    - name: Lint with flake8 for syntax errors
+      run: |
+        pip install flake8
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Build manylinux Python wheels
+      uses: RalfG/python-wheels-manylinux-build@v0.3.4-manylinux2010_x86_64
+      with:
+        python-versions: 'cp37-cp37m cp38-cp38 cp39-cp39'
+        build-requirements: 'cython numpy'
+    - name: Publish wheels to PyPI
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        pip install -U twine
+        # twine upload dist/*-manylinux*.whl
+      continue-on-error: true
+  
+  deploy-macos:
+    runs-on: macos-latest
+    env:
+      TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      CC: /usr/local/bin/gcc-10
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: | 
+          brew install swig gcc@10
+      - name: build wheel
+        run: |
+          pip install wheel
+          python setup.py bdist_wheel
+      - name: upload wheel
+        run: |
+          pip install twine
+          # twine upload dist/*
+        continue-on-error: true
+
+  deploy-windows:
+    runs-on: windows-latest
+    env:
+      TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install swig
+        if: "startsWith(runner.os, 'windows')"
+        run: |
+          (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip","swigwin-4.0.2.zip");
+          Expand-Archive .\swigwin-4.0.2.zip .;
+          echo "$((Get-Item .).FullName)/swigwin-4.0.2" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: build wheel
+        run: |
+          pip install wheel
+          python setup.py bdist_wheel
+      - name: upload wheel
+        run: |
+          pip install twine
+          # twine upload dist/*
+        continue-on-error: true
