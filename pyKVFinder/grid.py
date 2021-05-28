@@ -58,7 +58,7 @@ def get_vertices(
     if type(xyzr) not in [numpy.ndarray, list]:
         raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(xyzr).shape) != 2:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4)")
+        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
     elif numpy.asarray(xyzr).shape[1] != 4:
         raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
     if type(probe_out) not in [int, float]:
@@ -68,7 +68,7 @@ def get_vertices(
     if type(step) not in [int, float]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
-        raise TypeError("`step` must be a positive real number.")
+        raise ValueError("`step` must be a positive real number.")
 
     # Convert xyzr type
     if type(xyzr) == list:
