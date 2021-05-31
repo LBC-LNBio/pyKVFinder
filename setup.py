@@ -28,9 +28,9 @@ except AttributeError:
     numpy_include = numpy.get_numpy_include()
 
 # Extension modules
-_grid = Extension(
-    name="_grid",
-    sources=["src/grid.i", "src/grid.c"],
+_pyKVFinder = Extension(
+    name="_pyKVFinder",
+    sources=["C/pyKVFinder.i", "C/pyKVFinder.c"],
     include_dirs=[numpy_include, "src"],
     extra_compile_args=["-fopenmp", "-Ofast", "-lm"],
     extra_link_args=["-lgomp"],
@@ -75,7 +75,7 @@ setup(
     # Keywords
     keywords="structural biology, proteins, cavity detection, cavity characterization",
     # Extension C modules
-    ext_modules=[_grid],
+    ext_modules=[_pyKVFinder],
     # Python package configuration
     packages=["pyKVFinder"],
     # Python versions support

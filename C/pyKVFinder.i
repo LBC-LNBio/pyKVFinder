@@ -1,8 +1,8 @@
-%module grid
+%module pyKVFinder
 
 %{
     #define SWIG_FILE_WITH_INIT
-    #include "grid.h"
+    #include "pyKVFinder.h"
 %}
 
 %include "numpy.i"
@@ -139,4 +139,4 @@ char **
    return $result; 
 }
 
-%include "grid.h"
+%include "pyKVFinder.h"

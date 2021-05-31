@@ -211,7 +211,7 @@ def get_grid_from_file(
     y = y4
     z = z4
     """
-    from _grid import _filter_pdb
+    from _pyKVFinder import _filter_pdb
     from toml import load
 
     # Check arguments types
@@ -718,7 +718,7 @@ def detect(
     ValueError
         `surface` must be SAS or SES, not `surface`.
     """
-    from _grid import _detect, _detect_ladj
+    from _pyKVFinder import _detect, _detect_ladj
 
     # Check arguments
     if type(nx) not in [int]:
@@ -983,7 +983,7 @@ def spatial(
     TypeError
         `verbose` must be a boolean.
     """
-    from _grid import _spatial
+    from _pyKVFinder import _spatial
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -1120,7 +1120,7 @@ def depth(
     TypeError
         `verbose` must be a boolean.
     """
-    from _grid import _depth
+    from _pyKVFinder import _depth
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -1310,7 +1310,7 @@ def constitutional(
     TypeError
         `verbose` must be a boolean.
     """
-    from _grid import _constitutional
+    from _pyKVFinder import _constitutional
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -1580,7 +1580,7 @@ def hydropathy(
         `verbose` must be a boolean.
     """
     import toml
-    from _grid import _hydropathy
+    from _pyKVFinder import _hydropathy
 
     # Check arguments
     if type(surface) not in [numpy.ndarray]:
@@ -1829,7 +1829,7 @@ def export(
     Exception
         User must define `surface` when not defining `cavities`.
     """
-    from _grid import _export, _export_b
+    from _pyKVFinder import _export, _export_b
 
     # Check arguments
     if cavities is not None:
