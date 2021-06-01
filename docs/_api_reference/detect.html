@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.detect &mdash; pyKVFinder 1.0.0 documentation</title>
+  <title>pyKVFinder.detect &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                0.1
+              </div>
             
           
 
@@ -217,83 +221,109 @@
             
   <div class="section" id="pykvfinder-detect">
 <h1>pyKVFinder.detect<a class="headerlink" href="#pykvfinder-detect" title="Permalink to this headline">¶</a></h1>
-<p>Detects biomolecular cavities.</p>
-<p>Cavity points that belongs to the same cavity are assigned with an integer in the grid. Biomolecule points = 0, Unsigned cavity points = 1, Assigned cavity points &gt;= 2 and Bulk points = -1.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vetices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">probe_in</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span> <span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span> <span class="n">removal_distance</span> <span class="o">=</span> <span class="mf">2.4</span><span class="p">,</span> <span class="n">volume_cutoff</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ligand_cutoff</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">box_adjustment</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">surface</span> <span class="o">=</span> <span class="s1">&#39;SES&#39;</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list">
-<dt class="field-odd">Args</dt>
-<dd class="field-odd"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>x 3D grid units</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>y 3D grid units</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>z 3D grid units</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code><span class="classifier"><em>float, default 1.4</em></span></dt><dd><p>Probe In size (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code><span class="classifier"><em>float, default 4.0</em></span></dt><dd><p>Probe Out size (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">removal_distance</span></code><span class="classifier"><em>float, default 2.4</em></span></dt><dd><p>Length to be removed from the cavity-bulk frontier (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code><span class="classifier"><em>float, default 5.0</em></span></dt><dd><p>Cavities volume filter (A3)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lxyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of ligand atoms</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code><span class="classifier"><em>float, default 5.0</em></span></dt><dd><p>Radius value to limit a space around a ligand (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Whether a custom 3D grid is applied</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code><span class="classifier"><em>str, default ‘SES’</em></span></dt><dd><dl class="simple">
-<dt>Keyword options passed to surface representation:</dt><dd><ul class="simple">
-<li><p>SES: Solvent Excluded Surface.</p></li>
-<li><p>SAS: Solvent Accessible Surface</p></li>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.detect">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nz</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyzr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sincos</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removal_distance</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">2.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lxyzr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ligand_cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_adjustment</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'SES'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#detect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.detect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects biomolecular cavities.</p>
+<p>Cavity points that belongs to the same cavity are assigned with an integer
+in the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – x grid units.</p></li>
+<li><p><strong>ny</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – y grid units.</p></li>
+<li><p><strong>nz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – z grid units.</p></li>
+<li><p><strong>xyzr</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a lista with xyz atomic coordinates and radii
+values (x, y, z, radius) for each atom.</p></li>
+<li><p><strong>vertices</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a list with xyz vertices coordinates (origin,
+X-axis, Y-axis, Z-axis).</p></li>
+<li><p><strong>sincos</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em>) – A numpy.ndarray or a lista with sine and cossine of the grid rotation
+angles (sina, cosa, sinb, cosb).</p></li>
+<li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+<li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
+<li><p><strong>probe_out</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe Out size (A), by default 4.0.</p></li>
+<li><p><strong>removal_distance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – A length to be removed from the cavity-bulk frontier (A), by
+default 2.4.</p></li>
+<li><p><strong>volume_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Volume filter for detected cavities (A3), by default 5.0.</p></li>
+<li><p><strong>lxyzr</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A numpy.ndarray or a list with xyz atomic coordinates and radii values
+(x, y, z, Iradius) for each atom of a target ligand, by default None.</p></li>
+<li><p><strong>ligand_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – A radius to limit a space around a ligand (A), by default 5.0.</p></li>
+<li><p><strong>box_adjustment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether a custom 3D grid is applied, by default False.</p></li>
+<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+Accessible Surface), by default SES.</p></li>
+<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default os.cpu_count()-1.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
 </ul>
-</dd>
-</dl>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code><span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt><dd><p>Number of threads</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Print extra information to standard output</p>
-</dd>
-</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code>: <em>int</em></dt><dd><p>Number of detected cavities</p>
+<dd class="field-even"><p><ul>
+<li><p><strong>ncav</strong> (<em>int</em>) – Number of cavities.</p></li>
+<li><p><strong>cavities</strong> (<em>numpy.ndarray</em>) – Cavity points in the 3D grid (cavities[nx][ny][nz]).
+Cavities array has integer labels in each position, that are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>-1: bulk points</p></li>
+<li><p>0: biomolecule points;</p></li>
+<li><p>1: empty space points;</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
+</ul>
+</div></blockquote>
+<p>The empty space points are regions that do not meet the chosen
+volume cutoff to be considered a cavity.</p>
+</li>
+</ul>
+</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code>: <em>numpy.ndarray</em></dt><dd><dl class="simple">
-<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
-<li><p>-1: bulk point.</p></li>
-<li><p>0: biomolecule point.</p></li>
-<li><p>1: empty space point.</p></li>
-<li><p>&gt;=2: cavity point.</p></li>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>nx</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>nx</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>ny</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>ny</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>nz</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>nz</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>xyzr</cite> must be a list or a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>xyzr</cite> has incorrect shape. It must be (n, 4).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>vertices</cite> must be a list or a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>vertices</cite> has incorrect shape. It must be (4, 3).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>sincos</cite> must be a list or a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>sincos</cite> has incorrect shape. It must be (4,).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>probe_in</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_in</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>probe_out</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_out</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_out</cite> must be greater than <cite>probe_in</cite>.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>removal_distance</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>removal_distance</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>volume_cutoff</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>volume_cutoff</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>lxyzr</cite> must be a list, a numpy.ndarray or None.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>ligand_cutoff</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>ligand_cutoff</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>box_adjustment</cite> must be a boolean.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>surface</cite> must be a str.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>lxyzr</cite> has incorrect shape. It must be (n, 4).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>surface</cite> must be SAS or SES, not <cite>surface</cite>.</p></li>
 </ul>
 </dd>
 </dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Points belonging to the same cavity receive the same integer label.</p>
-<p>The empty space points are regions that do not meet the volume cutoff defined in <code class="docutils literal notranslate"><span class="pre">detect</span></code> function.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using box adjustment mode, do not forget to set box_adjustment
+flag to True and read the box configuration file with ‘get_grid_from_file’
+function.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code> and read box configuration file with <a class="reference external" href="get_grid_from_file.html">get_grid_from_file</a>.</p>
-<p>If you are using ligand adjustment mode, do not forget to read ligand atom coordinates with <a class="reference external" href="read_pdb.html">read_pdb</a>.</p>
+<p>If you are using ligand adjustment mode, do not forget to read ligand atom
+coordinates with ‘read_pdb’ function.</p>
 </div>
+</dd></dl>
+
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">

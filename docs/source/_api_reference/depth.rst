@@ -1,41 +1,7 @@
 pyKVFinder.depth
 ================
 
-Characterization of the depth of the detected cavities, including depth per cavity point and maximum and average depths of detected cavities.
-
-.. code-block:: python
-    
-    pyKVFinder.depth(cavities, ncav, step = 0.6, nthreads = os.cpu_count() - 1, verbose = False)
-  
-:Args:
-
-    ``cavities`` : *numpy.ndarray*
-        A numpy array with integer labels in each position, that are:
-            * -1: bulk point.
-            * 0: biomolecule point.
-            * 1: empty space.
-            * >=2: cavity point.
-    ``ncav`` : *int*
-        Number of cavities in ``cavities`` numpy array
-    ``step`` : *float, default 0.6*
-        Grid spacing (A)
-    ``nthreads`` : *int, default 'number of cpus - 1'*
-        Number of threads
-    ``verbose`` : *bool, default False*
-        Print extra information to standard output
-
-:Returns:
-    
-    ``depths``: *numpy.ndarray*
-        A numpy array with depth of cavity points (depth[nx][ny][nz])
-    ``max_depth``: *dict*
-        A dictionary with maximum depth of each detected cavity
-    ``avg_depth``: *dict*
-        A dictionary with average depth of each detected cavity
-
-.. note::
-
-  The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+.. autofunction:: pyKVFinder.depth
 
 .. seealso::
   
@@ -52,7 +18,7 @@ With the cavity points identified with ``pyKVFinder.detect``, we can perform a d
 .. code-block:: python
 
     >>> from pyKVFinder import depth
-    >>> depths, max_depth, avg_depth = depth(cavities, ncav)
+    >>> depths, max_depth, avg_depth = depth(cavities)
     >>> depths
     array([[[0., 0., 0., ..., 0., 0., 0.],
             [0., 0., 0., ..., 0., 0., 0.],

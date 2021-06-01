@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyKVFinder.utils &mdash; pyKVFinder 0.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/icon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pyKVFinder
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#workflows">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#separated-steps">Separated steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_api_reference/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_api_reference/index.html#classes">Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#license">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyKVFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyKVFinder.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyKVFinder.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;read_vdw&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_pdb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;calculate_frequencies&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;plot_frequencies&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;write_results&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">HERE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">VDW</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HERE</span><span class="p">,</span> <span class="s2">&quot;data/vdw.dat&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_vdw"><a class="viewcode-back" href="../../_api_reference/read_vdw.html#pyKVFinder.read_vdw">[docs]</a><span class="k">def</span> <span class="nf">read_vdw</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">VDW</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Reads van der Waals radii from .dat file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : Union[str, pathlib.Path]</span>
+<span class="sd">        A path to a van der Waals radii file, by default VDW.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vdw : Dict[str, Dict[str, float]]</span>
+<span class="sd">        A dictionary containing radii values.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `fn` must be a string or a pathlib.Path.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        A line in `vdw` has incorrect format. The values must be double</span>
+<span class="sd">        tab-separated.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        A line in `vdw` has an incorrect radius type for an atom.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The van der Waals radii file defines the radius values for each</span>
+<span class="sd">    atom by residue and when not defined, it uses a generic value</span>
+<span class="sd">    based on the atom type (see `van der Waals file template`).</span>
+<span class="sd">    The package contains a built-in van der Waals radii file: `vdw.dat`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check argument</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create vdw dictionary</span>
+    <span class="n">vdw</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Open fn</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># Read line with data only (ignore empty lines)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">):</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">vdw</span><span class="p">[</span><span class="n">res</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">atom</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                                <span class="s2">&quot;A line in `vdw` has incorrect format. </span><span class="se">\</span>
+<span class="s2">The values must be double tab-separated.&quot;</span>
+                            <span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">vdw</span><span class="p">[</span><span class="n">res</span><span class="p">][</span><span class="n">atom</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;A line in `vdw` has an incorrect radius type for </span><span class="se">\</span>
+<span class="s2">an atom.&quot;</span>
+                        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vdw</span></div>
+
+
+<span class="k">def</span> <span class="nf">_process_pdb_line</span><span class="p">(</span>
+    <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Extracts ATOM and HETATM information of PDB line.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line : str</span>
+<span class="sd">        A line of a valid PDB file</span>
+<span class="sd">    vdw : Dict[str, Dict[str, Dict[str, float]]]</span>
+<span class="sd">        A dictionary containing radii values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    atominfo : List[str]</span>
+<span class="sd">        A list with resnum, chain, resname and atom name.</span>
+<span class="sd">    coords : List[float]</span>
+<span class="sd">        A list with xyz coordinates and radius.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get PDB infomation</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">resname</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">17</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">resnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">26</span><span class="p">])</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">30</span><span class="p">:</span><span class="mi">38</span><span class="p">])</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">38</span><span class="p">:</span><span class="mi">46</span><span class="p">])</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">46</span><span class="p">:</span><span class="mi">54</span><span class="p">])</span>
+    <span class="n">atom_symbol</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">76</span><span class="p">:</span><span class="mi">78</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+    <span class="c1"># Get atom and radius from vdw</span>
+    <span class="k">if</span> <span class="n">resname</span> <span class="ow">in</span> <span class="n">vdw</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">vdw</span><span class="p">[</span><span class="n">resname</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">vdw</span><span class="p">[</span><span class="n">resname</span><span class="p">][</span><span class="n">atom</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">vdw</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">][</span><span class="n">atom_symbol</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Warning: Atom </span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2"> of residue </span><span class="si">{</span><span class="n">resname</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">not found in dictionary.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Warning: Using generic atom </span><span class="si">{</span><span class="n">atom_symbol</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">radius: </span><span class="si">{</span><span class="n">radius</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Prepare output</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">resnum</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">chain</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">resname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">]</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">radius</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">coords</span>
+
+
+<div class="viewcode-block" id="read_pdb"><a class="viewcode-back" href="../../_api_reference/read_pdb.html#pyKVFinder.read_pdb">[docs]</a><span class="k">def</span> <span class="nf">read_pdb</span><span class="p">(</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">()</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Reads PDB file into numpy.ndarrays.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : Union[str, pathlib.Path]</span>
+<span class="sd">        A path to PDB file.</span>
+<span class="sd">    vdw : Dict[str, Dict[str, float]</span>
+<span class="sd">        A dictionary with radii values, by default pyKVFinder.read_vdw().</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    atominfo : numpy.ndarray</span>
+<span class="sd">        A numpy array with atomic information (residue number, chain,</span>
+<span class="sd">        residue name, atom name) for each atom.</span>
+<span class="sd">    xyzr : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with xyz atomic coordinates, radii and barcode</span>
+<span class="sd">        for each atom.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `fn` must be a string or a pathlib.Path.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The van der Waals radii file defines the radius values for each atom</span>
+<span class="sd">    by residue and when not defined, it uses a generic value based on the</span>
+<span class="sd">    atom type. The function by default loads the built-in van der Waals radii</span>
+<span class="sd">    file: `vdw.dat`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create lists</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ATOM&quot;</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HETATM&quot;</span><span class="p">:</span>
+                <span class="n">atom</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="n">_process_pdb_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+                <span class="n">atominfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+                <span class="n">xyzr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_process_box</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Gets xyz coordinates of 3D grid vertices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    args (argparse.Namespace)</span>
+<span class="sd">        Arguments passes by argparser CLI.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    box : Dict[str, List[float]]</span>
+<span class="sd">        A dictionary with a xyz coordinates (p1: origin,</span>
+<span class="sd">        p2: X-axis, p3: Y-axis, p4: Z-axis) for each point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create box parameter</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;p1&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;p2&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;p3&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;p4&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Adjust if box adjustment mode</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">:</span>
+        <span class="c1"># Get probe out additions</span>
+        <span class="c1"># p1 = (x1, y1, z1)</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">z1</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="c1"># p2 = (x2, y2, z2)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="c1"># p3 = (x3, y3, z3)</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">y3</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">z3</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="c1"># p4 = (x4, y4, z4)</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">y4</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">z4</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Remove probe out addition</span>
+        <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">])</span>
+        <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p2&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">])</span>
+        <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p3&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">z3</span><span class="p">])</span>
+        <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p4&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x4</span><span class="p">,</span> <span class="n">y4</span><span class="p">,</span> <span class="n">z4</span><span class="p">])</span>
+
+    <span class="c1"># Prepare to dict to toml module</span>
+    <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p2&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p3&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">box</span><span class="p">[</span><span class="s2">&quot;p4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p4&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">box</span>
+
+
+<span class="k">def</span> <span class="nf">_write_parameters</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Writes parameters used in cavity detection and characterization of</span>
+<span class="sd">    pyKVFinder to TOML-formatted file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    args : argparse.Namespace</span>
+<span class="sd">        Arguments passes by argparser CLI.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">toml</span>
+
+    <span class="c1"># Parameters filename</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.parameters.toml&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Parameters dict</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;FILES&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="p">,</span>
+            <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span>
+            <span class="s2">&quot;BASE_NAME&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="p">,</span>
+            <span class="s2">&quot;OUTPUT_DIRECTORY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
+            <span class="s2">&quot;DICTIONARY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">dictionary</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;SETTINGS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;MODES&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;BOX_ADJUSTMENT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+                <span class="s2">&quot;LIGAND_ADJUSTMENT&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;DEPTH&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+                <span class="s2">&quot;SURFACE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
+                <span class="s2">&quot;IGNORE_BACKBONE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;STEP&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+            <span class="s2">&quot;PROBES&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;PROBE_IN&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
+                <span class="s2">&quot;PROBE_OUT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;CUTOFFS&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;VOLUME_CUTOFF&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">volume_cutoff</span><span class="p">,</span>
+                <span class="s2">&quot;LIGAND_CUTOFF&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand_cutoff</span><span class="p">,</span>
+                <span class="s2">&quot;REMOVAL_DISTANCE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">removal_distance</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;BOX&quot;</span><span class="p">:</span> <span class="n">_process_box</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Write to TOML file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">param</span><span class="p">:</span>
+        <span class="n">toml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="calculate_frequencies"><a class="viewcode-back" href="../../_api_reference/calculate_frequencies.html#pyKVFinder.calculate_frequencies">[docs]</a><span class="k">def</span> <span class="nf">calculate_frequencies</span><span class="p">(</span>
+    <span class="n">residues</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate frequencies of residues and class of residues</span>
+<span class="sd">    (R1, R2, R3, R4 and R5) for detected cavities.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    residues : Dict[str, List[List[str]]]</span>
+<span class="sd">        A dictionary with a list of interface residues for each detected</span>
+<span class="sd">        cavity.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    frequencies : Dict[str, Dict[str, Dict[str, int]]]</span>
+<span class="sd">        A dictionary with frequencies of residues and class for</span>
+<span class="sd">        residues of each detected cavity.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">    marked with 2, the first integer corresponding to a cavity, is KAA, the</span>
+<span class="sd">    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The classes of residues are:</span>
+
+<span class="sd">    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</span>
+
+<span class="sd">    * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</span>
+
+<span class="sd">    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</span>
+
+<span class="sd">    * Negatively charged (R4): Aspartate, Glutamate.</span>
+
+<span class="sd">    * Positively charged (R5): Arginine, Histidine, Lysine.</span>
+
+<span class="sd">    * Non-standard (RX): Non-standard residues.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a dict for frequencies</span>
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Get cavity name and residues list for each detected cavity</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">reslist</span> <span class="ow">in</span> <span class="n">residues</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Create a dict for cavity name</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;RESIDUES&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;CLASS&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="p">}</span>
+        <span class="c1"># Get unique residues names</span>
+        <span class="n">residues</span> <span class="o">=</span> <span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">reslist</span><span class="p">]</span>
+        <span class="n">reslist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">residues</span><span class="p">)))</span>
+
+        <span class="c1"># Get residues frequencies</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">reslist</span><span class="p">:</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">][</span><span class="n">res</span><span class="p">]</span> <span class="o">=</span> <span class="n">residues</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+        <span class="c1"># Get class frequencies</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="s2">&quot;R1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ALA&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GLY&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ILE&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LEU&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PRO&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;VAL&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="s2">&quot;R2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PHE&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRP&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TYR&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="s2">&quot;R3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ASN&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CYS&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GLN&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MET&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SER&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;THR&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="s2">&quot;R4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;ASP&quot;</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GLU&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="s2">&quot;R5&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ARG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HIS&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LYS&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">][</span><span class="s2">&quot;RX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">frequencies</span></div>
+
+
+<div class="viewcode-block" id="plot_frequencies"><a class="viewcode-back" href="../../_api_reference/plot_frequencies.html#pyKVFinder.plot_frequencies">[docs]</a><span class="k">def</span> <span class="nf">plot_frequencies</span><span class="p">(</span>
+    <span class="n">frequencies</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;histograms.pdf&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Plot histograms of calculated frequencies (residues and classes of</span>
+<span class="sd">    residues) for each detected cavity in a target PDF file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies : Dict[str, Dict[str, Dict[str, int]]]</span>
+<span class="sd">        A dictionary with frequencies of residues and class for</span>
+<span class="sd">        residues of each detected cavity.</span>
+<span class="sd">    fn : Union[str, pathlib.Path], optional</span>
+<span class="sd">        A path to PDF file for plotting histograms of frequencies, by</span>
+<span class="sd">        default `histograms.pdf`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `fn` must be a string or a pathlib.Path.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">    marked with 2, the first integer corresponding to a cavity, is KAA, the</span>
+<span class="sd">    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The classes of residues are:</span>
+
+<span class="sd">    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</span>
+
+<span class="sd">    * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</span>
+
+<span class="sd">    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</span>
+
+<span class="sd">    * Negatively charged (R4): Aspartate, Glutamate.</span>
+
+<span class="sd">    * Positively charged (R5): Arginine, Histidine, Lysine.</span>
+
+<span class="sd">    * Non-standard (RX): Non-standard residues.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_pdf</span> <span class="kn">import</span> <span class="n">PdfPages</span>
+
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create base directories of output PDF file</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Create a dictionary for standard amino acids</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ALA&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;ARG&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;ASN&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;ASP&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;CYS&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;GLN&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;GLU&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;GLY&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;HIS&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;ILE&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;LEU&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;LYS&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;MET&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;PHE&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;PRO&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;SER&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;THR&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;TRP&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;TYR&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;VAL&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">with</span> <span class="n">PdfPages</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
+        <span class="c1"># Standardize data</span>
+        <span class="n">ymax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">cavity_tag</span> <span class="ow">in</span> <span class="n">frequencies</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Include missing residues</span>
+            <span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="o">**</span><span class="n">tmp</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">],</span>
+            <span class="p">}</span>
+            <span class="c1"># Get y maximum</span>
+            <span class="k">if</span> <span class="n">ymax</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">ymax</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Pdf plots</span>
+        <span class="k">for</span> <span class="n">cavity_tag</span> <span class="ow">in</span> <span class="n">frequencies</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Create page</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Cavity &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cavity_tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+            <span class="c1"># Frequency residues</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+            <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Frequency&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Frequency classes</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">cavity_tag</span><span class="p">][</span><span class="s2">&quot;CLASS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">&quot;tab:cyan&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tab:green&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tab:red&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tab:purple&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tab:gray&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+
+            <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Legend</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="sa">r</span><span class="s2">&quot;Aliphatic apolar&quot;</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;Aromatic&quot;</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;Polar uncharged&quot;</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;Negatively charged&quot;</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;Positively charged&quot;</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;Non-standard&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+            <span class="p">]</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+                <span class="n">handles</span><span class="p">,</span>
+                <span class="n">labels</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                <span class="n">fancybox</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower center&quot;</span><span class="p">,</span>
+                <span class="n">ncol</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Adjust plots</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.12</span><span class="p">)</span>
+
+            <span class="c1"># Save page</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">savefig</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="write_results"><a class="viewcode-back" href="../../_api_reference/write_results.html#pyKVFinder.write_results">[docs]</a><span class="k">def</span> <span class="nf">write_results</span><span class="p">(</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">pdb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">ligand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">volume</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">area</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_depth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">avg_depth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">avg_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">residues</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">frequencies</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Writes file paths and cavity characterization to TOML-formatted file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : Union[str, pathlib.Path]</span>
+<span class="sd">        A path to TOML-formatted file for writing file paths and</span>
+<span class="sd">        cavity characterization (volume, area, depth [optional] and interface</span>
+<span class="sd">        residues) per cavity detected.</span>
+<span class="sd">    pdb : Union[str, pathlib.Path, None]</span>
+<span class="sd">        A path to input PDB file.</span>
+<span class="sd">    ligand : Union[str, pathlib.Path, None]</span>
+<span class="sd">        A path to ligand PDB file.</span>
+<span class="sd">    output : Union[str, pathlib.Path, None]</span>
+<span class="sd">        A path to cavity PDB file.</span>
+<span class="sd">    output_hydropathy : Union[str, pathlib.Path, None]</span>
+<span class="sd">        A path to hydropathy PDB file (surface points mapped with a</span>
+<span class="sd">        hydrophobicity scale), by default None.</span>
+<span class="sd">    volume : Union[Dict[str, float], None], optional</span>
+<span class="sd">        A dictionary with volume of each detected cavity, by default None.</span>
+<span class="sd">    area : Union[Dict[str, float], None], optional</span>
+<span class="sd">        A dictionary with area of each detected cavity, by default None.</span>
+<span class="sd">    max_depth : Union[Dict[str, float], None], optional</span>
+<span class="sd">        A dictionary with maximum depth of each detected cavity, by default</span>
+<span class="sd">        None.</span>
+<span class="sd">    avg_depth : Union[Dict[str, float], None], optional</span>
+<span class="sd">        A dictionary with average depth of each detected cavity, by default</span>
+<span class="sd">        None.</span>
+<span class="sd">    avg_hydropapthy : Union[Dict[str, float], None], optional</span>
+<span class="sd">        A dictionary with average hydropathy of each detected cavity and range</span>
+<span class="sd">        of the hydrophobicity scale mapped, by default None.</span>
+<span class="sd">    residues : Union[Dict[str, List[List[str]]], None], optional</span>
+<span class="sd">        A dictionary with interface residues of each detected cavity, by</span>
+<span class="sd">        default None.</span>
+<span class="sd">    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None], optional</span>
+<span class="sd">        A dictionary with frequencies of interface residues and classes of</span>
+<span class="sd">        residues of each detected cavity, by default None.</span>
+<span class="sd">    step : Union[float, int], optional</span>
+<span class="sd">        Grid spacing (A), by default 0.6.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `fn` must be a string or a pathlib.Path.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `pdb` must be a string or a pathlib.Path.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `ligand` must be a string or a pathlib.Path.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `output` must be a string or a pathlib.Path.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `output_hydropathy` must be a string or a pathlib.Path.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `volume` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `area` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `max_depth` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `avg_depth` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `avg_hydropathy` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `residues` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `frequencies` must be a dictionary.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">    marked with 2, the first integer corresponding to a cavity, is KAA, the</span>
+<span class="sd">    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">toml</span>
+
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pdb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`pdb` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ligand</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ligand</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ligand` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`output` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output_hydropathy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output_hydropathy</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`output_hydropathy` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">volume</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`volume` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">area</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`area` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">max_depth</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`max_depth` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">avg_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">avg_depth</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`avg_depth` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">avg_hydropathy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">avg_hydropathy</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`avg_hydropathy` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">residues</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`residues` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">frequencies</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`frequencies` must be a dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert types</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+
+    <span class="c1"># Create base directories of results</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Prepare paths</span>
+    <span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ligand</span><span class="p">:</span>
+        <span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">ligand</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output_hydropathy</span><span class="p">:</span>
+        <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output_hydropathy</span><span class="p">)</span>
+
+    <span class="c1"># Create results dictionary</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;FILES&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">pdb</span><span class="p">,</span>
+            <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">ligand</span><span class="p">,</span>
+            <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
+            <span class="s2">&quot;HYDROPATHY&quot;</span><span class="p">:</span> <span class="n">output_hydropathy</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;PARAMETERS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;STEP&quot;</span><span class="p">:</span> <span class="n">step</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;RESULTS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;VOLUME&quot;</span><span class="p">:</span> <span class="n">volume</span><span class="p">,</span>
+            <span class="s2">&quot;AREA&quot;</span><span class="p">:</span> <span class="n">area</span><span class="p">,</span>
+            <span class="s2">&quot;MAX_DEPTH&quot;</span><span class="p">:</span> <span class="n">max_depth</span><span class="p">,</span>
+            <span class="s2">&quot;AVG_DEPTH&quot;</span><span class="p">:</span> <span class="n">avg_depth</span><span class="p">,</span>
+            <span class="s2">&quot;AVG_HYDROPATHY&quot;</span><span class="p">:</span> <span class="n">avg_hydropathy</span><span class="p">,</span>
+            <span class="s2">&quot;RESIDUES&quot;</span><span class="p">:</span> <span class="n">residues</span><span class="p">,</span>
+            <span class="s2">&quot;FREQUENCY&quot;</span><span class="p">:</span> <span class="n">frequencies</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Create base directories of results TOML file</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Write results to TOML file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# pyKVFinder results</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">toml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LBC-LNBio.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

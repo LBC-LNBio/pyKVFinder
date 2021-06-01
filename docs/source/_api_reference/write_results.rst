@@ -1,48 +1,7 @@
 pyKVFinder.write_results
 ========================
 
-Writes file paths and cavity characterization to TOML-formatted file.
-
-.. code-block:: python
-
-    pyKVFinder.write_results(fn, pdb, ligand, output, output_hydropathy = None, volume = None, area = None, max_depth = None, avg_depth = None, avg_hydropathy = None, residues = None, frequencies = None, step = 0.6)  
-
-:Args:
-
-    ``fn`` : *str*
-        A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth [optional] and interface residues) per cavity detected
-    ``pdb`` : *str*
-        A path to input PDB file
-    ``ligand`` : *str*
-        A path to ligand PDB file
-    ``output`` :  *str*
-        A path to cavity PDB file
-    ``output_hydropathy`` :  *str*
-        A path to hydropathy PDB file (surface points mapped with a hydrophobicity scale)
-    ``volume`` : *dict*
-        A dictionary with volume of each detected cavity
-    ``area`` : *dict*
-        A dictionary with area of each detected cavity
-    ``max_depth`` : *dict*
-        A dictionary with maximum depth of each detected cavity
-    ``avg_depth`` : *dict*
-        A dictionary with average depth of each detected cavity
-    ``avg_hydropathy`` : *dict*
-        A dictionary with average hydropathy of each detected cavity and range of the hydrophobicity scale mapped
-    ``residues`` : *dict*
-        A dictionary with interface residues of each detected cavity
-    ``frequencies`` : *dict*
-        A dictionary with frequencies of interface residues and classes of residues of each detected cavity
-    ``step`` : *float, default 0.6*
-        Grid spacing (A)
-
-:Returns:
-
-    File with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity.
-
-.. note::
-
-    The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on. 
+.. autofunction:: pyKVFinder.write_results
 
 .. seealso::
 

@@ -1,74 +1,7 @@
 pyKVFinder.detect
 =================
 
-Detects biomolecular cavities. 
-
-Cavity points that belongs to the same cavity are assigned with an integer in the grid. Biomolecule points = 0, Unsigned cavity points = 1, Assigned cavity points >= 2 and Bulk points = -1.
-
-.. code-block:: python
-    
-    pyKVFinder.detect(nx, ny, nz, xyzr, vetices, sincos, step = 0.6, probe_in = 1.4, probe_out = 4.0, removal_distance = 2.4, volume_cutoff = 5.0, lxyzr = None, ligand_cutoff = 5.0, box_adjustment = False, surface = 'SES', nthreads = os.cpu_count() - 1, verbose = False)
-
-:Args:
-    ``nx`` : *int*
-        x 3D grid units
-    ``nx`` : *int*
-        y 3D grid units
-    ``nx`` : *int*
-        z 3D grid units
-    ``xyzr`` : *numpy.ndarray*
-        A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) 
-    ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-    ``sincos`` : *numpy.ndarray*
-        A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
-    ``step`` : *float, default 0.6*
-        Grid spacing (A)
-    ``probe_in`` : *float, default 1.4*
-        Probe In size (A)
-    ``probe_out`` : *float, default 4.0*
-        Probe Out size (A)
-    ``removal_distance`` : *float, default 2.4*
-        Length to be removed from the cavity-bulk frontier (A)
-    ``volume_cutoff`` : *float, default 5.0*
-        Cavities volume filter (A3)
-    ``lxyzr`` : *numpy.ndarray*
-        A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of ligand atoms
-    ``ligand_cutoff`` : *float, default 5.0*
-        Radius value to limit a space around a ligand (A)
-    ``box_adjustment`` :  *bool, default False*
-        Whether a custom 3D grid is applied
-    ``surface`` : *str, default 'SES'*
-        Keyword options passed to surface representation: 
-            * SES: Solvent Excluded Surface.
-            * SAS: Solvent Accessible Surface
-    ``nthreads`` : *int, default 'number of cpus - 1'*
-        Number of threads
-    ``verbose`` : *bool, default False*
-        Print extra information to standard output
-
-:Returns:
-    
-    ``ncav``: *int*
-        Number of detected cavities
-    ``cavities``: *numpy.ndarray*
-        A numpy array with integer labels in each position, that are:
-            * -1: bulk point.
-            * 0: biomolecule point.
-            * 1: empty space point.
-            * >=2: cavity point.
-
-.. note::
-
-    Points belonging to the same cavity receive the same integer label.
-
-    The empty space points are regions that do not meet the volume cutoff defined in ``detect`` function.   
-
-.. warning::
-
-    If you are using box adjusment mode, do not forget to set ``box_adjustment`` flag to ``True`` and read box configuration file with `get_grid_from_file <get_grid_from_file.html>`_.
-
-    If you are using ligand adjustment mode, do not forget to read ligand atom coordinates with `read_pdb <read_pdb.html>`_.
+.. autofunction:: pyKVFinder.detect
 
 .. seealso::
 

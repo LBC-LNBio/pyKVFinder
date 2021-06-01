@@ -1,25 +1,7 @@
 pyKVFinder.read_vdw
 -------------------
 
-Reads van der Waals radii from .dat file.
-
-.. code-block:: python
-  
-  pyKVFinder.read_vdw(fn = "vdw.dat")
-
-:Parameters:
-    
-  ``fn`` : *str, default 'vdw.dat'*
-    A path to a van der Waals radii file
-
-:Returns:
-  
-  ``vdw`` : *dict*
-    A dictionary containing radii values (vdw[resname][atom])
-
-.. note::
-
-  The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type (see `van der Waals file template <../_cfg_files/vdw_file_template.html>`_). The package contains a built-in van der Waals radii file: `vdw.dat <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_.
+.. autofunction:: pyKVFinder.read_vdw(fn: Union[str, pathlib.Path] = "vdw.dat") -> Dict[str, Dict[str, float]]
 
 .. seealso::
 

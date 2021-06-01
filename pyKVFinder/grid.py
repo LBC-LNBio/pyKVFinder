@@ -26,7 +26,7 @@ def get_vertices(
 
     Parameters
     ----------
-    xyzrc : Union[numpy.ndarray, List[List[float]]]
+    xyzr : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz atomic coordinates and radii
         values for each atom.
     probe_out : Union[float, int], optional
@@ -97,7 +97,7 @@ def get_grid_from_file(
     probe_out: Union[float, int] = 4.0,
     nthreads: int = os.cpu_count() - 1,
 ) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, int, int, int]:
-    f"""Gets 3D grid vertices from box configuration file or parKVFinder
+    """Gets 3D grid vertices from box configuration file or parKVFinder
     parameters file, selects atoms inside custom 3D grid, define sine
     and cosine of 3D grid angles and define xyz grid units.
 
@@ -118,7 +118,7 @@ def get_grid_from_file(
     probe_out : Union[float, int], optional
         Probe Out size (A), by default 4.0.
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
 
     Returns
     -------
@@ -174,42 +174,15 @@ def get_grid_from_file(
     ValueError
         Box not properly defined in `fn`.
 
-    Box Configuration File Template
-    -------------------------------
-    [box]
-    p1 = [x1, y1, z1]
-    p2 = [x2, y2, z2]
-    p3 = [x3, y3, z3]
-    p4 = [x4, y4, z4]
-
-    or
-
-    [box]
-    residues = [ ["resnum", "chain", "resname", ], ["resnum", "chain",
-    "resname"], ]
-    padding =  3.5
-
-    ParKVFinder Parameters File
-    ---------------------------
-    [SETTINGS.visiblebox.p1]
-    x = x1
-    y = y1
-    z = z1
-
-    [SETTINGS.visiblebox.p2]
-    x = x2
-    y = y2
-    z = z2
-
-    [SETTINGS.visiblebox.p3]
-    x = x3
-    y = y3
-    z = z3
-
-    [SETTINGS.visiblebox.p4]
-    x = x4
-    y = y4
-    z = z4
+    Note
+    ----
+    The box configuration scale file defines the vertices of the 3D grid used
+    by pyKVFinder to detect and characterize cavities. There are three methods
+    for defining a custom 3D grid in pyKVFinder. The first directly defines
+    four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the
+    second defines a list of residues and a padding, and the the third uses
+    parKVFinder parameters file created by its PyMOL plugin. For more details,
+    see `Box configuration file template`.
     """
     from _pyKVFinder import _filter_pdb
     from toml import load
@@ -310,13 +283,13 @@ def _get_vertices_from_box(
     vertices : numpy.ndarray
         A numpy.ndarray of vertices coordinates (origin, Xmax, Ymax, Zmax).
 
-    Box File
-    --------
-    [box]
-    p1 = [x1, y1, z1]
-    p2 = [x2, y2, z2]
-    p3 = [x3, y3, z3]
-    p4 = [x4, y4, z4]
+    Example
+    -------
+    >>> [box]
+    >>> p1 = [x1, y1, z1]
+    >>> p2 = [x2, y2, z2]
+    >>> p3 = [x3, y3, z3]
+    >>> p4 = [x4, y4, z4]
     """
     # Get vertices
     P1 = numpy.asarray(box["p1"])
@@ -417,10 +390,10 @@ def _get_vertices_from_residues(
 
     Box File
     --------
-    [box]
-    residues = [ ["resnum", "chain", "resname",], ["resnum", "chain",
-    "resname"], ]
-    padding =  3.5
+    >>> [box]
+    >>> residues = [ ["resnum", "chain", "resname",], ["resnum", "chain",
+    ... "resname"], ]
+    >>> padding =  3.5
     """
     # Prepare residues list
     box["residues"] = numpy.array(["_".join(item[0:3]) for item in box["residues"]])
@@ -579,7 +552,10 @@ def detect(
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
 ) -> Tuple[int, numpy.ndarray]:
-    f"""Detects biomolecular cavities.
+    """Detects biomolecular cavities.
+
+    Cavity points that belongs to the same cavity are assigned with an integer
+    in the grid.
 
     Parameters
     ----------
@@ -620,7 +596,7 @@ def detect(
         Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
         Accessible Surface), by default SES.
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -630,26 +606,18 @@ def detect(
         Number of cavities.
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        Cavities array has integer labels in each position, that are:
 
-    Notes
-    -----
-    Cavities array has integer labels in each position, that are:
-        * -1: bulk points
-        * 0: biomolecule points;
-        * 1: empty space points;
-        * >=2: cavity points.
+            * -1: bulk points
 
-    The empty space points are regions that do not meet the chosen volume
-    cutoff.
+            * 0: biomolecule points;
 
-    Warnings
-    --------
-    If you are using box adjustment mode, do not forget to set box_adjustment
-    flag to True and read the box configuration file with 'get_grid_from_file'
-    function.
+            * 1: empty space points;
 
-    If you are using ligand adjustment mode, do not forget to read ligand atom
-    coordinates with 'read_pdb' function.
+            * >=2: cavity points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
 
     Raises
     ------
@@ -717,6 +685,17 @@ def detect(
         `lxyzr` has incorrect shape. It must be (n, 4).
     ValueError
         `surface` must be SAS or SES, not `surface`.
+
+    Warning
+    -------
+    If you are using box adjustment mode, do not forget to set box_adjustment
+    flag to True and read the box configuration file with 'get_grid_from_file'
+    function.
+
+    Warning
+    -------
+    If you are using ligand adjustment mode, do not forget to read ligand atom
+    coordinates with 'read_pdb' function.
     """
     from _pyKVFinder import _detect, _detect_ladj
 
@@ -922,23 +901,32 @@ def _process_spatial(
 
 def spatial(
     cavities: numpy.ndarray,
-    ncav: int,
     step: Union[float, int] = 0.6,
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float], Dict[str, float]]:
-    f"""Spatial characterization (volume and area) of the detected cavities.
+    """Spatial characterization (volume and area) of the detected cavities.
 
     Parameters
     ----------
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
-    ncav : int
-        Number of cavities.
+        Cavities array has integer labels in each position, that are:
+
+            * -1: bulk points
+
+            * 0: biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: cavity points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -946,21 +934,26 @@ def spatial(
     -------
     surface : numpy.ndarray
         Surface points in the 3D grid (surface[nx][ny][nz]).
+        Surface array has integer labels in each position, that are:
+
+            * -1: bulk points;
+
+            * 0: biomolecule or empty space points;
+
+            * >=2: surface points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     volume : Dict[str, float]
         A dictionary with volume of each detected cavity.
     area : Dict[str, float]
         A dictionary with area of each detected cavity.
 
-    Notes
-    -----
+    Note
+    ----
     The cavity nomenclature is based on the integer label. The cavity marked
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
     marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
-
-    Surface array has integer labels in each position, that are:
-        * -1: bulk points;
-        * 0: biomolecule or empty space points;
-        * >=2: cavity points.
 
     Raises
     ------
@@ -968,10 +961,6 @@ def spatial(
         `cavities` must be a numpy.ndarray.
     ValueError
         `cavities` has the incorrect shape. It must be (nx, ny, nz).
-    TypeError
-        `ncav` must be a positive integer.
-    ValueError
-        `ncav` must be a positive integer.
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -990,10 +979,6 @@ def spatial(
         raise TypeError("`cavities` must be a numpy.ndarray.")
     elif len(cavities.shape) != 3:
         raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
-    if type(ncav) not in [int]:
-        raise TypeError("`ncav` must be a positive integer.")
-    elif ncav <= 0:
-        raise ValueError("`ncav` must be a positive integer.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1011,6 +996,9 @@ def spatial(
 
     # Convert numpy.ndarray data types
     cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
+
+    # Get number of cavities
+    ncav = cavities.max() - 1
 
     # Get cavities shape
     nx, ny, nz = cavities.shape
@@ -1057,24 +1045,33 @@ def _process_depth(
 
 def depth(
     cavities: numpy.ndarray,
-    ncav: int,
     step: Union[float, int] = 0.6,
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float], Dict[str, float]]:
-    f"""Characterization of the depth of the detected cavities, including depth
+    """Characterization of the depth of the detected cavities, including depth
     per cavity point and maximum and average depths of detected cavities.
 
     Parameters
     ----------
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
-    ncav : int
-        Number of cavities.
+        Cavities array has integer labels in each position, that are:
+
+            * -1: bulk points
+
+            * 0: biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: cavity points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     step : Union[float, int], optional
         Grid spacing (A).
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -1087,28 +1084,12 @@ def depth(
     avg_depth : Dict[str, float]
         A dictionary with average depth of each detected cavity.
 
-    Notes
-    -----
-    The cavity nomenclature is based on the integer label. The cavity marked
-    with 2, the first integer corresponding to a cavity, is KAA, the cavity
-    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
-
-    Cavities array has integer labels in each position, that are:
-        * -1: bulk points;
-        * 0: biomolecule points;
-        * 1: empty space points;
-        * >=2: cavity points.
-
     Raises
     ------
     TypeError
         `cavities` must be a numpy.ndarray.
     ValueError
         `cavities` has the incorrect shape. It must be (nx, ny, nz).
-    TypeError
-        `ncav` must be a positive integer.
-    ValueError
-        `ncav` must be a positive integer.
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -1119,6 +1100,24 @@ def depth(
         `nthreads` must be a positive integer.
     TypeError
         `verbose` must be a boolean.
+
+    Note
+    ----
+    The cavity nomenclature is based on the integer label. The cavity marked
+    with 2, the first integer corresponding to a cavity, is KAA, the cavity
+    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+
+    Warning
+    -------
+    Cavities array has integer labels in each position, that are:
+
+        * -1: bulk points;
+
+        * 0: biomolecule points;
+
+        * 1: empty space points;
+
+        * >=2: cavity points.
     """
     from _pyKVFinder import _depth
 
@@ -1127,10 +1126,6 @@ def depth(
         raise TypeError("`cavities` must be a numpy.ndarray.")
     elif len(cavities.shape) != 3:
         raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
-    if type(ncav) not in [int]:
-        raise TypeError("`ncav` must be a positive integer.")
-    elif ncav <= 0:
-        raise ValueError("`ncav` must be a positive integer.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1148,6 +1143,9 @@ def depth(
 
     # Check numpy.ndarray data types
     cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
+
+    # Get number of cavities
+    ncav = cavities.max() - 1
 
     # Get cavities shape
     nx, ny, nz = cavities.shape
@@ -1198,20 +1196,31 @@ def constitutional(
     xyzr: Union[numpy.ndarray, List[List[float]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
     sincos: Union[numpy.ndarray, List[float]],
-    ncav: int,
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     ignore_backbone: bool = False,
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
 ) -> Dict[str, List[List[str]]]:
-    f"""Constitutional characterization (interface residues) of the detected
+    """Constitutional characterization (interface residues) of the detected
     cavities.
 
     Parameters
     ----------
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        Cavities array has integer labels in each position, that are:
+
+            * -1: bulk points
+
+            * 0: biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: cavity points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     atominfo : Union[numpy.ndarray, List[List[str]]]
         A numpy.ndarray or a list with atomic information (residue number,
         chain, residue name, atom name).
@@ -1224,8 +1233,6 @@ def constitutional(
     sincos : Union[numpy.ndarray, List[float]]
         A numpy.ndarray or a list with sine and cossine of the grid
         rotation angles (sina, cosa, sinb, cosb).
-    ncav : int
-        Number of cavities.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
@@ -1234,7 +1241,7 @@ def constitutional(
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -1243,29 +1250,6 @@ def constitutional(
     residues: Dict[str, List[List[str]]]
         A dictionary with a list of interface residues for each detected
         cavity.
-
-    Notes
-    -----
-    The cavity nomenclature is based on the integer label. The cavity marked
-    with 2, the first integer corresponding to a cavity, is KAA, the cavity
-    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
-
-    Cavities array has integer labels in each position, that are:
-        * -1: bulk points;
-        * 0: biomolecule points;
-        * 1: empty spaces points;
-        * >=2: cavity points.
-
-    Classes
-    -------
-    Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine,
-    Valine.
-    Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
-    Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
-    Threonine.
-    Negatively charged (R4): Aspartate, Glutamate.
-    Positively charged (R5): Arginine, Histidine, Lysine.
-    Non-standard (RX): Non-standard residues.
 
     Raises
     ------
@@ -1290,10 +1274,6 @@ def constitutional(
     ValueError
         `sincos` has incorrect shape. It must be (4,).
     TypeError
-        `ncav` must be a positive integer.
-    ValueError
-        `ncav` must be a positive integer.
-    TypeError
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
@@ -1309,6 +1289,29 @@ def constitutional(
         `nthreads` must be a positive integer.
     TypeError
         `verbose` must be a boolean.
+
+    Note
+    ----
+    The cavity nomenclature is based on the integer label. The cavity marked
+    with 2, the first integer corresponding to a cavity, is KAA, the cavity
+    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+
+
+    Note
+    ----
+    The classes of residues are:
+
+    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.
+
+    * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
+
+    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.
+
+    * Negatively charged (R4): Aspartate, Glutamate.
+
+    * Positively charged (R5): Arginine, Histidine, Lysine.
+
+    * Non-standard (RX): Non-standard residues.
     """
     from _pyKVFinder import _constitutional
 
@@ -1337,10 +1340,6 @@ def constitutional(
         raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     elif numpy.asarray(sincos).shape[0] != 4:
         raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    if type(ncav) not in [int]:
-        raise TypeError("`ncav` must be a positive integer.")
-    elif ncav <= 0:
-        raise ValueError("`ncav` must be a positive integer.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1377,6 +1376,9 @@ def constitutional(
     xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
     sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
+
+    # Get number of cavities
+    ncav = cavities.max() - 1
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
@@ -1440,7 +1442,6 @@ def hydropathy(
     xyzr: Union[numpy.ndarray, List[List[float]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
     sincos: Union[numpy.ndarray, List[float]],
-    ncav: int,
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
@@ -1448,7 +1449,7 @@ def hydropathy(
     nthreads: int = os.cpu_count() - 1,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float]]:
-    f"""Hydropathy characterization of the detected cavities.
+    """Hydropathy characterization of the detected cavities.
 
     Map a target hydrophobicity scale per surface point and calculate average
     hydropathy of detected cavities.
@@ -1457,6 +1458,16 @@ def hydropathy(
     ----------
     surface : numpy.ndarray
         Surface points in the 3D grid (surface[nx][ny][nz]).
+        Surface array has integer labels in each position, that are:
+
+            * -1: bulk points;
+
+            * 0: biomolecule or empty space points;
+
+            * >=2: surface points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     atominfo : Union[numpy.ndarray, List[List[str]]]
         A numpy.ndarray or a list with atomic information (residue number,
         chain, residue name, atom name).
@@ -1469,22 +1480,21 @@ def hydropathy(
     sincos : Union[numpy.ndarray, List[float]]
         A numpy.ndarray or a list with sine and cossine of the grid
         rotation angles (sina, cosa, sinb, cosb).
-    ncav : int
-        Number of cavities.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
         Probe In size (A), by default 1.4.
     hydrophobicity_scale : str, optional
-        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
-        KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a
+        Name of a built-in hydrophobicity scale (EisenbergWeiss [1]_,
+        HessaHeijne [2]_, KyteDoolitte [3]_, MoonFleming [4]_,
+        WimleyWhite [5]_, ZhaoLondon [6]_) or a path to a
         TOML-formatted file with a custom hydrophobicity scale, by default
         `EisenbergWeiss`.
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -1496,43 +1506,6 @@ def hydropathy(
     avg_hydropathy : Dict[str, float]
         A dictionary with average hydropathy for each detected cavity and
         the range of the hydrophobicity scale (min, max).
-
-    Notes
-    -----
-    The cavity nomenclature is based on the integer label. The cavity marked
-    with 2, the first integer corresponding to a cavity, is KAA, the cavity
-    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
-
-    The hydrophobicity scale file defines the name of the scale and the
-    hydrophobicity value for each residue and when not defined, it assigns
-    zero to the missing residues (check Hydrophobicity Scale File Template
-    below). The package contains six built-in hydrophobicity scales:
-    EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite
-    and ZhaoLondon.
-
-    Hydrophobicity Scale File Template
-    ----------------------------------
-    [EisenbergWeiss]
-    ALA = -0.64
-    ARG = 2.6
-    ASN = 0.8
-    ASP = 0.92
-    CYS = -0.3
-    GLN = 0.87
-    GLU = 0.76
-    GLY = -0.49
-    HIS = 0.41
-    ILE = -1.42
-    LEU = -1.09
-    LYS = 1.54
-    MET = -0.66
-    PHE = -1.22
-    PRO = -0.12
-    SER = 0.18
-    THR = 0.05
-    TRP = -0.83
-    TYR = -0.27
-    VAL = -1.11
 
     Raises
     ------
@@ -1557,10 +1530,6 @@ def hydropathy(
     ValueError
         `sincos` has incorrect shape. It must be (4,).
     TypeError
-        `ncav` must be a positive integer.
-    ValueError
-        `ncav` must be a positive integer.
-    TypeError
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
@@ -1578,6 +1547,47 @@ def hydropathy(
         `nthreads` must be a positive integer.
     TypeError
         `verbose` must be a boolean.
+
+    Note
+    ----
+    The cavity nomenclature is based on the integer label. The cavity marked
+    with 2, the first integer corresponding to a cavity, is KAA, the cavity
+    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+
+    Note
+    ----
+    The hydrophobicity scale file defines the name of the scale and the
+    hydrophobicity value for each residue and when not defined, it assigns
+    zero to the missing residues (see `Hydrophobicity scale file
+    template`). The package contains six built-in hydrophobicity scales:
+    EisenbergWeiss [1]_, HessaHeijne [2]_, KyteDoolittle [3]_,
+    MoonFleming [4]_, WimleyWhite [5]_ and ZhaoLondon [6]_.
+
+    References
+    ----------
+    .. [1] Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
+       detects periodicity in protein hydrophobicity. Proceedings of the
+       National Academy of Sciences. 1984;81.
+
+    .. [2] Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
+       Recognition of transmembrane helices by the endoplasmic reticulum
+       translocon. Nature. 2005;433.
+
+    .. [3] Kyte J, Doolittle RF. A simple method for displaying the hydropathic
+       character of a protein. Journal of Molecular Biology. 1982;157.
+
+    .. [4] Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
+       transmembrane protein folding into lipid bilayers. Proceedings of the
+       National Academy of Sciences. 2011;108.
+
+    .. [5] Wimley WC, White SH. Experimentally determined hydrophobicity scale
+       for proteins at membrane interfaces. Nature Structural & Molecular
+       Biology. 1996;3.
+
+    .. [6] Zhao G, London E. An amino acid “transmembrane tendency” scale that
+       approaches the theoretical limit to accuracy for prediction of
+       transmembrane helices: Relationship to biological hydrophobicity.
+       Protein Science. 2006;15.
     """
     import toml
     from _pyKVFinder import _hydropathy
@@ -1609,10 +1619,6 @@ def hydropathy(
         raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     elif numpy.asarray(sincos).shape[0] != 4:
         raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    if type(ncav) not in [int]:
-        raise TypeError("`ncav` must be a positive integer.")
-    elif ncav <= 0:
-        raise ValueError("`ncav` must be a positive integer.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1651,6 +1657,9 @@ def hydropathy(
     xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
     sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
+
+    # Get number of cavities
+    ncav = surface.max() - 1
 
     # Get dimensions
     nx, ny, nz = surface.shape
@@ -1722,7 +1731,6 @@ def export(
     surface: numpy.ndarray,
     vertices: Union[numpy.ndarray, List[List[float]]],
     sincos: Union[numpy.ndarray, List[float]],
-    ncav: int,
     step: Union[float, int] = 0.6,
     B: Union[numpy.ndarray, None] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
@@ -1731,7 +1739,7 @@ def export(
     append: bool = False,
     model: int = 0,
 ) -> None:
-    f"""Exports cavitiy (H) and surface (HA) points to PDB-formatted file with
+    """Exports cavitiy (H) and surface (HA) points to PDB-formatted file with
     a variable (B; optional) in B-factor column, and hydropathy to
     PDB-formatted file in B-factor column at surface points (HA).
 
@@ -1741,16 +1749,36 @@ def export(
         A path to PDB file for writing cavities.
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        Cavities array has integer labels in each position, that are:
+
+            * -1: bulk points
+
+            * 0: biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: cavity points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     surface : numpy.ndarray
-        Surface points in the 3D grid (surface[nx][ny][nz])
+        Surface points in the 3D grid (surface[nx][ny][nz]).
+        Surface array has integer labels in each position, that are:
+
+            * -1: bulk points;
+
+            * 0: biomolecule or empty space points;
+
+            * >=2: surface points.
+
+        The empty space points are regions that do not meet the chosen
+        volume cutoff to be considered a cavity.
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
     sincos : Union[numpy.ndarray, List[float]]
         A numpy.ndarray or a list with sine and cossine of the grid
         rotation angles (sina, cosa, sinb, cosb).
-    ncav : int
-        Number of cavities.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     B : Union[numpy.ndarray, None], optional
@@ -1764,21 +1792,11 @@ def export(
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
     nthreads : int, optional
-        Number of threads, by default {os.cpu_count()-1}.
+        Number of threads, by default os.cpu_count()-1.
     append : bool, optional
         Whether to append cavities to the PDB file, by default False.
     model : int, optional
         Model number, by default 0.
-
-    Returns
-    -------
-    None
-
-    Note
-    ----
-    The cavity nomenclature is based on the integer label. The cavity marked
-    with 2, the first integer corresponding to a cavity, is KAA, the cavity
-    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
     Raises
     ------
@@ -1798,10 +1816,6 @@ def export(
         `sincos` must be a list or a numpy.ndarray.
     ValueError
         `sincos` has incorrect shape. It must be (4,).
-    TypeError
-        `ncav` must be a positive integer.
-    ValueError
-        `ncav` must be a positive integer.
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -1828,6 +1842,12 @@ def export(
         `output_hydropathy` must be a string.
     Exception
         User must define `surface` when not defining `cavities`.
+
+    Note
+    ----
+    The cavity nomenclature is based on the integer label. The cavity marked
+    with 2, the first integer corresponding to a cavity, is KAA, the cavity
+    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
     """
     from _pyKVFinder import _export, _export_b
 
@@ -1856,10 +1876,6 @@ def export(
         raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     elif numpy.asarray(sincos).shape[0] != 4:
         raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    if type(ncav) not in [int]:
-        raise TypeError("`ncav` must be a positive integer.")
-    elif ncav <= 0:
-        raise ValueError("`ncav` must be a positive integer.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1900,6 +1916,9 @@ def export(
         B = B.astype("float64") if B.dtype != "float64" else B
     if scales is not None:
         scales = scales.astype("float64") if scales.dtype != "float64" else scales
+
+    # Get number of cavities
+    ncav = cavities.max() - 1
 
     # Create base directories of results
     if fn is not None:

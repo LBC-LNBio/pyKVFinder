@@ -1,25 +1,7 @@
 pyKVFinder.get_vertices
 =======================
 
-Gets 3D grid vertices.
-
-.. code-block:: python
-
-    pyKVFinder.get_vertices(xyzr, probe_out = 4.0, step = 0.6)
-
-:Args:
-
-    ``xyzr`` : *numpy.ndarray*
-        A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) 
-    ``probe_out`` : *float, default 4.0*
-        Probe Out size (A)
-    ``step`` : *float, default 0.6*
-        Grid spacing (A)
-
-:Returns:
-
-    ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
+.. autofunction:: pyKVFinder.get_vertices
 
 .. seealso::
 

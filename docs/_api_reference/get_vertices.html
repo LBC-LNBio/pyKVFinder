@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.get_vertices &mdash; pyKVFinder 1.0.0 documentation</title>
+  <title>pyKVFinder.get_vertices &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                0.1
+              </div>
             
           
 
@@ -217,28 +221,39 @@
             
   <div class="section" id="pykvfinder-get-vertices">
 <h1>pyKVFinder.get_vertices<a class="headerlink" href="#pykvfinder-get-vertices" title="Permalink to this headline">¶</a></h1>
-<p>Gets 3D grid vertices.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list">
-<dt class="field-odd">Args</dt>
-<dd class="field-odd"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code><span class="classifier"><em>float, default 4.0</em></span></dt><dd><p>Probe Out size (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
-</dd>
-</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.get_vertices">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">get_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyzr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#get_vertices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.get_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets 3D grid vertices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyzr</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a list with xyz atomic coordinates and radii
+values for each atom.</p></li>
+<li><p><strong>probe_out</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe Out size (A), bu default 4.0.</p></li>
+<li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)</p>
+<dd class="field-even"><p><strong>vertices</strong> – A numpy.ndarray with xyz vertices coordinates
+(origin, X-axis, Y-axis, Z-axis).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>xyzr</cite> must be a list or a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>xyzr</cite> has incorrect shape. It must be (n, 4).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>probe_out</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_out</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+</ul>
 </dd>
 </dl>
-</dd>
-</dl>
+</dd></dl>
+
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">

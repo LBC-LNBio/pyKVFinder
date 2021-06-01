@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.get_grid_from_file &mdash; pyKVFinder 1.0.0 documentation</title>
+  <title>pyKVFinder.get_grid_from_file &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                0.1
+              </div>
             
           
 
@@ -217,48 +221,74 @@
             
   <div class="section" id="pykvfinder-get-grid-from-file">
 <h1>pyKVFinder.get_grid_from_file<a class="headerlink" href="#pykvfinder-get-grid-from-file" title="Permalink to this headline">¶</a></h1>
-<p>Gets 3D grid vertices from box configuration file or parKVFinder parameters file, selects atoms inside custom 3D grid, define sine and cosine of 3D grid angles and define xyz grid units.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_grid_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">probe_in</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span> <span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list">
-<dt class="field-odd">Args</dt>
-<dd class="field-odd"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code><span class="classifier"><em>str</em></span></dt><dd><p>A path to a box configuration file (TOML-formatted)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">atominfo</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with atomic information (residue number, chain, residue name, atom name)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_in</span></code><span class="classifier"><em>float, default 1.4</em></span></dt><dd><p>Probe In size (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">probe_out</span></code><span class="classifier"><em>float, default 4.0</em></span></dt><dd><p>Probe Out size (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code><span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt><dd><p>Number of threads</p>
-</dd>
-</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.get_grid_from_file">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">get_grid_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atominfo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyzr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">11</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#get_grid_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.get_grid_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets 3D grid vertices from box configuration file or parKVFinder
+parameters file, selects atoms inside custom 3D grid, define sine
+and cosine of 3D grid angles and define xyz grid units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em>) – A path to box configuration file (TOML-formatted).</p></li>
+<li><p><strong>atominfo</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a list with atomic information (residue number,
+chain, residue name, atom name).</p></li>
+<li><p><strong>xyzr</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a list with xyz atomic coordinates and radii values
+for each atom (x, y, z, radius).</p></li>
+<li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+<li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
+<li><p><strong>probe_out</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe Out size (A), by default 4.0.</p></li>
+<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default os.cpu_count()-1.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">vertices</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis) of the custom box</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>vertices</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with xyz vertices coordinates (origin, X-axis, Y-axis,
+Z-axis) of the custom box.</p></li>
+<li><p><strong>atominfo</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with atomic information (residue number, chain, residue
+name, atom name) of atoms inside the custom box.</p></li>
+<li><p><strong>xyzr</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,
+radius) of atoms inside the custom box.</p></li>
+<li><p><strong>sincos</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with sine and cossine of the custom box rotation angles
+(sina, cosa, sinb, cosb).</p></li>
+<li><p><strong>nx</strong> (<em>int</em>) – x grid units.</p></li>
+<li><p><strong>ny</strong> (<em>int</em>) – y grid units.</p></li>
+<li><p><strong>nz</strong> (<em>int</em>) – z grid units.</p></li>
+</ul>
+</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">atominfo</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with atomic information (residue number, chain, residue name, atom name) of atoms inside the custom box</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">xyzr</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with xyz atomic coordinates and radii values (x, y, z, radius) of atoms inside the custom box</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">sincos</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><p>A numpy array with sine and cossine of the custom box rotation angles (sina, cosa, sinb, cosb)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier"><em>int</em></span></dt><dd><p>x grid units</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ny</span></code><span class="classifier"><em>int</em></span></dt><dd><p>y grid units</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nz</span></code><span class="classifier"><em>int</em></span></dt><dd><p>z grid units</p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a str.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>atominfo</cite> must be a list or a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>atominfo</cite> has incorrect shape. It must be (n, 2).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>xyzr</cite> must be a list or a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>xyzr</cite> has incorrect shape. It must be (n, 4).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>probe_in</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_in</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>probe_out</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_out</cite> must be a non-negative real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_out</cite> must be greater than <cite>probe_in</cite>.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – You must define (p1, p2, p3, p4) or (residues, padding) keys in <cite>fn</cite>.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Box not properly defined in <cite>fn</cite>.</p></li>
+</ul>
 </dd>
 </dl>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The box configuration scale file defines the vertices of the 3D grid used
+by pyKVFinder to detect and characterize cavities. There are three methods
+for defining a custom 3D grid in pyKVFinder. The first directly defines
+four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the
+second defines a list of residues and a padding, and the the third uses
+parKVFinder parameters file created by its PyMOL plugin. For more details,
+see <cite>Box configuration file template</cite>.</p>
+</div>
+</dd></dl>
+
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">

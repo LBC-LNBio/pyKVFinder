@@ -45,7 +45,7 @@ The **standard workflow** for cavity detection with spatial and constitutional c
   >>> results
   <pyKVFinderResults object>
 
-Inside the *pyKVFinderResults object*, cavity and surface points, volume, area, and interface residues and their frequencies are stored as attributes. Below, we show how to access them:
+Inside the *pyKVFinderResults object*, cavity and surface points, number of cavities, volume, area, and interface residues and their frequencies are stored as attributes. Below, we show how to access them:
 
 .. code-block:: python
   
@@ -85,6 +85,8 @@ Inside the *pyKVFinderResults object*, cavity and surface points, volume, area, 
           [-1, -1, -1, ..., -1, -1, -1],
           [-1, -1, -1, ..., -1, -1, -1],
           [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
+  >>> results.ncav
+  >>> 18
   >>> results.volume
   {'KAA': 137.16, 'KAB': 47.52, 'KAC': 66.96, 'KAD': 8.21, 'KAE': 43.63, 'KAF': 12.53, 'KAG': 6.26, 'KAH': 520.13, 'KAI': 12.31, 'KAJ': 26.57, 'KAK': 12.31, 'KAL': 33.91, 'KAM': 23.11, 'KAN': 102.82, 'KAO': 6.05, 'KAP': 15.55, 'KAQ': 7.99, 'KAR': 7.78}
   >>> results.area
@@ -231,6 +233,8 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
 
   The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when a *.dat* file is not specified. Otherwise, user must specify a *.dat* file following template of `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_.
 
+  This step is only necessary if you are reading a custom van der Waals radii file to use in ``pyKVFinder.read_pdb``.
+
 .. seealso::
 
   * `pyKVFinder.read_vdw <../_api_reference/read_vdw.html>`_
@@ -238,13 +242,13 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
 2. Loading target PDB coordinates
 ---------------------------------
 
-``pyKVFinder.read_pdb`` takes a target *.pdb* file and returns a tuple of NumPy arrays, the former (``atominfo``) with residue number, chain identifier, residue name and atom name for each atom and the latter (``xyzr``) with xyz coordinates and radius for each atom.
+``pyKVFinder.read_pdb`` takes a target *.pdb* file and returns a tuple of NumPy arrays, the former (``atominfo``) with residue number, chain identifier, residue name and atom name for each atom and the latter (``xyzr``) with xyz coordinates and radius, considering a van der Waals radii dictionary, for each atom.
 
 .. code-block:: python
 
   >>> import os
   >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-  >>> atominfo, xyzr = pyKVFinder.read_pdb(pdb, vdw=vdw)
+  >>> atominfo, xyzr = pyKVFinder.read_pdb(pdb)
   >>> atominfo
   array([['13_E_GLU', 'N'],
        ['13_E_GLU', 'CA'],
@@ -261,6 +265,10 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
         [  7.216,  18.878,  -9.885,   1.908],
         [  7.735,  17.624,  -9.558,   1.908],
         [  5.767,  19.234, -13.442,   1.69 ]])
+
+.. note::
+
+  The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_, when the ``vdw`` argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with ``pyKVFinder.read_vdw`` as shown earlier and pass it as ``pyKVFinder.read_pdb(pdb, vdw=vdw)``.
 
 .. seealso::
 
@@ -460,11 +468,11 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``nx``, ``ny`
 
 A spatial characterization, that includes volume, area and defining surface points, is performed on the detected cavities. 
 
-``pyKVFinder.spatial`` takes the detected cavities, the number of cavities and the grid spacing (``step``) and and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.
+``pyKVFinder.spatial`` takes the detected cavities and the grid spacing (``step``) and and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.
 
 .. code-block:: python
 
-  >>> surface, volume, area = pyKVFinder.spatial(cavities, ncav, step=step)
+  >>> surface, volume, area = pyKVFinder.spatial(cavities, step=step)
   >>> surface
   array([[[-1, -1, -1, ..., -1, -1, -1],
         [-1, -1, -1, ..., -1, -1, -1],
@@ -498,7 +506,7 @@ A spatial characterization, that includes volume, area and defining surface poin
     * 0: biomolecule or empty space points.
     * >=2: cavity points.
 
-  If the ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.spatial(cavities, ncav)``.
+  If the ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.spatial(cavities)``.
 
 .. seealso::
 
@@ -509,13 +517,13 @@ A spatial characterization, that includes volume, area and defining surface poin
 
 A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.
 
-``pyKVFinder.constitutional`` takes the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, the number of cavities detected and a collection of detection parameters (``step``, ``probe_in``, ``ignore_backbone``), and returns a dictionary with interface residues of each cavity.
+``pyKVFinder.constitutional`` takes the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, and a collection of detection parameters (``step``, ``probe_in``, ``ignore_backbone``), and returns a dictionary with interface residues of each cavity.
 
 .. code-block:: python
 
   >>> # Default ignore backbone contacts flag (ignore_backbone): False
   >>> ignore_backbone = False
-  >>> residues = pyKVFinder.constitutional(cavities, atominfo, xyzr, vertices, sincos, ncav, step=step, probe_in=probe_in, ignore_backbone=ignore_backbone)
+  >>> residues = pyKVFinder.constitutional(cavities, atominfo, xyzr, vertices, sincos, step=step, probe_in=probe_in, ignore_backbone=ignore_backbone)
   >>> residues
   {'KAA': [['14', 'E', 'SER'], ['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['97', 'E', 'ALA'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['141', 'E', 'PRO'], ['142', 'E', 'HIS'], ['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE'], ['320', 'E', 'GLY'], ['321', 'E', 'PRO'], ['322', 'E', 'GLY'], ['323', 'E', 'ASP']], 'KAE': [['95', 'E', 'LEU'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['100', 'E', 'PHE'], ['103', 'E', 'LEU'], ['104', 'E', 'VAL'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['124', 'E', 'ALA'], ['175', 'E', 'ASP'], ['176', 'E', 'GLN'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['107', 'E', 'GLU'], ['108', 'E', 'PHE'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['50', 'E', 'GLY'], ['51', 'E', 'THR'], ['52', 'E', 'GLY'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['121', 'E', 'GLU'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['186', 'E', 'GLY'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['163', 'E', 'ILE'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['49', 'E', 'LEU'], ['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['326', 'E', 'ASN'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['74', 'E', 'LEU'], ['75', 'E', 'ASP'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE'], ['336', 'E', 'ARG']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['199', 'E', 'CYS'], ['200', 'E', 'GLY'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR'], ['331', 'E', 'GLU']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['253', 'E', 'GLY'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['275', 'E', 'VAL'], ['277', 'E', 'LEU']], 'KAR': [['237', 'E', 'PRO'], ['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
 
@@ -523,7 +531,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
 
 .. code-block:: python
 
-  >>> residues_ib = pyKVFinder.constitutional(cavities, atominfo, xyzr, vertices, sincos, ncav, step=step, probe_in=probe_in, ignore_backbone=True)
+  >>> residues_ib = pyKVFinder.constitutional(cavities, atominfo, xyzr, vertices, sincos, step=step, probe_in=probe_in, ignore_backbone=True)
   >>> residues_ib
   {'KAA': [['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE']], 'KAE': [['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['103', 'E', 'LEU'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['175', 'E', 'ASP'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['277', 'E', 'LEU']], 'KAR': [['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
 
@@ -531,7 +539,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
 
   The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-  If the ``step``, ``probe_in`` and ``ignore_backbone`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.constitutional(cavities, atominfo, xyzr, vertices, sincos, ncav)``.
+  If the ``step``, ``probe_in`` and ``ignore_backbone`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.constitutional(cavities, atominfo, xyzr, vertices, sincos)``.
 
 .. seealso::
 
@@ -582,13 +590,13 @@ Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the freque
 
 A hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy, is performed on the surface points of the detected cavities.
 
-``pyKVFinder.hydropathy`` takes the surface points of the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, the number of cavities detected, a collection of detection parameters (``step``, ``probe_in``) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydropobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.
+``pyKVFinder.hydropathy`` takes the surface points of the detected cavities, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a NumPy array with sine and cossine, a collection of detection parameters (``step``, ``probe_in``) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydropobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.
 
 .. code-block:: python
   
   >>> # Default Hydrophobicity Scale (hydropathy): 'EisenbergWeiss'
   >>> hydrophobicity_scale = 'EisenbergWeiss'
-  >>> scales, avg_hydropathy = pyKVFinder.hydropathy(surface, atominfo, xyzr, vertices, sincos, ncav, step=step, probe_in=probe_in, hydrophobicity_scale=hydrophobicity_scale, ignore_backbone=ignore_backbone)
+  >>> scales, avg_hydropathy = pyKVFinder.hydropathy(surface, atominfo, xyzr, vertices, sincos, step=step, probe_in=probe_in, hydrophobicity_scale=hydrophobicity_scale, ignore_backbone=ignore_backbone)
   >>> scales
   array([[[0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
@@ -625,7 +633,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 
   Otherwise, user must specify a *.toml* file following `Hydrophobicity Scale File Template <https://github.com/LBC-LNBio/pyKVFinder#hydrophobicity-scale-file-template>`_.
 
-  If the ``step``, ``probe_in``, ``hydrophobicity_scale`` and ``ignore_backbone`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.hydropathy(surface, atominfo, xyzr, vertices, sincos, ncav)``.
+  If the ``step``, ``probe_in``, ``hydrophobicity_scale`` and ``ignore_backbone`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.hydropathy(surface, atominfo, xyzr, vertices, sincos)``.
 
 .. seealso::
 
@@ -636,11 +644,11 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 
 A depth characterization, that includes maximum depth, average depth and defining depth of cavity points, is performed on the detected cavities. 
 
-``pyKVFinder.depth`` takes the detected cavities, the number of cavities and the grid spacing (``step``) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.
+``pyKVFinder.depth`` takes the detected cavities and the grid spacing (``step``) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.
 
 .. code-block:: python
 
-  >>> depths, max_depth, avg_depth = pyKVFinder.depth(cavities, ncav, step=step)
+  >>> depths, max_depth, avg_depth = pyKVFinder.depth(cavities, step=step)
   >>> depths
   array([[[0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
@@ -668,7 +676,7 @@ A depth characterization, that includes maximum depth, average depth and definin
 
   The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-  If the ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.depth(cavities, ncav)``.
+  If the ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.depth(cavities)``.
 
 .. seealso::
 
@@ -685,7 +693,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 .. code-block:: python
 
   >>> output_cavity = 'cavity_wo_surface.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, None, vertices, sincos, ncav, step=step)
+  >>> pyKVFinder.export(output_cavity, cavities, None, vertices, sincos, step=step)
 
 9.2 Exporting cavity and surface points
 ***************************************
@@ -693,7 +701,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 .. code-block:: python
 
   >>> output_cavity = 'cavity.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav, step=step)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, step=step)
 
 9.3 Exporting cavity and surface points with depth mapped on B-factor
 *********************************************************************
@@ -701,7 +709,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 .. code-block:: python
 
   >>> output_cavity = 'cavity_with_depth.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav, step=step, B=depths)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, step=step, B=depths)
 
 9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor
 *************************************************************************************************************************************
@@ -710,13 +718,13 @@ There are four different ways to export the detected cavities to PDB-formatted f
 
   >>> output_cavity = 'cavity_with_depth.pdb'
   >>> output_hydropathy = 'hydropathy.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav, step=step, B=depths, output_hydropathy=output_hydropathy, scales=scales)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, step=step, B=depths, output_hydropathy=output_hydropathy, scales=scales)
 
 .. note::
 
   The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-  If the ``step``, ``B``, ``scales`` and ``output_hydropathy`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, ncav)``.
+  If the ``step``, ``B``, ``scales`` and ``output_hydropathy`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos)``.
 
 .. seealso::
 
@@ -773,7 +781,7 @@ The function call depends on the characterizations performed on the detected cav
 
 .. seealso::
 
-  * `pyKVFinder.export <../_api_reference/export.html>`_ 
+  * `pyKVFinder.write_results <../_api_reference/write_results.html>`_ 
 
 Steered detection
 =================

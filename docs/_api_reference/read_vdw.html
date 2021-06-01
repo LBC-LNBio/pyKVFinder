@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.read_vdw &mdash; pyKVFinder 1.0.0 documentation</title>
+  <title>pyKVFinder.read_vdw &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                0.1
+              </div>
             
           
 
@@ -217,28 +221,38 @@
             
   <div class="section" id="pykvfinder-read-vdw">
 <h1>pyKVFinder.read_vdw<a class="headerlink" href="#pykvfinder-read-vdw" title="Permalink to this headline">¶</a></h1>
-<p>Reads van der Waals radii from .dat file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">read_vdw</span><span class="p">(</span><span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;vdw.dat&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list">
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.read_vdw">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">read_vdw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'vdw.dat'</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/utils.html#read_vdw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.read_vdw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads van der Waals radii from .dat file.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code><span class="classifier"><em>str, default ‘vdw.dat’</em></span></dt><dd><p>A path to a van der Waals radii file</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em>) – A path to a van der Waals radii file, by default VDW.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">vdw</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary containing radii values (vdw[resname][atom])</p>
+<dd class="field-even"><p><strong>vdw</strong> – A dictionary containing radii values.</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a string or a pathlib.Path.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – A line in <cite>vdw</cite> has incorrect format. The values must be double
+    tab-separated.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – A line in <cite>vdw</cite> has an incorrect radius type for an atom.</p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type (see <a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals file template</a>). The package contains a built-in van der Waals radii file: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">vdw.dat</a>.</p>
+<p>The van der Waals radii file defines the radius values for each
+atom by residue and when not defined, it uses a generic value
+based on the atom type (see <cite>van der Waals file template</cite>).
+The package contains a built-in van der Waals radii file: <cite>vdw.dat</cite>.</p>
 </div>
+</dd></dl>
+
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">

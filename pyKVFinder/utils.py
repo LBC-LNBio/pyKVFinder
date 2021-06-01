@@ -13,17 +13,17 @@ __all__ = [
     "write_results",
 ]
 
-here = os.path.abspath(os.path.dirname(__file__))
-vdw_cfg = os.path.join(here, "data/vdw.dat")
+HERE = os.path.abspath(os.path.dirname(__file__))
+VDW = os.path.join(HERE, "data/vdw.dat")
 
 
-def read_vdw(fn: Union[str, pathlib.Path] = vdw_cfg) -> Dict[str, Dict[str, float]]:
-    f"""Reads van der Waals radii from .dat file.
+def read_vdw(fn: Union[str, pathlib.Path] = VDW) -> Dict[str, Dict[str, float]]:
+    """Reads van der Waals radii from .dat file.
 
     Parameters
     ----------
     fn : Union[str, pathlib.Path]
-        A path to a van der Waals radii file, by default {vdw_cfg}.
+        A path to a van der Waals radii file, by default VDW.
 
     Returns
     -------
@@ -44,17 +44,8 @@ def read_vdw(fn: Union[str, pathlib.Path] = vdw_cfg) -> Dict[str, Dict[str, floa
     ----
     The van der Waals radii file defines the radius values for each
     atom by residue and when not defined, it uses a generic value
-    based on the atom type (check van der Waals File Template).
+    based on the atom type (see `van der Waals file template`).
     The package contains a built-in van der Waals radii file: `vdw.dat`.
-
-    van der Waals File Template
-    ---------------------------
-    >RES
-    C       1.66
-    CA      2.00
-    N       1.97
-    O       1.69
-    H       0.91
     """
     # Check argument
     if type(fn) not in [str, pathlib.Path]:
@@ -106,7 +97,7 @@ def _process_pdb_line(
     line : str
         A line of a valid PDB file
     vdw : Dict[str, Dict[str, Dict[str, float]]]
-        A dictionary containing radii values
+        A dictionary containing radii values.
 
     Returns
     -------
@@ -156,7 +147,7 @@ def read_pdb(
     fn : Union[str, pathlib.Path]
         A path to PDB file.
     vdw : Dict[str, Dict[str, float]
-        A dictionary with radii values.
+        A dictionary with radii values, by default pyKVFinder.read_vdw().
 
     Returns
     -------
@@ -167,17 +158,17 @@ def read_pdb(
         A numpy.ndarray with xyz atomic coordinates, radii and barcode
         for each atom.
 
+    Raises
+    ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
+
     Note
     ----
     The van der Waals radii file defines the radius values for each atom
     by residue and when not defined, it uses a generic value based on the
     atom type. The function by default loads the built-in van der Waals radii
     file: `vdw.dat`.
-
-    Raises
-    ------
-    TypeError
-        `fn` must be a string or a pathlib.Path.
     """
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:
@@ -294,10 +285,6 @@ def _write_parameters(args: argparse.Namespace) -> None:
     ----------
     args : argparse.Namespace
         Arguments passes by argparser CLI.
-
-    Returns
-    -------
-    None
     """
     import toml
 
@@ -364,16 +351,21 @@ def calculate_frequencies(
     marked with 2, the first integer corresponding to a cavity, is KAA, the
     cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-    Classes
-    -------
-    Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
-    Methionine, Valine
-    Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-    Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
-    Threonine
-    Negatively charged (R4): Aspartate, Glutamate
-    Positively charged (R5): Arginine, Histidine, Lysine
-    Non-standard (RX): Non-standard residues
+    Note
+    ----
+    The classes of residues are:
+
+    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.
+
+    * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
+
+    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.
+
+    * Negatively charged (R4): Aspartate, Glutamate.
+
+    * Positively charged (R5): Arginine, Histidine, Lysine.
+
+    * Non-standard (RX): Non-standard residues.
     """
     # Create a dict for frequencies
     frequencies = {}
@@ -446,9 +438,10 @@ def plot_frequencies(
         A path to PDF file for plotting histograms of frequencies, by
         default `histograms.pdf`.
 
-    Returns
-    -------
-    None
+    Raises
+    ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
 
     Note
     ----
@@ -456,21 +449,21 @@ def plot_frequencies(
     marked with 2, the first integer corresponding to a cavity, is KAA, the
     cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-    Classes
-    -------
-    Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine,
-    Methionine, Valine
-    Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine
-    Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine,
-    Threonine
-    Negatively charged (R4): Aspartate, Glutamate
-    Positively charged (R5): Arginine, Histidine, Lysine
-    Non-standard (RX): Non-standard residues
+    Note
+    ----
+    The classes of residues are:
 
-    Raises
-    ------
-    TypeError
-        `fn` must be a string or a pathlib.Path.
+    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.
+
+    * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
+
+    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.
+
+    * Negatively charged (R4): Aspartate, Glutamate.
+
+    * Positively charged (R5): Arginine, Histidine, Lysine.
+
+    * Non-standard (RX): Non-standard residues.
     """
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_pdf import PdfPages
@@ -646,16 +639,6 @@ def write_results(
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
 
-    Returns
-    -------
-    None
-
-    Note
-    ----
-    The cavity nomenclature is based on the integer label. The cavity
-    marked with 2, the first integer corresponding to a cavity, is KAA, the
-    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
-
     Raises
     ------
     TypeError
@@ -686,6 +669,12 @@ def write_results(
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
+
+    Note
+    ----
+    The cavity nomenclature is based on the integer label. The cavity
+    marked with 2, the first integer corresponding to a cavity, is KAA, the
+    cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
     """
     import toml
 

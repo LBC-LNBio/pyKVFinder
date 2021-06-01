@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.spatial &mdash; pyKVFinder 1.0.0 documentation</title>
+  <title>pyKVFinder.spatial &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                0.1
+              </div>
             
           
 
@@ -217,56 +221,72 @@
             
   <div class="section" id="pykvfinder-spatial">
 <h1>pyKVFinder.spatial<a class="headerlink" href="#pykvfinder-spatial" title="Permalink to this headline">¶</a></h1>
-<p>Spatial characterization (volume and area) of the detected cavities.</p>
-<p>Surface points that belongs to the same cavity are assigned with an integer in the grid. Biomolecule or unsigned cavity points = 0, Assigned cavity points &gt;= 2 and Bulk points = -1.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list">
-<dt class="field-odd">Args</dt>
-<dd class="field-odd"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">cavities</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><dl class="simple">
-<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
-<li><p>-1: bulk point.</p></li>
-<li><p>0: biomolecule point.</p></li>
-<li><p>1: empty space point.</p></li>
-<li><p>&gt;=2: cavity point.</p></li>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.spatial">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">spatial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cavities</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#spatial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.spatial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spatial characterization (volume and area) of the detected cavities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cavities</strong> (<em>numpy.ndarray</em>) – <p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
+Cavities array has integer labels in each position, that are:</p>
+<blockquote>
+<div><ul>
+<li><p>-1: bulk points</p></li>
+<li><p>0: biomolecule points;</p></li>
+<li><p>1: empty space points;</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
-</dd>
-</dl>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ncav</span></code><span class="classifier"><em>int</em></span></dt><dd><p>Number of cavities in <code class="docutils literal notranslate"><span class="pre">cavities</span></code> numpy array</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">step</span></code><span class="classifier"><em>float, default 0.6</em></span></dt><dd><p>Grid spacing (A)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nthreads</span></code><span class="classifier"><em>int, default ‘number of cpus - 1’</em></span></dt><dd><p>Number of threads</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code><span class="classifier"><em>bool, default False</em></span></dt><dd><p>Print extra information to standard output</p>
-</dd>
-</dl>
+</div></blockquote>
+<p>The empty space points are regions that do not meet the chosen
+volume cutoff to be considered a cavity.</p>
+</p></li>
+<li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default os.cpu_count()-1.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">surface</span></code><span class="classifier"><em>numpy.ndarray</em></span></dt><dd><dl class="simple">
-<dt>A numpy array with integer labels in each position, that are:</dt><dd><ul class="simple">
-<li><p>-1: bulk point.</p></li>
-<li><p>0: biomolecule or empty space point.</p></li>
-<li><p>&gt;=2: surface point.</p></li>
+<dd class="field-even"><p><ul>
+<li><p><strong>surface</strong> (<em>numpy.ndarray</em>) – Surface points in the 3D grid (surface[nx][ny][nz]).
+Surface array has integer labels in each position, that are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>-1: bulk points;</p></li>
+<li><p>0: biomolecule or empty space points;</p></li>
+<li><p>&gt;=2: surface points.</p></li>
 </ul>
-</dd>
-</dl>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">volume</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with volume of each detected cavity</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">area</span></code><span class="classifier"><em>dict</em></span></dt><dd><p>A dictionary with area of each detected cavity</p>
-</dd>
-</dl>
+</div></blockquote>
+<p>The empty space points are regions that do not meet the chosen
+volume cutoff to be considered a cavity.</p>
+</li>
+<li><p><strong>volume</strong> (<em>Dict[str, float]</em>) – A dictionary with volume of each detected cavity.</p></li>
+<li><p><strong>area</strong> (<em>Dict[str, float]</em>) – A dictionary with area of each detected cavity.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked
+with 2, the first integer corresponding to a cavity, is KAA, the cavity
+marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>cavities</cite> must be a numpy.ndarray.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>cavities</cite> has the incorrect shape. It must be (nx, ny, nz).</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>verbose</cite> must be a boolean.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
@@ -277,7 +297,7 @@
 </div>
 <h4><u>Example</u></h4><p>With the cavity points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect</span></code>, we can perform a spatial characterization, that includes volume, area and defining surface points:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">spatial</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">ncav</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span>
 <span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>

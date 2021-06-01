@@ -1,21 +1,7 @@
 pyKVFinder.get_sincos
 =====================
 
-Gets sine and cossine of the grid rotation angles.
-
-.. code-block:: python
-    
-    pyKVFinder.get_sincos(vertices)
-  
-:Args:
-
-    ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-
-:Returns:
-
-    ``sincos`` : *numpy.ndarray*
-        A numpy array with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+.. autofunction:: pyKVFinder.get_sincos
 
 .. seealso::
 

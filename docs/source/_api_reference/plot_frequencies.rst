@@ -1,42 +1,7 @@
 pyKVFinder.plot_frequencies
 ===========================
 
-Plot histograms of calculated frequencies (residues and classes of residues) for each detected cavity in a target PDF file.
-
-.. code-block:: python
-
-    pyKVFinder.plot_frequencies(frequencies, fn = 'histograms.pdf)
-
-:Args:
-
-    ``frequencies`` : *dict*
-        A dictionary with frequencies of interface residues and classes of residues of each detected cavity
-    ``fn`` : *str, default 'histograms.pdf'*
-        A path to PDF file for plotting histograms of frequencies.
-
-:Returns:
-    
-    A PDF file with histograms of calculated frequencies (residues and classes of residues) of each detected cavity.
-
-
-.. note::
-
-  The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on. 
-
-  The classes of residues are:
-
-    * ``R1`` : Alipathic apolar
-        Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine
-    * ``R2`` : Aromatic
-        Phenylalanine, Tryptophan, Tyrosine
-    * ``R3`` : Polar Uncharged
-        Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine
-    * ``R4`` : Negatively charged
-        Aspartate, Glutamate
-    * ``R5`` : Positively charged
-        Arginine, Histidine, Lysine
-    * ``RX`` : Non-standard
-        Non-standard residues
+.. autofunction:: pyKVFinder.plot_frequencies
 
 .. seealso::
   

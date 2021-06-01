@@ -1,0 +1,1157 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyKVFinder.main &mdash; pyKVFinder 0.1.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/icon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pyKVFinder
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#workflows">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#separated-steps">Separated steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_api_reference/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_api_reference/index.html#classes">Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#license">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyKVFinder</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyKVFinder.main</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyKVFinder.main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">.argparser</span> <span class="kn">import</span> <span class="n">argparser</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">read_vdw</span><span class="p">,</span>
+    <span class="n">read_pdb</span><span class="p">,</span>
+    <span class="n">calculate_frequencies</span><span class="p">,</span>
+    <span class="n">plot_frequencies</span><span class="p">,</span>
+    <span class="n">write_results</span><span class="p">,</span>
+    <span class="n">_write_parameters</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_vertices</span><span class="p">,</span>
+    <span class="n">get_grid_from_file</span><span class="p">,</span>
+    <span class="n">get_dimensions</span><span class="p">,</span>
+    <span class="n">get_sincos</span><span class="p">,</span>
+    <span class="n">detect</span><span class="p">,</span>
+    <span class="n">spatial</span><span class="p">,</span>
+    <span class="n">depth</span><span class="p">,</span>
+    <span class="n">constitutional</span><span class="p">,</span>
+    <span class="n">hydropathy</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pyKVFinder&quot;</span><span class="p">,</span> <span class="s2">&quot;pyKVFinderResults&quot;</span><span class="p">]</span>
+
+<span class="n">VDW</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;data/vdw.dat&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">cli</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;pyKVFinder Command Line Interface (CLI).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    Usage: pyKVFinder [-h] [-v] [--version] [-b &lt;str&gt;] [-O &lt;str&gt;]</span>
+<span class="sd">                      [--nthreads &lt;int&gt;] [-d &lt;str&gt;] [-s &lt;float&gt;] [-i &lt;float&gt;]</span>
+<span class="sd">                      [-o &lt;float&gt;] [-V &lt;float&gt;] [-R &lt;float&gt;] [-S &lt;str&gt;]</span>
+<span class="sd">                      [--ignore_backbone] [-D] [--plot_frequencies]</span>
+<span class="sd">                      [-B &lt;.toml&gt;] [-L &lt;.pdb&gt;] [--ligand_cutoff &lt;float&gt;]</span>
+<span class="sd">                      &lt;.pdb&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Start time</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c1"># Load pyKVFinder argument parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparser</span><span class="p">()</span>
+
+    <span class="c1"># Parse command-line arguments</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># Get base name from pdb file if not defined by user</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">base_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.pdb&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Create output directory</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Print message to stdout</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[PID </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">] Running pyKVFinder for: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Start logging</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="s1">&#39;KVFinder.log&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Date: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> </span><span class="si">%d</span><span class="s1"> %B, %Y&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">Time: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ Running pyKVFinder for: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; vdW radii file: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">dictionary</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Loading atomic dictionary file&quot;</span><span class="p">)</span>
+    <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dictionary</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>
+    <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading ligand coordinates&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lxyzr</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Calculating 3D grid dimensions&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">:</span>
+        <span class="c1"># Get vertices from file</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">get_grid_from_file</span><span class="p">(</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+            <span class="n">atominfo</span><span class="p">,</span>
+            <span class="n">xyzr</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set flag to boolean</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Get vertices from pdb</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+
+        <span class="c1"># Calculate distance between points</span>
+        <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">get_dimensions</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+
+        <span class="c1"># Calculate sin and cos of angles a and b</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">sincos</span> <span class="o">=</span> <span class="n">get_sincos</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
+
+        <span class="c1"># Set flag to boolean</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p1: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p2: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p3: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p4: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensions: (nx:</span><span class="si">{</span><span class="n">nx</span><span class="si">}</span><span class="s2">, ny:</span><span class="si">{</span><span class="n">ny</span><span class="si">}</span><span class="s2">, nz:</span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sina: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\t</span><span class="s2">sinb: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cosa: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\t</span><span class="s2">cosb: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Logging parameters</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Step: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Probe In: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Probe Out: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Voxel volume: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">step</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5\u00b3</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p1: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p2: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p3: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p4: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Dimensions: (nx:</span><span class="si">{</span><span class="n">nx</span><span class="si">}</span><span class="s2">, ny:</span><span class="si">{</span><span class="n">ny</span><span class="si">}</span><span class="s2">, nz:</span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; sina: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\t</span><span class="s2">cosa: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; sinb: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\t</span><span class="s2">cosb: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Cavity detection</span>
+    <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span>
+        <span class="n">nx</span><span class="p">,</span>
+        <span class="n">ny</span><span class="p">,</span>
+        <span class="n">nz</span><span class="p">,</span>
+        <span class="n">xyzr</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">removal_distance</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">volume_cutoff</span><span class="p">,</span>
+        <span class="n">lxyzr</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">ligand_cutoff</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Cavities were found</span>
+    <span class="k">if</span> <span class="n">ncav</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Spatial characterization</span>
+        <span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span>
+            <span class="n">cavities</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Depth characterization</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span>
+                <span class="n">cavities</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="c1"># Constitutional characterization</span>
+        <span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span>
+            <span class="n">cavities</span><span class="p">,</span>
+            <span class="n">atominfo</span><span class="p">,</span>
+            <span class="n">xyzr</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
+
+        <span class="c1"># Plot histograms of frequencies</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">:</span>
+            <span class="n">output_plot</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.histograms.pdf&quot;</span>
+            <span class="p">)</span>
+            <span class="n">plot_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">output_plot</span><span class="p">)</span>
+
+        <span class="c1"># Hydropathy characterization</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">hydropathy</span><span class="p">:</span>
+            <span class="c1"># Map hydrophobicity scales</span>
+            <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span>
+                <span class="n">surface</span><span class="p">,</span>
+                <span class="n">atominfo</span><span class="p">,</span>
+                <span class="n">xyzr</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">hydropathy</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">avg_hydropathy</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.pdb&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="c1"># Export cavities</span>
+        <span class="n">output_cavity</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.KVFinder.output.pdb&quot;</span>
+        <span class="p">)</span>
+        <span class="n">export</span><span class="p">(</span>
+            <span class="n">output_cavity</span><span class="p">,</span>
+            <span class="n">cavities</span><span class="p">,</span>
+            <span class="n">surface</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">sincos</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+            <span class="n">depths</span><span class="p">,</span>
+            <span class="n">output_hydropathy</span><span class="p">,</span>
+            <span class="n">scales</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Write results</span>
+        <span class="n">output_results</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.KVFinder.results.toml&quot;</span>
+        <span class="p">)</span>
+        <span class="n">write_results</span><span class="p">(</span>
+            <span class="n">output_results</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span>
+            <span class="n">output_cavity</span><span class="p">,</span>
+            <span class="n">output_hydropathy</span><span class="p">,</span>
+            <span class="n">volume</span><span class="p">,</span>
+            <span class="n">area</span><span class="p">,</span>
+            <span class="n">max_depth</span><span class="p">,</span>
+            <span class="n">avg_depth</span><span class="p">,</span>
+            <span class="n">avg_hydropathy</span><span class="p">,</span>
+            <span class="n">residues</span><span class="p">,</span>
+            <span class="n">frequencies</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Write parameters</span>
+        <span class="n">_write_parameters</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; No cavities detected!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Elapsed time</span>
+    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ </span><span class="se">\033</span><span class="s2">[1mElapsed time:</span><span class="se">\033</span><span class="s2">[0m </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ Elapsed time (s): </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<div class="viewcode-block" id="pyKVFinderResults"><a class="viewcode-back" href="../../_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults">[docs]</a><span class="k">class</span> <span class="nc">pyKVFinderResults</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class containing pyKVFinder detection and characterization results.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cavities : numpy.ndarray</span>
+<span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
+<span class="sd">        Cavities array has integer labels in each position, that are:</span>
+
+<span class="sd">            * -1: bulk points</span>
+
+<span class="sd">            * 0: biomolecule points;</span>
+
+<span class="sd">            * 1: empty space points;</span>
+
+<span class="sd">            * &gt;=2: cavity points.</span>
+
+<span class="sd">        The empty space points are regions that do not meet the chosen</span>
+<span class="sd">        volume cutoff to be considered a cavity.</span>
+<span class="sd">    surface : numpy.ndarray</span>
+<span class="sd">        Surface points in the 3D grid (surface[nx][ny][nz]).</span>
+<span class="sd">        Surface array has integer labels in each position, that are:</span>
+
+<span class="sd">            * -1: bulk points;</span>
+
+<span class="sd">            * 0: biomolecule or empty space points;</span>
+
+<span class="sd">            * &gt;=2: surface points.</span>
+
+<span class="sd">        The empty space points are regions that do not meet the chosen</span>
+<span class="sd">        volume cutoff to be considered a cavity.</span>
+<span class="sd">    depths : Union[numpy.ndarray, None]</span>
+<span class="sd">        A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</span>
+<span class="sd">    scales : Union[numpy.ndarray, None]</span>
+<span class="sd">        A numpy.ndarray with hydrophobicity scale value mapped at surface</span>
+<span class="sd">        points (scales[nx][ny][nz]).</span>
+<span class="sd">    volume : Dict[str, float]</span>
+<span class="sd">        A dictionary with volume of each detected cavity.</span>
+<span class="sd">    area : Dict[str, float]</span>
+<span class="sd">        A dictionary with area of each detected cavity.</span>
+<span class="sd">    max_depth : Union[Dict[str, float], None]</span>
+<span class="sd">        A dictionary with maximum depth of each detected cavity.</span>
+<span class="sd">    avg_depth : Union[Dict[str, float], None]</span>
+<span class="sd">        A dictionary with average depth of each detected cavity.</span>
+<span class="sd">    avg_hydropathy : Union[Dict[str, float], None]</span>
+<span class="sd">        A dictionary with average hydropathy for each detected cavity and</span>
+<span class="sd">        the range of the hydrophobicity scale (min, max).</span>
+<span class="sd">    residues: Dict[str, List[List[str]]]</span>
+<span class="sd">        A dictionary with a list of interface residues for each detected</span>
+<span class="sd">        cavity.</span>
+<span class="sd">    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]</span>
+<span class="sd">        A dictionary with frequencies of residues and class for</span>
+<span class="sd">        residues of each detected cavity.</span>
+<span class="sd">    _vertices : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
+<span class="sd">        X-axis, Y-axis, Z-axis).</span>
+<span class="sd">    _step : float</span>
+<span class="sd">        Grid spacing (A).</span>
+<span class="sd">    _pdb : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">        A path to input PDB file, by default None.</span>
+<span class="sd">    _ligand : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">        A path to ligand PDB file, by default None.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cavities : numpy.ndarray</span>
+<span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
+<span class="sd">        Cavities array has integer labels in each position, that are:</span>
+
+<span class="sd">            * -1: bulk points</span>
+
+<span class="sd">            * 0: biomolecule points;</span>
+
+<span class="sd">            * 1: empty space points;</span>
+
+<span class="sd">            * &gt;=2: cavity points.</span>
+
+<span class="sd">        The empty space points are regions that do not meet the chosen</span>
+<span class="sd">        volume cutoff to be considered a cavity.</span>
+<span class="sd">    surface : numpy.ndarray</span>
+<span class="sd">        Surface points in the 3D grid (surface[nx][ny][nz]).</span>
+<span class="sd">        Surface array has integer labels in each position, that are:</span>
+
+<span class="sd">            * -1: bulk points;</span>
+
+<span class="sd">            * 0: biomolecule or empty space points;</span>
+
+<span class="sd">            * &gt;=2: surface points.</span>
+
+<span class="sd">        The empty space points are regions that do not meet the chosen</span>
+<span class="sd">        volume cutoff to be considered a cavity.</span>
+<span class="sd">    depths : Union[numpy.ndarray, None]</span>
+<span class="sd">        A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</span>
+<span class="sd">    scales : Union[numpy.ndarray, None]</span>
+<span class="sd">        A numpy.ndarray with hydrophobicity scale value mapped at surface</span>
+<span class="sd">        points (scales[nx][ny][nz]).</span>
+<span class="sd">    ncav : int</span>
+<span class="sd">        Number of cavities.</span>
+<span class="sd">    volume : Dict[str, float]</span>
+<span class="sd">        A dictionary with volume of each detected cavity.</span>
+<span class="sd">    area : Dict[str, float]</span>
+<span class="sd">        A dictionary with area of each detected cavity.</span>
+<span class="sd">    max_depth : Union[Dict[str, float], None]</span>
+<span class="sd">        A dictionary with maximum depth of each detected cavity.</span>
+<span class="sd">    avg_depth : Union[Dict[str, float], None]</span>
+<span class="sd">        A dictionary with average depth of each detected cavity.</span>
+<span class="sd">    avg_hydropathy : Union[Dict[str, float], None]</span>
+<span class="sd">        A dictionary with average hydropathy for each detected cavity and</span>
+<span class="sd">        the range of the hydrophobicity scale (min, max).</span>
+<span class="sd">    residues: Dict[str, List[List[str]]]</span>
+<span class="sd">        A dictionary with a list of interface residues for each detected</span>
+<span class="sd">        cavity.</span>
+<span class="sd">    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]</span>
+<span class="sd">        A dictionary with frequencies of residues and class for</span>
+<span class="sd">        residues of each detected cavity.</span>
+<span class="sd">    _vertices : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
+<span class="sd">        X-axis, Y-axis, Z-axis).</span>
+<span class="sd">    _step : float</span>
+<span class="sd">        Grid spacing (A).</span>
+<span class="sd">    _pdb : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">        A path to input PDB file, by default None.</span>
+<span class="sd">    _ligand : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">        A path to ligand PDB file, by default None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">depths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">scales</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">volume</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">area</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">max_depth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">avg_depth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">avg_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">residues</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
+        <span class="n">frequencies</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">_vertices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">_step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">_pdb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_ligand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depths</span> <span class="o">=</span> <span class="n">depths</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scales</span> <span class="o">=</span> <span class="n">scales</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncav</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span> <span class="o">=</span> <span class="n">max_depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span> <span class="o">=</span> <span class="n">avg_depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">avg_hydropathy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">residues</span> <span class="o">=</span> <span class="n">residues</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">frequencies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span> <span class="o">=</span> <span class="n">_vertices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="n">_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">_pdb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">_ligand</span><span class="p">)</span> <span class="k">if</span> <span class="n">_ligand</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;pyKVFinderResults object&gt;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cavity.pdb&quot;</span><span class="p">,</span>
+        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Exports cavitiy (H) and surface (HA) points to PDB-formatted file</span>
+<span class="sd">        with a variable (B; optional) in B-factor column, and hydropathy to</span>
+<span class="sd">        PDB-formatted file in B-factor column at surface points (HA).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        output : Union[str, pathlib.Path]), optional</span>
+<span class="sd">            A path to PDB file for writing cavities, by default `cavity.pdb`.</span>
+<span class="sd">        output_hydropathy : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to PDB file for writing hydropathy at surface points, by</span>
+<span class="sd">            default `hydropathy.pdb`.</span>
+<span class="sd">        nthreads : int, optional</span>
+<span class="sd">            Number of threads, by default os.cpu_count() - 1.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">        marked with 2, the first integer corresponding to a cavity, is KAA,</span>
+<span class="sd">        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC</span>
+<span class="sd">        and so on.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sincos</span> <span class="o">=</span> <span class="n">get_sincos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">)</span>
+        <span class="n">export</span><span class="p">(</span>
+            <span class="n">output</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cavities</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">,</span>
+            <span class="n">sincos</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depths</span><span class="p">,</span>
+            <span class="n">output_hydropathy</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">,</span>
+            <span class="n">nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;results.toml&quot;</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes file paths and cavity characterization to TOML-formatted file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to TOML-formatted file for writing file paths and cavity</span>
+<span class="sd">            characterization (volume, area, depth and interface residues)</span>
+<span class="sd">            per cavity detected, by default `results.toml`.</span>
+<span class="sd">        output : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">            A path to a cavity PDB file, by default None.</span>
+<span class="sd">        output_hydropathy : Union[str, pathlib.Path, None]</span>
+<span class="sd">            A path to PDB file for writing hydropathy at surface points, by</span>
+<span class="sd">            default None.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">        marked with 2, the first integer corresponding to a cavity, is KAA,</span>
+<span class="sd">        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC</span>
+<span class="sd">        and so on.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">write_results</span><span class="p">(</span>
+            <span class="n">fn</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pdb</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ligand</span><span class="p">,</span>
+            <span class="n">output</span><span class="p">,</span>
+            <span class="n">output_hydropathy</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_hydropathy</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">residues</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;histograms.pdf&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot histograms of frequencies (residues and classes of residues) in</span>
+<span class="sd">        a PDF file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pdf : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to a PDF file, by default `histograms.pdf`.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">        marked with 2, the first integer corresponding to a cavity, is KAA,</span>
+<span class="sd">        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC</span>
+<span class="sd">        and so on.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The classes of residues are:</span>
+
+<span class="sd">        * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</span>
+
+<span class="sd">        * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</span>
+
+<span class="sd">        * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</span>
+
+<span class="sd">        * Negatively charged (R4): Aspartate, Glutamate.</span>
+
+<span class="sd">        * Positively charged (R5): Arginine, Histidine, Lysine.</span>
+
+<span class="sd">        * Non-standard (RX): Non-standard residues.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plot_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">export_all</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;results.toml&quot;</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cavity.pdb&quot;</span><span class="p">,</span>
+        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
+        <span class="n">include_frequencies_pdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">pdf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;histograms.pdf&quot;</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Exports cavities and characterization to PDB-formatted files,</span>
+<span class="sd">        writes file paths and characterization to a TOML-formatted file, and</span>
+<span class="sd">        optionally plot histograms of frequencies (residues and classes of</span>
+<span class="sd">        residues) in a PDF file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to TOML-formatted file for writing file paths and</span>
+<span class="sd">            cavity characterization (volume, area and interface residues)</span>
+<span class="sd">            per cavity detected, by default `results.toml`.</span>
+<span class="sd">        output : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to PDB file for writing cavities, by default `cavity.pdb`.</span>
+<span class="sd">        output_hydropathy : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to PDB file for writing hydropathy at surface points,</span>
+<span class="sd">            by default `hydropathy.pdb`.</span>
+<span class="sd">        include_frequencies_pdf : bool, optional</span>
+<span class="sd">            Whether to plot frequencies (residues and classes of residues)</span>
+<span class="sd">            to PDF file, by default False.</span>
+<span class="sd">        pdf : Union[str, pathlib.Path], optional</span>
+<span class="sd">            A path to a PDF file, by default `histograms.pdf`.</span>
+<span class="sd">        nthreads : int, optional</span>
+<span class="sd">            Number of threads, by default os.cpu_count() - 1.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The cavity nomenclature is based on the integer label. The cavity</span>
+<span class="sd">        marked with 2, the first integer corresponding to a cavity, is KAA,</span>
+<span class="sd">        the cavity marked with 3 is KAB, the cavity marked with 4 is KAC</span>
+<span class="sd">        and so on.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The classes of residues are:</span>
+
+<span class="sd">        * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</span>
+
+<span class="sd">        * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</span>
+
+<span class="sd">        * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</span>
+
+<span class="sd">        * Negatively charged (R4): Aspartate, Glutamate.</span>
+
+<span class="sd">        * Positively charged (R5): Arginine, Histidine, Lysine.</span>
+
+<span class="sd">        * Non-standard (RX): Non-standard residues.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Export cavity PDB file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
+        <span class="c1"># Write KVFinder results TOML</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="p">)</span>
+        <span class="c1"># Plot histograms of frequencies</span>
+        <span class="k">if</span> <span class="n">include_frequencies_pdf</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pyKVFinder"><a class="viewcode-back" href="../../_api_reference/pyKVFinder.html#pyKVFinder.pyKVFinder">[docs]</a><span class="k">def</span> <span class="nf">pyKVFinder</span><span class="p">(</span>
+    <span class="n">pdb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">ligand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dictionary</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">VDW</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
+    <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+    <span class="n">removal_distance</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.4</span><span class="p">,</span>
+    <span class="n">volume_cutoff</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">ligand_cutoff</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">include_depth</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_hydropathy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">hydrophobicity_scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EisenbergWeiss&quot;</span><span class="p">,</span>
+    <span class="n">surface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SES&quot;</span><span class="p">,</span>
+    <span class="n">ignore_backbone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyKVFinderResults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Detects and characterizes cavities (volume, area, depth [optional],</span>
+<span class="sd">    hydropathy [optional] and interface residues).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pdb : Union[str, pathlib.Path]</span>
+<span class="sd">        A path to input PDB file.</span>
+<span class="sd">    ligand : Union[str, pathlib.Path], optional</span>
+<span class="sd">        A path to ligand PDB file, by default None.</span>
+<span class="sd">    dictionary : Union[str, pathlib.Path], optional</span>
+<span class="sd">        A path to van der Waals radii file, by default VDW.</span>
+<span class="sd">    box : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">        A path to box configuration file (TOML-formatted), by default None.</span>
+<span class="sd">    step : Union[float, int], optional</span>
+<span class="sd">        Grid spacing (A), by default 0.6.</span>
+<span class="sd">    probe_in : Union[float, int], optional</span>
+<span class="sd">        Probe In size (A), by default 1.4.</span>
+<span class="sd">    probe_out : Union[float, int], optional</span>
+<span class="sd">        Probe Out size (A), by default 4.0.</span>
+<span class="sd">    removal_distance : Union[float, int], optional</span>
+<span class="sd">        Length to be removed from the cavity-bulk frontier (A), by default 2.4.</span>
+<span class="sd">    volume_cutoff : Union[float, int], optional</span>
+<span class="sd">        Cavities volume filter (A3), by default 5.0.</span>
+<span class="sd">    ligand_cutoff : Union[float, int], optional</span>
+<span class="sd">        Radius value to limit a space around a ligand (A), by default 5.0.</span>
+<span class="sd">    include_depth : bool, optional</span>
+<span class="sd">        Whether to characterize the depth of the detected cavities, by</span>
+<span class="sd">        default False.</span>
+<span class="sd">    include_hydropathy : bool, optional</span>
+<span class="sd">        Whether to characterize the hydropathy of the detected cavities, by</span>
+<span class="sd">        default False.</span>
+<span class="sd">    hydrophobicity_scale : Union[str, pathlib.Path], optional</span>
+<span class="sd">        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,</span>
+<span class="sd">        KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a</span>
+<span class="sd">        TOML-formatted file with a custom hydrophobicity scale, by default</span>
+<span class="sd">        `EisenbergWeiss`.</span>
+<span class="sd">    surface : str, optional</span>
+<span class="sd">        Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent</span>
+<span class="sd">        Accessible Surface), by default SES.</span>
+<span class="sd">    ignore_backbone : bool, optional</span>
+<span class="sd">        Whether to ignore backbone atoms (C, CA, N, O) when defining interface</span>
+<span class="sd">        residues, by default False.</span>
+<span class="sd">    nthreads : int, optional</span>
+<span class="sd">        Number of threads, by default os.cpu_count()-1.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Print extra information to standard output, by default False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    results : pyKVFinderResults</span>
+<span class="sd">        A class with the following attributes defined:</span>
+
+<span class="sd">        * cavities : numpy.ndarray</span>
+<span class="sd">            Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
+<span class="sd">            Cavities array has integer labels in each position, that are:</span>
+
+<span class="sd">                * -1: bulk points</span>
+
+<span class="sd">                * 0: biomolecule points;</span>
+
+<span class="sd">                * 1: empty space points;</span>
+
+<span class="sd">                * &gt;=2: cavity points.</span>
+
+<span class="sd">            The empty space points are regions that do not meet the chosen</span>
+<span class="sd">            volume cutoff to be considered a cavity.</span>
+<span class="sd">        * surface : numpy.ndarray</span>
+<span class="sd">            Surface points in the 3D grid (surface[nx][ny][nz]).</span>
+<span class="sd">            Surface array has integer labels in each position, that are:</span>
+
+<span class="sd">                * -1: bulk points;</span>
+
+<span class="sd">                * 0: biomolecule or empty space points;</span>
+
+<span class="sd">                * &gt;=2: surface points.</span>
+
+<span class="sd">            The empty space points are regions that do not meet the chosen</span>
+<span class="sd">            volume cutoff to be considered a cavity.</span>
+<span class="sd">        * depths : Union[numpy.ndarray, None]</span>
+<span class="sd">            A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</span>
+<span class="sd">        * scales : Union[numpy.ndarray, None]</span>
+<span class="sd">            A numpy.ndarray with hydrophobicity scale value mapped at surface</span>
+<span class="sd">            points (scales[nx][ny][nz]).</span>
+<span class="sd">        * ncav : int</span>
+<span class="sd">            Number of cavities.</span>
+<span class="sd">        * volume : Dict[str, float]</span>
+<span class="sd">            A dictionary with volume of each detected cavity.</span>
+<span class="sd">        * area : Dict[str, float]</span>
+<span class="sd">            A dictionary with area of each detected cavity.</span>
+<span class="sd">        * max_depth : Union[Dict[str, float], None]</span>
+<span class="sd">            A dictionary with maximum depth of each detected cavity.</span>
+<span class="sd">        * avg_depth : Union[Dict[str, float], None]</span>
+<span class="sd">            A dictionary with average depth of each detected cavity.</span>
+<span class="sd">        * avg_hydropathy : Union[Dict[str, float], None]</span>
+<span class="sd">            A dictionary with average hydropathy for each detected cavity and</span>
+<span class="sd">            the range of the hydrophobicity scale (min, max).</span>
+<span class="sd">        * residues: Dict[str, List[List[str]]]</span>
+<span class="sd">            A dictionary with a list of interface residues for each detected</span>
+<span class="sd">            cavity.</span>
+<span class="sd">        * frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]</span>
+<span class="sd">            A dictionary with frequencies of residues and class for</span>
+<span class="sd">            residues of each detected cavity.</span>
+<span class="sd">        * _vertices : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
+<span class="sd">            X-axis, Y-axis, Z-axis).</span>
+<span class="sd">        * _step : float</span>
+<span class="sd">            Grid spacing (A).</span>
+<span class="sd">        * _pdb : Union[str, pathlib.Path]</span>
+<span class="sd">            A path to input PDB file.</span>
+<span class="sd">        * _ligand : Union[str, pathlib.Path, None]</span>
+<span class="sd">            A path to ligand PDB file.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The cavity nomenclature is based on the integer label. The cavity marked</span>
+<span class="sd">    with 2, the first integer corresponding to a cavity, is KAA, the cavity</span>
+<span class="sd">    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The classes of residues are:</span>
+
+<span class="sd">    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</span>
+
+<span class="sd">    * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</span>
+
+<span class="sd">    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</span>
+
+<span class="sd">    * Negatively charged (R4): Aspartate, Glutamate.</span>
+
+<span class="sd">    * Positively charged (R5): Arginine, Histidine, Lysine.</span>
+
+<span class="sd">    * Non-standard (RX): Non-standard residues.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Loading atomic dictionary file&quot;</span><span class="p">)</span>
+    <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>
+    <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ligand</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading ligand coordinates&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lxyzr</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Calculating 3D grid dimensions&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">box</span><span class="p">:</span>
+        <span class="c1"># Get vertices from file</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">get_grid_from_file</span><span class="p">(</span>
+            <span class="n">box</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">nthreads</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set flag to boolean</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Get vertices from pdb</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="c1"># Calculate distance between points</span>
+        <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensions: (nx:</span><span class="si">{</span><span class="n">nx</span><span class="si">}</span><span class="s2">, ny:</span><span class="si">{</span><span class="n">ny</span><span class="si">}</span><span class="s2">, nz:</span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calculate sin and cos of angles a and b</span>
+        <span class="n">sincos</span> <span class="o">=</span> <span class="n">get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sina: </span><span class="si">{</span><span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\t</span><span class="s2">sinb: </span><span class="si">{</span><span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cosa: </span><span class="si">{</span><span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\t</span><span class="s2">cosb: </span><span class="si">{</span><span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set flag to boolean</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Cavity detection</span>
+    <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span>
+        <span class="n">nx</span><span class="p">,</span>
+        <span class="n">ny</span><span class="p">,</span>
+        <span class="n">nz</span><span class="p">,</span>
+        <span class="n">xyzr</span><span class="p">,</span>
+        <span class="n">vertices</span><span class="p">,</span>
+        <span class="n">sincos</span><span class="p">,</span>
+        <span class="n">step</span><span class="p">,</span>
+        <span class="n">probe_in</span><span class="p">,</span>
+        <span class="n">probe_out</span><span class="p">,</span>
+        <span class="n">removal_distance</span><span class="p">,</span>
+        <span class="n">volume_cutoff</span><span class="p">,</span>
+        <span class="n">lxyzr</span><span class="p">,</span>
+        <span class="n">ligand_cutoff</span><span class="p">,</span>
+        <span class="n">box</span><span class="p">,</span>
+        <span class="n">surface</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ncav</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Spatial characterization</span>
+        <span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+        <span class="c1"># Depth characterization</span>
+        <span class="k">if</span> <span class="n">include_depth</span><span class="p">:</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="c1"># Constitutional characterization</span>
+        <span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span>
+            <span class="n">cavities</span><span class="p">,</span>
+            <span class="n">atominfo</span><span class="p">,</span>
+            <span class="n">xyzr</span><span class="p">,</span>
+            <span class="n">vertices</span><span class="p">,</span>
+            <span class="n">sincos</span><span class="p">,</span>
+            <span class="n">step</span><span class="p">,</span>
+            <span class="n">probe_in</span><span class="p">,</span>
+            <span class="n">ignore_backbone</span><span class="p">,</span>
+            <span class="n">nthreads</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
+
+        <span class="c1"># Hydropathy hydrophobicity scales</span>
+        <span class="k">if</span> <span class="n">include_hydropathy</span><span class="p">:</span>
+            <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span>
+                <span class="n">surface</span><span class="p">,</span>
+                <span class="n">atominfo</span><span class="p">,</span>
+                <span class="n">xyzr</span><span class="p">,</span>
+                <span class="n">vertices</span><span class="p">,</span>
+                <span class="n">sincos</span><span class="p">,</span>
+                <span class="n">step</span><span class="p">,</span>
+                <span class="n">probe_in</span><span class="p">,</span>
+                <span class="n">hydrophobicity_scale</span><span class="p">,</span>
+                <span class="n">ignore_backbone</span><span class="p">,</span>
+                <span class="n">nthreads</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: No cavities detected, returning None!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Return dict</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinderResults</span><span class="p">(</span>
+        <span class="n">cavities</span><span class="p">,</span>
+        <span class="n">surface</span><span class="p">,</span>
+        <span class="n">depths</span><span class="p">,</span>
+        <span class="n">scales</span><span class="p">,</span>
+        <span class="n">volume</span><span class="p">,</span>
+        <span class="n">area</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="p">,</span>
+        <span class="n">avg_depth</span><span class="p">,</span>
+        <span class="n">avg_hydropathy</span><span class="p">,</span>
+        <span class="n">residues</span><span class="p">,</span>
+        <span class="n">frequencies</span><span class="p">,</span>
+        <span class="n">vertices</span><span class="p">,</span>
+        <span class="n">step</span><span class="p">,</span>
+        <span class="n">pdb</span><span class="p">,</span>
+        <span class="n">ligand</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LBC-LNBio.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

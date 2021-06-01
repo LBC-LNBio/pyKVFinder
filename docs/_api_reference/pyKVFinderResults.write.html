@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.pyKVFinderResults.write &mdash; pyKVFinder 1.0.0 documentation</title>
+  <title>pyKVFinder.pyKVFinderResults.write &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -69,6 +69,10 @@
 
           
             
+            
+              <div class="version">
+                0.1
+              </div>
             
           
 
@@ -210,29 +214,31 @@
             
   <div class="section" id="pykvfinder-pykvfinderresults-write">
 <h1>pyKVFinder.pyKVFinderResults.write<a class="headerlink" href="#pykvfinder-pykvfinderresults-write" title="Permalink to this headline">¶</a></h1>
-<p>Writes file paths and cavity characterization to TOML-formatted file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinderResults</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;results.toml, output = None, output_hydropathy = None)</span>
-</pre></div>
-</div>
-<dl class="field-list">
-<dt class="field-odd">Args</dt>
-<dd class="field-odd"><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">fn</span></code><span class="classifier"><em>str, default ‘results.toml’</em></span></dt><dd><p>A path to TOML-formatted file for writing file paths and cavity characterization (volume, area, depth and interface residues) per cavity detected</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output</span></code><span class="classifier"><em>str, default None</em></span></dt><dd><p>A path to a cavity PDB file</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code><span class="classifier"><em>str, default None</em></span></dt><dd><p>A path to PDB file for writing hydropathy at surface points</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>File with TOML-formatted data corresponding to file paths and cavity characterization per detected cavity.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.write">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.pyKVFinderResults.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'results.toml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hydropathy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes file paths and cavity characterization to TOML-formatted file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to TOML-formatted file for writing file paths and cavity
+characterization (volume, area, depth and interface residues)
+per cavity detected, by default <cite>results.toml</cite>.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a cavity PDB file, by default None.</p></li>
+<li><p><strong>output_hydropathy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A path to PDB file for writing hydropathy at surface points, by
+default None.</p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p>The cavity nomenclature is based on the integer label. The cavity
+marked with 2, the first integer corresponding to a cavity, is KAA,
+the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
+and so on.</p>
 </div>
+</dd></dl>
+
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">

@@ -1,47 +1,7 @@
 pyKVFinder.spatial
 ==================
 
-Spatial characterization (volume and area) of the detected cavities.
-
-Surface points that belongs to the same cavity are assigned with an integer in the grid. Biomolecule or unsigned cavity points = 0, Assigned cavity points >= 2 and Bulk points = -1.
-
-.. code-block:: python
-
-    pyKVFinder.spatial(cavities, ncav, step = 0.6, nthreads = os.cpu_count() - 1, verbose = False)
-
-:Args:
-
-    ``cavities`` : *numpy.ndarray*
-        A numpy array with integer labels in each position, that are:
-            * -1: bulk point.
-            * 0: biomolecule point.
-            * 1: empty space point.
-            * >=2: cavity point.
-    ``ncav`` : *int*
-        Number of cavities in ``cavities`` numpy array
-    ``step`` : *float, default 0.6*
-        Grid spacing (A)
-    ``nthreads`` : *int, default 'number of cpus - 1'*
-        Number of threads
-    ``verbose`` : *bool, default False*
-        Print extra information to standard output
-
-:Returns:
-    
-    ``surface`` : *numpy.ndarray*
-        A numpy array with integer labels in each position, that are:
-            * -1: bulk point.
-            * 0: biomolecule or empty space point.
-            * >=2: surface point.
-    ``volume`` : *dict*
-        A dictionary with volume of each detected cavity
-    ``area`` : *dict*
-        A dictionary with area of each detected cavity
-
-
-.. note::
-
-    The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on. 
+.. autofunction:: pyKVFinder.spatial
 
 .. seealso::
 
@@ -58,7 +18,7 @@ With the cavity points identified with ``pyKVFinder.detect``, we can perform a s
 .. code-block:: python
 
     >>> from pyKVFinder import spatial
-    >>> surface, volume, area = spatial(cavities, ncav)
+    >>> surface, volume, area = spatial(cavities)
     >>> surface
     array([[[-1, -1, -1, ..., -1, -1, -1],
             [-1, -1, -1, ..., -1, -1, -1],

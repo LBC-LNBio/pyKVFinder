@@ -1,27 +1,7 @@
 pyKVFinder.get_dimensions
 =========================
 
-Gets dimensions of 3D grid from vertices.
-
-.. code-block:: python
-
-    pyKVFinder.get_dimensions(vertices, step = 0.6)
-
-:Args:
-
-    ``vertices`` : *numpy.ndarray*
-        A numpy array with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis)
-    ``step`` : *float*
-        Grid spacing (A)
-
-:Returns:
-
-    ``nx`` : *int*
-        x grid units
-    ``ny`` : *int*
-        y grid units 
-    ``nz`` : *int*
-        z grid units 
+.. autofunction:: pyKVFinder.get_dimensions
 
 .. seealso::
 

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Hydrophobicity scale file template &mdash; pyKVFinder 0.1.3 documentation</title>
+  <title>Overview: module code &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -42,9 +42,7 @@
 
     
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Issues" href="../_about/index.html" />
-    <link rel="prev" title="Box configuration file template" href="box_file_template.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -121,10 +119,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Configuration files</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="vdw_file_template.html">vdW radii</a></li>
-<li class="toctree-l1"><a class="reference internal" href="box_file_template.html">Custom grid</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Hydrophobicity scale</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
 </ul>
 <p class="caption"><span class="caption-text">About</span></p>
 <ul>
@@ -180,14 +178,10 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Hydrophobicity scale file template</li>
+      <li>Overview: module code</li>
     
     
       <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="../_sources/_cfg_files/hydrophobicity_scale_file_template.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -199,51 +193,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="hydrophobicity-scale-file-template">
-<h1>Hydrophobicity scale file template<a class="headerlink" href="#hydrophobicity-scale-file-template" title="Permalink to this headline">¶</a></h1>
-<p>The hydrophobicity scale file defines the name of the scale and the hydrophobicity value for each residue and when not defined, it assigns zero to the missing residues. The package contains six built-in hydrophobicity scales: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml">Eisenberg &amp; Weiss</a> [1], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml">Hessa &amp; Heijne</a> [2], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolittle.toml">Kyte &amp; Doolittle</a> [3], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml">Moon &amp; Fleming</a> [4], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml">Wimley &amp; White</a> [5] and <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml">Zhao &amp; London</a> [6]. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:</p>
-<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[EisenbergWeiss]</span>
-<span class="n">ALA</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.64</span>
-<span class="n">ARG</span> <span class="o">=</span> <span class="mf">2.6</span>
-<span class="n">ASN</span> <span class="o">=</span> <span class="mf">0.8</span>
-<span class="n">ASP</span> <span class="o">=</span> <span class="mf">0.92</span>
-<span class="n">CYS</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.3</span>
-<span class="n">GLN</span> <span class="o">=</span> <span class="mf">0.87</span>
-<span class="n">GLU</span> <span class="o">=</span> <span class="mf">0.76</span>
-<span class="n">GLY</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.49</span>
-<span class="n">HIS</span> <span class="o">=</span> <span class="mf">0.41</span>
-<span class="n">ILE</span> <span class="o">=</span> <span class="mi">-1</span><span class="mf">.42</span>
-<span class="n">LEU</span> <span class="o">=</span> <span class="mi">-1</span><span class="mf">.09</span>
-<span class="n">LYS</span> <span class="o">=</span> <span class="mf">1.54</span>
-<span class="n">MET</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.66</span>
-<span class="n">PHE</span> <span class="o">=</span> <span class="mi">-1</span><span class="mf">.22</span>
-<span class="n">PRO</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.12</span>
-<span class="n">SER</span> <span class="o">=</span> <span class="mf">0.18</span>
-<span class="n">THR</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">TRP</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.83</span>
-<span class="n">TYR</span> <span class="o">=</span> <span class="mi">-0</span><span class="mf">.27</span>
-<span class="n">VAL</span> <span class="o">=</span> <span class="mi">-1</span><span class="mf">.11</span>
-</pre></div>
-</div>
-<h4><u>References</u></h4><ol class="arabic simple">
-<li><p>Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment detects periodicity in protein hydrophobicity. Proceedings of the National Academy of Sciences. 1984;81.</p></li>
-<li><p>Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al. Recognition of transmembrane helices by the endoplasmic reticulum translocon. Nature. 2005;433.</p></li>
-<li><p>Kyte J, Doolittle RF. A simple method for displaying the hydropathic character of a protein. Journal of Molecular Biology. 1982;157.</p></li>
-<li><p>Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from transmembrane protein folding into lipid bilayers. Proceedings of the National Academy of Sciences. 2011;108.</p></li>
-<li><p>Wimley WC, White SH. Experimentally determined hydrophobicity scale for proteins at membrane interfaces. Nature Structural &amp; Molecular Biology. 1996;3.</p></li>
-<li><p>Zhao G, London E. An amino acid “transmembrane tendency” scale that approaches the theoretical limit to accuracy for prediction of transmembrane helices: Relationship to biological hydrophobicity. Protein Science. 2006;15.</p></li>
-</ol>
-</div>
-
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="pyKVFinder/grid.html">pyKVFinder.grid</a></li>
+<li><a href="pyKVFinder/main.html">pyKVFinder.main</a></li>
+<li><a href="pyKVFinder/utils.html">pyKVFinder.utils</a></li>
+</ul>
 
            </div>
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../_about/index.html" class="btn btn-neutral float-right" title="Issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="box_file_template.html" class="btn btn-neutral float-left" title="Box configuration file template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

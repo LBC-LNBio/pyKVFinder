@@ -1,5 +1,4 @@
-"""
-Python-C parallel KVFinder
+"""Python-C parallel KVFinder.
 
 pyKVFinder detects and characterizes cavities in biomolecular structures.
 
@@ -11,19 +10,22 @@ it contains a command line interface (CLI).
 
 Python package
 --------------
-import pyKVFinder
+>>> import pyKVFinder
 
 Command Line Interface
 ----------------------
-Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>]
-                  [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]
-                  [-o <float>] [-V <float>] [-R <float>] [-S <str>]
-                  [--ignore_backbone] [-D] [--plot_frequencies]
-                  [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                  <.pdb>
+**Usage:** pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>]\
+                [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]\
+                [-o <float>] [-V <float>] [-R <float>] [-S <str>]\
+                [--ignore_backbone] [-D] [--plot_frequencies]\
+                [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]\
+                <.pdb>
 
-GitHub repository: https://github.com/LBC-LNBio/pyKVFinder
-Documentation: https://lbc-lnbio.github.io/pyKVFinder
+See also
+--------
+* GitHub repository: https://github.com/LBC-LNBio/pyKVFinder
+
+* Documentation: https://lbc-lnbio.github.io/pyKVFinder
 """
 
 __name__ = "pyKVFinder"
