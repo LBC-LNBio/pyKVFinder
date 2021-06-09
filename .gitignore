@@ -5,20 +5,21 @@ pyKVFinder/data/tests/output/
 .vscode/
 
 # Examples checkpoints
-etc/examples/*/.ipynb_checkpoints/
+examples/*/.ipynb_checkpoints/
+examples/*/*.py
 
 # Molecular dynamics analysis
-etc/examples/md-analysis/data/
-etc/examples/md-analysis/results/
-etc/examples/md-analysis/box.toml
+examples/md-analysis/data/
+examples/md-analysis/results/
+examples/md-analysis/box.toml
 
-# Evolutive analysis 
-etc/examples/evolutive-analysis/data/
-etc/examples/evolutive-analysis/results/
-etc/examples/evolutive-analysis/box.toml
+# Conservation analysis 
+examples/conservation-analysis/data/
+examples/conservation-analysis/results/
+examples/conservation-analysis/box.toml
 
 # Visualization 
-etc/examples/visualization/data/
+examples/visualization/data/
 
 # Benchmarking 
 etc/performance/data/
