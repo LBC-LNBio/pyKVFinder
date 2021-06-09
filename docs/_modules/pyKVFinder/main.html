@@ -202,7 +202,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">.argparser</span> <span class="kn">import</span> <span class="n">argparser</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">read_vdw</span><span class="p">,</span>
@@ -476,7 +476,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ </span><span class="se">\033</span><span class="s2">[1mElapsed time:</span><span class="se">\033</span><span class="s2">[0m </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ Elapsed time (s): </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="mi">0</span>
 
 
 <div class="viewcode-block" id="pyKVFinderResults"><a class="viewcode-back" href="../../_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults">[docs]</a><span class="k">class</span> <span class="nc">pyKVFinderResults</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -647,7 +647,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cavity.pdb&quot;</span><span class="p">,</span>
         <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
-        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Exports cavitiy (H) and surface (HA) points to PDB-formatted file</span>
 <span class="sd">        with a variable (B; optional) in B-factor column, and hydropathy to</span>
@@ -661,7 +661,8 @@
 <span class="sd">            A path to PDB file for writing hydropathy at surface points, by</span>
 <span class="sd">            default `hydropathy.pdb`.</span>
 <span class="sd">        nthreads : int, optional</span>
-<span class="sd">            Number of threads, by default os.cpu_count() - 1.</span>
+<span class="sd">            Number of threads, by default None. If None, the number of threads is</span>
+<span class="sd">            `os.cpu_count() - 1`.</span>
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
@@ -769,7 +770,7 @@
         <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
         <span class="n">include_frequencies_pdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">pdf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;histograms.pdf&quot;</span><span class="p">,</span>
-        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Exports cavities and characterization to PDB-formatted files,</span>
 <span class="sd">        writes file paths and characterization to a TOML-formatted file, and</span>
@@ -793,7 +794,8 @@
 <span class="sd">        pdf : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to a PDF file, by default `histograms.pdf`.</span>
 <span class="sd">        nthreads : int, optional</span>
-<span class="sd">            Number of threads, by default os.cpu_count() - 1.</span>
+<span class="sd">            Number of threads, by default None. If None, the number of threads is</span>
+<span class="sd">            `os.cpu_count() - 1`.</span>
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
@@ -843,7 +845,7 @@
     <span class="n">hydrophobicity_scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EisenbergWeiss&quot;</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SES&quot;</span><span class="p">,</span>
     <span class="n">ignore_backbone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyKVFinderResults</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Detects and characterizes cavities (volume, area, depth [optional],</span>
@@ -889,7 +891,8 @@
 <span class="sd">        Whether to ignore backbone atoms (C, CA, N, O) when defining interface</span>
 <span class="sd">        residues, by default False.</span>
 <span class="sd">    nthreads : int, optional</span>
-<span class="sd">        Number of threads, by default os.cpu_count()-1.</span>
+<span class="sd">        Number of threads, by default None. If None, the number of threads is</span>
+<span class="sd">        `os.cpu_count() - 1`.</span>
 <span class="sd">    verbose : bool, optional</span>
 <span class="sd">        Print extra information to standard output, by default False.</span>
 
