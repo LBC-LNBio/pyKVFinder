@@ -1,8 +1,8 @@
-name: Testing
+name: Integration Testing
 
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [ created ]
   pull_request:
     branches: [ master ]
 
@@ -26,4 +26,4 @@ jobs:
         pip install .
     - name: Test with unittest
       run: |
-        python -m unittest discover -vs tests/
+        python -m unittest discover -vs tests/integration
