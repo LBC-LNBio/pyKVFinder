@@ -1012,7 +1012,7 @@ def spatial(
     cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
 
     # Get number of cavities
-    ncav = cavities.max() - 1
+    ncav = int(cavities.max() - 1)
 
     # Get cavities shape
     nx, ny, nz = cavities.shape
@@ -1163,7 +1163,7 @@ def depth(
     cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
 
     # Get number of cavities
-    ncav = cavities.max() - 1
+    ncav = int(cavities.max() - 1)
 
     # Get cavities shape
     nx, ny, nz = cavities.shape
@@ -1400,7 +1400,7 @@ def constitutional(
     sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
 
     # Get number of cavities
-    ncav = cavities.max() - 1
+    ncav = int(cavities.max() - 1)
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
@@ -1685,7 +1685,7 @@ def hydropathy(
     sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
 
     # Get number of cavities
-    ncav = surface.max() - 1
+    ncav = int(surface.max() - 1)
 
     # Get dimensions
     nx, ny, nz = surface.shape
@@ -1948,7 +1948,7 @@ def export(
         scales = scales.astype("float64") if scales.dtype != "float64" else scales
 
     # Get number of cavities
-    ncav = cavities.max() - 1
+    ncav = int(cavities.max() - 1)
 
     # Create base directories of results
     if fn is not None:

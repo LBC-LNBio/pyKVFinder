@@ -278,7 +278,7 @@ def cli() -> None:
     print(f"[ \033[1mElapsed time:\033[0m {elapsed_time:.4f} ]")
     logging.info(f"[ Elapsed time (s): {elapsed_time:.4f} ]\n")
 
-    return True
+    return 0
 
 
 class pyKVFinderResults(object):
