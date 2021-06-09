@@ -1,7 +1,7 @@
 import os
 import pathlib
 import numpy
-from typing import Union, Tuple, Dict, List
+from typing import Union, Tuple, Optional, Dict, List
 
 __all__ = [
     "get_vertices",
@@ -95,7 +95,7 @@ def get_grid_from_file(
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
 ) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, int, int, int]:
     """Gets 3D grid vertices from box configuration file or parKVFinder
     parameters file, selects atoms inside custom 3D grid, define sine
@@ -118,7 +118,8 @@ def get_grid_from_file(
     probe_out : Union[float, int], optional
         Probe Out size (A), by default 4.0.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
 
     Returns
     -------
@@ -216,8 +217,13 @@ def get_grid_from_file(
         raise ValueError("`probe_out` must be a non-negative real number.")
     elif probe_out < probe_in:
         raise ValueError("`probe_out` must be greater than `probe_in`.")
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
 
     # Convert type
     if type(atominfo) == list:
@@ -549,7 +555,7 @@ def detect(
     ligand_cutoff: Union[float, int] = 5.0,
     box_adjustment: bool = False,
     surface: str = "SES",
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[int, numpy.ndarray]:
     """Detects biomolecular cavities.
@@ -596,7 +602,8 @@ def detect(
         Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
         Accessible Surface), by default SES.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -758,10 +765,13 @@ def detect(
         raise TypeError("`box_adjustment` must be a boolean.")
     if type(surface) not in [str]:
         raise TypeError("`surface` must be a str.")
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
-    elif nthreads <= 0:
-        raise ValueError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
     if type(verbose) not in [bool]:
         raise TypeError("`verbose` must be a boolean.")
 
@@ -902,7 +912,7 @@ def _process_spatial(
 def spatial(
     cavities: numpy.ndarray,
     step: Union[float, int] = 0.6,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float], Dict[str, float]]:
     """Spatial characterization (volume and area) of the detected cavities.
@@ -926,7 +936,8 @@ def spatial(
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -983,10 +994,13 @@ def spatial(
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
-    elif nthreads <= 0:
-        raise ValueError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
     if type(verbose) not in [bool]:
         raise TypeError("`verbose` must be a boolean.")
 
@@ -1046,7 +1060,7 @@ def _process_depth(
 def depth(
     cavities: numpy.ndarray,
     step: Union[float, int] = 0.6,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float], Dict[str, float]]:
     """Characterization of the depth of the detected cavities, including depth
@@ -1071,7 +1085,8 @@ def depth(
     step : Union[float, int], optional
         Grid spacing (A).
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -1130,10 +1145,13 @@ def depth(
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
-    elif nthreads <= 0:
-        raise ValueError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
     if type(verbose) not in [bool]:
         raise TypeError("`verbose` must be a boolean.")
 
@@ -1199,7 +1217,7 @@ def constitutional(
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     ignore_backbone: bool = False,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Dict[str, List[List[str]]]:
     """Constitutional characterization (interface residues) of the detected
@@ -1241,7 +1259,8 @@ def constitutional(
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -1350,10 +1369,13 @@ def constitutional(
         raise ValueError("`probe_in` must be a non-negative real number.")
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
-    elif nthreads <= 0:
-        raise ValueError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
     if type(verbose) not in [bool]:
         raise TypeError("`verbose` must be a boolean.")
 
@@ -1446,7 +1468,7 @@ def hydropathy(
     probe_in: Union[float, int] = 1.4,
     hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
     ignore_backbone: bool = False,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float]]:
     """Hydropathy characterization of the detected cavities.
@@ -1494,7 +1516,8 @@ def hydropathy(
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
@@ -1631,10 +1654,13 @@ def hydropathy(
         raise TypeError("`hydrophobicity_scale` must be a string or a pathlib.Path.")
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
-    elif nthreads <= 0:
-        raise ValueError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
     if type(verbose) not in [bool]:
         raise TypeError("`verbose` must be a boolean.")
 
@@ -1735,7 +1761,7 @@ def export(
     B: Union[numpy.ndarray, None] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
     scales: Union[numpy.ndarray, None] = None,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     append: bool = False,
     model: int = 0,
 ) -> None:
@@ -1792,7 +1818,8 @@ def export(
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     append : bool, optional
         Whether to append cavities to the PDB file, by default False.
     model : int, optional
@@ -1892,10 +1919,13 @@ def export(
             raise ValueError(
                 "`scales` has the incorrect shape. It must be (nx, ny, nz)."
             )
-    if type(nthreads) not in [int]:
-        raise TypeError("`nthreads` must be a positive integer.")
-    elif nthreads <= 0:
-        raise ValueError("`nthreads` must be a positive integer.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
     if type(append) not in [bool]:
         raise TypeError("`append` must be a boolean.")
     if type(model) not in [int]:

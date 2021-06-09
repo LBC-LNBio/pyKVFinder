@@ -4,7 +4,7 @@ import logging
 import numpy
 import pathlib
 from datetime import datetime
-from typing import Union, Dict, List
+from typing import Union, Optional, Dict, List
 from .argparser import argparser
 from .utils import (
     read_vdw,
@@ -449,7 +449,7 @@ class pyKVFinderResults(object):
         self,
         output: Union[str, pathlib.Path] = "cavity.pdb",
         output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
-        nthreads: int = os.cpu_count() - 1,
+        nthreads: Optional[int] = None,
     ) -> None:
         """Exports cavitiy (H) and surface (HA) points to PDB-formatted file
         with a variable (B; optional) in B-factor column, and hydropathy to
@@ -463,7 +463,8 @@ class pyKVFinderResults(object):
             A path to PDB file for writing hydropathy at surface points, by
             default `hydropathy.pdb`.
         nthreads : int, optional
-            Number of threads, by default os.cpu_count() - 1.
+            Number of threads, by default None. If None, the number of threads is
+            `os.cpu_count() - 1`.
 
         Note
         ----
@@ -571,7 +572,7 @@ class pyKVFinderResults(object):
         output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
         include_frequencies_pdf: bool = False,
         pdf: Union[str, pathlib.Path] = "histograms.pdf",
-        nthreads: int = os.cpu_count() - 1,
+        nthreads: Optional[int] = None,
     ) -> None:
         """Exports cavities and characterization to PDB-formatted files,
         writes file paths and characterization to a TOML-formatted file, and
@@ -595,7 +596,8 @@ class pyKVFinderResults(object):
         pdf : Union[str, pathlib.Path], optional
             A path to a PDF file, by default `histograms.pdf`.
         nthreads : int, optional
-            Number of threads, by default os.cpu_count() - 1.
+            Number of threads, by default None. If None, the number of threads is
+            `os.cpu_count() - 1`.
 
         Note
         ----
@@ -645,7 +647,7 @@ def pyKVFinder(
     hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
     surface: str = "SES",
     ignore_backbone: bool = False,
-    nthreads: int = os.cpu_count() - 1,
+    nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> pyKVFinderResults:
     """Detects and characterizes cavities (volume, area, depth [optional],
@@ -691,7 +693,8 @@ def pyKVFinder(
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
     nthreads : int, optional
-        Number of threads, by default os.cpu_count()-1.
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
     verbose : bool, optional
         Print extra information to standard output, by default False.
 
