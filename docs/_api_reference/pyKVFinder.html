@@ -232,7 +232,7 @@ hydropathy [optional] and interface residues).</p>
 <li><p><strong>pdb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em>) – A path to input PDB file.</p></li>
 <li><p><strong>ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand PDB file, by default None.</p></li>
 <li><p><strong>dictionary</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to van der Waals radii file, by default VDW.</p></li>
-<li><p><strong>box</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em><em>, </em><em>optional</em>) – A path to box configuration file (TOML-formatted), by default None.</p></li>
+<li><p><strong>box</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to box configuration file (TOML-formatted), by default None.</p></li>
 <li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
 <li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
 <li><p><strong>probe_out</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe Out size (A), by default 4.0.</p></li>
@@ -264,7 +264,7 @@ residues, by default False.</p></li>
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>-1: bulk points</p></li>
+<li><p>-1: bulk points;</p></li>
 <li><p>0: biomolecule points;</p></li>
 <li><p>1: empty space points;</p></li>
 <li><p>&gt;=2: cavity points.</p></li>
@@ -291,12 +291,12 @@ volume cutoff to be considered a cavity.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>depths<span class="classifier">Union[numpy.ndarray, None]</span></dt><dd><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
+<dt>depths<span class="classifier">numpy.ndarray, optional</span></dt><dd><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>scales<span class="classifier">Union[numpy.ndarray, None]</span></dt><dd><p>A numpy.ndarray with hydrophobicity scale value mapped at surface
+<dt>scales<span class="classifier">numpy.ndarray, optional</span></dt><dd><p>A numpy.ndarray with hydrophobicity scale value mapped at surface
 points (scales[nx][ny][nz]).</p>
 </dd>
 </dl>
@@ -317,17 +317,17 @@ points (scales[nx][ny][nz]).</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>max_depth<span class="classifier">Union[Dict[str, float], None]</span></dt><dd><p>A dictionary with maximum depth of each detected cavity.</p>
+<dt>max_depth<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with maximum depth of each detected cavity.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>avg_depth<span class="classifier">Union[Dict[str, float], None]</span></dt><dd><p>A dictionary with average depth of each detected cavity.</p>
+<dt>avg_depth<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with average depth of each detected cavity.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>avg_hydropathy<span class="classifier">Union[Dict[str, float], None]</span></dt><dd><p>A dictionary with average hydropathy for each detected cavity and
+<dt>avg_hydropathy<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with average hydropathy for each detected cavity and
 the range of the hydrophobicity scale (min, max).</p>
 </dd>
 </dl>
@@ -339,7 +339,7 @@ cavity.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>frequencies<span class="classifier">Union[Dict[str, Dict[str, Dict[str, int]]], None]</span></dt><dd><p>A dictionary with frequencies of residues and class for
+<dt>frequencies<span class="classifier">Dict[str, Dict[str, Dict[str, int]]], optional</span></dt><dd><p>A dictionary with frequencies of residues and class for
 residues of each detected cavity.</p>
 </dd>
 </dl>
@@ -356,12 +356,12 @@ X-axis, Y-axis, Z-axis).</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>_pdb<span class="classifier">Union[str, pathlib.Path]</span></dt><dd><p>A path to input PDB file.</p>
+<dt>_pdb<span class="classifier">Union[str, pathlib.Path], optional</span></dt><dd><p>A path to input PDB file.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>_ligand<span class="classifier">Union[str, pathlib.Path, None]</span></dt><dd><p>A path to ligand PDB file.</p>
+<dt>_ligand<span class="classifier">Union[str, pathlib.Path], optional</span></dt><dd><p>A path to ligand PDB file.</p>
 </dd>
 </dl>
 </li>

@@ -223,7 +223,7 @@
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul>
-<li><p>-1: bulk points</p></li>
+<li><p>-1: bulk points;</p></li>
 <li><p>0: biomolecule points;</p></li>
 <li><p>1: empty space points;</p></li>
 <li><p>&gt;=2: cavity points.</p></li>
@@ -244,24 +244,24 @@ Surface array has integer labels in each position, that are:</p>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
 </p></li>
-<li><p><strong>depths</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p></li>
-<li><p><strong>scales</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
+<li><p><strong>depths</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p></li>
+<li><p><strong>scales</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
 points (scales[nx][ny][nz]).</p></li>
 <li><p><strong>volume</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – A dictionary with volume of each detected cavity.</p></li>
 <li><p><strong>area</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – A dictionary with area of each detected cavity.</p></li>
-<li><p><strong>max_depth</strong> (<em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A dictionary with maximum depth of each detected cavity.</p></li>
-<li><p><strong>avg_depth</strong> (<em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A dictionary with average depth of each detected cavity.</p></li>
-<li><p><strong>avg_hydropathy</strong> (<em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A dictionary with average hydropathy for each detected cavity and
+<li><p><strong>max_depth</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with maximum depth of each detected cavity.</p></li>
+<li><p><strong>avg_depth</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with average depth of each detected cavity.</p></li>
+<li><p><strong>avg_hydropathy</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with average hydropathy for each detected cavity and
 the range of the hydrophobicity scale (min, max).</p></li>
 <li><p><strong>residues</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – A dictionary with a list of interface residues for each detected
 cavity.</p></li>
-<li><p><strong>frequencies</strong> (<em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A dictionary with frequencies of residues and class for
+<li><p><strong>frequencies</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A dictionary with frequencies of residues and class for
 residues of each detected cavity.</p></li>
 <li><p><strong>_vertices</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray or a list with xyz vertices coordinates (origin,
 X-axis, Y-axis, Z-axis).</p></li>
 <li><p><strong>_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Grid spacing (A).</p></li>
-<li><p><strong>_pdb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em><em>, </em><em>optional</em>) – A path to input PDB file, by default None.</p></li>
-<li><p><strong>_ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand PDB file, by default None.</p></li>
+<li><p><strong>_pdb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to input PDB file, by default None.</p></li>
+<li><p><strong>_ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand PDB file, by default None.</p></li>
 </ul>
 </dd>
 </dl>
@@ -272,7 +272,7 @@ X-axis, Y-axis, Z-axis).</p></li>
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>-1: bulk points</p></li>
+<li><p>-1: bulk points;</p></li>
 <li><p>0: biomolecule points;</p></li>
 <li><p>1: empty space points;</p></li>
 <li><p>&gt;=2: cavity points.</p></li>
@@ -314,7 +314,7 @@ volume cutoff to be considered a cavity.</p>
 <dd><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[numpy.ndarray, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>]</p>
+<dd class="field-odd"><p>numpy.ndarray, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -326,7 +326,7 @@ volume cutoff to be considered a cavity.</p>
 points (scales[nx][ny][nz]).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[numpy.ndarray, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>]</p>
+<dd class="field-odd"><p>numpy.ndarray, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -370,7 +370,7 @@ points (scales[nx][ny][nz]).</p>
 <dd><p>A dictionary with maximum depth of each detected cavity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -381,7 +381,7 @@ points (scales[nx][ny][nz]).</p>
 <dd><p>A dictionary with average depth of each detected cavity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -393,7 +393,7 @@ points (scales[nx][ny][nz]).</p>
 the range of the hydrophobicity scale (min, max).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -417,7 +417,7 @@ cavity.</p>
 residues of each detected cavity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>]]], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>]]], optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -451,7 +451,7 @@ X-axis, Y-axis, Z-axis).</p>
 <dd><p>A path to input PDB file, by default None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>], optional</p>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>], optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -462,7 +462,7 @@ X-axis, Y-axis, Z-axis).</p>
 <dd><p>A path to ligand PDB file, by default None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>], optional</p>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>], optional</p>
 </dd>
 </dl>
 </dd></dl>

@@ -245,7 +245,7 @@ angles (sina, cosa, sinb, cosb).</p></li>
 <li><p><strong>removal_distance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – A length to be removed from the cavity-bulk frontier (A), by
 default 2.4.</p></li>
 <li><p><strong>volume_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Volume filter for detected cavities (A3), by default 5.0.</p></li>
-<li><p><strong>lxyzr</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>]</em>) – A numpy.ndarray or a list with xyz atomic coordinates and radii values
+<li><p><strong>lxyzr</strong> (<em>Optional</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A numpy.ndarray or a list with xyz atomic coordinates and radii values
 (x, y, z, Iradius) for each atom of a target ligand, by default None.</p></li>
 <li><p><strong>ligand_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – A radius to limit a space around a ligand (A), by default 5.0.</p></li>
 <li><p><strong>box_adjustment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether a custom 3D grid is applied, by default False.</p></li>
@@ -263,7 +263,7 @@ Accessible Surface), by default SES.</p></li>
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>-1: bulk points</p></li>
+<li><p>-1: bulk points;</p></li>
 <li><p>0: biomolecule points;</p></li>
 <li><p>1: empty space points;</p></li>
 <li><p>&gt;=2: cavity points.</p></li>

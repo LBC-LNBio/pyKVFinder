@@ -373,13 +373,13 @@
     <span class="k">if</span> <span class="n">ncav</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># Spatial characterization</span>
         <span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span>
-            <span class="n">cavities</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+            <span class="n">cavities</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
         <span class="p">)</span>
 
         <span class="c1"># Depth characterization</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
             <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span>
-                <span class="n">cavities</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+                <span class="n">cavities</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
@@ -394,6 +394,7 @@
             <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
@@ -419,6 +420,7 @@
                 <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">hydropathy</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
             <span class="p">)</span>
@@ -443,6 +445,7 @@
             <span class="n">depths</span><span class="p">,</span>
             <span class="n">output_hydropathy</span><span class="p">,</span>
             <span class="n">scales</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -488,7 +491,7 @@
 <span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
 <span class="sd">        Cavities array has integer labels in each position, that are:</span>
 
-<span class="sd">            * -1: bulk points</span>
+<span class="sd">            * -1: bulk points;</span>
 
 <span class="sd">            * 0: biomolecule points;</span>
 
@@ -510,26 +513,26 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        volume cutoff to be considered a cavity.</span>
-<span class="sd">    depths : Union[numpy.ndarray, None]</span>
+<span class="sd">    depths : numpy.ndarray, optional</span>
 <span class="sd">        A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</span>
-<span class="sd">    scales : Union[numpy.ndarray, None]</span>
+<span class="sd">    scales : numpy.ndarray, optional</span>
 <span class="sd">        A numpy.ndarray with hydrophobicity scale value mapped at surface</span>
 <span class="sd">        points (scales[nx][ny][nz]).</span>
 <span class="sd">    volume : Dict[str, float]</span>
 <span class="sd">        A dictionary with volume of each detected cavity.</span>
 <span class="sd">    area : Dict[str, float]</span>
 <span class="sd">        A dictionary with area of each detected cavity.</span>
-<span class="sd">    max_depth : Union[Dict[str, float], None]</span>
+<span class="sd">    max_depth : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with maximum depth of each detected cavity.</span>
-<span class="sd">    avg_depth : Union[Dict[str, float], None]</span>
+<span class="sd">    avg_depth : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with average depth of each detected cavity.</span>
-<span class="sd">    avg_hydropathy : Union[Dict[str, float], None]</span>
+<span class="sd">    avg_hydropathy : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with average hydropathy for each detected cavity and</span>
 <span class="sd">        the range of the hydrophobicity scale (min, max).</span>
 <span class="sd">    residues: Dict[str, List[List[str]]]</span>
 <span class="sd">        A dictionary with a list of interface residues for each detected</span>
 <span class="sd">        cavity.</span>
-<span class="sd">    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]</span>
+<span class="sd">    frequencies : Dict[str, Dict[str, Dict[str, int]]], optional</span>
 <span class="sd">        A dictionary with frequencies of residues and class for</span>
 <span class="sd">        residues of each detected cavity.</span>
 <span class="sd">    _vertices : numpy.ndarray</span>
@@ -537,9 +540,9 @@
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
 <span class="sd">    _step : float</span>
 <span class="sd">        Grid spacing (A).</span>
-<span class="sd">    _pdb : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">    _pdb : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to input PDB file, by default None.</span>
-<span class="sd">    _ligand : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">    _ligand : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to ligand PDB file, by default None.</span>
 
 <span class="sd">    Attributes</span>
@@ -548,7 +551,7 @@
 <span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
 <span class="sd">        Cavities array has integer labels in each position, that are:</span>
 
-<span class="sd">            * -1: bulk points</span>
+<span class="sd">            * -1: bulk points;</span>
 
 <span class="sd">            * 0: biomolecule points;</span>
 
@@ -570,9 +573,9 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        volume cutoff to be considered a cavity.</span>
-<span class="sd">    depths : Union[numpy.ndarray, None]</span>
+<span class="sd">    depths : numpy.ndarray, optional</span>
 <span class="sd">        A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</span>
-<span class="sd">    scales : Union[numpy.ndarray, None]</span>
+<span class="sd">    scales : numpy.ndarray, optional</span>
 <span class="sd">        A numpy.ndarray with hydrophobicity scale value mapped at surface</span>
 <span class="sd">        points (scales[nx][ny][nz]).</span>
 <span class="sd">    ncav : int</span>
@@ -581,17 +584,17 @@
 <span class="sd">        A dictionary with volume of each detected cavity.</span>
 <span class="sd">    area : Dict[str, float]</span>
 <span class="sd">        A dictionary with area of each detected cavity.</span>
-<span class="sd">    max_depth : Union[Dict[str, float], None]</span>
+<span class="sd">    max_depth : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with maximum depth of each detected cavity.</span>
-<span class="sd">    avg_depth : Union[Dict[str, float], None]</span>
+<span class="sd">    avg_depth : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with average depth of each detected cavity.</span>
-<span class="sd">    avg_hydropathy : Union[Dict[str, float], None]</span>
+<span class="sd">    avg_hydropathy : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with average hydropathy for each detected cavity and</span>
 <span class="sd">        the range of the hydrophobicity scale (min, max).</span>
 <span class="sd">    residues: Dict[str, List[List[str]]]</span>
 <span class="sd">        A dictionary with a list of interface residues for each detected</span>
 <span class="sd">        cavity.</span>
-<span class="sd">    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]</span>
+<span class="sd">    frequencies : Dict[str, Dict[str, Dict[str, int]]], optional</span>
 <span class="sd">        A dictionary with frequencies of residues and class for</span>
 <span class="sd">        residues of each detected cavity.</span>
 <span class="sd">    _vertices : numpy.ndarray</span>
@@ -599,9 +602,9 @@
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
 <span class="sd">    _step : float</span>
 <span class="sd">        Grid spacing (A).</span>
-<span class="sd">    _pdb : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">    _pdb : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to input PDB file, by default None.</span>
-<span class="sd">    _ligand : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">    _ligand : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to ligand PDB file, by default None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -609,19 +612,19 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-        <span class="n">depths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-        <span class="n">scales</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">depths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">scales</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
         <span class="n">volume</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">area</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-        <span class="n">max_depth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
-        <span class="n">avg_depth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
-        <span class="n">avg_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">max_depth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="n">avg_depth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="n">avg_hydropathy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
         <span class="n">residues</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
-        <span class="n">frequencies</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">frequencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
         <span class="n">_vertices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">_step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
-        <span class="n">_pdb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">_ligand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_pdb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span>
@@ -682,14 +685,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">depths</span><span class="p">,</span>
             <span class="n">output_hydropathy</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
             <span class="n">nthreads</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">write</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;results.toml&quot;</span><span class="p">,</span>
-        <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Writes file paths and cavity characterization to TOML-formatted file</span>
@@ -700,9 +704,9 @@
 <span class="sd">            A path to TOML-formatted file for writing file paths and cavity</span>
 <span class="sd">            characterization (volume, area, depth and interface residues)</span>
 <span class="sd">            per cavity detected, by default `results.toml`.</span>
-<span class="sd">        output : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">        output : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to a cavity PDB file, by default None.</span>
-<span class="sd">        output_hydropathy : Union[str, pathlib.Path, None]</span>
+<span class="sd">        output_hydropathy : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to PDB file for writing hydropathy at surface points, by</span>
 <span class="sd">            default None.</span>
 
@@ -831,9 +835,9 @@
 
 <div class="viewcode-block" id="pyKVFinder"><a class="viewcode-back" href="../../_api_reference/pyKVFinder.html#pyKVFinder.pyKVFinder">[docs]</a><span class="k">def</span> <span class="nf">pyKVFinder</span><span class="p">(</span>
     <span class="n">pdb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">ligand</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dictionary</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">VDW</span><span class="p">,</span>
-    <span class="n">box</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
@@ -859,7 +863,7 @@
 <span class="sd">        A path to ligand PDB file, by default None.</span>
 <span class="sd">    dictionary : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to van der Waals radii file, by default VDW.</span>
-<span class="sd">    box : Union[str, pathlib.Path, None], optional</span>
+<span class="sd">    box : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to box configuration file (TOML-formatted), by default None.</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
@@ -905,7 +909,7 @@
 <span class="sd">            Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
 <span class="sd">            Cavities array has integer labels in each position, that are:</span>
 
-<span class="sd">                * -1: bulk points</span>
+<span class="sd">                * -1: bulk points;</span>
 
 <span class="sd">                * 0: biomolecule points;</span>
 
@@ -927,9 +931,9 @@
 
 <span class="sd">            The empty space points are regions that do not meet the chosen</span>
 <span class="sd">            volume cutoff to be considered a cavity.</span>
-<span class="sd">        * depths : Union[numpy.ndarray, None]</span>
+<span class="sd">        * depths : numpy.ndarray, optional</span>
 <span class="sd">            A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</span>
-<span class="sd">        * scales : Union[numpy.ndarray, None]</span>
+<span class="sd">        * scales : numpy.ndarray, optional</span>
 <span class="sd">            A numpy.ndarray with hydrophobicity scale value mapped at surface</span>
 <span class="sd">            points (scales[nx][ny][nz]).</span>
 <span class="sd">        * ncav : int</span>
@@ -938,17 +942,17 @@
 <span class="sd">            A dictionary with volume of each detected cavity.</span>
 <span class="sd">        * area : Dict[str, float]</span>
 <span class="sd">            A dictionary with area of each detected cavity.</span>
-<span class="sd">        * max_depth : Union[Dict[str, float], None]</span>
+<span class="sd">        * max_depth : Dict[str, float], optional</span>
 <span class="sd">            A dictionary with maximum depth of each detected cavity.</span>
-<span class="sd">        * avg_depth : Union[Dict[str, float], None]</span>
+<span class="sd">        * avg_depth : Dict[str, float], optional</span>
 <span class="sd">            A dictionary with average depth of each detected cavity.</span>
-<span class="sd">        * avg_hydropathy : Union[Dict[str, float], None]</span>
+<span class="sd">        * avg_hydropathy : Dict[str, float], optional</span>
 <span class="sd">            A dictionary with average hydropathy for each detected cavity and</span>
 <span class="sd">            the range of the hydrophobicity scale (min, max).</span>
 <span class="sd">        * residues: Dict[str, List[List[str]]]</span>
 <span class="sd">            A dictionary with a list of interface residues for each detected</span>
 <span class="sd">            cavity.</span>
-<span class="sd">        * frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]</span>
+<span class="sd">        * frequencies : Dict[str, Dict[str, Dict[str, int]]], optional</span>
 <span class="sd">            A dictionary with frequencies of residues and class for</span>
 <span class="sd">            residues of each detected cavity.</span>
 <span class="sd">        * _vertices : numpy.ndarray</span>
@@ -956,9 +960,9 @@
 <span class="sd">            X-axis, Y-axis, Z-axis).</span>
 <span class="sd">        * _step : float</span>
 <span class="sd">            Grid spacing (A).</span>
-<span class="sd">        * _pdb : Union[str, pathlib.Path]</span>
+<span class="sd">        * _pdb : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to input PDB file.</span>
-<span class="sd">        * _ligand : Union[str, pathlib.Path, None]</span>
+<span class="sd">        * _ligand : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to ligand PDB file.</span>
 
 <span class="sd">    Note</span>
@@ -1048,11 +1052,11 @@
 
     <span class="k">if</span> <span class="n">ncav</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># Spatial characterization</span>
-        <span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 
         <span class="c1"># Depth characterization</span>
         <span class="k">if</span> <span class="n">include_depth</span><span class="p">:</span>
-            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
@@ -1066,6 +1070,7 @@
             <span class="n">step</span><span class="p">,</span>
             <span class="n">probe_in</span><span class="p">,</span>
             <span class="n">ignore_backbone</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
             <span class="n">nthreads</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
@@ -1083,6 +1088,7 @@
                 <span class="n">probe_in</span><span class="p">,</span>
                 <span class="n">hydrophobicity_scale</span><span class="p">,</span>
                 <span class="n">ignore_backbone</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
                 <span class="n">nthreads</span><span class="p">,</span>
                 <span class="n">verbose</span><span class="p">,</span>
             <span class="p">)</span>
