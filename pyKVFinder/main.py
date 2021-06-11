@@ -175,13 +175,13 @@ def cli() -> None:
     if ncav > 0:
         # Spatial characterization
         surface, volume, area = spatial(
-            cavities, args.step, args.nthreads, args.verbose
+            cavities, args.step, None, args.nthreads, args.verbose
         )
 
         # Depth characterization
         if args.depth:
             depths, max_depth, avg_depth = depth(
-                cavities, args.step, args.nthreads, args.verbose
+                cavities, args.step, None, args.nthreads, args.verbose
             )
         else:
             depths, max_depth, avg_depth = None, None, None
@@ -196,6 +196,7 @@ def cli() -> None:
             args.step,
             args.probe_in,
             args.ignore_backbone,
+            None,
             args.nthreads,
             args.verbose,
         )
@@ -221,6 +222,7 @@ def cli() -> None:
                 args.probe_in,
                 args.hydropathy,
                 args.ignore_backbone,
+                None,
                 args.nthreads,
                 args.verbose,
             )
@@ -245,6 +247,7 @@ def cli() -> None:
             depths,
             output_hydropathy,
             scales,
+            None,
             args.nthreads,
         )
 
@@ -290,7 +293,7 @@ class pyKVFinderResults(object):
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -312,26 +315,26 @@ class pyKVFinderResults(object):
 
         The empty space points are regions that do not meet the chosen
         volume cutoff to be considered a cavity.
-    depths : Union[numpy.ndarray, None]
+    depths : numpy.ndarray, optional
         A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).
-    scales : Union[numpy.ndarray, None]
+    scales : numpy.ndarray, optional
         A numpy.ndarray with hydrophobicity scale value mapped at surface
         points (scales[nx][ny][nz]).
     volume : Dict[str, float]
         A dictionary with volume of each detected cavity.
     area : Dict[str, float]
         A dictionary with area of each detected cavity.
-    max_depth : Union[Dict[str, float], None]
+    max_depth : Dict[str, float], optional
         A dictionary with maximum depth of each detected cavity.
-    avg_depth : Union[Dict[str, float], None]
+    avg_depth : Dict[str, float], optional
         A dictionary with average depth of each detected cavity.
-    avg_hydropathy : Union[Dict[str, float], None]
+    avg_hydropathy : Dict[str, float], optional
         A dictionary with average hydropathy for each detected cavity and
         the range of the hydrophobicity scale (min, max).
     residues: Dict[str, List[List[str]]]
         A dictionary with a list of interface residues for each detected
         cavity.
-    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]
+    frequencies : Dict[str, Dict[str, Dict[str, int]]], optional
         A dictionary with frequencies of residues and class for
         residues of each detected cavity.
     _vertices : numpy.ndarray
@@ -339,9 +342,9 @@ class pyKVFinderResults(object):
         X-axis, Y-axis, Z-axis).
     _step : float
         Grid spacing (A).
-    _pdb : Union[str, pathlib.Path, None], optional
+    _pdb : Union[str, pathlib.Path], optional
         A path to input PDB file, by default None.
-    _ligand : Union[str, pathlib.Path, None], optional
+    _ligand : Union[str, pathlib.Path], optional
         A path to ligand PDB file, by default None.
 
     Attributes
@@ -350,7 +353,7 @@ class pyKVFinderResults(object):
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -372,9 +375,9 @@ class pyKVFinderResults(object):
 
         The empty space points are regions that do not meet the chosen
         volume cutoff to be considered a cavity.
-    depths : Union[numpy.ndarray, None]
+    depths : numpy.ndarray, optional
         A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).
-    scales : Union[numpy.ndarray, None]
+    scales : numpy.ndarray, optional
         A numpy.ndarray with hydrophobicity scale value mapped at surface
         points (scales[nx][ny][nz]).
     ncav : int
@@ -383,17 +386,17 @@ class pyKVFinderResults(object):
         A dictionary with volume of each detected cavity.
     area : Dict[str, float]
         A dictionary with area of each detected cavity.
-    max_depth : Union[Dict[str, float], None]
+    max_depth : Dict[str, float], optional
         A dictionary with maximum depth of each detected cavity.
-    avg_depth : Union[Dict[str, float], None]
+    avg_depth : Dict[str, float], optional
         A dictionary with average depth of each detected cavity.
-    avg_hydropathy : Union[Dict[str, float], None]
+    avg_hydropathy : Dict[str, float], optional
         A dictionary with average hydropathy for each detected cavity and
         the range of the hydrophobicity scale (min, max).
     residues: Dict[str, List[List[str]]]
         A dictionary with a list of interface residues for each detected
         cavity.
-    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]
+    frequencies : Dict[str, Dict[str, Dict[str, int]]], optional
         A dictionary with frequencies of residues and class for
         residues of each detected cavity.
     _vertices : numpy.ndarray
@@ -401,9 +404,9 @@ class pyKVFinderResults(object):
         X-axis, Y-axis, Z-axis).
     _step : float
         Grid spacing (A).
-    _pdb : Union[str, pathlib.Path, None], optional
+    _pdb : Union[str, pathlib.Path], optional
         A path to input PDB file, by default None.
-    _ligand : Union[str, pathlib.Path, None], optional
+    _ligand : Union[str, pathlib.Path], optional
         A path to ligand PDB file, by default None.
     """
 
@@ -411,19 +414,19 @@ class pyKVFinderResults(object):
         self,
         cavities: numpy.ndarray,
         surface: numpy.ndarray,
-        depths: Union[numpy.ndarray, None],
-        scales: Union[numpy.ndarray, None],
+        depths: Optional[numpy.ndarray],
+        scales: Optional[numpy.ndarray],
         volume: Dict[str, float],
         area: Dict[str, float],
-        max_depth: Union[Dict[str, float], None],
-        avg_depth: Union[Dict[str, float], None],
-        avg_hydropathy: Union[Dict[str, float], None],
+        max_depth: Optional[Dict[str, float]],
+        avg_depth: Optional[Dict[str, float]],
+        avg_hydropathy: Optional[Dict[str, float]],
         residues: Dict[str, List[List[str]]],
-        frequencies: Union[Dict[str, Dict[str, Dict[str, int]]], None],
+        frequencies: Optional[Dict[str, Dict[str, Dict[str, int]]]],
         _vertices: numpy.ndarray,
         _step: Union[float, int],
-        _pdb: Union[str, pathlib.Path, None] = None,
-        _ligand: Union[str, pathlib.Path, None] = None,
+        _pdb: Optional[Union[str, pathlib.Path]] = None,
+        _ligand: Optional[Union[str, pathlib.Path]] = None,
     ):
         self.cavities = cavities
         self.surface = surface
@@ -484,14 +487,15 @@ class pyKVFinderResults(object):
             self.depths,
             output_hydropathy,
             self.scales,
+            None,
             nthreads,
         )
 
     def write(
         self,
         fn: Union[str, pathlib.Path] = "results.toml",
-        output: Union[str, pathlib.Path, None] = None,
-        output_hydropathy: Union[str, pathlib.Path, None] = None,
+        output: Optional[Union[str, pathlib.Path]] = None,
+        output_hydropathy: Optional[Union[str, pathlib.Path]] = None,
     ) -> None:
         """
         Writes file paths and cavity characterization to TOML-formatted file
@@ -502,9 +506,9 @@ class pyKVFinderResults(object):
             A path to TOML-formatted file for writing file paths and cavity
             characterization (volume, area, depth and interface residues)
             per cavity detected, by default `results.toml`.
-        output : Union[str, pathlib.Path, None], optional
+        output : Union[str, pathlib.Path], optional
             A path to a cavity PDB file, by default None.
-        output_hydropathy : Union[str, pathlib.Path, None]
+        output_hydropathy : Union[str, pathlib.Path], optional
             A path to PDB file for writing hydropathy at surface points, by
             default None.
 
@@ -633,9 +637,9 @@ class pyKVFinderResults(object):
 
 def pyKVFinder(
     pdb: Union[str, pathlib.Path],
-    ligand: Union[str, pathlib.Path, None] = None,
+    ligand: Optional[Union[str, pathlib.Path]] = None,
     dictionary: Union[str, pathlib.Path] = VDW,
-    box: Union[str, pathlib.Path, None] = None,
+    box: Optional[Union[str, pathlib.Path]] = None,
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
@@ -661,7 +665,7 @@ def pyKVFinder(
         A path to ligand PDB file, by default None.
     dictionary : Union[str, pathlib.Path], optional
         A path to van der Waals radii file, by default VDW.
-    box : Union[str, pathlib.Path, None], optional
+    box : Union[str, pathlib.Path], optional
         A path to box configuration file (TOML-formatted), by default None.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
@@ -707,7 +711,7 @@ def pyKVFinder(
             Cavity points in the 3D grid (cavities[nx][ny][nz]).
             Cavities array has integer labels in each position, that are:
 
-                * -1: bulk points
+                * -1: bulk points;
 
                 * 0: biomolecule points;
 
@@ -729,9 +733,9 @@ def pyKVFinder(
 
             The empty space points are regions that do not meet the chosen
             volume cutoff to be considered a cavity.
-        * depths : Union[numpy.ndarray, None]
+        * depths : numpy.ndarray, optional
             A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).
-        * scales : Union[numpy.ndarray, None]
+        * scales : numpy.ndarray, optional
             A numpy.ndarray with hydrophobicity scale value mapped at surface
             points (scales[nx][ny][nz]).
         * ncav : int
@@ -740,17 +744,17 @@ def pyKVFinder(
             A dictionary with volume of each detected cavity.
         * area : Dict[str, float]
             A dictionary with area of each detected cavity.
-        * max_depth : Union[Dict[str, float], None]
+        * max_depth : Dict[str, float], optional
             A dictionary with maximum depth of each detected cavity.
-        * avg_depth : Union[Dict[str, float], None]
+        * avg_depth : Dict[str, float], optional
             A dictionary with average depth of each detected cavity.
-        * avg_hydropathy : Union[Dict[str, float], None]
+        * avg_hydropathy : Dict[str, float], optional
             A dictionary with average hydropathy for each detected cavity and
             the range of the hydrophobicity scale (min, max).
         * residues: Dict[str, List[List[str]]]
             A dictionary with a list of interface residues for each detected
             cavity.
-        * frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None]
+        * frequencies : Dict[str, Dict[str, Dict[str, int]]], optional
             A dictionary with frequencies of residues and class for
             residues of each detected cavity.
         * _vertices : numpy.ndarray
@@ -758,9 +762,9 @@ def pyKVFinder(
             X-axis, Y-axis, Z-axis).
         * _step : float
             Grid spacing (A).
-        * _pdb : Union[str, pathlib.Path]
+        * _pdb : Union[str, pathlib.Path], optional
             A path to input PDB file.
-        * _ligand : Union[str, pathlib.Path, None]
+        * _ligand : Union[str, pathlib.Path], optional
             A path to ligand PDB file.
 
     Note
@@ -850,11 +854,11 @@ def pyKVFinder(
 
     if ncav > 0:
         # Spatial characterization
-        surface, volume, area = spatial(cavities, step, nthreads, verbose)
+        surface, volume, area = spatial(cavities, step, None, nthreads, verbose)
 
         # Depth characterization
         if include_depth:
-            depths, max_depth, avg_depth = depth(cavities, step, nthreads, verbose)
+            depths, max_depth, avg_depth = depth(cavities, step, None, nthreads, verbose)
         else:
             depths, max_depth, avg_depth = None, None, None
 
@@ -868,6 +872,7 @@ def pyKVFinder(
             step,
             probe_in,
             ignore_backbone,
+            None,
             nthreads,
             verbose,
         )
@@ -885,6 +890,7 @@ def pyKVFinder(
                 probe_in,
                 hydrophobicity_scale,
                 ignore_backbone,
+                None,
                 nthreads,
                 verbose,
             )

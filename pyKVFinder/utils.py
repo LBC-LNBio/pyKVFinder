@@ -3,7 +3,7 @@ import logging
 import argparse
 import pathlib
 import numpy
-from typing import Dict, List, Union, Tuple
+from typing import Dict, List, Union, Tuple, Optional
 
 __all__ = [
     "read_vdw",
@@ -587,17 +587,17 @@ def plot_frequencies(
 
 def write_results(
     fn: Union[str, pathlib.Path],
-    pdb: Union[str, pathlib.Path, None],
-    ligand: Union[str, pathlib.Path, None],
-    output: Union[str, pathlib.Path, None],
-    output_hydropathy: Union[str, pathlib.Path, None] = None,
-    volume: Union[Dict[str, float], None] = None,
-    area: Union[Dict[str, float], None] = None,
-    max_depth: Union[Dict[str, float], None] = None,
-    avg_depth: Union[Dict[str, float], None] = None,
-    avg_hydropathy: Union[Dict[str, float], None] = None,
-    residues: Union[Dict[str, List[List[str]]], None] = None,
-    frequencies: Union[Dict[str, Dict[str, Dict[str, int]]], None] = None,
+    pdb: Optional[Union[str, pathlib.Path]],
+    ligand: Optional[Union[str, pathlib.Path]],
+    output: Optional[Union[str, pathlib.Path]],
+    output_hydropathy: Optional[Union[str, pathlib.Path]] = None,
+    volume: Optional[Dict[str, float]] = None,
+    area: Optional[Dict[str, float]] = None,
+    max_depth: Optional[Dict[str, float]] = None,
+    avg_depth: Optional[Dict[str, float]] = None,
+    avg_hydropathy: Optional[Dict[str, float]] = None,
+    residues: Optional[Dict[str, List[List[str]]]] = None,
+    frequencies: Optional[Dict[str, Dict[str, Dict[str, int]]]] = None,
     step: Union[float, int] = 0.6,
 ) -> None:
     """Writes file paths and cavity characterization to TOML-formatted file.
@@ -608,32 +608,32 @@ def write_results(
         A path to TOML-formatted file for writing file paths and
         cavity characterization (volume, area, depth [optional] and interface
         residues) per cavity detected.
-    pdb : Union[str, pathlib.Path, None]
+    pdb : Union[str, pathlib.Path], optional
         A path to input PDB file.
-    ligand : Union[str, pathlib.Path, None]
+    ligand : Union[str, pathlib.Path], optional
         A path to ligand PDB file.
-    output : Union[str, pathlib.Path, None]
+    output : Union[str, pathlib.Path], optional
         A path to cavity PDB file.
-    output_hydropathy : Union[str, pathlib.Path, None]
+    output_hydropathy : Union[str, pathlib.Path], optional
         A path to hydropathy PDB file (surface points mapped with a
         hydrophobicity scale), by default None.
-    volume : Union[Dict[str, float], None], optional
+    volume : Dict[str, float], optional
         A dictionary with volume of each detected cavity, by default None.
-    area : Union[Dict[str, float], None], optional
+    area : Dict[str, float], optional
         A dictionary with area of each detected cavity, by default None.
-    max_depth : Union[Dict[str, float], None], optional
+    max_depth : Dict[str, float], optional
         A dictionary with maximum depth of each detected cavity, by default
         None.
-    avg_depth : Union[Dict[str, float], None], optional
+    avg_depth : Dict[str, float], optional
         A dictionary with average depth of each detected cavity, by default
         None.
-    avg_hydropapthy : Union[Dict[str, float], None], optional
+    avg_hydropapthy : Dict[str, float], optional
         A dictionary with average hydropathy of each detected cavity and range
         of the hydrophobicity scale mapped, by default None.
-    residues : Union[Dict[str, List[List[str]]], None], optional
+    residues : Dict[str, List[List[str]]], optional
         A dictionary with interface residues of each detected cavity, by
         default None.
-    frequencies : Union[Dict[str, Dict[str, Dict[str, int]]], None], optional
+    frequencies : Dict[str, Dict[str, Dict[str, int]]], optional
         A dictionary with frequencies of interface residues and classes of
         residues of each detected cavity, by default None.
     step : Union[float, int], optional

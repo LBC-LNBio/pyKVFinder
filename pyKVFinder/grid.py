@@ -551,7 +551,7 @@ def detect(
     probe_out: Union[float, int] = 4.0,
     removal_distance: Union[float, int] = 2.4,
     volume_cutoff: Union[float, int] = 5.0,
-    lxyzr: Union[numpy.ndarray, List[List[float]], None] = None,
+    lxyzr: Optional[Union[numpy.ndarray, List[List[float]]]] = None,
     ligand_cutoff: Union[float, int] = 5.0,
     box_adjustment: bool = False,
     surface: str = "SES",
@@ -591,7 +591,7 @@ def detect(
         default 2.4.
     volume_cutoff : Union[float, int], optional
         Volume filter for detected cavities (A3), by default 5.0.
-    lxyzr : Union[numpy.ndarray, List[List[float]], None]
+    lxyzr : Optional[numpy.ndarray, List[List[float]]], optional
         A numpy.ndarray or a list with xyz atomic coordinates and radii values
         (x, y, z, Iradius) for each atom of a target ligand, by default None.
     ligand_cutoff : Union[float, int], optional
@@ -615,7 +615,7 @@ def detect(
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -878,8 +878,56 @@ def detect(
     return ncav, cavities.reshape(nx, ny, nz)
 
 
+def _get_cavity_name(index: int) -> str:
+    """Get cavity name, eg KAA, KAB, and so on, based on the index.
+
+    Parameters
+    ----------
+    index : int
+        Index in the dictionary.
+
+    Returns
+    -------
+    cavity_name : str
+        Cavity name
+    """
+    cavity_name = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+    return cavity_name
+
+
+def _get_cavity_label(cavity_name: str) -> int:
+    """Get cavity label, eg 2, 3, and so on, based on the cavity name.
+
+    Parameters
+    ----------
+    cavity_name : str
+        Cavity name
+
+    Returns
+    -------
+    cavity_label : int
+        Integer label of each cavity.
+
+    Raises
+    ------
+    ValueError
+        Invalid cavity name: `cavity_name`.
+    """
+    # Check cavity name
+    if cavity_name[0] != "K":
+        raise ValueError(f"Invalid cavity name: {cavity_name}.")
+
+    # Get cavity label
+    cavity_label = (ord(cavity_name[1]) - 65) * 26 + (ord(cavity_name[2]) - 65) + 2
+
+    return cavity_label
+
+
 def _process_spatial(
-    raw_volume: numpy.ndarray, raw_area: numpy.ndarray, ncav: int
+    raw_volume: numpy.ndarray,
+    raw_area: numpy.ndarray,
+    ncav: int,
+    selection: Optional[List[int]] = None,
 ) -> Tuple[Dict[str, float], Dict[str, float]]:
     """Processes arrays of volumes and areas.
 
@@ -891,6 +939,8 @@ def _process_spatial(
         A numpy.ndarray of areas.
     ncav : int
         Number of cavities.
+    selection : List[int], optional
+        A list of integer labels of each cavity to be selected, by default None.
 
     Returns
     -------
@@ -901,10 +951,20 @@ def _process_spatial(
     """
     volume, area = {}, {}
 
+    # Prepare volume and area dictionary
     for index in range(ncav):
-        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        key = _get_cavity_name(index)
         volume[key] = float(round(raw_volume[index], 2))
         area[key] = float(round(raw_area[index], 2))
+
+    if selection is not None:
+        # Get keys from selection
+        all_keys = list(volume.keys())
+        keys = [all_keys[sele - 2] for sele in selection]
+
+        # Get volume and area of selection
+        volume = {key: volume[key] for key in keys}
+        area = {key: area[key] for key in keys}
 
     return volume, area
 
@@ -912,6 +972,7 @@ def _process_spatial(
 def spatial(
     cavities: numpy.ndarray,
     step: Union[float, int] = 0.6,
+    selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float], Dict[str, float]]:
@@ -923,7 +984,7 @@ def spatial(
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -935,6 +996,8 @@ def spatial(
         volume cutoff to be considered a cavity.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of cavity names to be selected, by default None.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -976,6 +1039,8 @@ def spatial(
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
+    ValueError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -994,6 +1059,15 @@ def spatial(
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
+    if selection is not None:
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_cavity_label(cavity_name) for sele in selection]
+        else:
+            raise ValueError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1014,6 +1088,10 @@ def spatial(
     # Get number of cavities
     ncav = int(cavities.max() - 1)
 
+    # Select cavities
+    if selection is not None:
+        cavities = _select_cavities(cavities, selection)
+
     # Get cavities shape
     nx, ny, nz = cavities.shape
 
@@ -1027,7 +1105,10 @@ def spatial(
 
 
 def _process_depth(
-    raw_max_depth: numpy.ndarray, raw_avg_depth: numpy.ndarray, ncav: int
+    raw_max_depth: numpy.ndarray,
+    raw_avg_depth: numpy.ndarray,
+    ncav: int,
+    selection: Optional[List[int]] = None,
 ) -> Tuple[Dict[str, float], Dict[str, float]]:
     """Processes arrays of maximum and average depths.
 
@@ -1039,6 +1120,8 @@ def _process_depth(
         A numpy.ndarray of average depth.
     ncav : int
         Number of cavities.
+    selection : List[int], optional
+        A list of integer labels of each cavity to be selected, by default None.
 
     Returns
     -------
@@ -1049,10 +1132,20 @@ def _process_depth(
     """
     max_depth, avg_depth = {}, {}
 
+    # Prepare maximum and average depth dictionary
     for index in range(ncav):
-        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        key = _get_cavity_name(index)
         max_depth[key] = float(round(raw_max_depth[index], 2))
         avg_depth[key] = float(round(raw_avg_depth[index], 2))
+
+    if selection is not None:
+        # Get keys from selection
+        all_keys = list(max_depth.keys())
+        keys = [all_keys[sele - 2] for sele in selection]
+
+        # Get volume and area of selection
+        max_depth = {key: max_depth[key] for key in keys}
+        avg_depth = {key: avg_depth[key] for key in keys}
 
     return max_depth, avg_depth
 
@@ -1060,6 +1153,7 @@ def _process_depth(
 def depth(
     cavities: numpy.ndarray,
     step: Union[float, int] = 0.6,
+    selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float], Dict[str, float]]:
@@ -1072,7 +1166,7 @@ def depth(
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -1084,6 +1178,8 @@ def depth(
         volume cutoff to be considered a cavity.
     step : Union[float, int], optional
         Grid spacing (A).
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of cavity names to be selected, by default None.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -1109,6 +1205,8 @@ def depth(
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
+    ValueError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1145,6 +1243,15 @@ def depth(
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
+    if selection is not None:
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_cavity_label(cavity_name) for sele in selection]
+        else:
+            raise ValueError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1165,6 +1272,10 @@ def depth(
     # Get number of cavities
     ncav = int(cavities.max() - 1)
 
+    # Select cavities
+    if selection is not None:
+        cavities = _select_cavities(cavities, selection)
+
     # Get cavities shape
     nx, ny, nz = cavities.shape
 
@@ -1172,12 +1283,14 @@ def depth(
     depths, max_depth, avg_depth = _depth(
         cavities, nx * ny * nz, ncav, ncav, step, nthreads, verbose
     )
-    max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav)
+    max_depth, avg_depth = _process_depth(max_depth, avg_depth, ncav, selection)
 
     return depths.reshape(nx, ny, nz), max_depth, avg_depth
 
 
-def _process_residues(raw: List[str]) -> Dict[str, List[List[str]]]:
+def _process_residues(
+    raw: List[str], ncav: int, selection: Optional[List[int]] = None
+) -> Dict[str, List[List[str]]]:
     """Processes raw list of residues from _constitutional to a list of
     residue information per cavity name.
 
@@ -1185,6 +1298,10 @@ def _process_residues(raw: List[str]) -> Dict[str, List[List[str]]]:
     ----------
     raw : List[str]
         A list of residues with cavities separated by '-1'.
+    ncav : int
+        Number of cavities.
+    selection : List[int], optional
+        A list of integer labels of each cavity to be selected, by default None.
 
     Returns
     -------
@@ -1196,10 +1313,15 @@ def _process_residues(raw: List[str]) -> Dict[str, List[List[str]]]:
 
     residues = {}
 
+    if selection is None:
+        selection = list(range(ncav + 1))
+    else:
+        selection = [sele - 2 for sele in selection]
+
     index = 0
     for flag, cavity_residues in groupby(raw, lambda res: res == "-1"):
         if not flag:
-            key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+            key = _get_cavity_name(selection[index])
             residues[key] = [
                 item.split("_") for item in list(dict.fromkeys(cavity_residues))
             ]
@@ -1217,6 +1339,7 @@ def constitutional(
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     ignore_backbone: bool = False,
+    selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Dict[str, List[List[str]]]:
@@ -1229,7 +1352,7 @@ def constitutional(
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -1258,6 +1381,8 @@ def constitutional(
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of cavity names to be selectedA list of integer labels of each cavity to be selected, by default None.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -1302,6 +1427,8 @@ def constitutional(
         `probe_in` must be a non-negative real number.
     TypeError
         `ignore_backbone` must be a boolean.
+    ValueError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1369,6 +1496,15 @@ def constitutional(
         raise ValueError("`probe_in` must be a non-negative real number.")
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
+    if selection is not None:
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_cavity_label(cavity_name) for sele in selection]
+        else:
+            raise ValueError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1402,6 +1538,10 @@ def constitutional(
     # Get number of cavities
     ncav = int(cavities.max() - 1)
 
+    # Select cavities
+    if selection is not None:
+        cavities = _select_cavities(cavities, selection)
+
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
@@ -1427,13 +1567,13 @@ def constitutional(
     residues = _constitutional(
         cavities, atominfo, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose
     )
-    residues = _process_residues(residues)
+    residues = _process_residues(residues, ncav, selection)
 
     return residues
 
 
 def _process_hydropathy(
-    raw_avg_hydropathy: numpy.ndarray, ncav: int
+    raw_avg_hydropathy: numpy.ndarray, ncav: int, selection: Optional[List[int]] = None
 ) -> Dict[str, float]:
     """Processes array of average hydropathy.
 
@@ -1443,6 +1583,8 @@ def _process_hydropathy(
         A numpy.ndarray of average hydropathy.
     ncav : int
         Number of cavities.
+    selection : List[int], optional
+        A list of integer labels of each cavity to be selected.
 
     Returns
     -------
@@ -1452,8 +1594,16 @@ def _process_hydropathy(
     avg_hydropathy = {}
 
     for index in range(ncav):
-        key = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+        key = _get_cavity_name(index)
         avg_hydropathy[key] = float(round(raw_avg_hydropathy[index], 2))
+
+    if selection is not None:
+        # Get keys from selection
+        all_keys = list(avg_hydropathy.keys())
+        keys = [all_keys[sele - 2] for sele in selection]
+
+        # Get average hydropathy of selection
+        avg_hydropathy = {key: avg_hydropathy[key] for key in keys}
 
     return avg_hydropathy
 
@@ -1468,6 +1618,7 @@ def hydropathy(
     probe_in: Union[float, int] = 1.4,
     hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
     ignore_backbone: bool = False,
+    selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[numpy.ndarray, Dict[str, float]]:
@@ -1515,6 +1666,8 @@ def hydropathy(
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of cavity names to be selected, by default None.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -1564,6 +1717,8 @@ def hydropathy(
         `hydrophobicity_scale` must be a string or a pathlib.Path.
     TypeError
         `ignore_backbone` must be a boolean.
+    ValueError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1654,6 +1809,15 @@ def hydropathy(
         raise TypeError("`hydrophobicity_scale` must be a string or a pathlib.Path.")
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
+    if selection is not None:
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_cavity_label(cavity_name) for sele in selection]
+        else:
+            raise ValueError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1686,6 +1850,10 @@ def hydropathy(
 
     # Get number of cavities
     ncav = int(surface.max() - 1)
+
+    # Select cavities
+    if selection is not None:
+        surface = _select_cavities(surface, selection)
 
     # Get dimensions
     nx, ny, nz = surface.shape
@@ -1745,7 +1913,7 @@ def hydropathy(
         nthreads,
         verbose,
     )
-    avg_hydropathy = _process_hydropathy(avg_hydropathy, ncav)
+    avg_hydropathy = _process_hydropathy(avg_hydropathy, ncav, selection)
     avg_hydropathy[f"{name}"] = [float(scale.min()), float(scale.max())]
 
     return scales.reshape(nx, ny, nz), avg_hydropathy
@@ -1761,6 +1929,7 @@ def export(
     B: Union[numpy.ndarray, None] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
     scales: Union[numpy.ndarray, None] = None,
+    selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     append: bool = False,
     model: int = 0,
@@ -1777,7 +1946,7 @@ def export(
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
-            * -1: bulk points
+            * -1: bulk points;
 
             * 0: biomolecule points;
 
@@ -1817,6 +1986,8 @@ def export(
         A numpy.ndarray with hydrophobicity scale values to be mapped on
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of cavity names to be selectedA list of integer labels of each cavity to be selected, by default None.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -1855,6 +2026,8 @@ def export(
         `scales` must be a numpy.ndarray.
     ValueError
         `scales` has the incorrect shape. It must be (nx, ny, nz).
+    ValueError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1919,6 +2092,15 @@ def export(
             raise ValueError(
                 "`scales` has the incorrect shape. It must be (nx, ny, nz)."
             )
+    if selection is not None:
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_cavity_label(cavity_name) for sele in selection]
+        else:
+            raise ValueError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1968,6 +2150,12 @@ def export(
         surface = numpy.zeros(cavities.shape, dtype="int32")
     else:
         surface = surface.astype("int32") if surface.dtype != "int32" else surface
+
+    # Select cavities
+    if selection is not None:
+        surface = _select_cavities(surface, selection)
+        if cavities is not None:
+            cavities = _select_cavities(cavities, selection)
 
     if cavities is None:
         if surface is None:
