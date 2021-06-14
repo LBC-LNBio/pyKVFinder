@@ -123,7 +123,7 @@ void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr
 
 #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
     {
-#pragma omp for schedule(dynamic) nowait
+#pragma omp for schedule(dynamic) //nowait
         for (atom = 0; atom < natoms; atom++)
         {
             // Convert atom coordinates in 3D grid coordinates
@@ -222,7 +222,7 @@ void ses(int *grid, int nx, int ny, int nz, double step, double probe, int nthre
 
 #pragma omp parallel default(none), shared(grid, step, probe, aux, nx, ny, nz), private(i, j, k, i2, j2, k2, distance)
     {
-#pragma omp for schedule(dynamic) collapse(3) nowait
+#pragma omp for schedule(dynamic) collapse(3) //nowait
         // Loop around 3D grid
         for (i = 0; i < nx; i++)
             for (j = 0; j < ny; j++)
@@ -311,7 +311,8 @@ void subtract(int *PI, int *PO, int nx, int ny, int nz, double step, double remo
                                     // Check if inside 3D grid
                                     if (i2 >= 0 && i2 < nx && j2 >= 0 && j2 < ny && k2 >= 0 && k2 < nz)
                                         // Mark points in grid filled with Probe In, where Probe Out reached
-                                        PI[k2 + nz * (j2 + (ny * i2))] = -1;
+                                        if (PI[k2 + nz * (j2 + (ny * i2))] == 1)
+                                            PI[k2 + nz * (j2 + (ny * i2))] = -1;
                     }
                 }
     }
