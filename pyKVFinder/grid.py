@@ -878,6 +878,50 @@ def detect(
     return ncav, cavities.reshape(nx, ny, nz)
 
 
+def _select_cavities(cavities: numpy.ndarray, selection: List[int]) -> numpy.ndarray:
+    """Select cavities in the 3D grid by cavity labels.
+
+    Parameters
+    ----------
+    cavities : numpy.ndarray
+        Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        Cavities array has integer labels in each position, that are:
+
+            * -1: bulk points;
+
+            * 0: biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: cavity points.
+    selection : List[int]
+        A list of integer labels of each cavity to be selected.
+
+    Returns
+    -------
+    selected : numpy.ndarray
+        Selected cavity points in the 3D grid.
+        Selected cavities array has integer labels in each position, that are:
+
+            * -1: bulk points;
+
+            * 0: biomolecule points;
+
+            * 1: empty space points or unselected cavity points;
+
+            * >=2: selected cavity points.
+    """
+    # Copy cavities
+    selected = numpy.copy(cavities)
+
+    # When outside selection, change cavities tags to 1
+    for cav in range(2, cavities.max() + 1):
+        if cav not in selection:
+            selected[cavities == cav] = 1
+
+    return selected
+
+
 def _get_cavity_name(index: int) -> str:
     """Get cavity name, eg KAA, KAB, and so on, based on the index.
 
@@ -1039,8 +1083,10 @@ def spatial(
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
-    ValueError
+    TypeError
         `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: {selection}.
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1060,14 +1106,18 @@ def spatial(
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
     if selection is not None:
+        # Check selection types
         if all(isinstance(x, int) for x in selection):
             pass
         elif all(isinstance(x, str) for x in selection):
-            selection = [_get_cavity_label(cavity_name) for sele in selection]
+            selection = [_get_cavity_label(sele) for sele in selection]
         else:
-            raise ValueError(
+            raise TypeError(
                 "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
             )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1205,8 +1255,10 @@ def depth(
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
-    ValueError
+    TypeError
         `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: {selection}.
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1244,14 +1296,18 @@ def depth(
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
     if selection is not None:
+        # Check selection types
         if all(isinstance(x, int) for x in selection):
             pass
         elif all(isinstance(x, str) for x in selection):
-            selection = [_get_cavity_label(cavity_name) for sele in selection]
+            selection = [_get_cavity_label(sele) for sele in selection]
         else:
-            raise ValueError(
+            raise TypeError(
                 "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
             )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1427,8 +1483,10 @@ def constitutional(
         `probe_in` must be a non-negative real number.
     TypeError
         `ignore_backbone` must be a boolean.
-    ValueError
+    TypeError
         `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: {selection}.
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1497,14 +1555,18 @@ def constitutional(
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
     if selection is not None:
+        # Check selection types
         if all(isinstance(x, int) for x in selection):
             pass
         elif all(isinstance(x, str) for x in selection):
-            selection = [_get_cavity_label(cavity_name) for sele in selection]
+            selection = [_get_cavity_label(sele) for sele in selection]
         else:
-            raise ValueError(
+            raise TypeError(
                 "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
             )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1717,8 +1779,10 @@ def hydropathy(
         `hydrophobicity_scale` must be a string or a pathlib.Path.
     TypeError
         `ignore_backbone` must be a boolean.
-    ValueError
+    TypeError
         `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: {selection}.
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -1810,14 +1874,18 @@ def hydropathy(
     if type(ignore_backbone) not in [bool]:
         raise TypeError("`ignore_backbone` must be a boolean.")
     if selection is not None:
+        # Check selection types
         if all(isinstance(x, int) for x in selection):
             pass
         elif all(isinstance(x, str) for x in selection):
-            selection = [_get_cavity_label(cavity_name) for sele in selection]
+            selection = [_get_cavity_label(sele) for sele in selection]
         else:
-            raise ValueError(
+            raise TypeError(
                 "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
             )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -2026,8 +2094,10 @@ def export(
         `scales` must be a numpy.ndarray.
     ValueError
         `scales` has the incorrect shape. It must be (nx, ny, nz).
-    ValueError
+    TypeError
         `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: {selection}.
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -2093,14 +2163,18 @@ def export(
                 "`scales` has the incorrect shape. It must be (nx, ny, nz)."
             )
     if selection is not None:
+        # Check selection types
         if all(isinstance(x, int) for x in selection):
             pass
         elif all(isinstance(x, str) for x in selection):
-            selection = [_get_cavity_label(cavity_name) for sele in selection]
+            selection = [_get_cavity_label(sele) for sele in selection]
         else:
-            raise ValueError(
+            raise TypeError(
                 "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
             )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
