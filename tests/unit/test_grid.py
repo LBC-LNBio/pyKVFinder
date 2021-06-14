@@ -1,10 +1,58 @@
 import os
 import unittest
-from pyKVFinder import (
+import numpy
+from pyKVFinder.grid import (
     get_vertices,
     get_dimensions,
-    get_sincos
+    get_sincos,
+    _get_cavity_name,
+    _get_cavity_label,
+    _select_cavities,
 )
+
+
+class TestGetCavityName(unittest.TestCase):
+    def test_indexes(self):
+        indexes = list(range(0, 100, 10))
+        cavity_names = [_get_cavity_name(index) for index in indexes]
+        self.assertListEqual(
+            cavity_names,
+            ["KAA", "KAK", "KAU", "KBE", "KBO", "KBY", "KCI", "KCS", "KDC", "KDM"],
+        )
+
+
+class TestGetCavityLabel(unittest.TestCase):
+    def test_cavity_names(self):
+        cavity_names = [
+            "KAA",
+            "KAK",
+            "KAU",
+            "KBE",
+            "KBO",
+            "KBY",
+            "KCI",
+            "KCS",
+            "KDC",
+            "KDM",
+        ]
+        labels = [_get_cavity_label(name) for name in cavity_names]
+        self.assertListEqual(labels, list(range(2, 100, 10)))
+
+
+class TestSelectCavities(unittest.TestCase):
+    def test_selection(self):
+        # Create a dummy grid
+        grid = numpy.arange(0, 27).reshape(3, 3, 3)
+        # Selection: list of cavity labels
+        selected = _select_cavities(grid, selection=[2, 3, 4])
+        self.assertListEqual(
+            selected.tolist(),
+            [
+                [[0, 1, 2], [3, 4, 1], [1, 1, 1]],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
+            ],
+        )
 
 
 class TestGetVertices(unittest.TestCase):
@@ -23,7 +71,7 @@ class TestGetVertices(unittest.TestCase):
                 [-0.6, -0.6, -0.6],
                 [1.6, -0.6, -0.6],
                 [-0.6, 1.6, -0.6],
-                [-0.6, -0.6, 1.6]
+                [-0.6, -0.6, 1.6],
             ],
         )
 
@@ -36,7 +84,7 @@ class TestGetVertices(unittest.TestCase):
                 [-4.6, -4.6, -4.6],
                 [5.6, -4.6, -4.6],
                 [-4.6, 5.6, -4.6],
-                [-4.6, -4.6, 5.6]
+                [-4.6, -4.6, 5.6],
             ],
         )
 
@@ -49,7 +97,7 @@ class TestGetVertices(unittest.TestCase):
                 [-4.5, -4.5, -4.5],
                 [5.5, -4.5, -4.5],
                 [-4.5, 5.5, -4.5],
-                [-4.5, -4.5, 5.5]
+                [-4.5, -4.5, 5.5],
             ],
         )
 
@@ -60,22 +108,12 @@ class TestGetVertices(unittest.TestCase):
         self.assertRaises(TypeError, get_vertices, 1, self.probe_out, self.step)
         self.assertRaises(TypeError, get_vertices, 1.0, self.probe_out, self.step)
         # bad probe_out
-        self.assertRaises(
-            TypeError, get_vertices, self.xyzr, "string", self.step
-        )
-        self.assertRaises(
-            TypeError, get_vertices, self.xyzr, True, self.step
-        )
-        self.assertRaises(
-            TypeError, get_vertices, self.xyzr, [4.0, 4.0], self.step
-        )
+        self.assertRaises(TypeError, get_vertices, self.xyzr, "string", self.step)
+        self.assertRaises(TypeError, get_vertices, self.xyzr, True, self.step)
+        self.assertRaises(TypeError, get_vertices, self.xyzr, [4.0, 4.0], self.step)
         # bad step
-        self.assertRaises(
-            TypeError, get_vertices, self.xyzr, self.probe_out, "string"
-        )
-        self.assertRaises(
-            TypeError, get_vertices, self.xyzr, self.probe_out, True
-        )
+        self.assertRaises(TypeError, get_vertices, self.xyzr, self.probe_out, "string")
+        self.assertRaises(TypeError, get_vertices, self.xyzr, self.probe_out, True)
         self.assertRaises(
             TypeError, get_vertices, self.xyzr, self.probe_out, [0.6, 0.6]
         )
@@ -87,20 +125,26 @@ class TestGetVertices(unittest.TestCase):
             ValueError, get_vertices, [1.0, 1.0, 1.0, 1.0], self.probe_out, self.step
         )
         # shape (1, 5)
-        self.assertRaises(ValueError, get_vertices, [[1.0, 1.0, 1.0, 1.0, 1.0]], self.probe_out, self.step)
+        self.assertRaises(
+            ValueError,
+            get_vertices,
+            [[1.0, 1.0, 1.0, 1.0, 1.0]],
+            self.probe_out,
+            self.step,
+        )
         # shape (1, 1, 4)
-        self.assertRaises(ValueError, get_vertices, [[[1.0, 1.0, 1.0, 1.0]]], self.probe_out, self.step)
+        self.assertRaises(
+            ValueError,
+            get_vertices,
+            [[[1.0, 1.0, 1.0, 1.0]]],
+            self.probe_out,
+            self.step,
+        )
         # probe_out
-        self.assertRaises(
-            ValueError, get_vertices, self.xyzr, -1, self.step
-        )
+        self.assertRaises(ValueError, get_vertices, self.xyzr, -1, self.step)
         # step
-        self.assertRaises(
-            ValueError, get_vertices, self.xyzr, self.probe_out, 0.0
-        )
-        self.assertRaises(
-            ValueError, get_vertices, self.xyzr, self.probe_out, -1.0
-        )
+        self.assertRaises(ValueError, get_vertices, self.xyzr, self.probe_out, 0.0)
+        self.assertRaises(ValueError, get_vertices, self.xyzr, self.probe_out, -1.0)
 
 
 class TestGetDimensions(unittest.TestCase):
