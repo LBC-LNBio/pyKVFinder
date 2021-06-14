@@ -155,8 +155,7 @@ def read_pdb(
         A numpy array with atomic information (residue number, chain,
         residue name, atom name) for each atom.
     xyzr : numpy.ndarray
-        A numpy.ndarray with xyz atomic coordinates, radii and barcode
-        for each atom.
+        A numpy.ndarray with xyz atomic coordinates and radii for each atom.
 
     Raises
     ------
