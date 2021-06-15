@@ -18,13 +18,16 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 VDW = os.path.join(HERE, "data/vdw.dat")
 
 
-def read_vdw(fn: Union[str, pathlib.Path] = VDW) -> Dict[str, Dict[str, float]]:
+def read_vdw(
+    fn: Optional[Union[str, pathlib.Path]] = None
+) -> Dict[str, Dict[str, float]]:
     """Reads van der Waals radii from .dat file.
 
     Parameters
     ----------
-    fn : Union[str, pathlib.Path]
-        A path to a van der Waals radii file, by default VDW.
+    fn : Optional[Union[str, pathlib.Path]], optional
+        A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+        Waals radii file: `vdw.dat`.
 
     Returns
     -------
@@ -51,6 +54,10 @@ def read_vdw(fn: Union[str, pathlib.Path] = VDW) -> Dict[str, Dict[str, float]]:
     # Check argument
     if type(fn) not in [str, pathlib.Path]:
         raise TypeError("`fn` must be a string or a pathlib.Path.")
+
+    # Define default vdw file
+    if fn is None:
+        fn = VDW
 
     # Create vdw dictionary
     vdw = {}
@@ -139,7 +146,7 @@ radius: {radius} \u00c5."
 
 
 def read_pdb(
-    fn: Union[str, pathlib.Path], vdw: Dict[str, Dict[str, float]] = read_vdw()
+    fn: Union[str, pathlib.Path], vdw: Optional[Dict[str, Dict[str, float]]] = None
 ) -> Tuple[numpy.ndarray, numpy.ndarray]:
     """Reads PDB file into numpy.ndarrays.
 
@@ -147,8 +154,8 @@ def read_pdb(
     ----------
     fn : Union[str, pathlib.Path]
         A path to PDB file.
-    vdw : Dict[str, Dict[str, float]
-        A dictionary with radii values, by default pyKVFinder.read_vdw().
+    vdw : Optional[Union[str, pathlib.Path]], optional
+        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.
 
     Returns
     -------
@@ -173,6 +180,10 @@ def read_pdb(
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:
         raise TypeError("`fn` must be a string or a pathlib.Path.")
+
+    # Define default vdw file
+    if vdw is None:
+        vdw = read_vdw(VDW)
 
     # Create lists
     atominfo = []

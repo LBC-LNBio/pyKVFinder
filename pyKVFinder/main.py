@@ -638,7 +638,7 @@ class pyKVFinderResults(object):
 def pyKVFinder(
     pdb: Union[str, pathlib.Path],
     ligand: Optional[Union[str, pathlib.Path]] = None,
-    dictionary: Union[str, pathlib.Path] = VDW,
+    vdw: Optional[Union[str, pathlib.Path]] = None,
     box: Optional[Union[str, pathlib.Path]] = None,
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
@@ -663,8 +663,9 @@ def pyKVFinder(
         A path to input PDB file.
     ligand : Union[str, pathlib.Path], optional
         A path to ligand PDB file, by default None.
-    dictionary : Union[str, pathlib.Path], optional
-        A path to van der Waals radii file, by default VDW.
+    fn : Optional[Union[str, pathlib.Path]], optional
+        A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+        Waals radii file: `vdw.dat`.
     box : Union[str, pathlib.Path], optional
         A path to box configuration file (TOML-formatted), by default None.
     step : Union[float, int], optional
@@ -791,7 +792,10 @@ def pyKVFinder(
     """
     if verbose:
         print("> Loading atomic dictionary file")
-    vdw = read_vdw(dictionary)
+    if vdw is not None:
+        vdw = read_vdw(vdw)
+    else:
+        vdw = read_vdw(VDW)
 
     if verbose:
         print("> Reading PDB coordinates")
