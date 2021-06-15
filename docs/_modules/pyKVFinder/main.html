@@ -836,7 +836,7 @@
 <div class="viewcode-block" id="pyKVFinder"><a class="viewcode-back" href="../../_api_reference/pyKVFinder.html#pyKVFinder.pyKVFinder">[docs]</a><span class="k">def</span> <span class="nf">pyKVFinder</span><span class="p">(</span>
     <span class="n">pdb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">dictionary</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">VDW</span><span class="p">,</span>
+    <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">box</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
@@ -861,8 +861,9 @@
 <span class="sd">        A path to input PDB file.</span>
 <span class="sd">    ligand : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to ligand PDB file, by default None.</span>
-<span class="sd">    dictionary : Union[str, pathlib.Path], optional</span>
-<span class="sd">        A path to van der Waals radii file, by default VDW.</span>
+<span class="sd">    fn : Optional[Union[str, pathlib.Path]], optional</span>
+<span class="sd">        A path to a van der Waals radii file, by default None. If None, apply the built-in van der</span>
+<span class="sd">        Waals radii file: `vdw.dat`.</span>
 <span class="sd">    box : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to box configuration file (TOML-formatted), by default None.</span>
 <span class="sd">    step : Union[float, int], optional</span>
@@ -989,7 +990,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Loading atomic dictionary file&quot;</span><span class="p">)</span>
-    <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vdw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">vdw</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>

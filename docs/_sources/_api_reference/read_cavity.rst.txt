@@ -24,9 +24,10 @@ With a previously calculated cavity, that can be manually curated in a molecular
 .. code-block:: python
 
     >>> import os
+    >>> import pyKVFinder
     >>> from pyKVFinder import read_cavity
+    >>> cavity = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.KVFinder.output.pdb')
     >>> receptor = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-    >>> cavity = 'cavities.pdb'
     >>> grid = read_cavity(cavity, receptor)
     >>> grid
     array([[[-1, -1, -1, ..., -1, -1, -1],

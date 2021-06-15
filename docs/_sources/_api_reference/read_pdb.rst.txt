@@ -22,6 +22,7 @@ With the vdW radii dictionary loaded with ``pyKVFinder.read_vdw``, we can read a
 .. code-block:: python
 
     >>> import os
+    >>> import pyKVFinder
     >>> from pyKVFinder import read_pdb
     >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
     >>> atominfo, xyzr = read_pdb(pdb)

@@ -216,13 +216,16 @@
 <span class="n">VDW</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HERE</span><span class="p">,</span> <span class="s2">&quot;data/vdw.dat&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="read_vdw"><a class="viewcode-back" href="../../_api_reference/read_vdw.html#pyKVFinder.read_vdw">[docs]</a><span class="k">def</span> <span class="nf">read_vdw</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">VDW</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<div class="viewcode-block" id="read_vdw"><a class="viewcode-back" href="../../_api_reference/read_vdw.html#pyKVFinder.read_vdw">[docs]</a><span class="k">def</span> <span class="nf">read_vdw</span><span class="p">(</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Reads van der Waals radii from .dat file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    fn : Union[str, pathlib.Path]</span>
-<span class="sd">        A path to a van der Waals radii file, by default VDW.</span>
+<span class="sd">    fn : Optional[Union[str, pathlib.Path]], optional</span>
+<span class="sd">        A path to a van der Waals radii file, by default None. If None, apply the built-in van der</span>
+<span class="sd">        Waals radii file: `vdw.dat`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -247,8 +250,12 @@
 <span class="sd">    The package contains a built-in van der Waals radii file: `vdw.dat`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check argument</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Define default vdw file</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">VDW</span>
 
     <span class="c1"># Create vdw dictionary</span>
     <span class="n">vdw</span> <span class="o">=</span> <span class="p">{}</span>
@@ -337,7 +344,7 @@
 
 
 <div class="viewcode-block" id="read_pdb"><a class="viewcode-back" href="../../_api_reference/read_pdb.html#pyKVFinder.read_pdb">[docs]</a><span class="k">def</span> <span class="nf">read_pdb</span><span class="p">(</span>
-    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">()</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Reads PDB file into numpy.ndarrays.</span>
 
@@ -345,8 +352,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fn : Union[str, pathlib.Path]</span>
 <span class="sd">        A path to PDB file.</span>
-<span class="sd">    vdw : Dict[str, Dict[str, float]</span>
-<span class="sd">        A dictionary with radii values, by default pyKVFinder.read_vdw().</span>
+<span class="sd">    vdw : Optional[Union[str, pathlib.Path]], optional</span>
+<span class="sd">        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -371,6 +378,10 @@
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Define default vdw file</span>
+    <span class="k">if</span> <span class="n">vdw</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="c1"># Create lists</span>
     <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[]</span>
