@@ -52,11 +52,11 @@ def read_vdw(
     The package contains a built-in van der Waals radii file: `vdw.dat`.
     """
     # Check argument
-    if type(fn) not in [str, pathlib.Path]:
-        raise TypeError("`fn` must be a string or a pathlib.Path.")
-
-    # Define default vdw file
-    if fn is None:
+    if fn is not None:
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
+    else:
+        # Define default vdw file
         fn = VDW
 
     # Create vdw dictionary
