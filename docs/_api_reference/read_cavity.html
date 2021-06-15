@@ -324,7 +324,7 @@ Grid array has integer labels in each position, that are:</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when the <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument is not specified. If you wish to use a custom van der Waals radii file, you must set <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument to the custom file path, e.g. <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_cavity(cavity,</span> <span class="pre">receptor,</span> <span class="pre">vdw='path/to/vdw.dat')</span></code>.</p>
+<p>The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when the <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> as shown earlier and pass it as <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_cavity(cavity,</span> <span class="pre">receptor,</span> <span class="pre">vdw=vdw)</span></code>.</p>
 </div>
 </div>
 

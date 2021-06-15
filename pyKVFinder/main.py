@@ -663,7 +663,7 @@ def pyKVFinder(
         A path to input PDB file.
     ligand : Union[str, pathlib.Path], optional
         A path to ligand PDB file, by default None.
-    fn : Optional[Union[str, pathlib.Path]], optional
+    vdw : Union[str, pathlib.Path], optional
         A path to a van der Waals radii file, by default None. If None, apply the built-in van der
         Waals radii file: `vdw.dat`.
     box : Union[str, pathlib.Path], optional

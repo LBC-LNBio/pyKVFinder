@@ -155,8 +155,8 @@ def read_pdb(
     ----------
     fn : Union[str, pathlib.Path]
         A path to PDB file.
-    vdw : Optional[Union[str, pathlib.Path]], optional
-        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.
+    vdw : Dict[str, Dict[str, float]], optional
+        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.
 
     Returns
     -------
@@ -209,8 +209,9 @@ def read_xyz(
     ----------
     fn : Union[str, pathlib.Path]
         A path to XYZ file.
-    vdw : Optional[Dict[str, Dict[str, float]]], optional
-        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.
+    vdw : Dict[str, Dict[str, float]], optional
+        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.
+
     Returns
     -------
     atominfo : numpy.ndarray
@@ -308,7 +309,7 @@ def read_cavity(
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
     surface: str = "SES",
-    vdw: Optional[Union[str, pathlib.Path]] = None,
+    vdw: Optional[Dict[str, Dict[str, float]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> numpy.ndarray:
@@ -329,9 +330,8 @@ def read_cavity(
     surface : str, optional
         Surface representation. Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
         Accessible Surface), by default "SES".
-    vdw : Optional[Union[str, pathlib.Path]], optional
-        A path to a van der Waals radii file, by default None. If None, apply the built-in van der
-        Waals radii file: `vdw.dat`.
+    vdw : Dict[str, Dict[str, float]], optional
+        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.
     nthreads : Optional[int], optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -373,8 +373,6 @@ def read_cavity(
     TypeError
         `surface` must be a str.
     TypeError
-        `vdw` must be a string or a pathlib.Path.
-    TypeError
         `nthreads` must be a positive integer.
     ValueError
         `nthreads` must be a positive integer.
@@ -407,9 +405,6 @@ def read_cavity(
         raise ValueError("`probe_out` must be greater than `probe_in`.")
     if type(surface) not in [str]:
         raise TypeError("`surface` must be a str.")
-    if vdw is not None:
-        if type(vdw) not in [str, pathlib.Path]:
-            raise TypeError("`vdw` must be a string or a pathlib.Path.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -432,12 +427,9 @@ def read_cavity(
     if verbose:
         print(f"> Inserting {receptor} into 3D grid")
 
-    # If user defined a custom van der Waals file, load it
-    if vdw is not None:
-        vdw = read_vdw(vdw)
-    # Else, load default file
-    else:
-        vdw = read_vdw()
+    # Define default vdw file
+    if vdw is None:
+        vdw = read_vdw(VDW)
 
     # Load receptor coordinates and radii
     _, xyzr = read_pdb(receptor, vdw)

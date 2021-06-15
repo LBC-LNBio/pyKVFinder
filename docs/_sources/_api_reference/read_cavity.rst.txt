@@ -50,4 +50,4 @@ With a previously calculated cavity, that can be manually curated in a molecular
 
 .. warning::
 
-  The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when the ``vdw`` argument is not specified. If you wish to use a custom van der Waals radii file, you must set ``vdw`` argument to the custom file path, e.g. ``pyKVFinder.read_cavity(cavity, receptor, vdw='path/to/vdw.dat')``.
+  The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when the ``vdw`` argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with ``pyKVFinder.read_vdw`` as shown earlier and pass it as ``pyKVFinder.read_cavity(cavity, receptor, vdw=vdw)``.
