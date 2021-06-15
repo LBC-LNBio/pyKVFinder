@@ -693,7 +693,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 .. code-block:: python
 
   >>> output_cavity = 'cavity_wo_surface.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, None, vertices, sincos, step=step)
+  >>> pyKVFinder.export(output_cavity, cavities, None, vertices, step=step)
 
 9.2 Exporting cavity and surface points
 ***************************************
@@ -701,7 +701,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 .. code-block:: python
 
   >>> output_cavity = 'cavity.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, step=step)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step)
 
 9.3 Exporting cavity and surface points with depth mapped on B-factor
 *********************************************************************
@@ -709,7 +709,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 .. code-block:: python
 
   >>> output_cavity = 'cavity_with_depth.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, step=step, B=depths)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step, B=depths)
 
 9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor
 *************************************************************************************************************************************
@@ -718,13 +718,13 @@ There are four different ways to export the detected cavities to PDB-formatted f
 
   >>> output_cavity = 'cavity_with_depth.pdb'
   >>> output_hydropathy = 'hydropathy.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos, step=step, B=depths, output_hydropathy=output_hydropathy, scales=scales)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step, B=depths, output_hydropathy=output_hydropathy, scales=scales)
 
 .. note::
 
   The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-  If the ``step``, ``B``, ``scales`` and ``output_hydropathy`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.export(output_cavity, cavities, surface, vertices, sincos)``.
+  If the ``step``, ``B``, ``scales`` and ``output_hydropathy`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.export(output_cavity, cavities, surface, vertices)``.
 
 .. seealso::
 

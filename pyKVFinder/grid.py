@@ -1946,9 +1946,8 @@ def hydropathy(
 def export(
     fn: Union[str, pathlib.Path],
     cavities: numpy.ndarray,
-    surface: numpy.ndarray,
+    surface: Optional[numpy.ndarray],
     vertices: Union[numpy.ndarray, List[List[float]]],
-    sincos: Union[numpy.ndarray, List[float]],
     step: Union[float, int] = 0.6,
     B: Union[numpy.ndarray, None] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
@@ -1980,8 +1979,9 @@ def export(
 
         The empty space points are regions that do not meet the chosen
         volume cutoff to be considered a cavity.
-    surface : numpy.ndarray
-        Surface points in the 3D grid (surface[nx][ny][nz]).
+    surface : numpy.ndarray, optional
+        Surface points in the 3D grid (surface[nx][ny][nz]). If None, surface
+        is a numpy.zeros array with same shape of cavities.
         Surface array has integer labels in each position, that are:
 
             * -1: bulk points;
@@ -1995,9 +1995,6 @@ def export(
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
-    sincos : Union[numpy.ndarray, List[float]]
-        A numpy.ndarray or a list with sine and cossine of the grid
-        rotation angles (sina, cosa, sinb, cosb).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     B : Union[numpy.ndarray, None], optional
@@ -2034,10 +2031,6 @@ def export(
         `vertices` must be a list or a numpy.ndarray.
     ValueError
         `vertices` has incorrect shape. It must be (4, 3).
-    TypeError
-        `sincos` must be a list or a numpy.ndarray.
-    ValueError
-        `sincos` has incorrect shape. It must be (4,).
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -2096,12 +2089,6 @@ def export(
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
         raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
-    if type(sincos) not in [numpy.ndarray, list]:
-        raise TypeError("`sincos` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(sincos).shape) != 1:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    elif numpy.asarray(sincos).shape[0] != 4:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -2146,14 +2133,11 @@ def export(
     # Convert types
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
-    if type(sincos) == list:
-        sincos = numpy.asarray(sincos)
     if type(step) == int:
         step = float(step)
 
     # Convert numpy.ndarray data types
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
-    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
     if B is not None:
         B = B.astype("float64") if B.dtype != "float64" else B
     if scales is not None:
@@ -2161,6 +2145,9 @@ def export(
 
     # Get number of cavities
     ncav = int(cavities.max() - 1)
+
+    # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    sincos = get_sincos(vertices)
 
     # Create base directories of results
     if fn is not None:

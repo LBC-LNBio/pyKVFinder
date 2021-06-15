@@ -22,28 +22,28 @@ With the cavity and surface points identified and depth and hydrophobicity scale
 .. code-block:: python
 
     >>> from pyKVFinder import export
-    >>> export('cavity_wo_surface.pdb', cavities, None, vertices, sincos)
+    >>> export('cavity_wo_surface.pdb', cavities, None, vertices)
 
 * Export cavity and surface points
 
 .. code-block:: python
 
-    >>> export('cavities.pdb', cavities, surface, vertices, sincos)
+    >>> export('cavities.pdb', cavities, surface, vertices)
 
 * Export cavity and surface points with depth mapped on them
 
 .. code-block:: python
 
-    >>> export('cavities_with_depth.pdb', cavities, surface, vertices, sincos, B=depths)
+    >>> export('cavities_with_depth.pdb', cavities, surface, vertices, B=depths)
 
 * Export surface points with hydrophobicity_scale mapped on them
 
 .. code-block:: python
 
-    >>> export(None, None, surface, vertices, sincos, output_hydropathy='hydropathy.pdb', scales=scales)
+    >>> export(None, None, surface, vertices, output_hydropathy='hydropathy.pdb', scales=scales)
 
 * Export all
 
 .. code-block:: python
 
-    >>> export('cavities.pdb', cavities, surface, vertices, sincos, B=depths, output_hydropathy='hydropathy.pdb', scales=scales)
+    >>> export('cavities.pdb', cavities, surface, vertices, B=depths, output_hydropathy='hydropathy.pdb', scales=scales)

@@ -328,31 +328,31 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <li><p>Export cavity points</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">export</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavity_wo_surface.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavity_wo_surface.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Export cavity and surface points</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavities.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavities.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Export cavity and surface points with depth mapped on them</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavities_with_depth.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavities_with_depth.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Export surface points with hydrophobicity_scale mapped on them</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Export all</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavities.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;cavities.pdb&#39;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

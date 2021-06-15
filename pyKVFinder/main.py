@@ -238,7 +238,6 @@ def cli() -> None:
             cavities,
             surface,
             args.vertices,
-            args.sincos,
             args.step,
             depths,
             output_hydropathy,
@@ -472,13 +471,11 @@ class pyKVFinderResults(object):
         the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
         and so on.
         """
-        sincos = get_sincos(self._vertices)
         export(
             output,
             self.cavities,
             self.surface,
             self._vertices,
-            sincos,
             self._step,
             self.depths,
             output_hydropathy,
