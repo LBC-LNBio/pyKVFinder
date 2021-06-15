@@ -1,7 +1,7 @@
 pyKVFinder.read_vdw
 -------------------
 
-.. autofunction:: pyKVFinder.read_vdw(fn: Union[str, pathlib.Path] = "vdw.dat") -> Dict[str, Dict[str, float]]
+.. autofunction:: pyKVFinder.read_vdw
 
 .. seealso::
 

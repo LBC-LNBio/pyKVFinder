@@ -1,7 +1,7 @@
 pyKVFinder.read_pdb
 ===================
 
-.. autofunction:: pyKVFinder.read_pdb(fn: Union[str, pathlib.Path], vdw: Dict[str, Dict[str, float]] = pyKVFinder.read_vdw()) -> Tuple[numpy.ndarray, numpy.ndarray]
+.. autofunction:: pyKVFinder.read_pdb
 
 .. seealso::
 
