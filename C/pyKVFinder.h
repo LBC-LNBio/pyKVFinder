@@ -6,6 +6,8 @@ void cgrid(int *grid, int size);
 
 /* Grid filling */
 void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads);
+void _fill_receptor(int *receptor, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int is_ses, int nthreads, int verbose);
+void _fill_cavity(int *cavities, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, int nthreads);
 
 /* Biomolecular surface representation */
 int check_protein_neighbours(int *grid, int nx, int ny, int nz, int i, int j, int k);

@@ -8,6 +8,7 @@ from typing import Dict, List, Union, Tuple, Optional
 __all__ = [
     "read_vdw",
     "read_pdb",
+    "read_cavity",
     "calculate_frequencies",
     "plot_frequencies",
     "write_results",
@@ -185,6 +186,229 @@ def read_pdb(
                 xyzr.append(coords)
 
     return numpy.asarray(atominfo), numpy.asarray(xyzr)
+
+
+def _read_cavity(cavity: Union[str, pathlib.Path]) -> numpy.ndarray:
+    """Reads xyz coordinates and labels of a cavities file into numpy.ndarray.
+
+    Parameters
+    ----------
+    cavity : Union[str, pathlib.Path]
+        A path to a PDB-formatted file of cavities.
+
+    Returns
+    -------
+    xyzl : numpy.ndarray
+        A numpy.ndarray with xyz coordinates and cavity label for each cavity point.
+    """
+    from .grid import _get_cavity_label
+
+    # Create xyzl (xyz coordinates and cavity label)
+    xyzl = []
+
+    # Read cavity file into list
+    with open(cavity, "r") as f:
+        for line in f.readlines():
+            if line[:4] == "ATOM" or line[:6] == "HETATM":
+                x = float(line[30:38])
+                y = float(line[38:46])
+                z = float(line[46:54])
+                label = _get_cavity_label(line[17:20].strip())
+                xyzl.append([x, y, z, label])
+
+    return numpy.asarray(xyzl)
+
+
+def read_cavity(
+    cavity: Union[str, pathlib.Path],
+    receptor: Union[str, pathlib.Path],
+    step: Union[float, int] = 0.6,
+    probe_in: Union[float, int] = 1.4,
+    probe_out: Union[float, int] = 4.0,
+    surface: str = "SES",
+    vdw: Optional[Union[str, pathlib.Path]] = None,
+    nthreads: Optional[int] = None,
+    verbose: bool = False,
+) -> numpy.ndarray:
+    """Read cavities and receptor inside a 3D grid.
+
+    Parameters
+    ----------
+    cavity : Union[str, pathlib.Path]
+        A path to a PDB-formatted file of cavities.
+    receptor : Union[str, pathlib.Path]
+        A path to a PDB-formatted file of the receptor.
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6.
+    probe_in : Union[float, int], optional
+        Probe In size (A), by default 1.4.
+    probe_out : Union[float, int], optional
+        Probe Out size (A), by default 4.0.
+    surface : str, optional
+        Surface representation. Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+        Accessible Surface), by default "SES".
+    vdw : Optional[Union[str, pathlib.Path]], optional
+        A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+        Waals radii file: `vdw.dat`.
+    nthreads : Optional[int], optional
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
+    verbose : bool, optional
+        Print extra information to standard output, by default False.
+
+    Returns
+    -------
+    grid : numpy.ndarray
+        Cavity and receptor points in the 3D grid (grid[nx][ny][nz]).
+        Grid array has integer labels in each position, that are:
+
+            * -1: bulk points or empty space points;
+
+            * 0: biomolecule points;
+
+            * >=2: cavity points.
+
+    Raises
+    ------
+    TypeError
+        `cavity` must be a string or a pathlib.Path.
+    TypeError
+        `receptor` must be a string or a pathlib.Path.
+    TypeError
+        `step` must be a positive real number.
+    ValueError
+        `step` must be a positive real number.
+    TypeError
+        `probe_in` must be a non-negative real number.
+    ValueError
+        `probe_in` must be a non-negative real number.
+    TypeError
+        `probe_out` must be a non-negative real number.
+    ValueError
+        `probe_out` must be a non-negative real number.
+    ValueError
+        `probe_out` must be greater than `probe_in`.
+    TypeError
+        `surface` must be a str.
+    TypeError
+        `vdw` must be a string or a pathlib.Path.
+    TypeError
+        `nthreads` must be a positive integer.
+    ValueError
+        `nthreads` must be a positive integer.
+    TypeError
+        `verbose` must be a boolean.
+    ValueError
+        `surface` must be SAS or SES, not {surface}.
+    """
+    from .grid import get_vertices, get_sincos, get_dimensions
+    from _pyKVFinder import _fill_receptor, _fill_cavity
+
+    # Check arguments
+    if type(cavity) not in [str, pathlib.Path]:
+        raise TypeError("`cavity` must be a string or a pathlib.Path.")
+    if type(receptor) not in [str, pathlib.Path]:
+        raise TypeError("`receptor` must be a string or a pathlib.Path.")
+    if type(step) not in [float, int]:
+        raise TypeError("`step` must be a positive real number.")
+    elif step <= 0.0:
+        raise ValueError("`step` must be a positive real number.")
+    if type(probe_in) not in [float, int]:
+        raise TypeError("`probe_in` must be a non-negative real number.")
+    elif probe_in < 0.0:
+        raise ValueError("`probe_in` must be a non-negative real number.")
+    if type(probe_out) not in [float, int]:
+        raise TypeError("`probe_out` must be a non-negative real number.")
+    elif probe_out < 0.0:
+        raise ValueError("`probe_out` must be a non-negative real number.")
+    elif probe_out < probe_in:
+        raise ValueError("`probe_out` must be greater than `probe_in`.")
+    if type(surface) not in [str]:
+        raise TypeError("`surface` must be a str.")
+    if vdw is not None:
+        if type(vdw) not in [str, pathlib.Path]:
+            raise TypeError("`vdw` must be a string or a pathlib.Path.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
+    if type(verbose) not in [bool]:
+        raise TypeError("`verbose` must be a boolean.")
+
+    # Convert types
+    if type(step) == int:
+        step = float(step)
+    if type(probe_in) == int:
+        probe_in = float(probe_in)
+    if type(probe_out) == int:
+        probe_out = float(probe_out)
+
+    # Insert receptor inside 3D grid
+    if verbose:
+        print(f"> Inserting {receptor} into 3D grid")
+
+    # If user defined a custom van der Waals file, load it
+    if vdw is not None:
+        vdw = read_vdw(vdw)
+    # Else, load default file
+    else:
+        vdw = read_vdw()
+
+    # Load receptor coordinates and radii
+    _, xyzr = read_pdb(receptor, vdw)
+
+    # Define grid
+    vertices = get_vertices(xyzr, probe_out, step)
+    sincos = get_sincos(vertices)
+    nx, ny, nz = get_dimensions(vertices, step)
+
+    # Unpack vertices
+    P1, P2, P3, P4 = vertices
+
+    # Calculate number of voxels
+    nvoxels = nx * ny * nz
+
+    if surface == "SES":
+        if verbose:
+            print("> Surface representation: Solvent Excluded Surface (SES).")
+        surface = True
+    elif surface == "SAS":
+        if verbose:
+            print("> Surface representation: Solvent Accessible Surface (SAS).")
+        surface = False
+    else:
+        raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
+
+    # Fill grid with receptor
+    grid = _fill_receptor(
+        nvoxels,
+        nx,
+        ny,
+        nz,
+        xyzr,
+        P1,
+        sincos,
+        step,
+        probe_in,
+        surface,
+        nthreads,
+        verbose,
+    ).reshape(nx, ny, nz)
+
+    # Insert cavities inside 3D grid
+    if verbose:
+        print(f"> Inserting {cavity} into 3D grid")
+
+    # Load cavities coordinates and labels
+    xyzl = _read_cavity(cavity)
+
+    # Fill grid with cavities
+    _fill_cavity(grid, xyzl, P1, sincos, step, nthreads)
+
+    return grid
 
 
 def _process_box(args: argparse.Namespace) -> Dict[str, List[float]]:

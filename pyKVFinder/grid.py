@@ -599,7 +599,7 @@ def detect(
     box_adjustment : bool, optional
         Whether a custom 3D grid is applied, by default False.
     surface : str, optional
-        Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+        Surface representation. Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
         Accessible Surface), by default SES.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is

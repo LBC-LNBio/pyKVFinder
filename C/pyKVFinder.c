@@ -157,6 +157,114 @@ void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr
     }
 }
 
+/*
+ * Function: _fill_cavity
+ * ----------------------
+ * 
+ * Insert cavities inside a 3D grid
+ * 
+ * grid: 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * atoms: xyz coordinates and radii of input pdb
+ * natoms: number of atoms
+ * xyzr: number of data per atom (4: xyzr)
+ * reference: xyz coordinates of 3D grid origin
+ * ndims: number of coordinates (3: xyz)
+ * sincos: sin and cos of 3D grid angles
+ * nvalues: number of sin and cos (sina, cosa, sinb, cosb)
+ * step: 3D grid spacing (A)
+ * probe: Probe size (A)
+ * nthreads: number of threads for OpenMP
+ * 
+ */
+void _fill_cavity(int *cavities, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, int nthreads)
+{
+    int i, j, k, atom;
+    double x, y, z, xaux, yaux, zaux;
+
+    // Set number of processes in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+#pragma omp parallel default(none), shared(cavities, reference, step, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, x, y, z, xaux, yaux, zaux)
+    {
+#pragma omp for schedule(dynamic) //nowait
+        for (atom = 0; atom < natoms; atom++)
+        {
+            // Convert atom coordinates in 3D grid coordinates
+            x = (atoms[atom * 4] - reference[0]) / step;
+            y = (atoms[1 + (atom * 4)] - reference[1]) / step;
+            z = (atoms[2 + (atom * 4)] - reference[2]) / step;
+
+            xaux = x * sincos[3] + z * sincos[2];
+            yaux = y;
+            zaux = (-x) * sincos[2] + z * sincos[3];
+
+            i = (int)(xaux);
+            j = (int)(yaux * sincos[1] - zaux * sincos[0]);
+            k = (int)(yaux * sincos[0] + zaux * sincos[1]);
+
+            cavities[k + nz * (j + (ny * i))] = (int)(atoms[3 + (atom * 4)]);
+        }
+    }
+
+#pragma omp parallel default(none), shared(cavities, nx, ny, nz), private(i, j, k)
+    {
+#pragma omp for collapse(3) ordered
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (cavities[k + nz * (j + (ny * i))] == 1)
+                        cavities[k + nz * (j + (ny * i))] = -1;
+    }
+}
+
+/*
+ * Function: _fill_receptor
+ * ------------------------
+ * 
+ * Insert atoms with a SES or SAS representation into a 3D grid
+ * 
+ * grid: 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * atoms: xyz coordinates and radii of input pdb
+ * natoms: number of atoms
+ * xyzr: number of data per atom (4: xyzr)
+ * reference: xyz coordinates of 3D grid origin
+ * ndims: number of coordinates (3: xyz)
+ * sincos: sin and cos of 3D grid angles
+ * nvalues: number of sin and cos (sina, cosa, sinb, cosb)
+ * step: 3D grid spacing (A)
+ * probe_in: Probe In size (A)
+ * is_ses: surface mode (1: SES or 0: SAS)
+ * nthreads: number of threads for OpenMP
+ * verbose: print extra information to standard output
+ * 
+ */
+void _fill_receptor(int *receptor, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int is_ses, int nthreads, int verbose)
+{
+
+    // Set number of processes in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+    if (verbose)
+        fprintf(stdout, "> Creating a SAS representation of the receptor\n");
+    igrid(receptor, size);
+    fill(receptor, nx, ny, nz, atoms, natoms, xyzr, reference, ndims, sincos, nvalues, step, probe_in, nthreads);
+
+    if (is_ses)
+    {
+        if (verbose)
+            fprintf(stdout, "> Adjusting a SES representation of the receptor\n");
+        ses(receptor, nx, ny, nz, step, probe_in, nthreads);
+    }
+}
+
 /* Biomolecular surface representation */
 
 /*
@@ -1893,7 +2001,7 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy, int
 
 #pragma omp parallel default(none), shared(avgh, hydropathy, surface, pts, nx, ny, nz), private(i, j, k)
     {
-#pragma omp for collapse(3)
+#pragma omp for collapse(3) ordered
         for (i = 0; i < nx; i++)
             for (j = 0; j < ny; j++)
                 for (k = 0; k < nz; k++)
