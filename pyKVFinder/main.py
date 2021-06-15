@@ -152,12 +152,8 @@ def cli() -> None:
 
     # Cavity detection
     ncav, cavities = detect(
-        nx,
-        ny,
-        nz,
         xyzr,
         args.vertices,
-        args.sincos,
         args.step,
         args.probe_in,
         args.probe_out,
@@ -837,12 +833,8 @@ def pyKVFinder(
 
     # Cavity detection
     ncav, cavities = detect(
-        nx,
-        ny,
-        nz,
         xyzr,
         vertices,
-        sincos,
         step,
         probe_in,
         probe_out,

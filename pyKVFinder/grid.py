@@ -540,12 +540,8 @@ def get_sincos(vertices: Union[numpy.ndarray, List[List[float]]]) -> numpy.ndarr
 
 
 def detect(
-    nx: int,
-    ny: int,
-    nz: int,
     xyzr: Union[numpy.ndarray, List[List[float]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
-    sincos: Union[numpy.ndarray, List[float]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
@@ -565,21 +561,12 @@ def detect(
 
     Parameters
     ----------
-    nx : int
-        x grid units.
-    ny : int
-        y grid units.
-    nz : int
-        z grid units.
     xyzr : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a lista with xyz atomic coordinates and radii
         values (x, y, z, radius) for each atom.
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
-    sincos : Union[numpy.ndarray, List[float]]
-        A numpy.ndarray or a lista with sine and cossine of the grid rotation
-        angles (sina, cosa, sinb, cosb).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
@@ -629,18 +616,6 @@ def detect(
     Raises
     ------
     TypeError
-        `nx` must be a positive integer.
-    ValueError
-        `nx` must be a positive integer.
-    TypeError
-        `ny` must be a positive integer.
-    ValueError
-        `ny` must be a positive integer.
-    TypeError
-        `nz` must be a positive integer.
-    ValueError
-        `nz` must be a positive integer.
-    TypeError
         `xyzr` must be a list or a numpy.ndarray.
     ValueError
         `xyzr` has incorrect shape. It must be (n, 4).
@@ -648,10 +623,6 @@ def detect(
         `vertices` must be a list or a numpy.ndarray.
     ValueError
         `vertices` has incorrect shape. It must be (4, 3).
-    TypeError
-        `sincos` must be a list or a numpy.ndarray.
-    ValueError
-        `sincos` has incorrect shape. It must be (4,).
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -702,23 +673,11 @@ def detect(
     Warning
     -------
     If you are using ligand adjustment mode, do not forget to read ligand atom
-    coordinates with 'read_pdb' function.
+    coordinates with 'read_pdb' or 'read_xyz' functions.
     """
     from _pyKVFinder import _detect, _detect_ladj
 
     # Check arguments
-    if type(nx) not in [int]:
-        raise TypeError("`nx` must be a positive integer.")
-    elif nx <= 0:
-        raise ValueError("`nx` must be a positive integer.")
-    if type(ny) not in [int]:
-        raise TypeError("`ny` must be a positive integer.")
-    elif ny <= 0:
-        raise ValueError("`nx` must be a positive integer.")
-    if type(nz) not in [int]:
-        raise TypeError("`nz` must be a positive integer.")
-    elif nz <= 0:
-        raise ValueError("`nx` must be a positive integer.")
     if type(xyzr) not in [numpy.ndarray, list]:
         raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(xyzr).shape) != 2:
@@ -729,12 +688,6 @@ def detect(
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
         raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
-    if type(sincos) not in [numpy.ndarray, list]:
-        raise TypeError("`sincos` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(sincos).shape) != 1:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    elif numpy.asarray(sincos).shape[0] != 4:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -780,8 +733,6 @@ def detect(
         xyzr = numpy.asarray(xyzr)
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
-    if type(sincos) == list:
-        sincos = numpy.asarray(sincos)
     if type(step) == int:
         step = float(step)
     if type(probe_in) == int:
@@ -800,7 +751,6 @@ def detect(
     # Convert numpy.ndarray data types
     xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
-    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
     if lxyzr is not None:
         if type(lxyzr) not in [numpy.ndarray, list]:
             raise TypeError("`lxyzr` must be a list, a numpy.ndarray or None.")
@@ -816,9 +766,6 @@ def detect(
     # Define ligand adjustment mode
     ligand_adjustment = True if lxyzr is not None else False
 
-    # Calculate number of voxels
-    nvoxels = nx * ny * nz
-
     if surface == "SES":
         if verbose:
             print("> Surface representation: Solvent Excluded Surface (SES).")
@@ -829,6 +776,15 @@ def detect(
         surface = False
     else:
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
+
+    # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    sincos = get_sincos(vertices)
+
+    # Get dimensions
+    nx, ny, nz = get_dimensions(vertices, step)
+
+    # Calculate number of voxels
+    nvoxels = nx * ny * nz
 
     # Detect cavities
     if ligand_adjustment:

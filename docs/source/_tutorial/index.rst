@@ -334,7 +334,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
 4. Detecting biomolecular cavities
 ----------------------------------
 
-``pyKVFinder.detect`` takes the grid units in x, y and z dimensions, the NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertices, a NumPy array with sine and cossine and a collection of detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
+``pyKVFinder.detect`` takes the NumPy array with xyz coordinates and radius for each atom, a NumPy array with vertices and a collection of detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
 
 .. code-block:: python
   
@@ -350,7 +350,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
   >>> volume_cutoff = 5.0
   >>> # Default Surface Representation (surface): 'SES'
   >>> surface = 'SES'
-  >>> ncav, cavities = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, surface=surface)
+  >>> ncav, cavities = pyKVFinder.detect(xyzr, vertices, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, surface=surface)
   >>> ncav
   18
   >>> cavities
@@ -374,7 +374,7 @@ Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and return
   
 .. note::
 
-  If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos)``.
+  If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.detect(xyzr, vertices)``.
 
   The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:
     
@@ -419,13 +419,13 @@ First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio
        [ 7.374,  9.872,  2.291,  1.66 ],
        [ 7.444, 10.056,  3.646,  1.97 ]])
 
-Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``nx``, ``ny``, ``nz``, ``xyzr``, ``vertices`` and ``sincos``) and a the ligand adjustment parameters (``lxyzr`` and ``ligand_cutoff``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
+Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``xyzr`` and ``vertices``) and a the ligand adjustment parameters (``lxyzr`` and ``ligand_cutoff``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
 
 .. code-block:: python
 
   >>> # Default Ligand Cutoff (ligand_cutoff): 5.0
   >>> ligand_cutoff = 5.0
-  >>> ncav_la, cavities_la = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr, ligand_cutoff=ligand_cutoff)
+  >>> ncav_la, cavities_la = pyKVFinder.detect(xyzr, vertices, lxyzr=lxyzr, ligand_cutoff=ligand_cutoff)
   >>> ncav_la
   2
   >>> cavities_la
@@ -449,7 +449,7 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``nx``, ``ny`
 
 .. note::
 
-  If the ``ligand_cutoff`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr)``.
+  If the ``ligand_cutoff`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.detect(xyzr, vertices, lxyzr=lxyzr)``.
 
   The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:
     
@@ -890,11 +890,11 @@ Users can define the ``box`` parameter as the filepath of one box configuration 
 
 .. code-block:: python
 
-  >>> ncav, cavities = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
+  >>> ncav, cavities = pyKVFinder.detect(xyzr, vertices, step=step, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
 
 .. note::
 
-  If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, box_adjustment=True)``.
+  If any of the detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``) are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.detect(xyzr, vertices, box_adjustment=True)``.
 
 .. warning::
 

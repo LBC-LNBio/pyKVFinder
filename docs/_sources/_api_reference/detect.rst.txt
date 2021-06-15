@@ -19,12 +19,12 @@ pyKVFinder.detect
 
   <h4><u>Example</u></h4>
 
-With the grid defined with ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, and atomic coordiantes loaded with ``pyKVFinder.read_pdb``, we can detect cavities on the whole target biomolecule:
+With the grid vertices defined with ``pyKVFinder.get_vertices`` and atomic coordiantes loaded with ``pyKVFinder.read_pdb`` or ``pyKVFinder.read_xyz``, we can detect cavities on the whole target biomolecule:
 
 .. code-block:: python
 
     >>> from pyKVFinder import detect
-    >>> ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos)
+    >>> ncav, cavities = detect(xyzr, vertices)
     >>> ncav
     18
     >>> cavities
@@ -48,7 +48,7 @@ With the grid defined with ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensi
 
 However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.
 
-The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* file. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).
+The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* or a *.xyz* files. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).
 
 .. code-block:: python
 
@@ -56,7 +56,7 @@ The cavity detection can be limited around the target ligand(s), which will be p
     >>> ligand = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'ADN.pdb')
     >>> from pyKVFinder import read_pdb
     >>> _, lxyzr = read_pdb(ligand, vdw)
-    >>> ncav, cavities = detect(nx, ny, nz, xyzr, vertices, sincos, lxyzr=lxyzr, ligand_cutoff=5.0)
+    >>> ncav, cavities = detect(xyzr, vertices, lxyzr=lxyzr, ligand_cutoff=5.0)
     >>> ncav
     2
     >>> cavities
@@ -98,7 +98,7 @@ Then, we can perform cavity detection:
 
 .. code-block:: python
 
-    >>> ncav, cavities = pyKVFinder.detect(nx, ny, nz, xyzr, vertices, sincos, box_adjustment=True)
+    >>> ncav, cavities = pyKVFinder.detect(xyzr, vertices, box_adjustment=True)
     >>> ncav
     1
     >>> cavities
