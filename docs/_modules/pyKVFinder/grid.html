@@ -797,7 +797,7 @@
 <span class="sd">    box_adjustment : bool, optional</span>
 <span class="sd">        Whether a custom 3D grid is applied, by default False.</span>
 <span class="sd">    surface : str, optional</span>
-<span class="sd">        Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent</span>
+<span class="sd">        Surface representation. Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent</span>
 <span class="sd">        Accessible Surface), by default SES.</span>
 <span class="sd">    nthreads : int, optional</span>
 <span class="sd">        Number of threads, by default None. If None, the number of threads is</span>
@@ -1076,6 +1076,50 @@
     <span class="k">return</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span></div>
 
 
+<span class="k">def</span> <span class="nf">_select_cavities</span><span class="p">(</span><span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Select cavities in the 3D grid by cavity labels.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cavities : numpy.ndarray</span>
+<span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
+<span class="sd">        Cavities array has integer labels in each position, that are:</span>
+
+<span class="sd">            * -1: bulk points;</span>
+
+<span class="sd">            * 0: biomolecule points;</span>
+
+<span class="sd">            * 1: empty space points;</span>
+
+<span class="sd">            * &gt;=2: cavity points.</span>
+<span class="sd">    selection : List[int]</span>
+<span class="sd">        A list of integer labels of each cavity to be selected.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    selected : numpy.ndarray</span>
+<span class="sd">        Selected cavity points in the 3D grid.</span>
+<span class="sd">        Selected cavities array has integer labels in each position, that are:</span>
+
+<span class="sd">            * -1: bulk points;</span>
+
+<span class="sd">            * 0: biomolecule points;</span>
+
+<span class="sd">            * 1: empty space points or unselected cavity points;</span>
+
+<span class="sd">            * &gt;=2: selected cavity points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Copy cavities</span>
+    <span class="n">selected</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span>
+
+    <span class="c1"># When outside selection, change cavities tags to 1</span>
+    <span class="k">for</span> <span class="n">cav</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cav</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">:</span>
+            <span class="n">selected</span><span class="p">[</span><span class="n">cavities</span> <span class="o">==</span> <span class="n">cav</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">selected</span>
+
+
 <span class="k">def</span> <span class="nf">_get_cavity_name</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get cavity name, eg KAA, KAB, and so on, based on the index.</span>
 
@@ -1237,8 +1281,10 @@
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `step` must be a positive real number.</span>
-<span class="sd">    ValueError</span>
+<span class="sd">    TypeError</span>
 <span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Invalid `selection`: {selection}.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
@@ -1258,14 +1304,18 @@
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">cavity_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
             <span class="p">)</span>
+        <span class="c1"># Check if selection includes valid cavity labels</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1403,8 +1453,10 @@
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `step` must be a positive real number.</span>
-<span class="sd">    ValueError</span>
+<span class="sd">    TypeError</span>
 <span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Invalid `selection`: {selection}.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
@@ -1442,14 +1494,18 @@
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">cavity_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
             <span class="p">)</span>
+        <span class="c1"># Check if selection includes valid cavity labels</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1625,8 +1681,10 @@
 <span class="sd">        `probe_in` must be a non-negative real number.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `ignore_backbone` must be a boolean.</span>
-<span class="sd">    ValueError</span>
+<span class="sd">    TypeError</span>
 <span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Invalid `selection`: {selection}.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
@@ -1695,14 +1753,18 @@
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ignore_backbone</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ignore_backbone` must be a boolean.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">cavity_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
             <span class="p">)</span>
+        <span class="c1"># Check if selection includes valid cavity labels</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1915,8 +1977,10 @@
 <span class="sd">        `hydrophobicity_scale` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `ignore_backbone` must be a boolean.</span>
-<span class="sd">    ValueError</span>
+<span class="sd">    TypeError</span>
 <span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Invalid `selection`: {selection}.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
@@ -2008,14 +2072,18 @@
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ignore_backbone</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ignore_backbone` must be a boolean.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">cavity_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
             <span class="p">)</span>
+        <span class="c1"># Check if selection includes valid cavity labels</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
@@ -2224,8 +2292,10 @@
 <span class="sd">        `scales` must be a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `scales` has the incorrect shape. It must be (nx, ny, nz).</span>
-<span class="sd">    ValueError</span>
+<span class="sd">    TypeError</span>
 <span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Invalid `selection`: {selection}.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
@@ -2291,14 +2361,18 @@
                 <span class="s2">&quot;`scales` has the incorrect shape. It must be (nx, ny, nz).&quot;</span>
             <span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">cavity_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
             <span class="p">)</span>
+        <span class="c1"># Check if selection includes valid cavity labels</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>

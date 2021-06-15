@@ -116,6 +116,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
@@ -249,7 +250,7 @@ default 2.4.</p></li>
 (x, y, z, Iradius) for each atom of a target ligand, by default None.</p></li>
 <li><p><strong>ligand_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – A radius to limit a space around a ligand (A), by default 5.0.</p></li>
 <li><p><strong>box_adjustment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether a custom 3D grid is applied, by default False.</p></li>
-<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Surface representation. Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
 Accessible Surface), by default SES.</p></li>
 <li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
 <cite>os.cpu_count() - 1</cite>.</p></li>
