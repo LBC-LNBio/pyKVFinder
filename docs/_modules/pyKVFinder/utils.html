@@ -206,6 +206,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;read_vdw&quot;</span><span class="p">,</span>
     <span class="s2">&quot;read_pdb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_xyz&quot;</span><span class="p">,</span>
     <span class="s2">&quot;read_cavity&quot;</span><span class="p">,</span>
     <span class="s2">&quot;calculate_frequencies&quot;</span><span class="p">,</span>
     <span class="s2">&quot;plot_frequencies&quot;</span><span class="p">,</span>
@@ -393,6 +394,76 @@
                 <span class="n">atom</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="n">_process_pdb_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
                 <span class="n">atominfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
                 <span class="n">xyzr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="read_xyz"><a class="viewcode-back" href="../../_api_reference/read_xyz.html#pyKVFinder.read_xyz">[docs]</a><span class="k">def</span> <span class="nf">read_xyz</span><span class="p">(</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Reads XYZ file into numpy.ndarrays.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : Union[str, pathlib.Path]</span>
+<span class="sd">        A path to XYZ file.</span>
+<span class="sd">    vdw : Optional[Dict[str, Dict[str, float]]], optional</span>
+<span class="sd">        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    atominfo : numpy.ndarray</span>
+<span class="sd">        A numpy array with atomic information (residue number, chain,</span>
+<span class="sd">        residue name, atom name) for each atom.</span>
+<span class="sd">    xyzr : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with xyz atomic coordinates and radii for each atom.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `fn` must be a string or a pathlib.Path.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The van der Waals radii file defines the radius values for each atom</span>
+<span class="sd">    by residue and when not defined, it uses a generic value based on the</span>
+<span class="sd">    atom type. The function by default loads the built-in van der Waals radii</span>
+<span class="sd">    file: `vdw.dat`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Define default vdw file</span>
+    <span class="k">if</span> <span class="n">vdw</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
+
+    <span class="c1"># Create lists</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Start resnum</span>
+    <span class="n">resnum</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Read XYZ file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="c1"># Get PDB information</span>
+                <span class="n">atom_symbol</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+                <span class="c1"># Get radius (generic value)</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">vdw</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">][</span><span class="n">atom_symbol</span><span class="p">]</span>
+
+                <span class="c1"># Get resnum</span>
+                <span class="n">resnum</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Append data</span>
+                <span class="n">atominfo</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">resnum</span><span class="si">}</span><span class="s2">_A_UNK&quot;</span><span class="p">,</span> <span class="n">atom_symbol</span><span class="p">])</span>
+                <span class="n">xyzr</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">radius</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span></div>
 

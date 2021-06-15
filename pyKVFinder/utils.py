@@ -8,6 +8,7 @@ from typing import Dict, List, Union, Tuple, Optional
 __all__ = [
     "read_vdw",
     "read_pdb",
+    "read_xyz",
     "read_cavity",
     "calculate_frequencies",
     "plot_frequencies",
@@ -195,6 +196,76 @@ def read_pdb(
                 atom, coords = _process_pdb_line(line, vdw)
                 atominfo.append(atom)
                 xyzr.append(coords)
+
+    return numpy.asarray(atominfo), numpy.asarray(xyzr)
+
+
+def read_xyz(
+    fn: Union[str, pathlib.Path], vdw: Optional[Dict[str, Dict[str, float]]] = None
+) -> Tuple[numpy.ndarray, numpy.ndarray]:
+    """Reads XYZ file into numpy.ndarrays.
+
+    Parameters
+    ----------
+    fn : Union[str, pathlib.Path]
+        A path to XYZ file.
+    vdw : Optional[Dict[str, Dict[str, float]]], optional
+        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.
+    Returns
+    -------
+    atominfo : numpy.ndarray
+        A numpy array with atomic information (residue number, chain,
+        residue name, atom name) for each atom.
+    xyzr : numpy.ndarray
+        A numpy.ndarray with xyz atomic coordinates and radii for each atom.
+
+    Raises
+    ------
+    TypeError
+        `fn` must be a string or a pathlib.Path.
+
+    Note
+    ----
+    The van der Waals radii file defines the radius values for each atom
+    by residue and when not defined, it uses a generic value based on the
+    atom type. The function by default loads the built-in van der Waals radii
+    file: `vdw.dat`.
+    """
+    # Check arguments
+    if type(fn) not in [str, pathlib.Path]:
+        raise TypeError("`fn` must be a string or a pathlib.Path.")
+
+    # Define default vdw file
+    if vdw is None:
+        vdw = read_vdw(VDW)
+
+    # Create lists
+    atominfo = []
+    xyzr = []
+
+    # Start resnum
+    resnum = 0
+
+    # Read XYZ file
+    with open(fn, "r") as f:
+        for line in f.readlines():
+            line = line.split()
+            if len(line) == 4:
+                # Get PDB information
+                atom_symbol = line[0]
+                x = float(line[1])
+                y = float(line[2])
+                z = float(line[3])
+
+                # Get radius (generic value)
+                radius = vdw["GEN"][atom_symbol]
+
+                # Get resnum
+                resnum += 1
+
+                # Append data
+                atominfo.append([f"{resnum}_A_UNK", atom_symbol])
+                xyzr.append([x, y, z, radius])
 
     return numpy.asarray(atominfo), numpy.asarray(xyzr)
 

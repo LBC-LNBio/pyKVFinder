@@ -13,6 +13,7 @@ Functions
     pyKVFinder
     read_vdw
     read_pdb
+    read_xyz
     read_cavity
     get_vertices
     get_dimensions
