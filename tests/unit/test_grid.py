@@ -3,8 +3,8 @@ import unittest
 import numpy
 from pyKVFinder.grid import (
     get_vertices,
-    get_dimensions,
-    get_sincos,
+    _get_dimensions,
+    _get_sincos,
     _get_cavity_name,
     _get_cavity_label,
     _select_cavities,
@@ -158,53 +158,53 @@ class TestGetDimensions(unittest.TestCase):
 
     def test_bad_type(self):
         # bad vertices
-        self.assertRaises(TypeError, get_dimensions, "string")
-        self.assertRaises(TypeError, get_dimensions, True)
-        self.assertRaises(TypeError, get_dimensions, 1)
-        self.assertRaises(TypeError, get_dimensions, 1.0)
+        self.assertRaises(TypeError, _get_dimensions, "string")
+        self.assertRaises(TypeError, _get_dimensions, True)
+        self.assertRaises(TypeError, _get_dimensions, 1)
+        self.assertRaises(TypeError, _get_dimensions, 1.0)
         # bad step
-        self.assertRaises(TypeError, get_dimensions, self.vertices, "string")
-        self.assertRaises(TypeError, get_dimensions, self.vertices, True)
-        self.assertRaises(TypeError, get_dimensions, self.vertices, [1, 1.0])
+        self.assertRaises(TypeError, _get_dimensions, self.vertices, "string")
+        self.assertRaises(TypeError, _get_dimensions, self.vertices, True)
+        self.assertRaises(TypeError, _get_dimensions, self.vertices, [1, 1.0])
 
     def test_bad_values(self):
         # bad vertices
         # shape (3,)
-        self.assertRaises(ValueError, get_dimensions, [1.0, 1.0, 1.0])
+        self.assertRaises(ValueError, _get_dimensions, [1.0, 1.0, 1.0])
         # shape (1, 3)
-        self.assertRaises(ValueError, get_dimensions, [[1.0, 1.0, 1.0]])
+        self.assertRaises(ValueError, _get_dimensions, [[1.0, 1.0, 1.0]])
         # shape (1, 1, 3)
-        self.assertRaises(ValueError, get_dimensions, [[[1.0, 1.0, 1.0]]])
+        self.assertRaises(ValueError, _get_dimensions, [[[1.0, 1.0, 1.0]]])
         # bad step
-        self.assertRaises(ValueError, get_dimensions, self.vertices, 0.0)
-        self.assertRaises(ValueError, get_dimensions, self.vertices, -1)
+        self.assertRaises(ValueError, _get_dimensions, self.vertices, 0.0)
+        self.assertRaises(ValueError, _get_dimensions, self.vertices, -1)
 
     def test_vertices(self):
         # Test vertices input
-        result = get_dimensions(self.vertices)
+        result = _get_dimensions(self.vertices)
         self.assertEqual(result, (2, 2, 2))
 
 
 class TestGetSincos(unittest.TestCase):
     def test_bad_type(self):
         # bad vertices
-        self.assertRaises(TypeError, get_sincos, "string")
-        self.assertRaises(TypeError, get_sincos, True)
-        self.assertRaises(TypeError, get_sincos, 1)
-        self.assertRaises(TypeError, get_sincos, 1.0)
+        self.assertRaises(TypeError, _get_sincos, "string")
+        self.assertRaises(TypeError, _get_sincos, True)
+        self.assertRaises(TypeError, _get_sincos, 1)
+        self.assertRaises(TypeError, _get_sincos, 1.0)
 
     def test_bad_shape(self):
         # shape (3,)
-        self.assertRaises(ValueError, get_sincos, [1.0, 1.0, 1.0])
+        self.assertRaises(ValueError, _get_sincos, [1.0, 1.0, 1.0])
         # shape (1, 3)
-        self.assertRaises(ValueError, get_sincos, [[1.0, 1.0, 1.0]])
+        self.assertRaises(ValueError, _get_sincos, [[1.0, 1.0, 1.0]])
         # shape (1, 1, 3)
-        self.assertRaises(ValueError, get_sincos, [[[1.0, 1.0, 1.0]]])
+        self.assertRaises(ValueError, _get_sincos, [[[1.0, 1.0, 1.0]]])
 
     def test_vertices(self):
         # Aligned vertices
         data = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
-        result = get_sincos(data).tolist()
+        result = _get_sincos(data).tolist()
         self.assertListAlmostEqual(result, [0.0, 1.0, 0.0, 1.0], 3)
         # a = 45o rotation
         data = [
@@ -213,7 +213,7 @@ class TestGetSincos(unittest.TestCase):
             [0.0, 0.707, -0.707],
             [0.0, 0.707, 0.707],
         ]
-        result = get_sincos(data).tolist()
+        result = _get_sincos(data).tolist()
         self.assertListAlmostEqual(result, [0.707, 0.707, 0.0, 1.0], 3)
         # b = 45o rotation
         data = [
@@ -222,7 +222,7 @@ class TestGetSincos(unittest.TestCase):
             [0.0, 1.0, 0.0],
             [0.707, 0.0, 0.707],
         ]
-        result = get_sincos(data).tolist()
+        result = _get_sincos(data).tolist()
         self.assertListAlmostEqual(result, [0.0, 1.0, -0.707, 0.707], 3)
 
     def assertListAlmostEqual(self, list1, list2, tol):
