@@ -58,7 +58,10 @@ class TestSelectCavities(unittest.TestCase):
 class TestGetVertices(unittest.TestCase):
     def setUp(self):
         # Define valid xyzr, padding and step
-        self.xyzr = [[0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0]]
+        self.xyzr = [
+            ["1", "A", "GLU", "C", "0.0", "0.0", "0.0", "0.0"],
+            ["1", "A", "GLU", "C", "1.0", "1.0", "1.0", "1.0"],
+        ]
         self.probe_out = 4.0
         self.step = 0.6
 

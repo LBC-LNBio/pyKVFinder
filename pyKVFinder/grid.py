@@ -16,7 +16,7 @@ __all__ = [
 
 
 def get_vertices(
-    xyzr: Union[numpy.ndarray, List[List[float]]],
+    atomic: Union[numpy.ndarray, List[List[Union[str, float, int]]]],
     probe_out: Union[float, int] = 4.0,
     step: Union[float, int] = 0.6,
 ) -> numpy.ndarray:
@@ -24,9 +24,9 @@ def get_vertices(
 
     Parameters
     ----------
-    xyzr : Union[numpy.ndarray, List[List[float]]]
-        A numpy.ndarray or a list with xyz atomic coordinates and radii
-        values for each atom.
+    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
     probe_out : Union[float, int], optional
         Probe Out size (A), bu default 4.0.
     step : Union[float, int], optional
@@ -41,9 +41,9 @@ def get_vertices(
     Raises
     ------
     TypeError
-        `xyzr` must be a list or a numpy.ndarray.
+        `atomic` must be a list or a numpy.ndarray.
     ValueError
-        `xyzr` has incorrect shape. It must be (n, 4).
+        `atomic` has incorrect shape. It must be (n, 8).
     TypeError
         `probe_out` must be a non-negative real number.
     ValueError
@@ -54,12 +54,12 @@ def get_vertices(
         `step` must be a positive real number.
     """
     # Check arguments types
-    if type(xyzr) not in [numpy.ndarray, list]:
-        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(xyzr).shape) != 2:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
-    elif numpy.asarray(xyzr).shape[1] != 4:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if type(atomic) not in [numpy.ndarray, list]:
+        raise TypeError("`atomic` must be a list or a numpy.ndarray.")
+    elif len(numpy.asarray(atomic).shape) != 2:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
+    elif numpy.asarray(atomic).shape[1] != 8:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(probe_out) not in [int, float]:
         raise TypeError("`probe_out` must be a non-negative real number.")
     elif probe_out < 0.0:
@@ -69,9 +69,12 @@ def get_vertices(
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
 
-    # Convert xyzr type
-    if type(xyzr) == list:
-        xyzr = numpy.asarray(xyzr)
+    # Convert atomic type
+    if type(atomic) == list:
+        atomic = numpy.asarray(atomic)
+
+    # Extract xyzr from atomic
+    xyzr = atomic[:, 4:].astype(numpy.float64)
 
     # Prepare vertices
     P1 = numpy.min(xyzr[:, 0:3], axis=0) - probe_out - step
@@ -88,8 +91,7 @@ def get_vertices(
 
 def get_vertices_from_file(
     fn: Union[str, pathlib.Path],
-    atominfo: Union[numpy.ndarray, List[List[str]]],
-    xyzr: Union[numpy.ndarray, List[List[float]]],
+    atomic: Union[numpy.ndarray, List[List[Union[str, float, int]]]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
@@ -103,12 +105,9 @@ def get_vertices_from_file(
     ----------
     fn : Union[str, pathlib.Path]
         A path to box configuration file (TOML-formatted).
-    atominfo : Union[numpy.ndarray, List[List[str]]]
-        A numpy.ndarray or a list with atomic information (residue number,
-        chain, residue name, atom name).
-    xyzr : Union[numpy.ndarray, List[List[float]]]
-        A numpy.ndarray or a list with xyz atomic coordinates and radii values
-        for each atom (x, y, z, radius).
+    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
@@ -124,25 +123,18 @@ def get_vertices_from_file(
     vertices : numpy.ndarray
         A numpy.ndarray with xyz vertices coordinates (origin, X-axis, Y-axis,
         Z-axis) of the custom box.
-    atominfo : numpy.ndarray
-        A numpy.ndarray with atomic information (residue number, chain, residue
-        name, atom name) of atoms inside the custom box.
-    xyzr : numpy.ndarray
-        A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,
-        radius) of atoms inside the custom box.
+    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom inside the custom box.
 
     Raises
     ------
     TypeError
         `fn` must be a str.
     TypeError
-        `atominfo` must be a list or a numpy.ndarray.
+        `atomic` must be a list or a numpy.ndarray.
     ValueError
-        `atominfo` has incorrect shape. It must be (n, 2).
-    TypeError
-        `xyzr` must be a list or a numpy.ndarray.
-    ValueError
-        `xyzr` has incorrect shape. It must be (n, 4).
+        `atomic` has incorrect shape. It must be (n, 8).
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -180,18 +172,12 @@ def get_vertices_from_file(
     # Check arguments types
     if type(fn) not in [str, pathlib.Path]:
         raise TypeError("`fn` must be a str.")
-    if type(atominfo) not in [numpy.ndarray, list]:
-        raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atominfo).shape) != 2:
-        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    elif numpy.asarray(atominfo).shape[1] != 2:
-        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    if type(xyzr) not in [numpy.ndarray, list]:
-        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(xyzr).shape) != 2:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
-    elif numpy.asarray(xyzr).shape[1] != 4:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if type(atomic) not in [numpy.ndarray, list]:
+        raise TypeError("`atomic` must be a list or a numpy.ndarray.")
+    elif len(numpy.asarray(atomic).shape) != 2:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
+    elif numpy.asarray(atomic).shape[1] != 8:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -215,10 +201,17 @@ def get_vertices_from_file(
             raise ValueError("`nthreads` must be a positive integer.")
 
     # Convert type
-    if type(atominfo) == list:
-        atominfo = numpy.asarray(atominfo)
-    if type(xyzr) == list:
-        xyzr = numpy.asarray(xyzr)
+    if type(atomic) == list:
+        atomic = numpy.asarray(atomic)
+
+    # Extract atominfo from atomic
+    # atominfo = atomic[:, :4]
+    atominfo = numpy.asarray(
+        ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+    )
+
+    # Extract xyzr from atomic
+    xyzr = atomic[:, 4:].astype(numpy.float64)
 
     # Read box file
     tmp = load(fn)
@@ -261,10 +254,9 @@ def get_vertices_from_file(
     indexes = xyzr[:, 3] != 0
 
     # Slice atominfo and xyzr
-    atominfo = atominfo[indexes, :]
-    xyzr = xyzr[indexes, :]
+    atomic = atomic[indexes, :]
 
-    return vertices, atominfo, xyzr
+    return vertices, atomic
 
 
 def _get_vertices_from_box(
@@ -535,14 +527,14 @@ def _get_sincos(vertices: Union[numpy.ndarray, List[List[float]]]) -> numpy.ndar
 
 
 def detect(
-    xyzr: Union[numpy.ndarray, List[List[float]]],
+    atomic: Union[numpy.ndarray, List[List[Union[str, float, int]]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
     removal_distance: Union[float, int] = 2.4,
     volume_cutoff: Union[float, int] = 5.0,
-    lxyzr: Optional[Union[numpy.ndarray, List[List[float]]]] = None,
+    latomic: Optional[Union[numpy.ndarray, List[List[float]]]] = None,
     ligand_cutoff: Union[float, int] = 5.0,
     box_adjustment: bool = False,
     surface: str = "SES",
@@ -556,9 +548,9 @@ def detect(
 
     Parameters
     ----------
-    xyzr : Union[numpy.ndarray, List[List[float]]]
-        A numpy.ndarray or a lista with xyz atomic coordinates and radii
-        values (x, y, z, radius) for each atom.
+    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
@@ -573,9 +565,9 @@ def detect(
         default 2.4.
     volume_cutoff : Union[float, int], optional
         Volume filter for detected cavities (A3), by default 5.0.
-    lxyzr : Optional[numpy.ndarray, List[List[float]]], optional
-        A numpy.ndarray or a list with xyz atomic coordinates and radii values
-        (x, y, z, Iradius) for each atom of a target ligand, by default None.
+    latomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]], optional
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom of a target ligand, by default None.
     ligand_cutoff : Union[float, int], optional
         A radius to limit a space around a ligand (A), by default 5.0.
     box_adjustment : bool, optional
@@ -611,9 +603,9 @@ def detect(
     Raises
     ------
     TypeError
-        `xyzr` must be a list or a numpy.ndarray.
+        `atomic` must be a list or a numpy.ndarray.
     ValueError
-        `xyzr` has incorrect shape. It must be (n, 4).
+        `atomic` has incorrect shape. It must be (n, 8).
     TypeError
         `vertices` must be a list or a numpy.ndarray.
     ValueError
@@ -641,7 +633,9 @@ def detect(
     ValueError
         `volume_cutoff` must be a non-negative real number.
     TypeError
-        `lxyzr` must be a list, a numpy.ndarray or None.
+        `latomic` must be a list, a numpy.ndarray or None.
+    ValueError
+        `latomic` has incorrect shape. It must be (n, 8).
     TypeError
         `ligand_cutoff` must be a positive real number.
     ValueError
@@ -654,8 +648,6 @@ def detect(
         `nthreads` must be a positive integer.
     ValueError
         `nthreads` must be a positive integer.
-    ValueError
-        `lxyzr` has incorrect shape. It must be (n, 4).
     ValueError
         `surface` must be SAS or SES, not `surface`.
 
@@ -673,12 +665,12 @@ def detect(
     from _pyKVFinder import _detect, _detect_ladj
 
     # Check arguments
-    if type(xyzr) not in [numpy.ndarray, list]:
-        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(xyzr).shape) != 2:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
-    elif numpy.asarray(xyzr).shape[1] != 4:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if type(atomic) not in [numpy.ndarray, list]:
+        raise TypeError("`atomic` must be a list or a numpy.ndarray.")
+    elif len(numpy.asarray(atomic).shape) != 2:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
+    elif numpy.asarray(atomic).shape[1] != 8:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(vertices) not in [numpy.ndarray, list]:
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
@@ -705,6 +697,13 @@ def detect(
         raise TypeError("`volume_cutoff` must be a non-negative real number.")
     elif volume_cutoff < 0.0:
         raise ValueError("`volume_cutoff` must be a non-negative real number.")
+    if latomic is not None:
+        if type(latomic) not in [numpy.ndarray, list]:
+            raise TypeError("`latomic` must be a list, a numpy.ndarray or None.")
+        if len(latomic.shape) != 2:
+            raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
+        elif latomic.shape[1] != 8:
+            raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
     if type(ligand_cutoff) not in [float, int]:
         raise TypeError("`ligand_cutoff` must be a positive real number.")
     elif ligand_cutoff <= 0.0:
@@ -724,8 +723,8 @@ def detect(
         raise TypeError("`verbose` must be a boolean.")
 
     # Convert types
-    if type(xyzr) == list:
-        xyzr = numpy.asarray(xyzr)
+    if type(atomic) == list:
+        atomic = numpy.asarray(atomic)
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
     if type(step) == int:
@@ -740,26 +739,24 @@ def detect(
         volume_cutoff = float(volume_cutoff)
     if type(ligand_cutoff) == int:
         ligand_cutoff = float(ligand_cutoff)
-    if type(lxyzr) == list:
-        lxyzr = numpy.asarray(lxyzr)
+    if type(latomic) == list:
+        latomic = numpy.asarray(latomic)
 
     # Convert numpy.ndarray data types
-    xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
-    if lxyzr is not None:
-        if type(lxyzr) not in [numpy.ndarray, list]:
-            raise TypeError("`lxyzr` must be a list, a numpy.ndarray or None.")
-        if len(lxyzr.shape) != 2:
-            raise ValueError("`lxyzr` has incorrect shape. It must be (n, 4).")
-        elif lxyzr.shape[1] != 4:
-            raise ValueError("`lxyzr` has incorrect shape. It must be (n, 4).")
-        lxyzr = lxyzr.astype("float64") if lxyzr.dtype != "float64" else lxyzr
+
+    # Extract xyzr from atomic
+    xyzr = atomic[:, 4:].astype(numpy.float64)
+
+    # Extract lxyzr from latomic
+    if latomic is not None:
+        lxyzr = latomic[:, 4:].astype(numpy.float64)
+
+    # Define ligand adjustment mode
+    ligand_adjustment = True if latomic is not None else False
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices
-
-    # Define ligand adjustment mode
-    ligand_adjustment = True if lxyzr is not None else False
 
     if surface == "SES":
         if verbose:
@@ -1339,8 +1336,7 @@ def _process_residues(
 
 def constitutional(
     cavities: numpy.ndarray,
-    atominfo: Union[numpy.ndarray, List[List[str]]],
-    xyzr: Union[numpy.ndarray, List[List[float]]],
+    atomic: Union[numpy.ndarray, List[List[Union[str, float, int]]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
@@ -1368,12 +1364,9 @@ def constitutional(
 
         The empty space points are regions that do not meet the chosen
         volume cutoff to be considered a cavity.
-    atominfo : Union[numpy.ndarray, List[List[str]]]
-        A numpy.ndarray or a list with atomic information (residue number,
-        chain, residue name, atom name).
-    xyzr : Union[numpy.ndarray, List[List[float]]]
-        A numpy.ndarray or a list with xyz atomic coordinates and radii
-        values (x, y, z, radius) for each atom.
+    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
@@ -1405,13 +1398,9 @@ def constitutional(
     ValueError
         `cavities` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
-        `atominfo` must be a list or a numpy.ndarray.
+        `atomic` must be a list or a numpy.ndarray.
     ValueError
-        `atominfo` has incorrect shape. It must be (n, 2).
-    TypeError
-        `xyzr` must be a list or a numpy.ndarray.
-    ValueError
-        `xyzr` has incorrect shape. It must be (n, 4).
+        `atomic` has incorrect shape. It must be (n, 8).
     TypeError
         `vertices` must be a list or a numpy.ndarray.
     ValueError
@@ -1465,18 +1454,12 @@ def constitutional(
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
         raise TypeError("`cavities` must be a numpy.ndarray.")
-    if type(atominfo) not in [numpy.ndarray, list]:
-        raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atominfo).shape) != 2:
-        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    elif numpy.asarray(atominfo).shape[1] != 2:
-        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    if type(xyzr) not in [numpy.ndarray, list]:
-        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(xyzr).shape) != 2:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
-    elif numpy.asarray(xyzr).shape[1] != 4:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if type(atomic) not in [numpy.ndarray, list]:
+        raise TypeError("`atomic` must be a list or a numpy.ndarray.")
+    elif len(numpy.asarray(atomic).shape) != 2:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
+    elif numpy.asarray(atomic).shape[1] != 8:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(vertices) not in [numpy.ndarray, list]:
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
@@ -1515,10 +1498,8 @@ def constitutional(
         raise TypeError("`verbose` must be a boolean.")
 
     # Convert types
-    if type(atominfo) == list:
-        atominfo = numpy.asarray(atominfo)
-    if type(xyzr) == list:
-        xyzr = numpy.asarray(xyzr)
+    if type(atomic) == list:
+        atomic = numpy.asarray(atomic)
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
     if type(step) == int:
@@ -1528,8 +1509,16 @@ def constitutional(
 
     # Convert numpy.ndarray data types
     cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
-    xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+
+    # Extract atominfo from atomic
+    # atominfo = atomic[:, :4]
+    atominfo = numpy.asarray(
+        ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+    )
+
+    # Extract xyzr from atomic
+    xyzr = atomic[:, 4:].astype(numpy.float64)
 
     # Get number of cavities
     ncav = int(cavities.max() - 1)
@@ -1609,8 +1598,7 @@ def _process_hydropathy(
 
 def hydropathy(
     surface: numpy.ndarray,
-    atominfo: Union[numpy.ndarray, List[List[str]]],
-    xyzr: Union[numpy.ndarray, List[List[float]]],
+    atomic: Union[numpy.ndarray, List[List[Union[str, float, int]]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
@@ -1639,12 +1627,9 @@ def hydropathy(
 
         The empty space points are regions that do not meet the chosen
         volume cutoff to be considered a cavity.
-    atominfo : Union[numpy.ndarray, List[List[str]]]
-        A numpy.ndarray or a list with atomic information (residue number,
-        chain, residue name, atom name).
-    xyzr : Union[numpy.ndarray, List[List[float]]]
-        A numpy.ndarray or a list with xyz atomic coordinates and radii
-        values (x, y, z, radius) for each atom.
+    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
@@ -1685,13 +1670,9 @@ def hydropathy(
     ValueError
         `surface` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
-        `atominfo` must be a list or a numpy.ndarray.
+        `atomic` must be a list or a numpy.ndarray.
     ValueError
-        `atominfo` has incorrect shape. It must be (n, 2).
-    TypeError
-        `xyzr` must be a list or a numpy.ndarray.
-    ValueError
-        `xyzr` has incorrect shape. It must be (n, 4).
+        `atomic` has incorrect shape. It must be (n, 8).
     TypeError
         `vertices` must be a list or a numpy.ndarray.
     ValueError
@@ -1768,18 +1749,12 @@ def hydropathy(
         raise TypeError("`surface` must be a numpy.ndarray.")
     elif len(surface.shape) != 3:
         raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
-    if type(atominfo) not in [numpy.ndarray, list]:
-        raise TypeError("`atominfo` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atominfo).shape) != 2:
-        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    elif numpy.asarray(atominfo).shape[1] != 2:
-        raise ValueError("`atominfo` has incorrect shape. It must be (n, 2).")
-    if type(xyzr) not in [numpy.ndarray, list]:
-        raise TypeError("`xyzr` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(xyzr).shape) != 2:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
-    elif numpy.asarray(xyzr).shape[1] != 4:
-        raise ValueError("`xyzr` has incorrect shape. It must be (n, 4).")
+    if type(atomic) not in [numpy.ndarray, list]:
+        raise TypeError("`atomic` must be a list or a numpy.ndarray.")
+    elif len(numpy.asarray(atomic).shape) != 2:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
+    elif numpy.asarray(atomic).shape[1] != 8:
+        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(vertices) not in [numpy.ndarray, list]:
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
@@ -1820,10 +1795,8 @@ def hydropathy(
         raise TypeError("`verbose` must be a boolean.")
 
     # Convert types
-    if type(atominfo) == list:
-        atominfo = numpy.asarray(atominfo)
-    if type(xyzr) == list:
-        xyzr = numpy.asarray(xyzr)
+    if type(atomic) == list:
+        atomic = numpy.asarray(atomic)
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
     if type(step) == int:
@@ -1833,8 +1806,16 @@ def hydropathy(
 
     # Convert numpy.ndarray data types
     surface = surface.astype("int32") if surface.dtype != "int32" else surface
-    xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+
+    # Extract atominfo from atomic
+    # atominfo = atomic[:, :4]
+    atominfo = numpy.asarray(
+        ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+    )
+
+    # Extract xyzr from atomic
+    xyzr = atomic[:, 4:].astype(numpy.float64)
 
     # Get number of cavities
     ncav = int(surface.max() - 1)

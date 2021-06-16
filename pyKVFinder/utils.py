@@ -15,8 +15,7 @@ __all__ = [
     "write_results",
 ]
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-VDW = os.path.join(HERE, "data/vdw.dat")
+VDW = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 
 def read_vdw(
@@ -98,7 +97,7 @@ an atom."
 
 def _process_pdb_line(
     line: str, vdw: Dict[str, Dict[str, float]]
-) -> Tuple[List[str], List[float]]:
+) -> List[Union[str, float, int]]:
     """Extracts ATOM and HETATM information of PDB line.
 
     Parameters
@@ -110,10 +109,8 @@ def _process_pdb_line(
 
     Returns
     -------
-    atominfo : List[str]
-        A list with resnum, chain, resname and atom name.
-    coords : List[float]
-        A list with xyz coordinates and radius.
+    atomic : List[Union[str, float, int]]
+        A list with resnum, chain, resname, atom name, xyz coordinates and radius.
     """
     # Get PDB infomation
     atom = line[12:16].strip()
@@ -140,15 +137,14 @@ radius: {radius} \u00c5."
         )
 
     # Prepare output
-    atominfo = [f"{resnum}_{chain}_{resname}", atom]
-    coords = [x, y, z, radius]
+    atomic = [resnum, chain, resname, atom, x, y, z, radius]
 
-    return atominfo, coords
+    return atomic
 
 
 def read_pdb(
     fn: Union[str, pathlib.Path], vdw: Optional[Dict[str, Dict[str, float]]] = None
-) -> Tuple[numpy.ndarray, numpy.ndarray]:
+) -> numpy.ndarray:
     """Reads PDB file into numpy.ndarrays.
 
     Parameters
@@ -160,11 +156,12 @@ def read_pdb(
 
     Returns
     -------
-    atominfo : numpy.ndarray
-        A numpy array with atomic information (residue number, chain,
-        residue name, atom name) for each atom.
-    xyzr : numpy.ndarray
-        A numpy.ndarray with xyz atomic coordinates and radii for each atom.
+    atomic : numpy.ndarray
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
+        >>> [['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius'],
+            ...
+            ['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius']]
 
     Raises
     ------
@@ -187,22 +184,19 @@ def read_pdb(
         vdw = read_vdw(VDW)
 
     # Create lists
-    atominfo = []
-    xyzr = []
+    atomic = []
 
     with open(fn, "r") as f:
         for line in f.readlines():
             if line[:4] == "ATOM" or line[:6] == "HETATM":
-                atom, coords = _process_pdb_line(line, vdw)
-                atominfo.append(atom)
-                xyzr.append(coords)
+                atomic.append(_process_pdb_line(line, vdw))
 
-    return numpy.asarray(atominfo), numpy.asarray(xyzr)
+    return numpy.asarray(atomic)
 
 
 def read_xyz(
     fn: Union[str, pathlib.Path], vdw: Optional[Dict[str, Dict[str, float]]] = None
-) -> Tuple[numpy.ndarray, numpy.ndarray]:
+) -> numpy.ndarray:
     """Reads XYZ file into numpy.ndarrays.
 
     Parameters
@@ -214,11 +208,12 @@ def read_xyz(
 
     Returns
     -------
-    atominfo : numpy.ndarray
-        A numpy array with atomic information (residue number, chain,
-        residue name, atom name) for each atom.
-    xyzr : numpy.ndarray
-        A numpy.ndarray with xyz atomic coordinates and radii for each atom.
+    atomic : numpy.ndarray
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+        and radius) for each atom.
+        >>> [['resnum', 'A', 'UNK', 'atomname', 'x', 'y', 'z', 'radius'],
+            ...
+            ['resnum', 'A', 'UNK', 'atomname', 'x', 'y', 'z', 'radius']]
 
     Raises
     ------
@@ -241,8 +236,7 @@ def read_xyz(
         vdw = read_vdw(VDW)
 
     # Create lists
-    atominfo = []
-    xyzr = []
+    atomic = []
 
     # Start resnum
     resnum = 0
@@ -265,10 +259,9 @@ def read_xyz(
                 resnum += 1
 
                 # Append data
-                atominfo.append([f"{resnum}_A_UNK", atom_symbol])
-                xyzr.append([x, y, z, radius])
+                atomic.append([resnum, "A", "UNK", atom_symbol, x, y, z, radius])
 
-    return numpy.asarray(atominfo), numpy.asarray(xyzr)
+    return numpy.asarray(atomic)
 
 
 def _read_cavity(cavity: Union[str, pathlib.Path]) -> numpy.ndarray:
@@ -432,10 +425,13 @@ def read_cavity(
         vdw = read_vdw(VDW)
 
     # Load receptor coordinates and radii
-    _, xyzr = read_pdb(receptor, vdw)
+    atomic = read_pdb(receptor, vdw)
+
+    # Extract xyzr from atomic
+    xyzr = atomic[:, 4:].astype(numpy.float64)
 
     # Get vertices
-    vertices = get_vertices(xyzr, probe_out, step)
+    vertices = get_vertices(atomic, probe_out, step)
 
     # Get sincos
     sincos = _get_sincos(vertices)

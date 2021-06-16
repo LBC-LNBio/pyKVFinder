@@ -90,23 +90,22 @@ def cli() -> None:
 
     if args.verbose:
         print("> Reading PDB coordinates")
-    atominfo, xyzr = read_pdb(args.pdb, vdw)
+    atomic = read_pdb(args.pdb, vdw)
 
     if args.ligand:
         if args.verbose:
             print("> Reading ligand coordinates")
-        _, lxyzr = read_pdb(args.ligand, vdw)
+        latomic = read_pdb(args.ligand, vdw)
     else:
-        lxyzr = None
+        latomic = None
 
     if args.verbose:
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, atominfo, xyzr = get_vertices_from_file(
+        args.vertices, atomic = get_vertices_from_file(
             args.box,
-            atominfo,
-            xyzr,
+            atomic,
             args.step,
             args.probe_in,
             args.probe_out,
@@ -117,7 +116,7 @@ def cli() -> None:
         args.box = True
     else:
         # Get vertices from pdb
-        args.vertices = get_vertices(xyzr, args.probe_out, args.step)
+        args.vertices = get_vertices(atomic, args.probe_out, args.step)
 
         # Set flag to boolean
         args.box = False
@@ -152,14 +151,14 @@ def cli() -> None:
 
     # Cavity detection
     ncav, cavities = detect(
-        xyzr,
+        atomic,
         args.vertices,
         args.step,
         args.probe_in,
         args.probe_out,
         args.removal_distance,
         args.volume_cutoff,
-        lxyzr,
+        latomic,
         args.ligand_cutoff,
         args.box,
         args.surface,
@@ -185,8 +184,7 @@ def cli() -> None:
         # Constitutional characterization
         residues = constitutional(
             cavities,
-            atominfo,
-            xyzr,
+            atomic,
             args.vertices,
             args.step,
             args.probe_in,
@@ -208,9 +206,8 @@ def cli() -> None:
         if args.hydropathy:
             # Map hydrophobicity scales
             scales, avg_hydropathy = hydropathy(
-                surface,
-                atominfo,
-                xyzr,
+                surface, 
+                atomic,
                 args.vertices,
                 args.step,
                 args.probe_in,
@@ -790,28 +787,28 @@ def pyKVFinder(
 
     if verbose:
         print("> Reading PDB coordinates")
-    atominfo, xyzr = read_pdb(pdb, vdw)
+    atomic = read_pdb(pdb, vdw)
 
     if ligand:
         if verbose:
             print("> Reading ligand coordinates")
-        _, lxyzr = read_pdb(ligand, vdw)
+        latomic = read_pdb(ligand, vdw)
     else:
-        lxyzr = None
+        latomic = None
 
     if verbose:
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, atominfo, xyzr = get_vertices_from_file(
-            box, atominfo, xyzr, step, probe_in, probe_out, nthreads
+        vertices, atomic = get_vertices_from_file(
+            box, atomic, step, probe_in, probe_out, nthreads
         )
 
         # Set flag to boolean
         box = True
     else:
         # Get vertices from pdb
-        vertices = get_vertices(xyzr, probe_out, step)
+        vertices = get_vertices(atomic, probe_out, step)
 
         # Set flag to boolean
         box = False
@@ -829,14 +826,14 @@ def pyKVFinder(
 
     # Cavity detection
     ncav, cavities = detect(
-        xyzr,
+        atomic,
         vertices,
         step,
         probe_in,
         probe_out,
         removal_distance,
         volume_cutoff,
-        lxyzr,
+        latomic,
         ligand_cutoff,
         box,
         surface,
@@ -859,8 +856,7 @@ def pyKVFinder(
         # Constitutional characterization
         residues = constitutional(
             cavities,
-            atominfo,
-            xyzr,
+            atomic,
             vertices,
             step,
             probe_in,
@@ -875,8 +871,7 @@ def pyKVFinder(
         if include_hydropathy:
             scales, avg_hydropathy = hydropathy(
                 surface,
-                atominfo,
-                xyzr,
+                atomic,
                 vertices,
                 step,
                 probe_in,
