@@ -5,6 +5,8 @@ pyKVFinder.hydropathy
 
 .. seealso::
 
+    * `pyKVFinder.read_pdb <read_pdb.html>`_
+    * `pyKVFinder.read_xyz <read_xyz.html>`_
     * `pyKVFinder.spatial <spatial.html>`_
     * `pyKVFinder.export <export.html>`_
     * `pyKVFinder.write_results <write_results.html>`_
@@ -14,12 +16,12 @@ pyKVFinder.hydropathy
 
   <h4><u>Example</u></h4>
 
-With the surface points identified with ``pyKVFinder.spatial`` and atomic coordinates and information read with ``pyKVFinder.read_pdb``, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy
+With the surface points identified with ``pyKVFinder.spatial`` and atomic coordinates and information read with ``pyKVFinder.read_pdb`` or ``pyKVFinder.read_xyz``, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy
 
 .. code-block:: python
 
     >>> from pyKVFinder import hydropathy
-    >>> scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, vertices, sincos)
+    >>> scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, vertices)
     >>> scales
     array([[[0., 0., 0., ..., 0., 0., 0.],
             [0., 0., 0., ..., 0., 0., 0.],
@@ -46,7 +48,7 @@ However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavit
 .. code-block:: python
 
     >>> from pyKVFinder import hydropathy
-    >>> scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, vertices, sincos, ignore_backbone=True)
+    >>> scales, avg_hydropathy = hydropathy(surface, atominfo, xyzr, vertices, ignore_backbone=True)
     >>> scales
     array([[[0., 0., 0., ..., 0., 0., 0.],
             [0., 0., 0., ..., 0., 0., 0.],

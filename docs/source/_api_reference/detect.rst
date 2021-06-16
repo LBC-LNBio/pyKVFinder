@@ -6,6 +6,7 @@ pyKVFinder.detect
 .. seealso::
 
     * `pyKVFinder.read_pdb <read_pdb.html>`_
+    * `pyKVFinder.read_xyz <read_xyz.html>`_
     * `pyKVFinder.get_vertices <get_vertices.html>`_
     * `pyKVFinder.get_dimensions <get_dimensions.html>`_
     * `pyKVFinder.get_sincos <get_sincos.html>`_

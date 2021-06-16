@@ -1347,7 +1347,6 @@ def constitutional(
     atominfo: Union[numpy.ndarray, List[List[str]]],
     xyzr: Union[numpy.ndarray, List[List[float]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
-    sincos: Union[numpy.ndarray, List[float]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     ignore_backbone: bool = False,
@@ -1383,9 +1382,6 @@ def constitutional(
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
-    sincos : Union[numpy.ndarray, List[float]]
-        A numpy.ndarray or a list with sine and cossine of the grid
-        rotation angles (sina, cosa, sinb, cosb).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
@@ -1425,10 +1421,6 @@ def constitutional(
         `vertices` must be a list or a numpy.ndarray.
     ValueError
         `vertices` has incorrect shape. It must be (4, 3).
-    TypeError
-        `sincos` must be a list or a numpy.ndarray.
-    ValueError
-        `sincos` has incorrect shape. It must be (4,).
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -1494,12 +1486,6 @@ def constitutional(
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
         raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
-    if type(sincos) not in [numpy.ndarray, list]:
-        raise TypeError("`sincos` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(sincos).shape) != 1:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    elif numpy.asarray(sincos).shape[0] != 4:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1540,8 +1526,6 @@ def constitutional(
         xyzr = numpy.asarray(xyzr)
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
-    if type(sincos) == list:
-        sincos = numpy.asarray(sincos)
     if type(step) == int:
         step = float(step)
     if type(probe_in) == int:
@@ -1551,10 +1535,12 @@ def constitutional(
     cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
     xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
-    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
 
     # Get number of cavities
     ncav = int(cavities.max() - 1)
+
+    # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    sincos = get_sincos(vertices)
 
     # Select cavities
     if selection is not None:
@@ -1631,7 +1617,6 @@ def hydropathy(
     atominfo: Union[numpy.ndarray, List[List[str]]],
     xyzr: Union[numpy.ndarray, List[List[float]]],
     vertices: Union[numpy.ndarray, List[List[float]]],
-    sincos: Union[numpy.ndarray, List[float]],
     step: Union[float, int] = 0.6,
     probe_in: Union[float, int] = 1.4,
     hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
@@ -1668,9 +1653,6 @@ def hydropathy(
     vertices : Union[numpy.ndarray, List[List[float]]]
         A numpy.ndarray or a list with xyz vertices coordinates (origin,
         X-axis, Y-axis, Z-axis).
-    sincos : Union[numpy.ndarray, List[float]]
-        A numpy.ndarray or a list with sine and cossine of the grid
-        rotation angles (sina, cosa, sinb, cosb).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
@@ -1719,10 +1701,6 @@ def hydropathy(
         `vertices` must be a list or a numpy.ndarray.
     ValueError
         `vertices` has incorrect shape. It must be (4, 3).
-    TypeError
-        `sincos` must be a list or a numpy.ndarray.
-    ValueError
-        `sincos` has incorrect shape. It must be (4,).
     TypeError
         `step` must be a positive real number.
     ValueError
@@ -1811,12 +1789,6 @@ def hydropathy(
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
     elif numpy.asarray(vertices).shape != (4, 3):
         raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
-    if type(sincos) not in [numpy.ndarray, list]:
-        raise TypeError("`sincos` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(sincos).shape) != 1:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
-    elif numpy.asarray(sincos).shape[0] != 4:
-        raise ValueError("`sincos` has incorrect shape. It must be (4,).")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -1859,8 +1831,6 @@ def hydropathy(
         xyzr = numpy.asarray(xyzr)
     if type(vertices) == list:
         vertices = numpy.asarray(vertices)
-    if type(sincos) == list:
-        sincos = numpy.asarray(sincos)
     if type(step) == int:
         step = float(step)
     if type(probe_in) == int:
@@ -1870,10 +1840,12 @@ def hydropathy(
     surface = surface.astype("int32") if surface.dtype != "int32" else surface
     xyzr = xyzr.astype("float64") if xyzr.dtype != "float64" else xyzr
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
-    sincos = sincos.astype("float64") if sincos.dtype != "float64" else sincos
 
     # Get number of cavities
     ncav = int(surface.max() - 1)
+
+    # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    sincos = get_sincos(vertices)
 
     # Select cavities
     if selection is not None:

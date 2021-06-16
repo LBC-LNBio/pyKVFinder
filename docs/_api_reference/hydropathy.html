@@ -355,15 +355,17 @@ Protein Science. 2006;15.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
+<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
+<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
 <li><p><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></p></li>
 <li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
 <li><p><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></p></li>
 <li><p><a class="reference external" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale file template</a></p></li>
 </ul>
 </div>
-<h4><u>Example</u></h4><p>With the surface points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial</span></code> and atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy</p>
+<h4><u>Example</u></h4><p>With the surface points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial</span></code> and atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code>, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">hydropathy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span>
 <span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
@@ -388,7 +390,7 @@ Protein Science. 2006;15.</p>
 </div>
 <p>However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when mapping hydrophobicity scales on surface points. Then, users must set <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">hydropathy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span>
 <span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
