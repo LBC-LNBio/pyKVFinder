@@ -8,9 +8,7 @@ pyKVFinder.detect
     * `pyKVFinder.read_pdb <read_pdb.html>`_
     * `pyKVFinder.read_xyz <read_xyz.html>`_
     * `pyKVFinder.get_vertices <get_vertices.html>`_
-    * `pyKVFinder.get_dimensions <get_dimensions.html>`_
-    * `pyKVFinder.get_sincos <get_sincos.html>`_
-    * `pyKVFinder.get_grid_from_file <get_grid_from_file.html>`_
+    * `pyKVFinder.get_vertices_from_file <get_vertices_from_file.html>`_
     * `pyKVFinder.spatial <spatial.html>`_
     * `pyKVFinder.depth <depth.html>`_
     * `pyKVFinder.constitutional <constitutional.html>`_
@@ -88,18 +86,18 @@ Further, we can also perform cavity detection on a custom 3D grid, where we can 
     >>> with open(fn, 'r') as f:
     ...     print(f.read())
 
-With this box adjustment mode, we must defined the 3D grid with ``pyKVFinder.get_grid_from_file``. 
+With this box adjustment mode, we must defined the 3D grid with ``pyKVFinder.get_vertices_from_file``. 
 
 .. code-block:: python
 
-    >>> from pyKVFinder import get_grid_from_file
-    >>> vertices, atominfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_grid_from_file(fn, atominfo, xyzr)
+    >>> from pyKVFinder import get_vertices_from_file
+    >>> vertices, atominfo, xyzr = get_vertices_from_file(fn, atominfo, xyzr)
 
 Then, we can perform cavity detection:
 
 .. code-block:: python
 
-    >>> ncav, cavities = pyKVFinder.detect(xyzr, vertices, box_adjustment=True)
+    >>> ncav, cavities = detect(xyzr, vertices, box_adjustment=True)
     >>> ncav
     1
     >>> cavities

@@ -119,9 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
@@ -233,7 +231,7 @@ hydropathy [optional] and interface residues).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pdb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em>) – A path to input PDB file.</p></li>
 <li><p><strong>ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand PDB file, by default None.</p></li>
-<li><p><strong>fn</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+<li><p><strong>vdw</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
 Waals radii file: <cite>vdw.dat</cite>.</p></li>
 <li><p><strong>box</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to box configuration file (TOML-formatted), by default None.</p></li>
 <li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>

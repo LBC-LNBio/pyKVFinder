@@ -7,7 +7,7 @@ pyKVFinder.read_xyz
 
     * `pyKVFinder.read_vdw <read_vdw.html>`_
     * `pyKVFinder.get_vertices <get_vertices.html>`_
-    * `pyKVFinder.get_grid_from_file <get_grid_from_file.html>`_
+    * `pyKVFinder.get_vertices_from_file <get_vertices_from_file.html>`_
     * `pyKVFinder.detect <detect.html>`_
     * `pyKVFinder.constitutional <constitutional.html>`_
     * `pyKVFinder.hydropathy <hydropathy.html>`_

@@ -203,9 +203,7 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;get_vertices&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_grid_from_file&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_dimensions&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_sincos&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_vertices_from_file&quot;</span><span class="p">,</span>
     <span class="s2">&quot;detect&quot;</span><span class="p">,</span>
     <span class="s2">&quot;spatial&quot;</span><span class="p">,</span>
     <span class="s2">&quot;depth&quot;</span><span class="p">,</span>
@@ -286,7 +284,7 @@
     <span class="k">return</span> <span class="n">vertices</span></div>
 
 
-<div class="viewcode-block" id="get_grid_from_file"><a class="viewcode-back" href="../../_api_reference/get_grid_from_file.html#pyKVFinder.get_grid_from_file">[docs]</a><span class="k">def</span> <span class="nf">get_grid_from_file</span><span class="p">(</span>
+<div class="viewcode-block" id="get_vertices_from_file"><a class="viewcode-back" href="../../_api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a><span class="k">def</span> <span class="nf">get_vertices_from_file</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">atominfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
     <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
@@ -294,7 +292,7 @@
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box configuration file or parKVFinder</span>
 <span class="sd">    parameters file, selects atoms inside custom 3D grid, define sine</span>
 <span class="sd">    and cosine of 3D grid angles and define xyz grid units.</span>
@@ -330,15 +328,6 @@
 <span class="sd">    xyzr : numpy.ndarray</span>
 <span class="sd">        A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,</span>
 <span class="sd">        radius) of atoms inside the custom box.</span>
-<span class="sd">    sincos : numpy.ndarray</span>
-<span class="sd">        A numpy.ndarray with sine and cossine of the custom box rotation angles</span>
-<span class="sd">        (sina, cosa, sinb, cosb).</span>
-<span class="sd">    nx : int</span>
-<span class="sd">        x grid units.</span>
-<span class="sd">    ny : int</span>
-<span class="sd">        y grid units.</span>
-<span class="sd">    nz : int</span>
-<span class="sd">        z grid units.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -457,17 +446,23 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Box not properly defined in </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
+    <span class="c1"># Get sincos</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># Get dimensions</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">_get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
     <span class="c1"># Get atoms inside box only</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
     <span class="n">_filter_pdb</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
+
+    <span class="c1"># Get indexes of the atoms inside the box</span>
     <span class="n">indexes</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
 
     <span class="c1"># Slice atominfo and xyzr</span>
     <span class="n">atominfo</span> <span class="o">=</span> <span class="n">atominfo</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="p">:]</span>
 
-    <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span></div>
+    <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span></div>
 
 
 <span class="k">def</span> <span class="nf">_get_vertices_from_box</span><span class="p">(</span>
@@ -502,7 +497,7 @@
     <span class="n">P4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p4&quot;</span><span class="p">])</span>
 
     <span class="c1"># Get sincos</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">get_sincos</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">])),</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">_get_sincos</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">])),</span> <span class="mi">4</span><span class="p">)</span>
 
     <span class="c1"># Get probe out additions</span>
     <span class="c1"># p1 = (x1, y1, z1)</span>
@@ -618,7 +613,7 @@
     <span class="k">return</span> <span class="n">vertices</span>
 
 
-<div class="viewcode-block" id="get_dimensions"><a class="viewcode-back" href="../../_api_reference/get_dimensions.html#pyKVFinder.get_dimensions">[docs]</a><span class="k">def</span> <span class="nf">get_dimensions</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_get_dimensions</span><span class="p">(</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span> <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Gets dimensions of 3D grid from vertices.</span>
@@ -680,10 +675,10 @@
     <span class="n">ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm2</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">norm1</span> <span class="o">%</span> <span class="n">step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm1</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span>
     <span class="n">nz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm3</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">norm1</span> <span class="o">%</span> <span class="n">step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm1</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span></div>
+    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
 
 
-<div class="viewcode-block" id="get_sincos"><a class="viewcode-back" href="../../_api_reference/get_sincos.html#pyKVFinder.get_sincos">[docs]</a><span class="k">def</span> <span class="nf">get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Gets sine and cossine of the grid rotation angles from a list of vertices</span>
 <span class="sd">    coordinates.</span>
 
@@ -734,16 +729,12 @@
         <span class="p">]</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">sincos</span></div>
+    <span class="k">return</span> <span class="n">sincos</span>
 
 
 <div class="viewcode-block" id="detect"><a class="viewcode-back" href="../../_api_reference/detect.html#pyKVFinder.detect">[docs]</a><span class="k">def</span> <span class="nf">detect</span><span class="p">(</span>
-    <span class="n">nx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">ny</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">nz</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
-    <span class="n">sincos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
@@ -763,21 +754,12 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nx : int</span>
-<span class="sd">        x grid units.</span>
-<span class="sd">    ny : int</span>
-<span class="sd">        y grid units.</span>
-<span class="sd">    nz : int</span>
-<span class="sd">        z grid units.</span>
 <span class="sd">    xyzr : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a lista with xyz atomic coordinates and radii</span>
 <span class="sd">        values (x, y, z, radius) for each atom.</span>
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
-<span class="sd">    sincos : Union[numpy.ndarray, List[float]]</span>
-<span class="sd">        A numpy.ndarray or a lista with sine and cossine of the grid rotation</span>
-<span class="sd">        angles (sina, cosa, sinb, cosb).</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
 <span class="sd">    probe_in : Union[float, int], optional</span>
@@ -827,18 +809,6 @@
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `nx` must be a positive integer.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `nx` must be a positive integer.</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `ny` must be a positive integer.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `ny` must be a positive integer.</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `nz` must be a positive integer.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `nz` must be a positive integer.</span>
-<span class="sd">    TypeError</span>
 <span class="sd">        `xyzr` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `xyzr` has incorrect shape. It must be (n, 4).</span>
@@ -846,10 +816,6 @@
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `vertices` has incorrect shape. It must be (4, 3).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `sincos` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `sincos` has incorrect shape. It must be (4,).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
@@ -894,29 +860,17 @@
 <span class="sd">    Warning</span>
 <span class="sd">    -------</span>
 <span class="sd">    If you are using box adjustment mode, do not forget to set box_adjustment</span>
-<span class="sd">    flag to True and read the box configuration file with &#39;get_grid_from_file&#39;</span>
+<span class="sd">    flag to True and read the box configuration file with &#39;get_vertices_from_file&#39;</span>
 <span class="sd">    function.</span>
 
 <span class="sd">    Warning</span>
 <span class="sd">    -------</span>
 <span class="sd">    If you are using ligand adjustment mode, do not forget to read ligand atom</span>
-<span class="sd">    coordinates with &#39;read_pdb&#39; function.</span>
+<span class="sd">    coordinates with &#39;read_pdb&#39; or &#39;read_xyz&#39; functions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_detect</span><span class="p">,</span> <span class="n">_detect_ladj</span>
 
     <span class="c1"># Check arguments</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`nx` must be a positive integer.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">nx</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nx` must be a positive integer.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ny</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ny` must be a positive integer.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">ny</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nx` must be a positive integer.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">nz</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`nz` must be a positive integer.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">nz</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nx` must be a positive integer.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`xyzr` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
@@ -927,12 +881,6 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`sincos` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -978,8 +926,6 @@
         <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_in</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -998,7 +944,6 @@
     <span class="c1"># Convert numpy.ndarray data types</span>
     <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">xyzr</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">sincos</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">sincos</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">sincos</span>
     <span class="k">if</span> <span class="n">lxyzr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">lxyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`lxyzr` must be a list, a numpy.ndarray or None.&quot;</span><span class="p">)</span>
@@ -1014,9 +959,6 @@
     <span class="c1"># Define ligand adjustment mode</span>
     <span class="n">ligand_adjustment</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">lxyzr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
-    <span class="c1"># Calculate number of voxels</span>
-    <span class="n">nvoxels</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span>
-
     <span class="k">if</span> <span class="n">surface</span> <span class="o">==</span> <span class="s2">&quot;SES&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Surface representation: Solvent Excluded Surface (SES).&quot;</span><span class="p">)</span>
@@ -1027,6 +969,15 @@
         <span class="n">surface</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`surface` must be SAS or SES, not </span><span class="si">{</span><span class="n">surface</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+
+    <span class="c1"># Get dimensions</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">_get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+    <span class="c1"># Calculate number of voxels</span>
+    <span class="n">nvoxels</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span>
 
     <span class="c1"># Detect cavities</span>
     <span class="k">if</span> <span class="n">ligand_adjustment</span><span class="p">:</span>
@@ -1589,7 +1540,6 @@
     <span class="n">atominfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
     <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
-    <span class="n">sincos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">ignore_backbone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1625,9 +1575,6 @@
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
-<span class="sd">    sincos : Union[numpy.ndarray, List[float]]</span>
-<span class="sd">        A numpy.ndarray or a list with sine and cossine of the grid</span>
-<span class="sd">        rotation angles (sina, cosa, sinb, cosb).</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
 <span class="sd">    probe_in : Union[float, int], optional</span>
@@ -1667,10 +1614,6 @@
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `vertices` has incorrect shape. It must be (4, 3).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `sincos` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `sincos` has incorrect shape. It must be (4,).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
@@ -1736,12 +1679,6 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`sincos` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -1782,8 +1719,6 @@
         <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_in</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -1793,10 +1728,12 @@
     <span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cavities</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">cavities</span>
     <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">xyzr</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">sincos</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">sincos</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">sincos</span>
 
     <span class="c1"># Get number of cavities</span>
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
     <span class="c1"># Select cavities</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1873,7 +1810,6 @@
     <span class="n">atominfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
     <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
-    <span class="n">sincos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">hydrophobicity_scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EisenbergWeiss&quot;</span><span class="p">,</span>
@@ -1910,9 +1846,6 @@
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
-<span class="sd">    sincos : Union[numpy.ndarray, List[float]]</span>
-<span class="sd">        A numpy.ndarray or a list with sine and cossine of the grid</span>
-<span class="sd">        rotation angles (sina, cosa, sinb, cosb).</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
 <span class="sd">    probe_in : Union[float, int], optional</span>
@@ -1961,10 +1894,6 @@
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `vertices` has incorrect shape. It must be (4, 3).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `sincos` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `sincos` has incorrect shape. It must be (4,).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
@@ -2053,12 +1982,6 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`sincos` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -2101,8 +2024,6 @@
         <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_in</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -2112,10 +2033,12 @@
     <span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">surface</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">surface</span>
     <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">xyzr</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">sincos</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">sincos</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">sincos</span>
 
     <span class="c1"># Get number of cavities</span>
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
     <span class="c1"># Select cavities</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2188,9 +2111,8 @@
 <div class="viewcode-block" id="export"><a class="viewcode-back" href="../../_api_reference/export.html#pyKVFinder.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">surface</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
-    <span class="n">sincos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">B</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
@@ -2222,8 +2144,9 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        volume cutoff to be considered a cavity.</span>
-<span class="sd">    surface : numpy.ndarray</span>
-<span class="sd">        Surface points in the 3D grid (surface[nx][ny][nz]).</span>
+<span class="sd">    surface : numpy.ndarray, optional</span>
+<span class="sd">        Surface points in the 3D grid (surface[nx][ny][nz]). If None, surface</span>
+<span class="sd">        is a numpy.zeros array with same shape of cavities.</span>
 <span class="sd">        Surface array has integer labels in each position, that are:</span>
 
 <span class="sd">            * -1: bulk points;</span>
@@ -2237,9 +2160,6 @@
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
-<span class="sd">    sincos : Union[numpy.ndarray, List[float]]</span>
-<span class="sd">        A numpy.ndarray or a list with sine and cossine of the grid</span>
-<span class="sd">        rotation angles (sina, cosa, sinb, cosb).</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
 <span class="sd">    B : Union[numpy.ndarray, None], optional</span>
@@ -2276,10 +2196,6 @@
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `vertices` has incorrect shape. It must be (4, 3).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `sincos` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `sincos` has incorrect shape. It must be (4,).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
@@ -2338,12 +2254,6 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`sincos` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`sincos` has incorrect shape. It must be (4,).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -2388,14 +2298,11 @@
     <span class="c1"># Convert types</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sincos</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
 
     <span class="c1"># Convert numpy.ndarray data types</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">sincos</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">sincos</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">sincos</span>
     <span class="k">if</span> <span class="n">B</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">B</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">B</span>
     <span class="k">if</span> <span class="n">scales</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2403,6 +2310,9 @@
 
     <span class="c1"># Get number of cavities</span>
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
     <span class="c1"># Create base directories of results</span>
     <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.get_grid_from_file &mdash; pyKVFinder 0.1.3 documentation</title>
+  <title>pyKVFinder.get_vertices_from_file &mdash; pyKVFinder 0.1.3 documentation</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pyKVFinder.detect" href="detect.html" />
-    <link rel="prev" title="pyKVFinder.get_sincos" href="get_sincos.html" /> 
+    <link rel="prev" title="pyKVFinder.get_vertices" href="get_vertices.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -119,9 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_dimensions.html">pyKVFinder.get_dimensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_sincos.html">pyKVFinder.get_sincos</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.get_grid_from_file</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.get_vertices_from_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
@@ -202,13 +200,13 @@
         
           <li><a href="index.html">Functions</a> &raquo;</li>
         
-      <li>pyKVFinder.get_grid_from_file</li>
+      <li>pyKVFinder.get_vertices_from_file</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/_api_reference/get_grid_from_file.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/_api_reference/get_vertices_from_file.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -221,11 +219,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pykvfinder-get-grid-from-file">
-<h1>pyKVFinder.get_grid_from_file<a class="headerlink" href="#pykvfinder-get-grid-from-file" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pykvfinder-get-vertices-from-file">
+<h1>pyKVFinder.get_vertices_from_file<a class="headerlink" href="#pykvfinder-get-vertices-from-file" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pyKVFinder.get_grid_from_file">
-<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">get_grid_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atominfo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyzr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#get_grid_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.get_grid_from_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pyKVFinder.get_vertices_from_file">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">get_vertices_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atominfo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyzr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#get_vertices_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.get_vertices_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets 3D grid vertices from box configuration file or parKVFinder
 parameters file, selects atoms inside custom 3D grid, define sine
 and cosine of 3D grid angles and define xyz grid units.</p>
@@ -252,11 +250,6 @@ Z-axis) of the custom box.</p></li>
 name, atom name) of atoms inside the custom box.</p></li>
 <li><p><strong>xyzr</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,
 radius) of atoms inside the custom box.</p></li>
-<li><p><strong>sincos</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with sine and cossine of the custom box rotation angles
-(sina, cosa, sinb, cosb).</p></li>
-<li><p><strong>nx</strong> (<em>int</em>) – x grid units.</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – y grid units.</p></li>
-<li><p><strong>nz</strong> (<em>int</em>) – z grid units.</p></li>
 </ul>
 </p>
 </dd>
@@ -296,6 +289,7 @@ see <cite>Box configuration file template</cite>.</p>
 <p class="admonition-title">See also</p>
 <ul class="simple">
 <li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
+<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
 <li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
 <li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
 <li><p><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></p></li>
@@ -310,9 +304,9 @@ see <cite>Box configuration file template</cite>.</p>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>With the atomic information and coordinates read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> and a box configuration file, we can get the coordinates of grid vertices, select atoms inside custom 3D grid, define sine and cosine of rotation angles and define xyz grid units.</p>
+<p>With the atomic information and coordinates read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> and a box configuration file, we can get the coordinates of grid vertices and select atoms inside custom 3D grid.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">get_grid_from_file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_grid_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_vertices_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -328,7 +322,7 @@ see <cite>Box configuration file template</cite>.</p>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="detect.html" class="btn btn-neutral float-right" title="pyKVFinder.detect" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="get_sincos.html" class="btn btn-neutral float-left" title="pyKVFinder.get_sincos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="get_vertices.html" class="btn btn-neutral float-left" title="pyKVFinder.get_vertices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

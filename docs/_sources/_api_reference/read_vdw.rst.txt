@@ -6,6 +6,7 @@ pyKVFinder.read_vdw
 .. seealso::
 
   * `pyKVFinder.read_pdb <read_pdb.html>`_
+  * `pyKVFinder.read_xyz <read_xyz.html>`_
   * `van der Waals file template <../_cfg_files/vdw_file_template.html>`_
 
 .. raw:: html

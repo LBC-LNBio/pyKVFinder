@@ -353,8 +353,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fn : Union[str, pathlib.Path]</span>
 <span class="sd">        A path to PDB file.</span>
-<span class="sd">    vdw : Optional[Union[str, pathlib.Path]], optional</span>
-<span class="sd">        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
+<span class="sd">    vdw : Dict[str, Dict[str, float]], optional</span>
+<span class="sd">        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -407,8 +407,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fn : Union[str, pathlib.Path]</span>
 <span class="sd">        A path to XYZ file.</span>
-<span class="sd">    vdw : Optional[Dict[str, Dict[str, float]]], optional</span>
-<span class="sd">        A path to a van der Waals radii file, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
+<span class="sd">    vdw : Dict[str, Dict[str, float]], optional</span>
+<span class="sd">        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    atominfo : numpy.ndarray</span>
@@ -506,7 +507,7 @@
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SES&quot;</span><span class="p">,</span>
-    <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -527,9 +528,8 @@
 <span class="sd">    surface : str, optional</span>
 <span class="sd">        Surface representation. Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent</span>
 <span class="sd">        Accessible Surface), by default &quot;SES&quot;.</span>
-<span class="sd">    vdw : Optional[Union[str, pathlib.Path]], optional</span>
-<span class="sd">        A path to a van der Waals radii file, by default None. If None, apply the built-in van der</span>
-<span class="sd">        Waals radii file: `vdw.dat`.</span>
+<span class="sd">    vdw : Dict[str, Dict[str, float]], optional</span>
+<span class="sd">        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
 <span class="sd">    nthreads : Optional[int], optional</span>
 <span class="sd">        Number of threads, by default None. If None, the number of threads is</span>
 <span class="sd">        `os.cpu_count() - 1`.</span>
@@ -571,8 +571,6 @@
 <span class="sd">    TypeError</span>
 <span class="sd">        `surface` must be a str.</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `vdw` must be a string or a pathlib.Path.</span>
-<span class="sd">    TypeError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
@@ -581,7 +579,7 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `surface` must be SAS or SES, not {surface}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">get_vertices</span><span class="p">,</span> <span class="n">get_sincos</span><span class="p">,</span> <span class="n">get_dimensions</span>
+    <span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">get_vertices</span><span class="p">,</span> <span class="n">_get_sincos</span><span class="p">,</span> <span class="n">_get_dimensions</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_fill_receptor</span><span class="p">,</span> <span class="n">_fill_cavity</span>
 
     <span class="c1"># Check arguments</span>
@@ -605,9 +603,6 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be greater than `probe_in`.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`surface` must be a str.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">vdw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vdw</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vdw` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
@@ -630,20 +625,21 @@
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Inserting </span><span class="si">{</span><span class="n">receptor</span><span class="si">}</span><span class="s2"> into 3D grid&quot;</span><span class="p">)</span>
 
-    <span class="c1"># If user defined a custom van der Waals file, load it</span>
-    <span class="k">if</span> <span class="n">vdw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">vdw</span><span class="p">)</span>
-    <span class="c1"># Else, load default file</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">()</span>
+    <span class="c1"># Define default vdw file</span>
+    <span class="k">if</span> <span class="n">vdw</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="c1"># Load receptor coordinates and radii</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">receptor</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
 
-    <span class="c1"># Define grid</span>
+    <span class="c1"># Get vertices</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
-    <span class="n">sincos</span> <span class="o">=</span> <span class="n">get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+    <span class="c1"># Get sincos</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+
+    <span class="c1"># Get dimensions</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">_get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
     <span class="c1"># Unpack vertices</span>
     <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span> <span class="o">=</span> <span class="n">vertices</span>

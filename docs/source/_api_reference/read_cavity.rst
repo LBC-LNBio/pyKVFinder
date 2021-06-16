@@ -6,8 +6,9 @@ pyKVFinder.read_cavity
 .. seealso::
 
     * `pyKVFinder.read_pdb <read_pdb.html>`_
+    * `pyKVFinder.read_xyz <read_xyz.html>`_
     * `pyKVFinder.get_vertices <get_vertices.html>`_
-    * `pyKVFinder.get_grid_from_file <get_grid_from_file.html>`_
+    * `pyKVFinder.get_vertices_from_file <get_vertices_from_file.html>`_
     * `pyKVFinder.spatial <spatial.html>`_
     * `pyKVFinder.depth <depth.html>`_
     * `pyKVFinder.constitutional <constitutional.html>`_

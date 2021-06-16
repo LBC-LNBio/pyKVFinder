@@ -381,7 +381,7 @@ def read_cavity(
     ValueError
         `surface` must be SAS or SES, not {surface}.
     """
-    from .grid import get_vertices, get_sincos, get_dimensions
+    from .grid import get_vertices, _get_sincos, _get_dimensions
     from _pyKVFinder import _fill_receptor, _fill_cavity
 
     # Check arguments
@@ -434,10 +434,14 @@ def read_cavity(
     # Load receptor coordinates and radii
     _, xyzr = read_pdb(receptor, vdw)
 
-    # Define grid
+    # Get vertices
     vertices = get_vertices(xyzr, probe_out, step)
-    sincos = get_sincos(vertices)
-    nx, ny, nz = get_dimensions(vertices, step)
+
+    # Get sincos
+    sincos = _get_sincos(vertices)
+
+    # Get dimensions
+    nx, ny, nz = _get_dimensions(vertices, step)
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices

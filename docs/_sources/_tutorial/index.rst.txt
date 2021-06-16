@@ -277,7 +277,7 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
 3. Dimensioning the 3D grid
 ---------------------------
 
-The pyKVFinder 3D grid must be calculated based on the target *.pdb* file, the Probe Out diameter and the grid spacing. 
+The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* file, the Probe Out diameter and the grid spacing. 
 
 Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (``probe_out``) and grid spacing (``step``) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid.
 
@@ -298,38 +298,9 @@ Firstly, ``pyKVFinder.get_vertices`` takes the NumPy array with xyz coordinates 
   
   If the ``probe_out`` and ``step`` values are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.get_vertices(xyzr)``.
 
-Secondly, ``pyKVFinder.get_dimensions`` takes the vertices calculated above and the grid spacing, and returns a tuple with the grid units in x, y and z dimensions.
-
-.. code-block:: python
-
-  >>> nx, ny, nz = pyKVFinder.get_dimensions(vertices, step=step)
-  >>> nx, ny, nz
-  (101, 126, 97)
-
-.. note::
-  
-  If ``step`` value is not defined, the function automatically sets it to the default value. So, you can call the function by ``pyKVFinder.get_dimensions(vertices)``.
-
-Lastly, ``pyKVFinder.get_sincos`` takes the vertices calculated above and returns a NumPy array with the sine and cossine of the 3D grid angles (a, b).
-
-.. code-block:: python
-
-  >>> sincos = pyKVFinder.get_sincos(vertices)
-  >>> sincos
-  array([0., 1., 0., 1.])
-
-.. note::
-
-  * sincos[0]: sin(a)
-  * sincos[1]: cos(a)
-  * sincos[2]: sin(b)
-  * sincos[3]: cos(b)
-
 .. seealso::
 
   * `pyKVFinder.get_vertices <../_api_reference/get_vertices.html>`_
-  * `pyKVFinder.get_sincos <../_api_reference/get_sincos.html>`_
-  * `pyKVFinder.get_dimensions <../_api_reference/get_dimensions.html>`_
 
 4. Detecting biomolecular cavities
 ----------------------------------
@@ -872,19 +843,19 @@ Separated steps
 
 If you are running pyKVFinder package in a step-by-step fashion (`Separated steps <index.hmtl#separated-steps>`_), the steps `3 <index.hmtl#dimensioning-the-3d-grid>`_ and `4 <index.hmtl#detecting-biomolecular-cavities>`_ are different than before.
 
-- Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, ``pyKVFinder.get_dimensions`` and ``pyKVFinder.get_sincos``, you can just call ``pyKVFinder.get_grid_from_file``.
+- Dimensioning the 3D grid: Instead of calling ``pyKVFinder.get_vertices``, you call ``pyKVFinder.get_vertices_from_file``.
 
-``pyKVFinder.get_grid_from_file`` takes *.toml* file with box configuration or parKVFinder parameters file, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (``step``, ``probe_in`` and ``probe_out``), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid, a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.
+``pyKVFinder.get_vertices_from_file`` takes *.toml* file with box configuration or parKVFinder parameters file, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (``step``, ``probe_in`` and ``probe_out``), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid, a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box and a NumPy array with xyz coordinates and radius for each atom inside the custom box.
 
 Users can define the ``box`` parameter as the filepath of one box configuration file from above (*custom-box.toml*, *residues-box.toml* or *box.toml*). For instance, with *custom-box.toml*:
 
 .. code-block:: python
 
-  >>> vertices, atominfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_grid_from_file(fn, atominfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
+  >>> vertices, atominfo, xyzr = pyKVFinder.get_vertices_from_file(fn, atominfo, xyzr, step=step, probe_in=probe_in, probe_out=probe_out)
 
 .. note::
 
-  If the ``step``, ``probe_in`` and ``probe_out`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_grid_from_file('box.toml', atominfo, xyzr)``.
+  If the ``step``, ``probe_in`` and ``probe_out`` are not defined, the function automatically sets them to the default value. So, you can call the function by ``pyKVFinder.get_vertices_from_file('box.toml', atominfo, xyzr)``.
 
 - Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the ``box_adjustment`` parameter as ``True``.
 
@@ -902,7 +873,7 @@ Users can define the ``box`` parameter as the filepath of one box configuration 
 
 .. seealso::
 
-  * `pyKVFinder.get_grid_from_file <../_api_reference/get_grid_from_file.html>`_
+  * `pyKVFinder.get_vertices_from_file <../_api_reference/get_vertices_from_file.html>`_
   * `pyKVFinder.detect <../_api_reference/detect.html>`_ 
 
 Examples

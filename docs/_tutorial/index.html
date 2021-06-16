@@ -505,7 +505,7 @@
 </div>
 <div class="section" id="dimensioning-the-3d-grid">
 <h2>3. Dimensioning the 3D grid<a class="headerlink" href="#dimensioning-the-3d-grid" title="Permalink to this headline">¶</a></h2>
-<p>The pyKVFinder 3D grid must be calculated based on the target <em>.pdb</em> file, the Probe Out diameter and the grid spacing.</p>
+<p>The pyKVFinder 3D grid must be calculated based on the target <em>.pdb</em> or <em>.xyz</em> file, the Probe Out diameter and the grid spacing.</p>
 <p>Firstly, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code> takes the NumPy array with xyz coordinates and radius for each atom, and the Probe Out (<code class="docutils literal notranslate"><span class="pre">probe_out</span></code>) and grid spacing (<code class="docutils literal notranslate"><span class="pre">step</span></code>) that will be applied in the detection, and returns a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default Probe Out (probe_out): 4.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">probe_out</span> <span class="o">=</span> <span class="mf">4.0</span>
@@ -523,37 +523,10 @@
 <p class="admonition-title">Note</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> and <code class="docutils literal notranslate"><span class="pre">step</span></code> values are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices(xyzr)</span></code>.</p>
 </div>
-<p>Secondly, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions</span></code> takes the vertices calculated above and the grid spacing, and returns a tuple with the grid units in x, y and z dimensions.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
-<span class="go">(101, 126, 97)</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">step</span></code> value is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions(vertices)</span></code>.</p>
-</div>
-<p>Lastly, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_sincos</span></code> takes the vertices calculated above and returns a NumPy array with the sine and cossine of the 3D grid angles (a, b).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sincos</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sincos</span>
-<span class="go">array([0., 1., 0., 1.])</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>sincos[0]: sin(a)</p></li>
-<li><p>sincos[1]: cos(a)</p></li>
-<li><p>sincos[2]: sin(b)</p></li>
-<li><p>sincos[3]: cos(b)</p></li>
-</ul>
-</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
 <li><p><a class="reference external" href="../_api_reference/get_vertices.html">pyKVFinder.get_vertices</a></p></li>
-<li><p><a class="reference external" href="../_api_reference/get_sincos.html">pyKVFinder.get_sincos</a></p></li>
-<li><p><a class="reference external" href="../_api_reference/get_dimensions.html">pyKVFinder.get_dimensions</a></p></li>
 </ul>
 </div>
 </div>
@@ -1086,16 +1059,16 @@
 <h2>Separated steps<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <p>If you are running pyKVFinder package in a step-by-step fashion (<a class="reference external" href="index.hmtl#separated-steps">Separated steps</a>), the steps <a class="reference external" href="index.hmtl#dimensioning-the-3d-grid">3</a> and <a class="reference external" href="index.hmtl#detecting-biomolecular-cavities">4</a> are different than before.</p>
 <ul class="simple">
-<li><p>Dimensioning the 3D grid: Instead of calling <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code>, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_dimensions</span></code> and <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_sincos</span></code>, you can just call <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_grid_from_file</span></code>.</p></li>
+<li><p>Dimensioning the 3D grid: Instead of calling <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code>, you call <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file</span></code>.</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_grid_from_file</span></code> takes <em>.toml</em> file with box configuration or parKVFinder parameters file, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid, a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box, a NumPy array with xyz coordinates and radius for each atom inside the custom box, a NumPy array with the sine and cossine of the 3D grid angles (a, b) and the grid units in x, y and z dimensions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file</span></code> takes <em>.toml</em> file with box configuration or parKVFinder parameters file, a NumPy array with residue number, chain identifier, residue name and atom name for each atom, a NumPy array with xyz coordinates and radius for each atom and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid, a NumPy array with residue number, chain identifier, residue name and atom name for each atom inside the custom box and a NumPy array with xyz coordinates and radius for each atom inside the custom box.</p>
 <p>Users can define the <code class="docutils literal notranslate"><span class="pre">box</span></code> parameter as the filepath of one box configuration file from above (<em>custom-box.toml</em>, <em>residues-box.toml</em> or <em>box.toml</em>). For instance, with <em>custom-box.toml</em>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_grid_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">get_vertices_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_grid_from_file('box.toml',</span> <span class="pre">atominfo,</span> <span class="pre">xyzr)</span></code>.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file('box.toml',</span> <span class="pre">atominfo,</span> <span class="pre">xyzr)</span></code>.</p>
 </div>
 <ul class="simple">
 <li><p>Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> parameter as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
@@ -1114,7 +1087,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference external" href="../_api_reference/get_grid_from_file.html">pyKVFinder.get_grid_from_file</a></p></li>
+<li><p><a class="reference external" href="../_api_reference/get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></p></li>
 <li><p><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></p></li>
 </ul>
 </div>

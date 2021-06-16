@@ -16,9 +16,9 @@ from .utils import (
 )
 from .grid import (
     get_vertices,
-    get_grid_from_file,
-    get_dimensions,
-    get_sincos,
+    get_vertices_from_file,
+    _get_dimensions,
+    _get_sincos,
     detect,
     spatial,
     depth,
@@ -103,7 +103,7 @@ def cli() -> None:
         print("> Calculating 3D grid dimensions")
     if args.box:
         # Get vertices from file
-        args.vertices, atominfo, xyzr, args.sincos, nx, ny, nz = get_grid_from_file(
+        args.vertices, atominfo, xyzr = get_vertices_from_file(
             args.box,
             atominfo,
             xyzr,
@@ -119,14 +119,14 @@ def cli() -> None:
         # Get vertices from pdb
         args.vertices = get_vertices(xyzr, args.probe_out, args.step)
 
-        # Calculate distance between points
-        nx, ny, nz = get_dimensions(args.vertices, args.step)
-
-        # Calculate sin and cos of angles a and b
-        args.sincos = get_sincos(args.vertices)
-
         # Set flag to boolean
         args.box = False
+
+    # Calculate distance between points
+    nx, ny, nz = _get_dimensions(args.vertices, args.step)
+
+    # Calculate sin and cos of angles a and b
+    args.sincos = _get_sincos(args.vertices)
 
     if args.verbose:
         print(f"p1: {args.vertices[0]}")
@@ -803,7 +803,7 @@ def pyKVFinder(
         print("> Calculating 3D grid dimensions")
     if box:
         # Get vertices from file
-        vertices, atominfo, xyzr, sincos, nx, ny, nz = get_grid_from_file(
+        vertices, atominfo, xyzr = get_vertices_from_file(
             box, atominfo, xyzr, step, probe_in, probe_out, nthreads
         )
 
@@ -812,19 +812,20 @@ def pyKVFinder(
     else:
         # Get vertices from pdb
         vertices = get_vertices(xyzr, probe_out, step)
-        # Calculate distance between points
-        nx, ny, nz = get_dimensions(vertices, step)
-        if verbose:
-            print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
-
-        # Calculate sin and cos of angles a and b
-        sincos = get_sincos(vertices)
-        if verbose:
-            print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
-            print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
 
         # Set flag to boolean
         box = False
+
+    # Calculate distance between points
+    nx, ny, nz = _get_dimensions(vertices, step)
+    if verbose:
+        print(f"Dimensions: (nx:{nx}, ny:{ny}, nz:{nz})")
+
+    # Calculate sin and cos of angles a and b
+    sincos = _get_sincos(vertices)
+    if verbose:
+        print(f"sina: {sincos[0]:.2f}\tsinb: {sincos[2]:.2f}")
+        print(f"cosa: {sincos[1]:.2f}\tcosb: {sincos[3]:.2f}")
 
     # Cavity detection
     ncav, cavities = detect(
@@ -849,7 +850,9 @@ def pyKVFinder(
 
         # Depth characterization
         if include_depth:
-            depths, max_depth, avg_depth = depth(cavities, step, None, nthreads, verbose)
+            depths, max_depth, avg_depth = depth(
+                cavities, step, None, nthreads, verbose
+            )
         else:
             depths, max_depth, avg_depth = None, None, None
 

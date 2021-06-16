@@ -5,9 +5,7 @@ from typing import Union, Tuple, Optional, Dict, List
 
 __all__ = [
     "get_vertices",
-    "get_grid_from_file",
-    "get_dimensions",
-    "get_sincos",
+    "get_vertices_from_file",
     "detect",
     "spatial",
     "depth",
@@ -88,7 +86,7 @@ def get_vertices(
     return vertices
 
 
-def get_grid_from_file(
+def get_vertices_from_file(
     fn: Union[str, pathlib.Path],
     atominfo: Union[numpy.ndarray, List[List[str]]],
     xyzr: Union[numpy.ndarray, List[List[float]]],
@@ -96,7 +94,7 @@ def get_grid_from_file(
     probe_in: Union[float, int] = 1.4,
     probe_out: Union[float, int] = 4.0,
     nthreads: Optional[int] = None,
-) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, int, int, int]:
+) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]:
     """Gets 3D grid vertices from box configuration file or parKVFinder
     parameters file, selects atoms inside custom 3D grid, define sine
     and cosine of 3D grid angles and define xyz grid units.
@@ -132,15 +130,6 @@ def get_grid_from_file(
     xyzr : numpy.ndarray
         A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,
         radius) of atoms inside the custom box.
-    sincos : numpy.ndarray
-        A numpy.ndarray with sine and cossine of the custom box rotation angles
-        (sina, cosa, sinb, cosb).
-    nx : int
-        x grid units.
-    ny : int
-        y grid units.
-    nz : int
-        z grid units.
 
     Raises
     ------
@@ -259,17 +248,23 @@ def get_grid_from_file(
         else:
             raise ValueError(f"Box not properly defined in {fn}.")
 
+    # Get sincos
+    sincos = numpy.round(_get_sincos(vertices), 4)
+
+    # Get dimensions
+    nx, ny, nz = _get_dimensions(vertices, step)
+
     # Get atoms inside box only
-    sincos = numpy.round(get_sincos(vertices), 4)
-    nx, ny, nz = get_dimensions(vertices, step)
     _filter_pdb(nx, ny, nz, xyzr, vertices[0], sincos, step, probe_in, nthreads)
+
+    # Get indexes of the atoms inside the box
     indexes = xyzr[:, 3] != 0
 
     # Slice atominfo and xyzr
     atominfo = atominfo[indexes, :]
     xyzr = xyzr[indexes, :]
 
-    return vertices, atominfo, xyzr, sincos, nx, ny, nz
+    return vertices, atominfo, xyzr
 
 
 def _get_vertices_from_box(
@@ -304,7 +299,7 @@ def _get_vertices_from_box(
     P4 = numpy.asarray(box["p4"])
 
     # Get sincos
-    sincos = numpy.round(get_sincos(numpy.asarray([P1, P2, P3, P4])), 4)
+    sincos = numpy.round(_get_sincos(numpy.asarray([P1, P2, P3, P4])), 4)
 
     # Get probe out additions
     # p1 = (x1, y1, z1)
@@ -420,7 +415,7 @@ def _get_vertices_from_residues(
     return vertices
 
 
-def get_dimensions(
+def _get_dimensions(
     vertices: Union[numpy.ndarray, List[List[float]]], step: Union[float, int] = 0.6
 ) -> Tuple[int, int, int]:
     """Gets dimensions of 3D grid from vertices.
@@ -485,7 +480,7 @@ def get_dimensions(
     return nx, ny, nz
 
 
-def get_sincos(vertices: Union[numpy.ndarray, List[List[float]]]) -> numpy.ndarray:
+def _get_sincos(vertices: Union[numpy.ndarray, List[List[float]]]) -> numpy.ndarray:
     """Gets sine and cossine of the grid rotation angles from a list of vertices
     coordinates.
 
@@ -667,7 +662,7 @@ def detect(
     Warning
     -------
     If you are using box adjustment mode, do not forget to set box_adjustment
-    flag to True and read the box configuration file with 'get_grid_from_file'
+    flag to True and read the box configuration file with 'get_vertices_from_file'
     function.
 
     Warning
@@ -778,10 +773,10 @@ def detect(
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
-    sincos = get_sincos(vertices)
+    sincos = _get_sincos(vertices)
 
     # Get dimensions
-    nx, ny, nz = get_dimensions(vertices, step)
+    nx, ny, nz = _get_dimensions(vertices, step)
 
     # Calculate number of voxels
     nvoxels = nx * ny * nz
@@ -1540,7 +1535,7 @@ def constitutional(
     ncav = int(cavities.max() - 1)
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
-    sincos = get_sincos(vertices)
+    sincos = _get_sincos(vertices)
 
     # Select cavities
     if selection is not None:
@@ -1845,7 +1840,7 @@ def hydropathy(
     ncav = int(surface.max() - 1)
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
-    sincos = get_sincos(vertices)
+    sincos = _get_sincos(vertices)
 
     # Select cavities
     if selection is not None:
@@ -2119,7 +2114,7 @@ def export(
     ncav = int(cavities.max() - 1)
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
-    sincos = get_sincos(vertices)
+    sincos = _get_sincos(vertices)
 
     # Create base directories of results
     if fn is not None:

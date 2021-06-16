@@ -16,9 +16,7 @@ Functions
     read_xyz
     read_cavity
     get_vertices
-    get_dimensions
-    get_sincos
-    get_grid_from_file
+    get_vertices_from_file
     detect
     spatial
     depth

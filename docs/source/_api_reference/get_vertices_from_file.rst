@@ -1,11 +1,12 @@
-pyKVFinder.get_grid_from_file
-=============================
+pyKVFinder.get_vertices_from_file
+=================================
 
-.. autofunction:: pyKVFinder.get_grid_from_file
+.. autofunction:: pyKVFinder.get_vertices_from_file
 
 .. seealso::
 
     * `pyKVFinder.read_pdb <read_pdb.html>`_
+    * `pyKVFinder.read_xyz <read_xyz.html>`_
     * `pyKVFinder.detect <detect.html>`_
     * `pyKVFinder.constitutional <constitutional.html>`_
     * `pyKVFinder.hydropathy <hydropathy.html>`_
@@ -25,12 +26,12 @@ First, define a box configuration file (see `Box configuration file template <..
     >>> with open(fn, 'r') as f:
     ...     print(f.read())
 
-With the atomic information and coordinates read with ``pyKVFinder.read_pdb`` and a box configuration file, we can get the coordinates of grid vertices, select atoms inside custom 3D grid, define sine and cosine of rotation angles and define xyz grid units.
+With the atomic information and coordinates read with ``pyKVFinder.read_pdb`` and a box configuration file, we can get the coordinates of grid vertices and select atoms inside custom 3D grid.
 
 .. code-block:: python
 
     >>> from pyKVFinder import get_grid_from_file
-    >>> vertices, atominfo, xyzr, sincos, nx, ny, nz = pyKVFinder.get_grid_from_file(fn, atominfo, xyzr)
+    >>> vertices, atominfo, xyzr = pyKVFinder.get_vertices_from_file(fn, atominfo, xyzr)
 
 .. warning::
 
