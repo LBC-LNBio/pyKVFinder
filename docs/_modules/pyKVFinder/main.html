@@ -288,23 +288,22 @@
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>
-    <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading ligand coordinates&quot;</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+        <span class="n">latomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">lxyzr</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">latomic</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Calculating 3D grid dimensions&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">:</span>
         <span class="c1"># Get vertices from file</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">get_vertices_from_file</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">atomic</span> <span class="o">=</span> <span class="n">get_vertices_from_file</span><span class="p">(</span>
             <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
-            <span class="n">atominfo</span><span class="p">,</span>
-            <span class="n">xyzr</span><span class="p">,</span>
+            <span class="n">atomic</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
@@ -315,7 +314,7 @@
         <span class="n">args</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Get vertices from pdb</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
 
         <span class="c1"># Set flag to boolean</span>
         <span class="n">args</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="kc">False</span>
@@ -350,14 +349,14 @@
 
     <span class="c1"># Cavity detection</span>
     <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span>
-        <span class="n">xyzr</span><span class="p">,</span>
+        <span class="n">atomic</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">removal_distance</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">volume_cutoff</span><span class="p">,</span>
-        <span class="n">lxyzr</span><span class="p">,</span>
+        <span class="n">latomic</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">ligand_cutoff</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
         <span class="n">args</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
@@ -383,8 +382,7 @@
         <span class="c1"># Constitutional characterization</span>
         <span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span>
             <span class="n">cavities</span><span class="p">,</span>
-            <span class="n">atominfo</span><span class="p">,</span>
-            <span class="n">xyzr</span><span class="p">,</span>
+            <span class="n">atomic</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
@@ -406,9 +404,8 @@
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">hydropathy</span><span class="p">:</span>
             <span class="c1"># Map hydrophobicity scales</span>
             <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span>
-                <span class="n">surface</span><span class="p">,</span>
-                <span class="n">atominfo</span><span class="p">,</span>
-                <span class="n">xyzr</span><span class="p">,</span>
+                <span class="n">surface</span><span class="p">,</span> 
+                <span class="n">atomic</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
@@ -988,28 +985,28 @@
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>
-    <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">ligand</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading ligand coordinates&quot;</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+        <span class="n">latomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">ligand</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">lxyzr</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">latomic</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Calculating 3D grid dimensions&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">box</span><span class="p">:</span>
         <span class="c1"># Get vertices from file</span>
-        <span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">get_vertices_from_file</span><span class="p">(</span>
-            <span class="n">box</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">nthreads</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">atomic</span> <span class="o">=</span> <span class="n">get_vertices_from_file</span><span class="p">(</span>
+            <span class="n">box</span><span class="p">,</span> <span class="n">atomic</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">nthreads</span>
         <span class="p">)</span>
 
         <span class="c1"># Set flag to boolean</span>
         <span class="n">box</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Get vertices from pdb</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
         <span class="c1"># Set flag to boolean</span>
         <span class="n">box</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1027,14 +1024,14 @@
 
     <span class="c1"># Cavity detection</span>
     <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span>
-        <span class="n">xyzr</span><span class="p">,</span>
+        <span class="n">atomic</span><span class="p">,</span>
         <span class="n">vertices</span><span class="p">,</span>
         <span class="n">step</span><span class="p">,</span>
         <span class="n">probe_in</span><span class="p">,</span>
         <span class="n">probe_out</span><span class="p">,</span>
         <span class="n">removal_distance</span><span class="p">,</span>
         <span class="n">volume_cutoff</span><span class="p">,</span>
-        <span class="n">lxyzr</span><span class="p">,</span>
+        <span class="n">latomic</span><span class="p">,</span>
         <span class="n">ligand_cutoff</span><span class="p">,</span>
         <span class="n">box</span><span class="p">,</span>
         <span class="n">surface</span><span class="p">,</span>
@@ -1057,8 +1054,7 @@
         <span class="c1"># Constitutional characterization</span>
         <span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span>
             <span class="n">cavities</span><span class="p">,</span>
-            <span class="n">atominfo</span><span class="p">,</span>
-            <span class="n">xyzr</span><span class="p">,</span>
+            <span class="n">atomic</span><span class="p">,</span>
             <span class="n">vertices</span><span class="p">,</span>
             <span class="n">step</span><span class="p">,</span>
             <span class="n">probe_in</span><span class="p">,</span>
@@ -1073,8 +1069,7 @@
         <span class="k">if</span> <span class="n">include_hydropathy</span><span class="p">:</span>
             <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span>
                 <span class="n">surface</span><span class="p">,</span>
-                <span class="n">atominfo</span><span class="p">,</span>
-                <span class="n">xyzr</span><span class="p">,</span>
+                <span class="n">atomic</span><span class="p">,</span>
                 <span class="n">vertices</span><span class="p">,</span>
                 <span class="n">step</span><span class="p">,</span>
                 <span class="n">probe_in</span><span class="p">,</span>

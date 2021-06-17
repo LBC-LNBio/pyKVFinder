@@ -18,12 +18,12 @@ pyKVFinder.detect
 
   <h4><u>Example</u></h4>
 
-With the grid vertices defined with ``pyKVFinder.get_vertices`` and atomic coordiantes loaded with ``pyKVFinder.read_pdb`` or ``pyKVFinder.read_xyz``, we can detect cavities on the whole target biomolecule:
+With the grid vertices defined with ``pyKVFinder.get_vertices`` and atomic data loaded with ``pyKVFinder.read_pdb`` or ``pyKVFinder.read_xyz``, we can detect cavities on the whole target biomolecule:
 
 .. code-block:: python
 
     >>> from pyKVFinder import detect
-    >>> ncav, cavities = detect(xyzr, vertices)
+    >>> ncav, cavities = detect(atomic, vertices)
     >>> ncav
     18
     >>> cavities
@@ -54,8 +54,8 @@ The cavity detection can be limited around the target ligand(s), which will be p
     >>> import os
     >>> ligand = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'ADN.pdb')
     >>> from pyKVFinder import read_pdb
-    >>> _, lxyzr = read_pdb(ligand, vdw)
-    >>> ncav, cavities = detect(xyzr, vertices, lxyzr=lxyzr, ligand_cutoff=5.0)
+    >>> latomic = read_pdb(ligand)
+    >>> ncav, cavities = detect(atomic, vertices, latomic=latomic, ligand_cutoff=5.0)
     >>> ncav
     2
     >>> cavities
@@ -85,19 +85,25 @@ Further, we can also perform cavity detection on a custom 3D grid, where we can 
     >>> fn = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'custom-box.toml')
     >>> with open(fn, 'r') as f:
     ...     print(f.read())
+    [box]
+    p1 = [3.11, 7.34, 1.59]
+    p2 = [11.51, 7.34, 1.59]
+    p3 = [3.11, 10.74, 1.59]
+    p4 = [3.11, 7.34, 6.19]
+
 
 With this box adjustment mode, we must defined the 3D grid with ``pyKVFinder.get_vertices_from_file``. 
 
 .. code-block:: python
 
     >>> from pyKVFinder import get_vertices_from_file
-    >>> vertices, atominfo, xyzr = get_vertices_from_file(fn, atominfo, xyzr)
+    >>> vertices, atomic = get_vertices_from_file(fn, atomic)
 
 Then, we can perform cavity detection:
 
 .. code-block:: python
 
-    >>> ncav, cavities = detect(xyzr, vertices, box_adjustment=True)
+    >>> ncav, cavities = detect(atomic, vertices, box_adjustment=True)
     >>> ncav
     1
     >>> cavities

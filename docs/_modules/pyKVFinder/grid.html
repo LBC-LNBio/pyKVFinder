@@ -214,7 +214,7 @@
 
 
 <div class="viewcode-block" id="get_vertices"><a class="viewcode-back" href="../../_api_reference/get_vertices.html#pyKVFinder.get_vertices">[docs]</a><span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span>
-    <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -222,9 +222,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    xyzr : Union[numpy.ndarray, List[List[float]]]</span>
-<span class="sd">        A numpy.ndarray or a list with xyz atomic coordinates and radii</span>
-<span class="sd">        values for each atom.</span>
+<span class="sd">    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
 <span class="sd">    probe_out : Union[float, int], optional</span>
 <span class="sd">        Probe Out size (A), bu default 4.0.</span>
 <span class="sd">    step : Union[float, int], optional</span>
@@ -239,9 +239,9 @@
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `xyzr` must be a list or a numpy.ndarray.</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        `xyzr` has incorrect shape. It must be (n, 4).</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `probe_out` must be a non-negative real number.</span>
 <span class="sd">    ValueError</span>
@@ -252,12 +252,12 @@
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check arguments types</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`xyzr` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_out</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be a non-negative real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">probe_out</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -267,9 +267,12 @@
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Convert xyzr type</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
+    <span class="c1"># Convert atomic type</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="c1"># Prepare vertices</span>
     <span class="n">P1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">probe_out</span> <span class="o">-</span> <span class="n">step</span>
@@ -286,8 +289,7 @@
 
 <div class="viewcode-block" id="get_vertices_from_file"><a class="viewcode-back" href="../../_api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a><span class="k">def</span> <span class="nf">get_vertices_from_file</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">atominfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
-    <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
@@ -301,12 +303,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fn : Union[str, pathlib.Path]</span>
 <span class="sd">        A path to box configuration file (TOML-formatted).</span>
-<span class="sd">    atominfo : Union[numpy.ndarray, List[List[str]]]</span>
-<span class="sd">        A numpy.ndarray or a list with atomic information (residue number,</span>
-<span class="sd">        chain, residue name, atom name).</span>
-<span class="sd">    xyzr : Union[numpy.ndarray, List[List[float]]]</span>
-<span class="sd">        A numpy.ndarray or a list with xyz atomic coordinates and radii values</span>
-<span class="sd">        for each atom (x, y, z, radius).</span>
+<span class="sd">    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
 <span class="sd">    probe_in : Union[float, int], optional</span>
@@ -322,25 +321,18 @@
 <span class="sd">    vertices : numpy.ndarray</span>
 <span class="sd">        A numpy.ndarray with xyz vertices coordinates (origin, X-axis, Y-axis,</span>
 <span class="sd">        Z-axis) of the custom box.</span>
-<span class="sd">    atominfo : numpy.ndarray</span>
-<span class="sd">        A numpy.ndarray with atomic information (residue number, chain, residue</span>
-<span class="sd">        name, atom name) of atoms inside the custom box.</span>
-<span class="sd">    xyzr : numpy.ndarray</span>
-<span class="sd">        A numpy.ndarray with xyz atomic coordinates and radii values (x, y, z,</span>
-<span class="sd">        radius) of atoms inside the custom box.</span>
+<span class="sd">    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom inside the custom box.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `fn` must be a str.</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `atominfo` must be a list or a numpy.ndarray.</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        `atominfo` has incorrect shape. It must be (n, 2).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `xyzr` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `xyzr` has incorrect shape. It must be (n, 4).</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
@@ -378,18 +370,12 @@
     <span class="c1"># Check arguments types</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a str.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atominfo` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atominfo` has incorrect shape. It must be (n, 2).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atominfo` has incorrect shape. It must be (n, 2).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`xyzr` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -413,10 +399,17 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Convert type</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
+
+    <span class="c1"># Extract atominfo from atomic</span>
+    <span class="c1"># atominfo = atomic[:, :4]</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="p">([[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]])</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="c1"># Read box file</span>
     <span class="n">tmp</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -459,10 +452,9 @@
     <span class="n">indexes</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
 
     <span class="c1"># Slice atominfo and xyzr</span>
-    <span class="n">atominfo</span> <span class="o">=</span> <span class="n">atominfo</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="p">:]</span>
-    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="p">:]</span>
 
-    <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span></div>
+    <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">atomic</span></div>
 
 
 <span class="k">def</span> <span class="nf">_get_vertices_from_box</span><span class="p">(</span>
@@ -733,14 +725,14 @@
 
 
 <div class="viewcode-block" id="detect"><a class="viewcode-back" href="../../_api_reference/detect.html#pyKVFinder.detect">[docs]</a><span class="k">def</span> <span class="nf">detect</span><span class="p">(</span>
-    <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
     <span class="n">removal_distance</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.4</span><span class="p">,</span>
     <span class="n">volume_cutoff</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
-    <span class="n">lxyzr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">latomic</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ligand_cutoff</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
     <span class="n">box_adjustment</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SES&quot;</span><span class="p">,</span>
@@ -754,9 +746,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    xyzr : Union[numpy.ndarray, List[List[float]]]</span>
-<span class="sd">        A numpy.ndarray or a lista with xyz atomic coordinates and radii</span>
-<span class="sd">        values (x, y, z, radius) for each atom.</span>
+<span class="sd">    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
@@ -771,9 +763,9 @@
 <span class="sd">        default 2.4.</span>
 <span class="sd">    volume_cutoff : Union[float, int], optional</span>
 <span class="sd">        Volume filter for detected cavities (A3), by default 5.0.</span>
-<span class="sd">    lxyzr : Optional[numpy.ndarray, List[List[float]]], optional</span>
-<span class="sd">        A numpy.ndarray or a list with xyz atomic coordinates and radii values</span>
-<span class="sd">        (x, y, z, Iradius) for each atom of a target ligand, by default None.</span>
+<span class="sd">    latomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]], optional</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom of a target ligand, by default None.</span>
 <span class="sd">    ligand_cutoff : Union[float, int], optional</span>
 <span class="sd">        A radius to limit a space around a ligand (A), by default 5.0.</span>
 <span class="sd">    box_adjustment : bool, optional</span>
@@ -809,9 +801,9 @@
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `xyzr` must be a list or a numpy.ndarray.</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        `xyzr` has incorrect shape. It must be (n, 4).</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
@@ -839,7 +831,9 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `volume_cutoff` must be a non-negative real number.</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `lxyzr` must be a list, a numpy.ndarray or None.</span>
+<span class="sd">        `latomic` must be a list, a numpy.ndarray or None.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `latomic` has incorrect shape. It must be (n, 8).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `ligand_cutoff` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
@@ -852,8 +846,6 @@
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `nthreads` must be a positive integer.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `lxyzr` has incorrect shape. It must be (n, 4).</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `surface` must be SAS or SES, not `surface`.</span>
 
@@ -871,12 +863,12 @@
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_detect</span><span class="p">,</span> <span class="n">_detect_ladj</span>
 
     <span class="c1"># Check arguments</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`xyzr` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
@@ -903,6 +895,13 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`volume_cutoff` must be a non-negative real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">volume_cutoff</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`volume_cutoff` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">latomic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">latomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`latomic` must be a list, a numpy.ndarray or None.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">latomic</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`latomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">latomic</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`latomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ligand_cutoff</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ligand_cutoff` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">ligand_cutoff</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -922,8 +921,8 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`verbose` must be a boolean.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Convert types</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -938,26 +937,24 @@
         <span class="n">volume_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">volume_cutoff</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ligand_cutoff</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">ligand_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ligand_cutoff</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">lxyzr</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lxyzr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">latomic</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">latomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">latomic</span><span class="p">)</span>
 
     <span class="c1"># Convert numpy.ndarray data types</span>
-    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">xyzr</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
-    <span class="k">if</span> <span class="n">lxyzr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">lxyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`lxyzr` must be a list, a numpy.ndarray or None.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lxyzr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`lxyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">lxyzr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`lxyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-        <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">lxyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">lxyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">lxyzr</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Extract lxyzr from latomic</span>
+    <span class="k">if</span> <span class="n">latomic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lxyzr</span> <span class="o">=</span> <span class="n">latomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Define ligand adjustment mode</span>
+    <span class="n">ligand_adjustment</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">latomic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
     <span class="c1"># Unpack vertices</span>
     <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span> <span class="o">=</span> <span class="n">vertices</span>
-
-    <span class="c1"># Define ligand adjustment mode</span>
-    <span class="n">ligand_adjustment</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">lxyzr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
     <span class="k">if</span> <span class="n">surface</span> <span class="o">==</span> <span class="s2">&quot;SES&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -1537,8 +1534,7 @@
 
 <div class="viewcode-block" id="constitutional"><a class="viewcode-back" href="../../_api_reference/constitutional.html#pyKVFinder.constitutional">[docs]</a><span class="k">def</span> <span class="nf">constitutional</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">atominfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
-    <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
@@ -1566,12 +1562,9 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        volume cutoff to be considered a cavity.</span>
-<span class="sd">    atominfo : Union[numpy.ndarray, List[List[str]]]</span>
-<span class="sd">        A numpy.ndarray or a list with atomic information (residue number,</span>
-<span class="sd">        chain, residue name, atom name).</span>
-<span class="sd">    xyzr : Union[numpy.ndarray, List[List[float]]]</span>
-<span class="sd">        A numpy.ndarray or a list with xyz atomic coordinates and radii</span>
-<span class="sd">        values (x, y, z, radius) for each atom.</span>
+<span class="sd">    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
@@ -1603,13 +1596,9 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `cavities` has the incorrect shape. It must be (nx, ny, nz).</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `atominfo` must be a list or a numpy.ndarray.</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        `atominfo` has incorrect shape. It must be (n, 2).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `xyzr` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `xyzr` has incorrect shape. It must be (n, 4).</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
@@ -1663,18 +1652,12 @@
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavities` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atominfo` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atominfo` has incorrect shape. It must be (n, 2).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atominfo` has incorrect shape. It must be (n, 2).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`xyzr` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
@@ -1713,10 +1696,8 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`verbose` must be a boolean.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Convert types</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -1726,8 +1707,16 @@
 
     <span class="c1"># Convert numpy.ndarray data types</span>
     <span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cavities</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">cavities</span>
-    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">xyzr</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
+
+    <span class="c1"># Extract atominfo from atomic</span>
+    <span class="c1"># atominfo = atomic[:, :4]</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="p">([[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]])</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="c1"># Get number of cavities</span>
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -1807,8 +1796,7 @@
 
 <div class="viewcode-block" id="hydropathy"><a class="viewcode-back" href="../../_api_reference/hydropathy.html#pyKVFinder.hydropathy">[docs]</a><span class="k">def</span> <span class="nf">hydropathy</span><span class="p">(</span>
     <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">atominfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
-    <span class="n">xyzr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">probe_in</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
@@ -1837,12 +1825,9 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        volume cutoff to be considered a cavity.</span>
-<span class="sd">    atominfo : Union[numpy.ndarray, List[List[str]]]</span>
-<span class="sd">        A numpy.ndarray or a list with atomic information (residue number,</span>
-<span class="sd">        chain, residue name, atom name).</span>
-<span class="sd">    xyzr : Union[numpy.ndarray, List[List[float]]]</span>
-<span class="sd">        A numpy.ndarray or a list with xyz atomic coordinates and radii</span>
-<span class="sd">        values (x, y, z, radius) for each atom.</span>
+<span class="sd">    atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
 <span class="sd">    vertices : Union[numpy.ndarray, List[List[float]]]</span>
 <span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates (origin,</span>
 <span class="sd">        X-axis, Y-axis, Z-axis).</span>
@@ -1883,13 +1868,9 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `surface` has the incorrect shape. It must be (nx, ny, nz).</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `atominfo` must be a list or a numpy.ndarray.</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        `atominfo` has incorrect shape. It must be (n, 2).</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `xyzr` must be a list or a numpy.ndarray.</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        `xyzr` has incorrect shape. It must be (n, 4).</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
@@ -1966,18 +1947,12 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`surface` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`cavities` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atominfo` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atominfo` has incorrect shape. It must be (n, 2).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atominfo` has incorrect shape. It must be (n, 2).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`xyzr` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xyzr` has incorrect shape. It must be (n, 4).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
@@ -2018,10 +1993,8 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`verbose` must be a boolean.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Convert types</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">xyzr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -2031,8 +2004,16 @@
 
     <span class="c1"># Convert numpy.ndarray data types</span>
     <span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">surface</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">surface</span>
-    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">xyzr</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">xyzr</span>
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
+
+    <span class="c1"># Extract atominfo from atomic</span>
+    <span class="c1"># atominfo = atomic[:, :4]</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="p">([[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]])</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="c1"># Get number of cavities</span>
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>

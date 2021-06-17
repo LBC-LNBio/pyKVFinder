@@ -213,8 +213,7 @@
     <span class="s2">&quot;write_results&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">HERE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
-<span class="n">VDW</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HERE</span><span class="p">,</span> <span class="s2">&quot;data/vdw.dat&quot;</span><span class="p">)</span>
+<span class="n">VDW</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;data/vdw.dat&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="read_vdw"><a class="viewcode-back" href="../../_api_reference/read_vdw.html#pyKVFinder.read_vdw">[docs]</a><span class="k">def</span> <span class="nf">read_vdw</span><span class="p">(</span>
@@ -296,7 +295,7 @@
 
 <span class="k">def</span> <span class="nf">_process_pdb_line</span><span class="p">(</span>
     <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Extracts ATOM and HETATM information of PDB line.</span>
 
 <span class="sd">    Parameters</span>
@@ -308,10 +307,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    atominfo : List[str]</span>
-<span class="sd">        A list with resnum, chain, resname and atom name.</span>
-<span class="sd">    coords : List[float]</span>
-<span class="sd">        A list with xyz coordinates and radius.</span>
+<span class="sd">    atomic : List[Union[str, float, int]]</span>
+<span class="sd">        A list with resnum, chain, resname, atom name, xyz coordinates and radius.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get PDB infomation</span>
     <span class="n">atom</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -338,15 +335,14 @@
         <span class="p">)</span>
 
     <span class="c1"># Prepare output</span>
-    <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">resnum</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">chain</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">resname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">]</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">radius</span><span class="p">]</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="p">[</span><span class="n">resnum</span><span class="p">,</span> <span class="n">chain</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">radius</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">coords</span>
+    <span class="k">return</span> <span class="n">atomic</span>
 
 
 <div class="viewcode-block" id="read_pdb"><a class="viewcode-back" href="../../_api_reference/read_pdb.html#pyKVFinder.read_pdb">[docs]</a><span class="k">def</span> <span class="nf">read_pdb</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Reads PDB file into numpy.ndarrays.</span>
 
 <span class="sd">    Parameters</span>
@@ -358,11 +354,12 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    atominfo : numpy.ndarray</span>
-<span class="sd">        A numpy array with atomic information (residue number, chain,</span>
-<span class="sd">        residue name, atom name) for each atom.</span>
-<span class="sd">    xyzr : numpy.ndarray</span>
-<span class="sd">        A numpy.ndarray with xyz atomic coordinates and radii for each atom.</span>
+<span class="sd">    atomic : numpy.ndarray</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
+<span class="sd">        ``[[&#39;resnum&#39;, &#39;chain&#39;, &#39;resname&#39;, &#39;atomname&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;radius&#39;],</span>
+<span class="sd">        ...</span>
+<span class="sd">        [&#39;resnum&#39;, &#39;chain&#39;, &#39;resname&#39;, &#39;atomname&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;radius&#39;]]``</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -385,22 +382,19 @@
         <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="c1"># Create lists</span>
-    <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">xyzr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ATOM&quot;</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HETATM&quot;</span><span class="p">:</span>
-                <span class="n">atom</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="n">_process_pdb_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
-                <span class="n">atominfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
-                <span class="n">xyzr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+                <span class="n">atomic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_process_pdb_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vdw</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="read_xyz"><a class="viewcode-back" href="../../_api_reference/read_xyz.html#pyKVFinder.read_xyz">[docs]</a><span class="k">def</span> <span class="nf">read_xyz</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Reads XYZ file into numpy.ndarrays.</span>
 
 <span class="sd">    Parameters</span>
@@ -412,11 +406,12 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    atominfo : numpy.ndarray</span>
-<span class="sd">        A numpy array with atomic information (residue number, chain,</span>
-<span class="sd">        residue name, atom name) for each atom.</span>
-<span class="sd">    xyzr : numpy.ndarray</span>
-<span class="sd">        A numpy.ndarray with xyz atomic coordinates and radii for each atom.</span>
+<span class="sd">    atomic : numpy.ndarray</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
+<span class="sd">        &gt;&gt;&gt; [[&#39;resnum&#39;, &#39;A&#39;, &#39;UNK&#39;, &#39;atomname&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;radius&#39;],</span>
+<span class="sd">            ...</span>
+<span class="sd">            [&#39;resnum&#39;, &#39;A&#39;, &#39;UNK&#39;, &#39;atomname&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;radius&#39;]]</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -439,8 +434,7 @@
         <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="c1"># Create lists</span>
-    <span class="n">atominfo</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">xyzr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># Start resnum</span>
     <span class="n">resnum</span> <span class="o">=</span> <span class="mi">0</span>
@@ -463,10 +457,9 @@
                 <span class="n">resnum</span> <span class="o">+=</span> <span class="mi">1</span>
 
                 <span class="c1"># Append data</span>
-                <span class="n">atominfo</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">resnum</span><span class="si">}</span><span class="s2">_A_UNK&quot;</span><span class="p">,</span> <span class="n">atom_symbol</span><span class="p">])</span>
-                <span class="n">xyzr</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">radius</span><span class="p">])</span>
+                <span class="n">atomic</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">resnum</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;UNK&quot;</span><span class="p">,</span> <span class="n">atom_symbol</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">radius</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xyzr</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_read_cavity</span><span class="p">(</span><span class="n">cavity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -630,10 +623,13 @@
         <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="c1"># Load receptor coordinates and radii</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">receptor</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">receptor</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="c1"># Get vertices</span>
-    <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
     <span class="c1"># Get sincos</span>
     <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>

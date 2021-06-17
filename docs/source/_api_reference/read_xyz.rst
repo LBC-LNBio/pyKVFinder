@@ -25,23 +25,16 @@ With the vdW radii dictionary loaded with ``pyKVFinder.read_vdw``, we can read a
     >>> import pyKVFinder
     >>> from pyKVFinder import read_xyz
     >>> xyz = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.xyz')
-    >>> atominfo, xyzr = read_xyz(xyz)
+    >>> atomic = read_xyz(xyz)
     >>> atominfo
-    array([['1_A_UNK', 'N'],
-        ['2_A_UNK', 'C'],
-        ['3_A_UNK', 'C'],
-        ...,
-        ['2790_A_UNK', 'C'],
-        ['2791_A_UNK', 'C'],
-        ['2792_A_UNK', 'O']], dtype='<U10')
-    >>> xyzr
-    array([[ -6.693   , -15.642   , -14.858   ,   1.97    ],
-       [ -6.73    , -14.62    , -15.897   ,   1.66    ],
-       [ -7.49    , -13.357   , -15.508   ,   1.66    ],
+    array([['1', 'A', 'UNK', ..., '-15.642', '-14.858', '1.97'],
+       ['2', 'A', 'UNK', ..., '-14.62', '-15.897', '1.66'],
+       ['3', 'A', 'UNK', ..., '-13.357', '-15.508', '1.66'],
        ...,
-       [  7.216   ,  18.878   ,  -9.885   ,   1.66    ],
-       [  7.735   ,  17.624001,  -9.558   ,   1.66    ],
-       [  5.767   ,  19.233999, -13.442   ,   1.69    ]])
+       ['2790', 'A', 'UNK', ..., '18.878', '-9.885', '1.66'],
+       ['2791', 'A', 'UNK', ..., '17.624001', '-9.558', '1.66'],
+       ['2792', 'A', 'UNK', ..., '19.233999', '-13.442', '1.69']],
+      dtype='<U32')
 
 .. warning::
 

@@ -17,7 +17,7 @@ pyKVFinder.read_pdb
 
     <h4><u>Example</u></h4>
 
-With the vdW radii dictionary loaded with ``pyKVFinder.read_vdw``, we can read a target PDB file into Numpy arrays (atomic information and atomic coordinates):
+With the vdW radii dictionary loaded with ``pyKVFinder.read_vdw``, we can read a target PDB file into Numpy array (atomic data):
 
 .. code-block:: python
 
@@ -25,23 +25,16 @@ With the vdW radii dictionary loaded with ``pyKVFinder.read_vdw``, we can read a
     >>> import pyKVFinder
     >>> from pyKVFinder import read_pdb
     >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-    >>> atominfo, xyzr = read_pdb(pdb)
-    >>> atominfo
-    array([['13_E_GLU', 'N'],
-       ['13_E_GLU', 'CA'],
-       ['13_E_GLU', 'C'],
+    >>> atomic = read_pdb(pdb)
+    >>> atomic
+    array([['13', 'E', 'GLU', ..., '-15.642', '-14.858', '1.824'],
+       ['13', 'E', 'GLU', ..., '-14.62', '-15.897', '1.908'],
+       ['13', 'E', 'GLU', ..., '-13.357', '-15.508', '1.908'],
        ...,
-       ['350_E_PHE', 'CE2'],
-       ['350_E_PHE', 'CZ'],
-       ['350_E_PHE', 'OXT']], dtype='<U9')
-    >>> xyzr
-    array([[ -6.693, -15.642, -14.858,   1.824],
-       [ -6.73 , -14.62 , -15.897,   1.908],
-       [ -7.49 , -13.357, -15.508,   1.908],
-       ...,
-       [  7.216,  18.878,  -9.885,   1.908],
-       [  7.735,  17.624,  -9.558,   1.908],
-       [  5.767,  19.234, -13.442,   1.69 ]])
+       ['350', 'E', 'PHE', ..., '18.878', '-9.885', '1.908'],
+       ['350', 'E', 'PHE', ..., '17.624', '-9.558', '1.908'],
+       ['350', 'E', 'PHE', ..., '19.234', '-13.442', '1.69']],
+      dtype='<U32')
 
 .. warning::
 

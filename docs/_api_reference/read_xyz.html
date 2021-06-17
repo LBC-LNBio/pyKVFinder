@@ -223,7 +223,7 @@
 <h1>pyKVFinder.read_xyz<a class="headerlink" href="#pykvfinder-read-xyz" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyKVFinder.read_xyz">
-<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">read_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vdw</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/utils.html#read_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.read_xyz" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">read_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vdw</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="reference internal" href="../_modules/pyKVFinder/utils.html#read_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.read_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads XYZ file into numpy.ndarrays.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -233,15 +233,20 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>atominfo</strong> (<em>numpy.ndarray</em>) – A numpy array with atomic information (residue number, chain,
-residue name, atom name) for each atom.</p></li>
-<li><p><strong>xyzr</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with xyz atomic coordinates and radii for each atom.</p></li>
-</ul>
+<dd class="field-even"><p><p><strong>atomic</strong> – A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+and radius) for each atom.
+&gt;&gt;&gt; [[‘resnum’, ‘A’, ‘UNK’, ‘atomname’, ‘x’, ‘y’, ‘z’, ‘radius’],</p>
+<blockquote>
+<div><p>…
+[‘resnum’, ‘A’, ‘UNK’, ‘atomname’, ‘x’, ‘y’, ‘z’, ‘radius’]]</p>
+</div></blockquote>
 </p>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a string or a pathlib.Path.</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a string or a pathlib.Path.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -270,23 +275,16 @@ file: <cite>vdw.dat</cite>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyKVFinder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">read_xyz</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xyz</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.xyz&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span> <span class="o">=</span> <span class="n">read_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atomic</span> <span class="o">=</span> <span class="n">read_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">atominfo</span>
-<span class="go">array([[&#39;1_A_UNK&#39;, &#39;N&#39;],</span>
-<span class="go">    [&#39;2_A_UNK&#39;, &#39;C&#39;],</span>
-<span class="go">    [&#39;3_A_UNK&#39;, &#39;C&#39;],</span>
-<span class="go">    ...,</span>
-<span class="go">    [&#39;2790_A_UNK&#39;, &#39;C&#39;],</span>
-<span class="go">    [&#39;2791_A_UNK&#39;, &#39;C&#39;],</span>
-<span class="go">    [&#39;2792_A_UNK&#39;, &#39;O&#39;]], dtype=&#39;&lt;U10&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">xyzr</span>
-<span class="go">array([[ -6.693   , -15.642   , -14.858   ,   1.97    ],</span>
-<span class="go">   [ -6.73    , -14.62    , -15.897   ,   1.66    ],</span>
-<span class="go">   [ -7.49    , -13.357   , -15.508   ,   1.66    ],</span>
+<span class="go">array([[&#39;1&#39;, &#39;A&#39;, &#39;UNK&#39;, ..., &#39;-15.642&#39;, &#39;-14.858&#39;, &#39;1.97&#39;],</span>
+<span class="go">   [&#39;2&#39;, &#39;A&#39;, &#39;UNK&#39;, ..., &#39;-14.62&#39;, &#39;-15.897&#39;, &#39;1.66&#39;],</span>
+<span class="go">   [&#39;3&#39;, &#39;A&#39;, &#39;UNK&#39;, ..., &#39;-13.357&#39;, &#39;-15.508&#39;, &#39;1.66&#39;],</span>
 <span class="go">   ...,</span>
-<span class="go">   [  7.216   ,  18.878   ,  -9.885   ,   1.66    ],</span>
-<span class="go">   [  7.735   ,  17.624001,  -9.558   ,   1.66    ],</span>
-<span class="go">   [  5.767   ,  19.233999, -13.442   ,   1.69    ]])</span>
+<span class="go">   [&#39;2790&#39;, &#39;A&#39;, &#39;UNK&#39;, ..., &#39;18.878&#39;, &#39;-9.885&#39;, &#39;1.66&#39;],</span>
+<span class="go">   [&#39;2791&#39;, &#39;A&#39;, &#39;UNK&#39;, ..., &#39;17.624001&#39;, &#39;-9.558&#39;, &#39;1.66&#39;],</span>
+<span class="go">   [&#39;2792&#39;, &#39;A&#39;, &#39;UNK&#39;, ..., &#39;19.233999&#39;, &#39;-13.442&#39;, &#39;1.69&#39;]],</span>
+<span class="go">  dtype=&#39;&lt;U32&#39;)</span>
 </pre></div>
 </div>
 <div class="admonition warning">
