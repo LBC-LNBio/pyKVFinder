@@ -7,9 +7,14 @@ In addition to pyKVFinder package, a command-line interface (CLI) is available t
 .. code-block:: bash
 
   $ pyKVFinder
-    Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>] [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>] [-o <float>] [-V <float>] [-R <float>] [-S <str>] [--ignore_backbone]
-                      [-D] [--plot_frequencies] [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                      <.pdb>
+  Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>]
+                    [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]
+                    [-o <float>] [-V <float>] [-R <float>] [-S <str>]
+                    [--ignore_backbone] [-D] [--plot_frequencies]
+                    [--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle, 
+                    MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]]
+                    [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
+                    <.pdb>
 
 Positional arguments
 --------------------

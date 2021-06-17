@@ -207,9 +207,14 @@
             
   <h1>Command-line interface</h1><p>In addition to pyKVFinder package, a command-line interface (CLI) is available to ease cavity detection and characterization with the full set of customizable parameters.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder
-  Usage: pyKVFinder <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-b &lt;str&gt;<span class="o">]</span> <span class="o">[</span>-O &lt;str&gt;<span class="o">]</span> <span class="o">[</span>--nthreads &lt;int&gt;<span class="o">]</span> <span class="o">[</span>-d &lt;str&gt;<span class="o">]</span> <span class="o">[</span>-s &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-i &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-o &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-V &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-R &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-S &lt;str&gt;<span class="o">]</span> <span class="o">[</span>--ignore_backbone<span class="o">]</span>
-                    <span class="o">[</span>-D<span class="o">]</span> <span class="o">[</span>--plot_frequencies<span class="o">]</span> <span class="o">[</span>-B &lt;.toml&gt;<span class="o">]</span> <span class="o">[</span>-L &lt;.pdb&gt;<span class="o">]</span> <span class="o">[</span>--ligand_cutoff &lt;float&gt;<span class="o">]</span>
-                    &lt;.pdb&gt;
+Usage: pyKVFinder <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-b &lt;str&gt;<span class="o">]</span> <span class="o">[</span>-O &lt;str&gt;<span class="o">]</span>
+                  <span class="o">[</span>--nthreads &lt;int&gt;<span class="o">]</span> <span class="o">[</span>-d &lt;str&gt;<span class="o">]</span> <span class="o">[</span>-s &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-i &lt;float&gt;<span class="o">]</span>
+                  <span class="o">[</span>-o &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-V &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-R &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-S &lt;str&gt;<span class="o">]</span>
+                  <span class="o">[</span>--ignore_backbone<span class="o">]</span> <span class="o">[</span>-D<span class="o">]</span> <span class="o">[</span>--plot_frequencies<span class="o">]</span>
+                  <span class="o">[</span>--hydropathy <span class="o">[{</span>EisenbergWeiss, HessaHeijne, KyteDoolittle,
+                  MoonFleming, WimleyWhite, ZhaoLondon, &lt;.toml&gt;<span class="o">}]]</span>
+                  <span class="o">[</span>-B &lt;.toml&gt;<span class="o">]</span> <span class="o">[</span>-L &lt;.pdb&gt;<span class="o">]</span> <span class="o">[</span>--ligand_cutoff &lt;float&gt;<span class="o">]</span>
+                  &lt;.pdb&gt;
 </pre></div>
 </div>
 <div class="section" id="positional-arguments">
