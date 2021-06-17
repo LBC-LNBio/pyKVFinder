@@ -456,8 +456,7 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <p>However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.</p>
 <p>The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a <em>.pdb</em> or a <em>.xyz</em> files. Thus, the detected cavities are limited within a radius (<code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code>) of the target ligand(s).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
 <span class="go">&lt;pyKVFinderResults object&gt;</span>
@@ -510,8 +509,7 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </pre></div>
 </div>
 <p>Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a <em>.toml</em> file (see <a class="reference external" href="box_file_template.html">Box configuration file template</a>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="go">[box]</span>
@@ -581,9 +579,9 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
 
-<span class="go">      ...,</span>
+<span class="go">        ...,</span>
 
-<span class="go">      [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        ...,</span>
@@ -599,9 +597,9 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
 
-<span class="go">      ...,</span>
+<span class="go">        ...,</span>
 
-<span class="go">      [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">        [[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        ...,</span>

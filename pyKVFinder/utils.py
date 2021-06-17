@@ -159,9 +159,10 @@ def read_pdb(
     atomic : numpy.ndarray
         A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
         and radius) for each atom.
-        ``[['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius'],
+
+        >>> [['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius'],
         ...
-        ['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius']]``
+        ['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius']]
 
     Raises
     ------
@@ -211,9 +212,10 @@ def read_xyz(
     atomic : numpy.ndarray
         A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
         and radius) for each atom.
-        ``[['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius'],
+        
+        >>> [['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius'],
         ...
-        ['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius']]``
+        ['resnum', 'chain', 'resname', 'atomname', 'x', 'y', 'z', 'radius']]
 
     Raises
     ------

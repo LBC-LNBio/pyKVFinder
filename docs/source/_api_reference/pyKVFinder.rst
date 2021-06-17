@@ -74,7 +74,6 @@ The cavity detection can be limited around the target ligand(s), which will be p
 
 .. code-block:: python
 
-    >>> import os
     >>> ligand = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'ADN.pdb')
     >>> results = pyKVFinder.pyKVFinder(pdb, ligand)
     >>> results
@@ -130,7 +129,6 @@ Further, we can also perform cavity detection on a custom 3D grid, where we can 
 
 .. code-block:: python
 
-    >>> import os
     >>> fn = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'custom-box.toml')
     >>> with open(fn, 'r') as f:
     ...     print(f.read())
@@ -193,46 +191,46 @@ However, users may opt to perform the **full workflow** for cavity detection wit
 
 .. code-block:: python
 
-  >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
-  >>> results.depths
-  array([[[0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          ...,
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.]],
+    >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
+    >>> results.depths
+    array([[[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]],
 
-        ...,
+            ...,
 
-        [[0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          ...,
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.]]])
-  >>> results.scales
-  array([[[0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          ...,
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.]],
+            [[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]]])
+    >>> results.scales
+    array([[[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]],
 
-        ...,
+            ...,
 
-        [[0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          ...,
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.],
-          [0., 0., 0., ..., 0., 0., 0.]]])
-  >>> results.avg_depth
-  {'KAA': 1.35, 'KAB': 0.91, 'KAC': 0.68, 'KAD': 0.32, 'KAE': 0.99, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.91, 'KAI': 0.0, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.07, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}
-  >>> results.max_depth
-  {'KAA': 3.79, 'KAB': 2.68, 'KAC': 2.62, 'KAD': 0.85, 'KAE': 3.0, 'KAF': 0.85, 'KAG': 0.6, 'KAH': 10.73, 'KAI': 0.0, 'KAJ': 2.24, 'KAK': 0.0, 'KAL': 3.0, 'KAM': 1.2, 'KAN': 0.0, 'KAO': 1.04, 'KAP': 2.08, 'KAQ': 0.85, 'KAR': 0.6}
-  >>> results.avg_hydropathy
-  {'KAA': -0.73, 'KAB': -0.05, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.17, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.36, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]}
+            [[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]]])
+    >>> results.avg_depth
+    {'KAA': 1.35, 'KAB': 0.91, 'KAC': 0.68, 'KAD': 0.32, 'KAE': 0.99, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.91, 'KAI': 0.0, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.07, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}
+    >>> results.max_depth
+    {'KAA': 3.79, 'KAB': 2.68, 'KAC': 2.62, 'KAD': 0.85, 'KAE': 3.0, 'KAF': 0.85, 'KAG': 0.6, 'KAH': 10.73, 'KAI': 0.0, 'KAJ': 2.24, 'KAK': 0.0, 'KAL': 3.0, 'KAM': 1.2, 'KAN': 0.0, 'KAO': 1.04, 'KAP': 2.08, 'KAQ': 0.85, 'KAR': 0.6}
+    >>> results.avg_hydropathy
+    {'KAA': -0.73, 'KAB': -0.05, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.17, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.36, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]}
