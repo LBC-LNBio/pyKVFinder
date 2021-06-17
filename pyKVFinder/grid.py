@@ -2088,9 +2088,6 @@ def export(
     if scales is not None:
         scales = scales.astype("float64") if scales.dtype != "float64" else scales
 
-    # Get number of cavities
-    ncav = int(cavities.max() - 1)
-
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
     sincos = _get_sincos(vertices)
 
@@ -2120,6 +2117,10 @@ def export(
             cavities = _select_cavities(cavities, selection)
 
     if cavities is None:
+
+        # Get number of cavities
+        ncav = int(surface.max() - 1)
+
         if surface is None:
             raise Exception(f"User must define `surface` when not defining `cavities`.")
         else:
@@ -2139,6 +2140,9 @@ def export(
     else:
         # Check and convert cavities dtype
         cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
+
+        # Get number of cavities
+        ncav = int(cavities.max() - 1)
 
         # Export cavities
         if B is None:
