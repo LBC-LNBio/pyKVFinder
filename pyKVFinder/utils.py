@@ -71,7 +71,7 @@ def read_vdw(
             if line.replace("\t\t", "")
         ]
         for line in lines:
-            if line:
+            if not line.startswith("#"):
                 if line.startswith(">"):
                     res = line.replace(">", "").replace("\t\t", "").replace(" ", "")
                     vdw[res] = {}
