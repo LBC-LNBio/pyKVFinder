@@ -736,7 +736,7 @@ The function call depends on the characterizations performed on the detected cav
 .. code-block:: python
 
   >>> output_results = 'results.toml'
-  >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, step=step)
+  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, step=step)
 
 10.2 Spatial characterization
 *****************************
@@ -744,7 +744,7 @@ The function call depends on the characterizations performed on the detected cav
 .. code-block:: python
 
   >>> output_results = 'results.toml'
-  >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, volume=volume, area=area, step=step)
+  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, step=step)
 
 10.3 Spatial and constitutional characterization
 ************************************************
@@ -752,7 +752,7 @@ The function call depends on the characterizations performed on the detected cav
 .. code-block:: python
 
   >>> output_results = 'results.toml'
-  >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, volume=volume, area=area, residues=residues, frequencies=frequencies, step=step)
+  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, residues=residues, frequencies=frequencies, step=step)
 
 10.4 Spatial, constitutional and depth characterization
 *******************************************************
@@ -760,7 +760,7 @@ The function call depends on the characterizations performed on the detected cav
 .. code-block:: python
 
   >>> output_results = 'results.toml'
-  >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, residues=residues, frequencies=frequencies, step=step)
+  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, residues=residues, frequencies=frequencies, step=step)
 
 10.5 Spatial, constitutional, depth and hydropathy characterization
 *******************************************************************
@@ -768,7 +768,7 @@ The function call depends on the characterizations performed on the detected cav
 .. code-block:: python
 
   >>> output_results = 'results.toml'
-  >>> pyKVFinder.write_results(output_results, pdb=pdb, ligand=None, output=output_cavity, output_hydropathy=output_hydropathy, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies, step=step)
+  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, output_hydropathy=output_hydropathy, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies, step=step)
 
 .. note::
 

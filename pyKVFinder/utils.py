@@ -305,9 +305,9 @@ def read_cavity(
     Parameters
     ----------
     cavity : Union[str, pathlib.Path]
-        A path to a PDB-formatted file of cavities.
+        A path to a PDB file of cavities.
     receptor : Union[str, pathlib.Path]
-        A path to a PDB-formatted file of the receptor.
+        A path to a PDB or XYZ file of the receptor.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
     probe_in : Union[float, int], optional
@@ -344,6 +344,8 @@ def read_cavity(
     TypeError
         `receptor` must be a string or a pathlib.Path.
     TypeError
+        `target` must have .pdb or .xyz extension.
+    TypeError
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
@@ -376,6 +378,8 @@ def read_cavity(
         raise TypeError("`cavity` must be a string or a pathlib.Path.")
     if type(receptor) not in [str, pathlib.Path]:
         raise TypeError("`receptor` must be a string or a pathlib.Path.")
+    elif not receptor.endswith('.pdb') and not receptor.endswith('.xyz'):
+        raise TypeError("`receptor` must have .pdb or .xyz extension.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
@@ -419,7 +423,10 @@ def read_cavity(
         vdw = read_vdw(VDW)
 
     # Load receptor coordinates and radii
-    atomic = read_pdb(receptor, vdw)
+    if receptor.endswith('.pdb'):
+        atomic = read_pdb(receptor, vdw)
+    elif receptor.endswith('.xyz'):
+        atomic = read_xyz(receptor, vdw)
 
     # Extract xyzr from atomic
     xyzr = atomic[:, 4:].astype(numpy.float64)
@@ -585,7 +592,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
     # Parameters dict
     parameters = {
         "FILES": {
-            "input": args.input,
+            "INPUT": args.input,
             "LIGAND": args.ligand,
             "BASE_NAME": args.base_name,
             "OUTPUT_DIRECTORY": args.output_directory,
@@ -878,7 +885,7 @@ def plot_frequencies(
 
 def write_results(
     fn: Union[str, pathlib.Path],
-    pdb: Optional[Union[str, pathlib.Path]],
+    input: Optional[Union[str, pathlib.Path]],
     ligand: Optional[Union[str, pathlib.Path]],
     output: Optional[Union[str, pathlib.Path]],
     output_hydropathy: Optional[Union[str, pathlib.Path]] = None,
@@ -899,10 +906,10 @@ def write_results(
         A path to TOML-formatted file for writing file paths and
         cavity characterization (volume, area, depth [optional] and interface
         residues) per cavity detected.
-    pdb : Union[str, pathlib.Path], optional
-        A path to input PDB file.
+    input : Union[str, pathlib.Path], optional
+        A path to input PDB or XYZ file.
     ligand : Union[str, pathlib.Path], optional
-        A path to ligand PDB file.
+        A path to ligand PDB or XYZ file.
     output : Union[str, pathlib.Path], optional
         A path to cavity PDB file.
     output_hydropathy : Union[str, pathlib.Path], optional
@@ -935,7 +942,7 @@ def write_results(
     TypeError
         `fn` must be a string or a pathlib.Path.
     TypeError
-        `pdb` must be a string or a pathlib.Path.
+        `input` must be a string or a pathlib.Path.
     TypeError
         `ligand` must be a string or a pathlib.Path.
     TypeError
@@ -972,9 +979,9 @@ def write_results(
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:
         raise TypeError("`fn` must be a string or a pathlib.Path.")
-    if pdb is not None:
-        if type(pdb) not in [str, pathlib.Path]:
-            raise TypeError("`pdb` must be a string or a pathlib.Path.")
+    if input is not None:
+        if type(input) not in [str, pathlib.Path]:
+            raise TypeError("`input` must be a string or a pathlib.Path.")
     if ligand is not None:
         if type(ligand) not in [str, pathlib.Path]:
             raise TypeError("`ligand` must be a string or a pathlib.Path.")
@@ -1018,7 +1025,7 @@ def write_results(
     os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
 
     # Prepare paths
-    pdb = os.path.abspath(pdb)
+    input = os.path.abspath(input)
     if ligand:
         ligand = os.path.abspath(ligand)
     if output:
@@ -1029,7 +1036,7 @@ def write_results(
     # Create results dictionary
     results = {
         "FILES": {
-            "INPUT": pdb,
+            "INPUT": input,
             "LIGAND": ligand,
             "OUTPUT": output,
             "HYDROPATHY": output_hydropathy,

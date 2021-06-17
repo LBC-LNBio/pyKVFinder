@@ -503,9 +503,9 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    cavity : Union[str, pathlib.Path]</span>
-<span class="sd">        A path to a PDB-formatted file of cavities.</span>
+<span class="sd">        A path to a PDB file of cavities.</span>
 <span class="sd">    receptor : Union[str, pathlib.Path]</span>
-<span class="sd">        A path to a PDB-formatted file of the receptor.</span>
+<span class="sd">        A path to a PDB or XYZ file of the receptor.</span>
 <span class="sd">    step : Union[float, int], optional</span>
 <span class="sd">        Grid spacing (A), by default 0.6.</span>
 <span class="sd">    probe_in : Union[float, int], optional</span>
@@ -542,6 +542,8 @@
 <span class="sd">    TypeError</span>
 <span class="sd">        `receptor` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
+<span class="sd">        `target` must have .pdb or .xyz extension.</span>
+<span class="sd">    TypeError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `step` must be a positive real number.</span>
@@ -574,6 +576,8 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavity` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">receptor</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`receptor` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">receptor</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pdb&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">receptor</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xyz&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`receptor` must have .pdb or .xyz extension.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -617,7 +621,10 @@
         <span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="n">VDW</span><span class="p">)</span>
 
     <span class="c1"># Load receptor coordinates and radii</span>
-    <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">receptor</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">receptor</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pdb&#39;</span><span class="p">):</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">receptor</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">receptor</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xyz&#39;</span><span class="p">):</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_xyz</span><span class="p">(</span><span class="n">receptor</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
 
     <span class="c1"># Extract xyzr from atomic</span>
     <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -783,7 +790,7 @@
     <span class="c1"># Parameters dict</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;FILES&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
             <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span>
             <span class="s2">&quot;BASE_NAME&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="p">,</span>
             <span class="s2">&quot;OUTPUT_DIRECTORY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
@@ -1076,7 +1083,7 @@
 
 <div class="viewcode-block" id="write_results"><a class="viewcode-back" href="../../_api_reference/write_results.html#pyKVFinder.write_results">[docs]</a><span class="k">def</span> <span class="nf">write_results</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">pdb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1097,10 +1104,10 @@
 <span class="sd">        A path to TOML-formatted file for writing file paths and</span>
 <span class="sd">        cavity characterization (volume, area, depth [optional] and interface</span>
 <span class="sd">        residues) per cavity detected.</span>
-<span class="sd">    pdb : Union[str, pathlib.Path], optional</span>
-<span class="sd">        A path to input PDB file.</span>
+<span class="sd">    input : Union[str, pathlib.Path], optional</span>
+<span class="sd">        A path to input PDB or XYZ file.</span>
 <span class="sd">    ligand : Union[str, pathlib.Path], optional</span>
-<span class="sd">        A path to ligand PDB file.</span>
+<span class="sd">        A path to ligand PDB or XYZ file.</span>
 <span class="sd">    output : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to cavity PDB file.</span>
 <span class="sd">    output_hydropathy : Union[str, pathlib.Path], optional</span>
@@ -1133,7 +1140,7 @@
 <span class="sd">    TypeError</span>
 <span class="sd">        `fn` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `pdb` must be a string or a pathlib.Path.</span>
+<span class="sd">        `input` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `ligand` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
@@ -1170,9 +1177,9 @@
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">pdb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`pdb` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`input` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ligand</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ligand</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ligand` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
@@ -1216,7 +1223,7 @@
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Prepare paths</span>
-    <span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ligand</span><span class="p">:</span>
         <span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">ligand</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
@@ -1227,7 +1234,7 @@
     <span class="c1"># Create results dictionary</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;FILES&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">pdb</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="p">,</span>
             <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">ligand</span><span class="p">,</span>
             <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
             <span class="s2">&quot;HYDROPATHY&quot;</span><span class="p">:</span> <span class="n">output_hydropathy</span><span class="p">,</span>
