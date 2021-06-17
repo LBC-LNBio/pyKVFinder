@@ -22,9 +22,9 @@ examples/conservation-analysis/box.toml
 examples/visualization/data/
 
 # Benchmarking 
-etc/performance/data/
-!etc/performance/scripts/
-etc/performance/scripts/parKVFinder*
+performance/data/
+!performance/scripts/
+performance/scripts/parKVFinder*
 
 # Cavity templates (.pdb and .cif)
 etc/templates/
