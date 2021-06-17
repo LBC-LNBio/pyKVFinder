@@ -9,6 +9,7 @@ from .argparser import argparser
 from .utils import (
     read_vdw,
     read_pdb,
+    read_xyz,
     calculate_frequencies,
     plot_frequencies,
     write_results,
@@ -49,8 +50,8 @@ def cli() -> None:
                       [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]
                       [-o <float>] [-V <float>] [-R <float>] [-S <str>]
                       [--ignore_backbone] [-D] [--plot_frequencies]
-                      [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                      <.pdb>
+                      [-B <.toml>] [-L (<.pdb> | <.xyz>)] [--ligand_cutoff <float>]
+                      (<.pdb> | <.xyz>)
     """
     # Start time
     start_time = time.time()
@@ -61,15 +62,17 @@ def cli() -> None:
     # Parse command-line arguments
     args = parser.parse_args()
 
-    # Get base name from pdb file if not defined by user
-    if not args.base_name:
-        args.base_name = os.path.basename(args.pdb.replace(".pdb", ""))
+    # Get base name from input file if not defined by user
+    if args.base_name is None:
+        args.base_name = os.path.basename(
+            args.input.replace(".pdb", "").replace(".xyz", "")
+        )
 
     # Create output directory
     os.makedirs(args.output_directory, exist_ok=True)
 
     # Print message to stdout
-    print(f"[PID {os.getpid()}] Running pyKVFinder for: {args.pdb}")
+    print(f"[PID {os.getpid()}] Running pyKVFinder for: {args.input}")
 
     # Start logging
     logging.basicConfig(
@@ -81,7 +84,7 @@ def cli() -> None:
     logging.info(
         f"Date: {datetime.now().strftime('%a %d %B, %Y')}\nTime: {datetime.now().strftime('%H:%M:%S')}\n"
     )
-    logging.info(f"[ Running pyKVFinder for: {args.pdb} ]")
+    logging.info(f"[ Running pyKVFinder for: {args.input} ]")
     logging.info(f"> vdW radii file: {args.dictionary}")
 
     if args.verbose:
@@ -90,12 +93,18 @@ def cli() -> None:
 
     if args.verbose:
         print("> Reading PDB coordinates")
-    atomic = read_pdb(args.pdb, vdw)
+    if args.input.endswith(".pdb"):
+        atomic = read_pdb(args.input, vdw)
+    elif args.input.endswith(".xyz"):
+        atomic = read_xyz(args.input, vdw)
 
     if args.ligand:
         if args.verbose:
             print("> Reading ligand coordinates")
-        latomic = read_pdb(args.ligand, vdw)
+        if args.ligand.endswith('.pdb'):
+            latomic = read_pdb(args.ligand, vdw)
+        elif args.ligand.endswith('.xyz'):
+            latomic = read_xyz(args.ligand, vdw)
     else:
         latomic = None
 
@@ -115,7 +124,7 @@ def cli() -> None:
         # Set flag to boolean
         args.box = True
     else:
-        # Get vertices from pdb
+        # Get vertices from input
         args.vertices = get_vertices(atomic, args.probe_out, args.step)
 
         # Set flag to boolean
@@ -206,7 +215,7 @@ def cli() -> None:
         if args.hydropathy:
             # Map hydrophobicity scales
             scales, avg_hydropathy = hydropathy(
-                surface, 
+                surface,
                 atomic,
                 args.vertices,
                 args.step,
@@ -247,7 +256,7 @@ def cli() -> None:
         )
         write_results(
             output_results,
-            args.pdb,
+            args.input,
             args.ligand,
             output_cavity,
             output_hydropathy,
@@ -332,10 +341,10 @@ class pyKVFinderResults(object):
         X-axis, Y-axis, Z-axis).
     _step : float
         Grid spacing (A).
-    _pdb : Union[str, pathlib.Path], optional
-        A path to input PDB file, by default None.
+    _input : Union[str, pathlib.Path], optional
+        A path to input PDB or XYZ file, by default None.
     _ligand : Union[str, pathlib.Path], optional
-        A path to ligand PDB file, by default None.
+        A path to ligand PDB or XYZ file, by default None.
 
     Attributes
     ----------
@@ -394,10 +403,10 @@ class pyKVFinderResults(object):
         X-axis, Y-axis, Z-axis).
     _step : float
         Grid spacing (A).
-    _pdb : Union[str, pathlib.Path], optional
-        A path to input PDB file, by default None.
+    _input : Union[str, pathlib.Path], optional
+        A path to input PDB or XYZ file, by default None.
     _ligand : Union[str, pathlib.Path], optional
-        A path to ligand PDB file, by default None.
+        A path to ligand PDB or XYZ file, by default None.
     """
 
     def __init__(
@@ -415,7 +424,7 @@ class pyKVFinderResults(object):
         frequencies: Optional[Dict[str, Dict[str, Dict[str, int]]]],
         _vertices: numpy.ndarray,
         _step: Union[float, int],
-        _pdb: Optional[Union[str, pathlib.Path]] = None,
+        _input: Optional[Union[str, pathlib.Path]] = None,
         _ligand: Optional[Union[str, pathlib.Path]] = None,
     ):
         self.cavities = cavities
@@ -432,7 +441,7 @@ class pyKVFinderResults(object):
         self.frequencies = frequencies
         self._vertices = _vertices
         self._step = _step
-        self._pdb = os.path.abspath(_pdb)
+        self._input = os.path.abspath(_input)
         self._ligand = os.path.abspath(_ligand) if _ligand else None
 
     def __repr__(self):
@@ -509,7 +518,7 @@ class pyKVFinderResults(object):
         """
         write_results(
             fn,
-            self._pdb,
+            self._input,
             self._ligand,
             output,
             output_hydropathy,
@@ -624,7 +633,7 @@ class pyKVFinderResults(object):
 
 
 def pyKVFinder(
-    pdb: Union[str, pathlib.Path],
+    input: Union[str, pathlib.Path],
     ligand: Optional[Union[str, pathlib.Path]] = None,
     vdw: Optional[Union[str, pathlib.Path]] = None,
     box: Optional[Union[str, pathlib.Path]] = None,
@@ -647,10 +656,10 @@ def pyKVFinder(
 
     Parameters
     ----------
-    pdb : Union[str, pathlib.Path]
-        A path to input PDB file.
+    input : Union[str, pathlib.Path]
+        A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities. 
     ligand : Union[str, pathlib.Path], optional
-        A path to ligand PDB file, by default None.
+        A path to ligand file, in PDB or XYZ format, by default None.
     vdw : Union[str, pathlib.Path], optional
         A path to a van der Waals radii file, by default None. If None, apply the built-in van der
         Waals radii file: `vdw.dat`.
@@ -751,10 +760,17 @@ def pyKVFinder(
             X-axis, Y-axis, Z-axis).
         * _step : float
             Grid spacing (A).
-        * _pdb : Union[str, pathlib.Path], optional
-            A path to input PDB file.
+        * _input : Union[str, pathlib.Path], optional
+            A path to input PDB or XYZ file.
         * _ligand : Union[str, pathlib.Path], optional
-            A path to ligand PDB file.
+            A path to ligand PDB or XYZ file.
+
+    Raises
+    ------
+    TypeError
+        `input` must have .pdb or .xyz extension.
+    TypeError
+        `ligand` must have .pdb or .xyz extension.
 
     Note
     ----
@@ -787,12 +803,22 @@ def pyKVFinder(
 
     if verbose:
         print("> Reading PDB coordinates")
-    atomic = read_pdb(pdb, vdw)
-
+    if input.endswith('.pdb'):
+        atomic = read_pdb(input, vdw)
+    elif input.endswith('.xyz'):
+        atomic = read_xyz(input, vdw)
+    else:
+        raise TypeError("`target` must have .pdb or .xyz extension.")
+    
     if ligand:
         if verbose:
             print("> Reading ligand coordinates")
-        latomic = read_pdb(ligand, vdw)
+        if ligand.endswith('.pdb'):
+            latomic = read_pdb(ligand, vdw)
+        elif ligand.endswith('.xyz'):
+            latomic = read_xyz(ligand, vdw)
+        else:
+            raise TypeError("`ligand` must have .pdb or .xyz extension.")
     else:
         latomic = None
 
@@ -807,7 +833,7 @@ def pyKVFinder(
         # Set flag to boolean
         box = True
     else:
-        # Get vertices from pdb
+        # Get vertices from input
         vertices = get_vertices(atomic, probe_out, step)
 
         # Set flag to boolean
@@ -902,7 +928,7 @@ def pyKVFinder(
         frequencies,
         vertices,
         step,
-        pdb,
+        input,
         ligand,
     )
 

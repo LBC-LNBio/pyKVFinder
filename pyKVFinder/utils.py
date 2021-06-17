@@ -585,7 +585,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
     # Parameters dict
     parameters = {
         "FILES": {
-            "input": args.pdb,
+            "input": args.input,
             "LIGAND": args.ligand,
             "BASE_NAME": args.base_name,
             "OUTPUT_DIRECTORY": args.output_directory,

@@ -20,8 +20,8 @@ Command Line Interface
                     [--ignore_backbone] [-D] [--plot_frequencies]\
                     [--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle,\
                     MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]]\
-                    [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]\
-                    <.pdb>
+                    [-B <.toml>] [-L (<.pdb> | <.xyz>)] [--ligand_cutoff <float>]\
+                    (<.pdb> | <.xyz>)
 
 See also
 --------

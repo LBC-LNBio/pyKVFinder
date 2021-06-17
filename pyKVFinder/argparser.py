@@ -6,6 +6,38 @@ from . import __name__, __version__
 __all__ = ["argparser"]
 
 
+def _check_pdb_xyz(x: str) -> str:
+    """Checks if x is a .pdb or .xyz extension and returns its abspath.
+
+    Parameters
+    ----------
+    x : Any
+        Option to be checked.
+
+    Returns
+    -------
+    x : str
+        Valid option.
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        `x` must have .pdb or .xyz extension.
+    """
+    if x.endswith(".pdb"):
+        x = os.path.abspath(x)
+    elif x.endswith(".xyz"):
+        x = os.path.abspath(x)
+    else:
+        raise (
+            argparse.ArgumentTypeError(
+                "%r must have .pdb or .xyz extension." % x
+            )
+        )
+
+    return x
+
+
 def _check_hydropathy_options(x: Any) -> str:
     """Checks if x is a acceptable option for hydropathy argument.
 
@@ -153,10 +185,10 @@ def argparser() -> argparse.ArgumentParser:
 
     # Positional arguments
     parser.add_argument(
-        "pdb",
-        metavar="<.pdb>",
-        type=os.path.abspath,
-        help="Path to a target PDB file.",
+        "input",
+        metavar="(<.pdb> | <.xyz>)",
+        type=_check_pdb_xyz,
+        help="Path to a target PDB or XYZ file.",
     )
 
     # Optional arguments
@@ -326,10 +358,10 @@ grid with only one of this box parameters.',
     ligand_adjustment.add_argument(
         "-L",
         "--ligand",
-        metavar="<.pdb>",
-        type=os.path.abspath,
-        help="Path to a ligand PDB file to limit the cavities within a radius \
-(ligand_cutoff) around it.",
+        metavar="(<.pdb> | <.xyz>)",
+        type=_check_pdb_xyz,
+        help="Path to a ligand PDB or XYZ file to limit the cavities within a \
+radius (ligand_cutoff) around it.",
     )
     ligand_adjustment.add_argument(
         "--ligand_cutoff",

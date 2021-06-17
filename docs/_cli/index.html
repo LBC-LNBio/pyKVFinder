@@ -213,15 +213,15 @@ Usage: pyKVFinder <span class="o">[</span>-h<span class="o">]</span> <span class
                   <span class="o">[</span>--ignore_backbone<span class="o">]</span> <span class="o">[</span>-D<span class="o">]</span> <span class="o">[</span>--plot_frequencies<span class="o">]</span>
                   <span class="o">[</span>--hydropathy <span class="o">[{</span>EisenbergWeiss, HessaHeijne, KyteDoolittle,
                   MoonFleming, WimleyWhite, ZhaoLondon, &lt;.toml&gt;<span class="o">}]]</span>
-                  <span class="o">[</span>-B &lt;.toml&gt;<span class="o">]</span> <span class="o">[</span>-L &lt;.pdb&gt;<span class="o">]</span> <span class="o">[</span>--ligand_cutoff &lt;float&gt;<span class="o">]</span>
-                  &lt;.pdb&gt;
+                  <span class="o">[</span>-B &lt;.toml&gt;<span class="o">]</span> <span class="o">[</span>-L <span class="o">(</span>&lt;.pdb&gt; <span class="p">|</span> &lt;.xyz&gt;<span class="o">)]</span> <span class="o">[</span>--ligand_cutoff &lt;float&gt;<span class="o">]</span>
+                  <span class="o">(</span>&lt;.pdb&gt; <span class="p">|</span> &lt;.xyz&gt;<span class="o">)</span>
 </pre></div>
 </div>
 <div class="section" id="positional-arguments">
 <h1>Positional arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this headline">¶</a></h1>
 <p>The positional arguments are:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;.pdb&gt;</span></code>: A path to a target PDB file.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">(&lt;.pdb&gt;</span> <span class="pre">|</span> <span class="pre">&lt;.xyz&gt;)</span></code>: A path to a target PDB or XYZ file.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt;
 </pre></div>
 </div>
@@ -453,7 +453,7 @@ $ pyKVFinder &lt;.pdb&gt; --box &lt;.toml&gt;
 <h2>Ligand adjustment<a class="headerlink" href="#ligand-adjustment" title="Permalink to this headline">¶</a></h2>
 <p>The ligand adjustment arguments are:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">&lt;.pdb&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--ligand</span> <span class="pre">&lt;.pdb&gt;</span></code>: A path to a ligand PDB file to limit the cavities within a radius (ligand_cutoff) around it.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">(&lt;.pdb&gt;</span> <span class="pre">|</span> <span class="pre">&lt;.xyz&gt;)</span></code> or <code class="docutils literal notranslate"><span class="pre">--ligand</span> <span class="pre">(&lt;.pdb&gt;</span> <span class="pre">|</span> <span class="pre">&lt;.xyz&gt;)</span></code>: A path to a ligand PDB or XYZ file to limit the cavities within a radius (ligand_cutoff) around it.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -L &lt;.pdb&gt;
 $ pyKVFinder &lt;.pdb&gt; --ligand &lt;.pdb&gt;
 </pre></div>

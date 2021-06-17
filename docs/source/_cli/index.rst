@@ -13,15 +13,15 @@ In addition to pyKVFinder package, a command-line interface (CLI) is available t
                     [--ignore_backbone] [-D] [--plot_frequencies]
                     [--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle, 
                     MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]]
-                    [-B <.toml>] [-L <.pdb>] [--ligand_cutoff <float>]
-                    <.pdb>
+                    [-B <.toml>] [-L (<.pdb> | <.xyz>)] [--ligand_cutoff <float>]
+                    (<.pdb> | <.xyz>)
 
 Positional arguments
 --------------------
 
 The positional arguments are:
 
-* ``<.pdb>``: A path to a target PDB file.
+* ``(<.pdb> | <.xyz>)``: A path to a target PDB or XYZ file.
   
   .. code-block:: bash
     
@@ -222,7 +222,7 @@ Ligand adjustment
 
 The ligand adjustment arguments are:
 
-* ``-L <.pdb>`` or ``--ligand <.pdb>``: A path to a ligand PDB file to limit the cavities within a radius (ligand_cutoff) around it.
+* ``-L (<.pdb> | <.xyz>)`` or ``--ligand (<.pdb> | <.xyz>)``: A path to a ligand PDB or XYZ file to limit the cavities within a radius (ligand_cutoff) around it.
 
   .. code-block:: bash
 
