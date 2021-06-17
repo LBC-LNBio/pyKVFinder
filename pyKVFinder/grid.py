@@ -205,7 +205,6 @@ def get_vertices_from_file(
         atomic = numpy.asarray(atomic)
 
     # Extract atominfo from atomic
-    # atominfo = atomic[:, :4]
     atominfo = numpy.asarray(
         ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
     )
@@ -349,7 +348,7 @@ def _get_vertices_from_box(
     P3 += numpy.asarray([x3, y3, z3])
     P4 += numpy.asarray([x4, y4, z4])
 
-    vertices = numpy.asarray([P1, P2, P3, P4])
+    vertices = numpy.round([P1, P2, P3, P4], 3)
 
     return vertices
 
@@ -402,7 +401,7 @@ def _get_vertices_from_residues(
     P3 = numpy.array([P1[0], ymax, P1[2]])
     P4 = numpy.array([P1[0], P1[1], zmax])
 
-    vertices = numpy.array([P1, P2, P3, P4])
+    vertices = numpy.round([P1, P2, P3, P4], 3)
 
     return vertices
 
@@ -1512,7 +1511,6 @@ def constitutional(
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
 
     # Extract atominfo from atomic
-    # atominfo = atomic[:, :4]
     atominfo = numpy.asarray(
         ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
     )
@@ -1809,7 +1807,6 @@ def hydropathy(
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
 
     # Extract atominfo from atomic
-    # atominfo = atomic[:, :4]
     atominfo = numpy.asarray(
         ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
     )

@@ -1,0 +1,8 @@
+MODEL        1
+ATOM    107  N   GLY A  13      12.681  37.302 -25.211 1.000 15.56           N  
+ANISOU  107  N   GLY A  13     2406   1892   1614    198    519   -328       N  
+SIGUIJ  107  N   GLY A  13       10     10     10     10     10     10       N  
+ATOM    108  CA  GLY A  13      11.982  37.996 -26.241 1.000  16.92          C  
+ANISOU  108  CA  GLY A  13     2748   2004   1679    -21    155   -419       C  
+SIGUIJ  108  CA  GLY A  13       10     10     10     10     10     10       C  
+END

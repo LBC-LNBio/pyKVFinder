@@ -1,14 +1,60 @@
-import os
 import unittest
+import os
+import toml
 import numpy
+import pyKVFinder
 from pyKVFinder.grid import (
     get_vertices,
+    _get_vertices_from_box,
+    _get_vertices_from_residues,
     _get_dimensions,
     _get_sincos,
     _get_cavity_name,
     _get_cavity_label,
     _select_cavities,
 )
+from pyKVFinder.utils import read_pdb
+
+PYKVFINDER_TESTS_DIR = os.path.join(
+    os.path.dirname(pyKVFinder.__file__), "data", "tests"
+)
+
+
+class TestGetVerticesFromBox(unittest.TestCase):
+    def test_custom_box(self):
+        # Expected
+        expected = [
+            [-0.89, 3.34, -2.41],
+            [15.51, 3.34, -2.41],
+            [-0.89, 14.74, -2.41],
+            [-0.89, 3.34, 10.19],
+        ]
+        # Prepare data
+        box = toml.load(os.path.join(PYKVFINDER_TESTS_DIR, "custom-box.toml"))["box"]
+        # Result
+        result = _get_vertices_from_box(box).tolist()
+        self.assertListEqual(expected, result)
+
+
+class TestGetVerticesFromResidues(unittest.TestCase):
+    def test_residues_box(self):
+        # Expected
+        expected = [
+            [-2.634, 2.843, -3.68],
+            [24.422, 2.843, -3.68],
+            [-2.634, 22.698, -3.68],
+            [-2.634, 2.843, 16.204],
+        ]
+        # Prepare data
+        atomic = read_pdb(os.path.join(PYKVFINDER_TESTS_DIR, "1FMO.pdb"))
+        atominfo = numpy.asarray(
+            ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+        )
+        xyzr = atomic[:, 4:].astype(numpy.float64)
+        box = toml.load(os.path.join(PYKVFINDER_TESTS_DIR, "residues-box.toml"))["box"]
+        # Result
+        result = _get_vertices_from_residues(box, atominfo, xyzr).tolist()
+        self.assertListEqual(expected, result)
 
 
 class TestGetCavityName(unittest.TestCase):
@@ -57,17 +103,17 @@ class TestSelectCavities(unittest.TestCase):
 
 class TestGetVertices(unittest.TestCase):
     def setUp(self):
-        # Define valid xyzr, padding and step
-        self.xyzr = [
+        # Define valid atomic, padding and step
+        self.atomic = [
             ["1", "A", "GLU", "C", "0.0", "0.0", "0.0", "0.0"],
             ["1", "A", "GLU", "C", "1.0", "1.0", "1.0", "1.0"],
         ]
         self.probe_out = 4.0
         self.step = 0.6
 
-    def test_xyzr(self):
-        # Test a xyzrc value without padding and step
-        result = get_vertices(self.xyzr, 0.0, self.step).tolist()
+    def test_atomic(self):
+        # Test a atomic value without padding and step
+        result = get_vertices(self.atomic, 0.0, self.step).tolist()
         self.assertListEqual(
             result,
             [
@@ -80,7 +126,7 @@ class TestGetVertices(unittest.TestCase):
 
     def test_probe_out(self):
         # Test a padding addition
-        result = get_vertices(self.xyzr, self.probe_out, self.step).tolist()
+        result = get_vertices(self.atomic, self.probe_out, self.step).tolist()
         self.assertListEqual(
             result,
             [
@@ -93,7 +139,7 @@ class TestGetVertices(unittest.TestCase):
 
     def test_step(self):
         # Test a step addition
-        result = get_vertices(self.xyzr, self.probe_out, 0.5).tolist()
+        result = get_vertices(self.atomic, self.probe_out, 0.5).tolist()
         self.assertListEqual(
             result,
             [
@@ -105,20 +151,22 @@ class TestGetVertices(unittest.TestCase):
         )
 
     def test_bad_type(self):
-        # bad xyzr
+        # bad atomic
         self.assertRaises(TypeError, get_vertices, "string", self.probe_out, self.step)
         self.assertRaises(TypeError, get_vertices, True, self.probe_out, self.step)
         self.assertRaises(TypeError, get_vertices, 1, self.probe_out, self.step)
         self.assertRaises(TypeError, get_vertices, 1.0, self.probe_out, self.step)
         # bad probe_out
-        self.assertRaises(TypeError, get_vertices, self.xyzr, "string", self.step)
-        self.assertRaises(TypeError, get_vertices, self.xyzr, True, self.step)
-        self.assertRaises(TypeError, get_vertices, self.xyzr, [4.0, 4.0], self.step)
+        self.assertRaises(TypeError, get_vertices, self.atomic, "string", self.step)
+        self.assertRaises(TypeError, get_vertices, self.atomic, True, self.step)
+        self.assertRaises(TypeError, get_vertices, self.atomic, [4.0, 4.0], self.step)
         # bad step
-        self.assertRaises(TypeError, get_vertices, self.xyzr, self.probe_out, "string")
-        self.assertRaises(TypeError, get_vertices, self.xyzr, self.probe_out, True)
         self.assertRaises(
-            TypeError, get_vertices, self.xyzr, self.probe_out, [0.6, 0.6]
+            TypeError, get_vertices, self.atomic, self.probe_out, "string"
+        )
+        self.assertRaises(TypeError, get_vertices, self.atomic, self.probe_out, True)
+        self.assertRaises(
+            TypeError, get_vertices, self.atomic, self.probe_out, [0.6, 0.6]
         )
 
     def test_bad_values(self):
@@ -144,10 +192,10 @@ class TestGetVertices(unittest.TestCase):
             self.step,
         )
         # probe_out
-        self.assertRaises(ValueError, get_vertices, self.xyzr, -1, self.step)
+        self.assertRaises(ValueError, get_vertices, self.atomic, -1, self.step)
         # step
-        self.assertRaises(ValueError, get_vertices, self.xyzr, self.probe_out, 0.0)
-        self.assertRaises(ValueError, get_vertices, self.xyzr, self.probe_out, -1.0)
+        self.assertRaises(ValueError, get_vertices, self.atomic, self.probe_out, 0.0)
+        self.assertRaises(ValueError, get_vertices, self.atomic, self.probe_out, -1.0)
 
 
 class TestGetDimensions(unittest.TestCase):
