@@ -65,32 +65,35 @@ jobs:
           # twine upload dist/*
         continue-on-error: true
 
-  deploy-windows:
-    runs-on: windows-latest
-    env:
-      TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install swig
-        if: "startsWith(runner.os, 'windows')"
-        run: |
-          (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip","swigwin-4.0.2.zip");
-          Expand-Archive .\swigwin-4.0.2.zip .;
-          echo "$((Get-Item .).FullName)/swigwin-4.0.2" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: build wheel
-        run: |
-          pip install wheel
-          python setup.py bdist_wheel
-      - name: upload wheel
-        run: |
-          pip install twine
-          # twine upload dist/*
-        continue-on-error: true
+  # deploy-windows:
+  #   runs-on: windows-latest
+  #   env:
+  #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+  #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  #   strategy:
+  #     matrix:
+  #       python-version: [3.7, 3.8, 3.9]
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
+  #     - name: Install swig
+  #       if: "startsWith(runner.os, 'windows')"
+  #       run: |
+  #         (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip","swigwin-4.0.2.zip");
+  #         Expand-Archive .\swigwin-4.0.2.zip .;
+  #         echo "$((Get-Item .).FullName)/swigwin-4.0.2" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+  #     - name: Install ldap
+  #       run: | 
+  #         pip install python-ldap
+  #     - name: build wheel
+  #       run: |
+  #         pip install wheel
+  #         python setup.py bdist_wheel
+  #     - name: upload wheel
+  #       run: |
+  #         pip install twine
+  #         # twine upload dist/*
+  #       continue-on-error: true
