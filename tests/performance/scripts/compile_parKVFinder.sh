@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+# Running on cluster (example)
+# ./compile_parKVFinder.sh ~/softwares/pyKVFinder/tests/performance ~/softwares/parKVFinder
 
 # Directories
 OUTPUT_DIRECTORY=${1%/}
@@ -8,7 +9,7 @@ PARKVFINDER_LOCATION=${2%/}
 
 # Nthreads
 old=("omp_get_num_procs () - 1")
-declare -a arr=("1" "2" "4" "8" "12" "16" "20" "24")
+declare -a arr=("1" "2" "4" "8" "12" "16" "20" "24" "28" "32")
 
 if [ -z "$1" ] || [ -z "$2" ]; then
 
@@ -50,6 +51,7 @@ do
 
 	# Save ncores as old
 	old=($i)
+
 done
 
 # Revert all changes in KVFinder scripts

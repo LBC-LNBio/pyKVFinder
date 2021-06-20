@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Running on cluster
+# ./runbenchmarking.sh ../
+
 # Directories
 OUTPUT_DIRECTORY=${1%/}
 
 # Nthreads
-declare -a nthreads=("1" "2" "4" "8" "12" "16" "20" "24")
+declare -a nthreads=("1" "2" "4" "8" "12" "16" "20" "24" "28" "32")
 
 # Require positional command-line arguments
 if [ -z "$1" ]; then
@@ -40,16 +43,17 @@ do
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm -r ${OUTPUT_DIRECTORY}/data/kv1000/KV_Files/
-	rm KVFinder.log
+	# rm KVFinder.log
 
 done
 
-################## PYKVFINDER V0.1 DEFAULT ANALYSIS ##################
-printf "[===> pyKVFinder v0.1 benchmarking\n"
+################## PYKVFINDER V0.2 DEFAULT ANALYSIS ##################
+printf "[===> pyKVFinder v0.2 benchmarking\n"
 mkdir ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder/
 
 for i in "${nthreads[@]}"
 do
+
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
@@ -57,14 +61,16 @@ do
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
+
 done
 
-################## PYKVFINDER V0.1 DEPTH ANALYSIS ##################
-printf "[===> pyKVFinder v0.1 --depth benchmarking\n"
+################## PYKVFINDER V0.2 DEPTH ANALYSIS ##################
+printf "[===> pyKVFinder v0.2 --depth benchmarking\n"
 mkdir ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-depth/
 
 for i in "${nthreads[@]}"
 do
+
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
@@ -72,14 +78,16 @@ do
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
+
 done
 
-################## PYKVFINDER V0.1 HYDROPATHY ANALYSIS ##################
-printf "[===> pyKVFinder v0.1 --hydropathy benchmarking\n"
+################## PYKVFINDER V0.2 HYDROPATHY ANALYSIS ##################
+printf "[===> pyKVFinder v0.2 --hydropathy benchmarking\n"
 mkdir ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-hydropathy/
 
 for i in "${nthreads[@]}"
 do
+
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
@@ -87,6 +95,7 @@ do
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
+
 done
 
 ################## COMPILING BENCHMARKING ##################
