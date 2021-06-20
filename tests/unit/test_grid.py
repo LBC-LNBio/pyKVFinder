@@ -21,6 +21,8 @@ from pyKVFinder.grid import (
     detect,
     spatial,
     depth,
+    constitutional,
+    hydropathy,
 )
 from pyKVFinder.utils import read_pdb, read_cavity
 
@@ -531,3 +533,54 @@ class TestDepth(unittest.TestCase):
         self.assertDictEqual(max_depth, {"KAA": 0.6})
         self.assertDictEqual(avg_depth, {"KAA": 0.3})
         self.assertListEqual(depths.tolist(), expected.tolist())
+
+
+class TestConstitutional(unittest.TestCase):
+    def test_constitutional(self):
+        # Cavities
+        cavities = numpy.full((5, 5, 5), -1)
+        for i in range(1, 4):
+            for j in range(1, 4):
+                for k in range(1, 4):
+                    cavities[i, j, k] = 0
+
+        cavities[2, 2, 1] = 2
+        cavities[2, 2, 4] = 3
+        # Dummy atomic
+        atomic = [
+            ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
+        ]
+        # Dummy vertices
+        vertices = numpy.array([[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]])
+        # Surface
+        residues = constitutional(cavities, atomic, vertices)
+        # Assert
+        self.assertDictEqual(residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]})
+
+
+class TestConstitutional(unittest.TestCase):
+    def test_constitutional(self):
+        # Expected
+        expected = numpy.zeros((5, 5, 5))
+        expected[2, 2, 1] = 0.76
+        expected[2, 2, 4] = 0.76
+        # Surface
+        surface = numpy.full((5, 5, 5), -1)
+        for i in range(1, 4):
+            for j in range(1, 4):
+                for k in range(1, 4):
+                    surface[i, j, k] = 0
+
+        surface[2, 2, 1] = 2
+        surface[2, 2, 4] = 3
+        # Dummy atomic
+        atomic = [
+            ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
+        ]
+        # Dummy vertices
+        vertices = numpy.array([[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]])
+        # Surface
+        scales, avg_hydropathy = hydropathy(surface, atomic, vertices)
+        # Assert
+        self.assertListEqual(scales.tolist(), expected.tolist())
+        self.assertDictEqual(avg_hydropathy, {'KAA': 0.38, 'KAB': 0.38, 'EisenbergWeiss': [-1.42, 2.6]})
