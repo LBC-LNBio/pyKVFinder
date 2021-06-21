@@ -708,7 +708,7 @@ p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = speedup)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
-    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads), by=1)), limits=c(0.8, max(unique(nthreads) + .5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -768,7 +768,7 @@ p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = efficiency*100)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -875,8 +875,8 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = speedup)) +
     stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
-    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)24, by=1)), limits=c(0.8, max(unique(nthreads) + .5), expand=c(0,0)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -936,7 +936,7 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = efficiency*100)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]) + 1)) +
-    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads), by=1)), limits=c(0.8, max(unique(nthreads) + .5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
