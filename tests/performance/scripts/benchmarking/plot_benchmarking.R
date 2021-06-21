@@ -137,7 +137,7 @@ p <- ggplot(time, aes(x=natoms, y=average_time, group=software)) +
     labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(time$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(time$average_time)[2] / 1) * 1)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(time$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(time$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(time$nthreads)), "Average")) +
+    scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(time$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -202,7 +202,7 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=t, color=software)) +
     theme_bw() + 
     labs(x = "OpenMP Threads", y = "Time (s)") +
     scale_y_continuous(breaks = c(seq(0, 6, by = .5)), expand = c(0,0), limits = c(0, 6.1)) + 
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.5, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.5, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
         legend.text = element_text(size = 12),
@@ -231,7 +231,7 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=median, color=software)) +
     theme_bw() + 
     labs(x = "OpenMP Threads", y = "Time (s)") +
     scale_y_continuous(breaks = c(seq(0, 6, by = .5)), expand = c(0,0), limits = c(0, 6.1)) + 
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.5, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.5, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
         legend.text = element_text(size = 12),
@@ -324,13 +324,13 @@ p <- ggplot(speedup, aes(x=natoms, y=speedup)) +
 
     geom_smooth(color='black', method='lm', se=FALSE, fullrange=TRUE) +
 
-    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5) +
+    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5, vstep=0.05) +
 
     theme_bw() +
     labs(x = "Number of atoms", y = "Speedup", color = "OpenMP threads") +
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(speedup$speedup)[2] / 1) * 1, by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(speedup$speedup)[2] / 1) * 1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(speedup$speedup)[2] / 1) * 2, by = 1)), expand = c(0,0), limits = c(0, ceiling(range(speedup$speedup)[2] / 1) * 1.25)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(speedup$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(speedup$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(speedup$nthreads)), "Average")) +
+    scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(speedup$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -425,13 +425,13 @@ p <- ggplot(efficiency, aes(x=natoms, y=efficiency*100)) +
 
     geom_smooth(color='black', method='lm', se=FALSE, fullrange=TRUE) +
 
-    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=4) +
+    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5, vstep=0.05) +
 
     theme_bw() +
     labs(x = "Number of atoms", y = "Efficiency (%)", color = "OpenMP threads") +
     scale_y_continuous(breaks = c(seq(0, 200, by=10)), expand = c(0,0), limits = c(0, 200)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(efficiency$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(efficiency$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(efficiency$nthreads)), "Average")) +
+    scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(efficiency$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -473,13 +473,13 @@ p <- ggplot(pyKVFinder, aes(x=natoms, y=average_time)) +
 
     geom_smooth(color='black', method='glm', se=FALSE, fullrange=TRUE) +
 
-    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5) +
+    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5, vstep=0.05) +
     
     theme_bw() +
     labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1, by = 1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder$nthreads)), "Average")) +
+    scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(pyKVFinder$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -540,7 +540,7 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = speedup)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$speedup)[2]) + 0.1)) +
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -600,7 +600,7 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = efficiency*100)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$efficiency*100)[2]) + 1)) +
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -647,7 +647,7 @@ p <- ggplot(pyKVFinder.depth, aes(x=natoms, y=average_time)) +
     labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$average_time)[2] / 1) * 1)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder.depth$nthreads)), "Average")) +
+    scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(pyKVFinder.depth$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -708,7 +708,7 @@ p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = speedup)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads), by=1)), limits=c(0.8, max(unique(nthreads) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -815,7 +815,7 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x=natoms, y=average_time)) +
     labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$average_time)[2] / 1) * 1)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$natoms)[2] / 100) * 100 + 100)) +
-    scale_color_manual(values = c(brewer.pal(n=8, name = "Dark2"), "black"), limits = c(unique(as.character(pyKVFinder.hydropathy$nthreads)), "Average")) +
+    scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(pyKVFinder.hydropathy$nthreads)), "Average")) +
 
     theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -876,7 +876,7 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = speedup)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)24, by=1)), limits=c(0.8, max(unique(nthreads) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -936,7 +936,7 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = efficiency*100)) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Efficiency (%)", fill=NULL) +    
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]) + 1)) +
-    scale_x_continuous(breaks = c(seq(1, 24, by=1)), limits=c(0.8, 24.5), expand=c(0,0)) +
+    scale_x_continuous(breaks = c(seq(1, max(unique(nthreads), by=1)), limits=c(0.8, max(unique(nthreads) + .5), expand=c(0,0)) +
     theme(legend.position="none",
         axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
