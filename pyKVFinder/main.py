@@ -182,14 +182,6 @@ def cli() -> None:
             cavities, args.step, None, args.nthreads, args.verbose
         )
 
-        # Depth characterization
-        if args.depth:
-            depths, max_depth, avg_depth = depth(
-                cavities, args.step, None, args.nthreads, args.verbose
-            )
-        else:
-            depths, max_depth, avg_depth = None, None, None
-
         # Constitutional characterization
         residues = constitutional(
             cavities,
@@ -203,6 +195,14 @@ def cli() -> None:
             args.verbose,
         )
         frequencies = calculate_frequencies(residues)
+
+        # Depth characterization
+        if args.depth:
+            depths, max_depth, avg_depth = depth(
+                cavities, args.step, None, args.nthreads, args.verbose
+            )
+        else:
+            depths, max_depth, avg_depth = None, None, None
 
         # Plot histograms of frequencies
         if args.plot_frequencies:
