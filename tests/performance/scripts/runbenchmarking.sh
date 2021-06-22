@@ -43,7 +43,6 @@ do
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm -r ${OUTPUT_DIRECTORY}/data/kv1000/KV_Files/
-	# rm KVFinder.log
 
 done
 
@@ -57,7 +56,7 @@ do
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
-	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder ${i}
+	python benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder ${i}
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
@@ -74,7 +73,7 @@ do
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
-	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-depth ${i} --depth
+	python benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-depth ${i} --depth
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
@@ -91,7 +90,7 @@ do
 	printf ">>> ${i} cores\n"
 
 	# Run KVFinder for PDBs
-	python ${OUTPUT_DIRECTORY}/scripts/benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-hydropathy ${i} --hydropathy
+	python benchmarking/run_pyKVFinder.py ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data/raw/pyKVFinder-hydropathy ${i} --hydropathy
 
 	# Save PDBs runs inside KVFiles_ncores
 	rm *.KVFinder.results.toml *.KVFinder.output.pdb *.parameters.toml *.log
@@ -100,4 +99,5 @@ done
 
 ################## COMPILING BENCHMARKING ##################
 printf "[===> Compiling benchmarking\n"
-python ${OUTPUT_DIRECTORY}/scripts/benchmarking/compile_benchmarking.py ${OUTPUT_DIRECTORY}/data/raw ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/data
+mkdir ${OUTPUT_DIRECTORY}/results
+python benchmarking/compile_benchmarking.py ${OUTPUT_DIRECTORY}/data/raw ${OUTPUT_DIRECTORY}/data/kv1000 ${OUTPUT_DIRECTORY}/results
