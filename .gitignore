@@ -23,6 +23,7 @@ examples/visualization/data/
 
 # Benchmarking 
 tests/performance/data/
+tests/performance/results/
 !tests/performance/scripts/
 tests/performance/scripts/parKVFinder*
 
