@@ -23,10 +23,10 @@ fi
 mkdir ${OUTPUT_DIRECTORY}/data
 
 ################## Benchmarking dataset ##################
-# printf "[===> Downloading kv1000 dataset\n"
-# git clone https://github.com/jvsguerra/kv1000.git
-# mv kv1000/kv1000/pdbs ${OUTPUT_DIRECTORY}/data/kv1000
-# rm -rf kv1000/
+printf "[===> Downloading kv1000 dataset\n"
+git clone https://github.com/jvsguerra/kv1000.git
+mv kv1000/kv1000/pdbs ${OUTPUT_DIRECTORY}/data/kv1000
+rm -rf kv1000/
 
 ################## PARKVFINDER ANALYSIS ##################
 printf "[===> parKVFinder benchmarking\n"
