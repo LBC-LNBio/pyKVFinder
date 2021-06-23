@@ -31,7 +31,10 @@ tests/performance/scripts/parKVFinder*
 etc/templates/
 
 # Formatted-files
-etc/formats
+etc/formats/
+
+# Results
+etc/results/
 
 # Ignore KV_Files
 KV_Files/
