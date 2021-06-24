@@ -101,14 +101,14 @@ p <- ggplot(time, aes(x=as.factor(nthreads), y=average_time, fill=software)) +
         theme_bw() +
         labs(x="Number of OpenMP threads", y="Time (s)", fill="Software") +    
         scale_y_continuous(breaks = c(seq(0, ceiling(range(time$average_time)[2] / 5) * 5, by = 2.5)), expand = c(0,0), limits = c(0, ceiling(range(time$average_time)[2] / 5) * 5 + 1)) +
-        theme(axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+        theme(axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/comparison/time/boxplot_time_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -139,13 +139,13 @@ p <- ggplot(time, aes(x=natoms, y=average_time, group=software)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(time$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(time$natoms)[2] / 100) * 100 + 100)) +
     scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(time$nthreads)), "Average")) +
 
-    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
+    theme(axis.text.x = element_text(size = 16, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
         strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/comparison/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
 p
@@ -173,15 +173,15 @@ p <- ggplot(time, aes(x=as.factor(nthreads), y=average_time)) +
     theme_bw() +
 
     labs(x = "OpenMP Threads", y = "Time (s)", fill = "Number of atoms") +
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(time$average_time)[2] / 1) * 1, by = 5)), expand = c(0,0), limits = c(0, ceiling(range(time$average_time)[2] / 1) * 1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(time$average_time)[2] / 1) * 1, by = 5.0)), expand = c(0,0), limits = c(0, ceiling(range(time$average_time)[2] / 1) * 1)) +
     scale_x_discrete(limits = c(unique(as.character(time$nthreads)))) +
-    theme(axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/comparison/time/scatter_time_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -203,13 +203,13 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=t, color=software)) +
     labs(x = "OpenMP Threads", y = "Time (s)") +
     scale_y_continuous(breaks = c(seq(0, 2.5, by = .5)), expand = c(0,0), limits = c(0, 2.6)) + 
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.5, max(unique(nthreads)) + .5), expand=c(0,0)) +
-    theme(axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/comparison/time/average_time_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -232,13 +232,13 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=median, color=software)) +
     labs(x = "OpenMP Threads", y = "Time (s)") +
     scale_y_continuous(breaks = c(seq(0, 2.5, by = .5)), expand = c(0,0), limits = c(0, 2.6)) + 
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.5, max(unique(nthreads)) + .5), expand=c(0,0)) +
-    theme(axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
+    theme(axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
         strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/comparison/time/median_time_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -294,14 +294,14 @@ p <- ggplot(speedup, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nthrea
         labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, 8, by = 0.5)), expand = c(0,0), limits = c(0, 8.1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/comparison/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -328,17 +328,17 @@ p <- ggplot(speedup, aes(x=natoms, y=speedup)) +
 
     theme_bw() +
     labs(x = "Number of atoms", y = "Speedup", color = "OpenMP threads") +
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(speedup$speedup)[2] / 1) * 2, by = 1)), expand = c(0,0), limits = c(0, ceiling(range(speedup$speedup)[2] / 1) * 1.25)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(speedup$speedup)[2] / 1) * 2, by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(speedup$speedup)[2] / 1) * 1.25)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(speedup$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(speedup$natoms)[2] / 100) * 100 + 100)) +
     scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(speedup$nthreads)), "Average")) +
 
-    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/comparison/speedup/lineplot_speedup_vs_atoms.svg', width = 16, height = 9)
 p
@@ -395,14 +395,14 @@ p <- ggplot(efficiency, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.fac
         labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, 200, by = 10)), expand = c(0,0), limits = c(0, 200)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/comparison/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -433,13 +433,13 @@ p <- ggplot(efficiency, aes(x=natoms, y=efficiency*100)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(efficiency$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(efficiency$natoms)[2] / 100) * 100 + 100)) +
     scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(efficiency$nthreads)), "Average")) +
 
-    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/comparison/efficiency/lineplot_efficiency_vs_atoms.svg', width = 16, height = 9)
 p
@@ -473,21 +473,21 @@ p <- ggplot(pyKVFinder, aes(x=natoms, y=average_time)) +
 
     geom_smooth(color='black', method='glm', se=FALSE, fullrange=TRUE) +
 
-    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=5, vstep=0.05) +
+    stat_poly_eq(formula = y ~ x, aes(color = as.factor(nthreads), label = paste(..eq.label.., ..rr.label.., sep = "~~~")), parse = TRUE, size=6, vstep=0.05) +
     
     theme_bw() +
     labs(x = "Number of atoms", y = "Time (s)", color = "OpenMP threads") +
-    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1, by = 1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1, by = 1.0)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$average_time)[2] / 1) * 1.0 + 0.1)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$natoms)[2] / 100) * 100 + 100)) +
     scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(pyKVFinder$nthreads)), "Average")) +
 
-    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
 p
@@ -511,14 +511,14 @@ p <- ggplot(pyKVFinder, aes(x=as.factor(nthreads), y=speedup, fill=as.factor(nth
         labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$speedup)[2]) + 0.1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -542,12 +542,12 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = speedup)) +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$speedup)[2]) + 0.1)) +
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
-        axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12)) +
-    theme(axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
-        legend.title = element_text(size = 12))
+        axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20)) +
+    theme(axis.title.y = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder/speedup/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -571,14 +571,14 @@ p <- ggplot(pyKVFinder, aes(x=as.factor(nthreads), y=efficiency*100, fill=as.fac
         labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$efficiency*100)[2]) + 1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -602,12 +602,12 @@ p <- ggplot(pyKVFinder, aes(x = nthreads, y = efficiency*100)) +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder$efficiency*100)[2]) + 1)) +
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
-        axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12)) +
-    theme(axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
-        legend.title = element_text(size = 12))
+        axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20)) +
+    theme(axis.title.y = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder/efficiency/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -649,13 +649,13 @@ p <- ggplot(pyKVFinder.depth, aes(x=natoms, y=average_time)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$natoms)[2] / 100) * 100 + 100)) +
     scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(pyKVFinder.depth$nthreads)), "Average")) +
 
-    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-depth/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
 p
@@ -679,14 +679,14 @@ p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=speedup, fill=as.fact
         labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-depth/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -707,15 +707,15 @@ p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = speedup)) +
     stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
-    # scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2] * 1.5), by = 0.1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$speedup)[2] * 1.5), by = 0.1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$speedup)[2]) + 0.1)) +
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
-        axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12)) +
-    theme(axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
-        legend.title = element_text(size = 12))
+        axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20)) +
+    theme(axis.title.y = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-depth/speedup/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -739,14 +739,14 @@ p <- ggplot(pyKVFinder.depth, aes(x=as.factor(nthreads), y=efficiency*100, fill=
         labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-depth/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -770,12 +770,12 @@ p <- ggplot(pyKVFinder.depth, aes(x = nthreads, y = efficiency*100)) +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.depth$efficiency*100)[2]) + 1)) +
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
-        axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12)) +
-    theme(axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
-        legend.title = element_text(size = 12))
+        axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20)) +
+    theme(axis.title.y = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-depth/efficiency/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -817,13 +817,13 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x=natoms, y=average_time)) +
     scale_x_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$natoms)[2] / 100) * 100, by = 1000)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$natoms)[2] / 100) * 100 + 100)) +
     scale_color_manual(values = c(brewer.pal(n=replicates, name = "Paired"), "black"), limits = c(unique(as.character(pyKVFinder.hydropathy$nthreads)), "Average")) +
 
-    theme(axis.text.x = element_text(size = 14, angle=45, hjust = 1), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=16)) +
-    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 18),
-        axis.title.x = element_text(size = 18),
-        legend.title = element_text(size = 12))
+    theme(axis.text.x = element_text(size = 20, angle=45, hjust = 1), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20),
+        strip.text = element_text(size=20)) +
+    theme(axis.title.y = element_text(angle = 90, hjust = 0.5, size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-hydropathy/time/lineplot_time_vs_atoms.svg', width = 16, height = 9)
 p
@@ -847,14 +847,14 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x=as.factor(nthreads), y=speedup, fill=as
         labs(x="Number of OpenMP threads", y="Speedup", fill=NULL) +    
         # scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.5)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-hydropathy/speedup/boxplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -875,15 +875,15 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = speedup)) +
     stat_summary(fun = mean, geom = "point", fill = "white", shape = 21, size = 2) +
     theme_bw() + 
     labs(x="OpenMP threads", y="Speedup", fill=NULL) +    
-    # scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
+    scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]), by = 0.1)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$speedup)[2]) + 0.1)) +
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
-        axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12)) +
-    theme(axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
-        legend.title = element_text(size = 12))
+        axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20)) +
+    theme(axis.title.y = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-hydropathy/speedup/lineplot_speedup_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -907,14 +907,14 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x=as.factor(nthreads), y=efficiency*100, 
         labs(x="Number of OpenMP threads", y="Efficiency (%)", fill=NULL) +    
         scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]) + 1)) +
         theme(legend.position="none",
-            axis.text.x = element_text(size = 14), 
-            axis.text.y = element_text(size = 18, hjust = 1),
-            legend.text = element_text(size = 12)) +
+            axis.text.x = element_text(size = 20), 
+            axis.text.y = element_text(size = 20, hjust = 1),
+            legend.text = element_text(size = 20)) +
         theme(axis.title.y = element_text(angle = 90, 
                                         hjust = 0.5, 
                                         size = 20),
             axis.title.x = element_text(size = 20),
-            legend.title = element_text(size = 12))
+            legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-hydropathy/efficiency/boxplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
@@ -938,12 +938,12 @@ p <- ggplot(pyKVFinder.hydropathy, aes(x = nthreads, y = efficiency*100)) +
     scale_y_continuous(breaks = c(seq(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]), by = 10)), expand = c(0,0), limits = c(0, ceiling(range(pyKVFinder.hydropathy$efficiency*100)[2]) + 1)) +
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.8, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(legend.position="none",
-        axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14, hjust = 1),
-        legend.text = element_text(size = 12)) +
-    theme(axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
-        legend.title = element_text(size = 12))
+        axis.text.x = element_text(size = 20), 
+        axis.text.y = element_text(size = 20, hjust = 1),
+        legend.text = element_text(size = 20)) +
+    theme(axis.title.y = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        legend.title = element_text(size = 20))
 
 svg('plots/pyKVFinder-hydropathy/efficiency/lineplot_efficiency_vs_nthreads.svg', width = 16, height = 9)
 p
