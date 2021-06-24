@@ -9,7 +9,7 @@ PARKVFINDER_LOCATION=${2%/}
 
 # Nthreads
 old=("omp_get_num_procs () - 1")
-declare -a arr=("1" "2" "4" "8" "12" "16" "20" "24" "28" "32")
+declare -a arr=("1" "2" "4" "8" "12" "16")
 
 if [ -z "$1" ] || [ -z "$2" ]; then
 

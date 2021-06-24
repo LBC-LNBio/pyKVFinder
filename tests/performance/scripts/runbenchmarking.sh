@@ -7,7 +7,7 @@
 OUTPUT_DIRECTORY=${1%/}
 
 # Nthreads
-declare -a nthreads=("1" "2" "4" "8" "12" "16" "20" "24" "28" "32")
+declare -a nthreads=("1" "2" "4" "8" "12" "16")
 
 # Require positional command-line arguments
 if [ -z "$1" ]; then

@@ -201,7 +201,7 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=t, color=software)) +
     geom_point(shape=21, fill='white') +
     theme_bw() + 
     labs(x = "OpenMP Threads", y = "Time (s)") +
-    scale_y_continuous(breaks = c(seq(0, 2, by = .5)), expand = c(0,0), limits = c(0, 2.1)) + 
+    scale_y_continuous(breaks = c(seq(0, 2.5, by = .5)), expand = c(0,0), limits = c(0, 2.6)) + 
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.5, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
@@ -230,7 +230,7 @@ p <- ggplot(time2, aes(x=as.numeric(nthreads), y=median, color=software)) +
     geom_point(shape=21, fill='white') +
     theme_bw() + 
     labs(x = "OpenMP Threads", y = "Time (s)") +
-    scale_y_continuous(breaks = c(seq(0, 2, by = .5)), expand = c(0,0), limits = c(0, 2.1)) + 
+    scale_y_continuous(breaks = c(seq(0, 2.5, by = .5)), expand = c(0,0), limits = c(0, 2.6)) + 
     scale_x_continuous(breaks = c(seq(1, max(unique(nthreads)), by=1)), limits=c(0.5, max(unique(nthreads)) + .5), expand=c(0,0)) +
     theme(axis.text.x = element_text(size = 14), 
         axis.text.y = element_text(size = 14, hjust = 1),
