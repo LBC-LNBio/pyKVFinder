@@ -824,7 +824,7 @@ void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
             for (k = 0; k < nz; k++)
                 // Remove points based on tag
                 if (grid[k + nz * (j + (ny * i))] == tag)
-                    grid[k + nz * (j + (ny * i))] = 0;
+                    grid[k + nz * (j + (ny * i))] = -1;
 }
 
 /*
