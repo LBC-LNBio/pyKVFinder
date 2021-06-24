@@ -1,20 +1,18 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.hydropathy &mdash; pyKVFinder 0.2.0 documentation</title>
+  <title>pyKVFinder.hydropathy &mdash; pyKVFinder 0.2.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -33,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -221,136 +219,156 @@
             
   <div class="section" id="pykvfinder-hydropathy">
 <h1>pyKVFinder.hydropathy<a class="headerlink" href="#pykvfinder-hydropathy" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyKVFinder.hydropathy">
-<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">hydropathy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hydrophobicity_scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'EisenbergWeiss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_backbone</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#hydropathy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.hydropathy" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="pyKVFinder.hydropathy">
+<code class="descclassname">pyKVFinder.</code><code class="descname">hydropathy</code><span class="sig-paren">(</span><em>surface: numpy.ndarray, atomic: Union[numpy.ndarray, List[List[Union[str, float, int]]]], vertices: Union[numpy.ndarray, List[List[float]]], step: Union[float, int] = 0.6, probe_in: Union[float, int] = 1.4, hydrophobicity_scale: Union[str, pathlib.Path] = 'EisenbergWeiss', ignore_backbone: bool = False, selection: Union[List[int], List[str], None] = None, nthreads: Optional[int] = None, verbose: bool = False</em><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, Dict[str, float]]<a class="reference internal" href="../_modules/pyKVFinder/grid.html#hydropathy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyKVFinder.hydropathy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hydropathy characterization of the detected cavities.</p>
 <p>Map a target hydrophobicity scale per surface point and calculate average
 hydropathy of detected cavities.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>surface</strong> (<em>numpy.ndarray</em>) – <p>Surface points in the 3D grid (surface[nx][ny][nz]).
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>surface</strong> (<em>numpy.ndarray</em>) – <p>Surface points in the 3D grid (surface[nx][ny][nz]).
 Surface array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul>
-<li><p>-1: bulk points;</p></li>
-<li><p>0: biomolecule or empty space points;</p></li>
-<li><p>&gt;=2: surface points.</p></li>
+<li>-1: bulk points;</li>
+<li>0: biomolecule or empty space points;</li>
+<li>&gt;=2: surface points.</li>
 </ul>
 </div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-</p></li>
-<li><p><strong>atomic</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em><em>]</em>) – A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
-and radius) for each atom.</p></li>
-<li><p><strong>vertices</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a list with xyz vertices coordinates (origin,
-X-axis, Y-axis, Z-axis).</p></li>
-<li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
-<li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
-<li><p><strong>hydrophobicity_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id1">1</a>,
-HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id2">2</a>, KyteDoolitte <a class="footnote-reference brackets" href="#id15" id="id3">3</a>, MoonFleming <a class="footnote-reference brackets" href="#id16" id="id4">4</a>,
-WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id5">5</a>, ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id6">6</a>) or a path to a
+</li>
+<li><strong>atomic</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em><em>]</em>) – A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
+and radius) for each atom.</li>
+<li><strong>vertices</strong> (<em>Union</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em><em>]</em>) – A numpy.ndarray or a list with xyz vertices coordinates (origin,
+X-axis, Y-axis, Z-axis).</li>
+<li><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</li>
+<li><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</li>
+<li><strong>hydrophobicity_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss <a class="footnote-reference" href="#id13" id="id1">[1]</a>,
+HessaHeijne <a class="footnote-reference" href="#id14" id="id2">[2]</a>, KyteDoolitte <a class="footnote-reference" href="#id15" id="id3">[3]</a>, MoonFleming <a class="footnote-reference" href="#id16" id="id4">[4]</a>,
+WimleyWhite <a class="footnote-reference" href="#id17" id="id5">[5]</a>, ZhaoLondon <a class="footnote-reference" href="#id18" id="id6">[6]</a>) or a path to a
 TOML-formatted file with a custom hydrophobicity scale, by default
-<cite>EisenbergWeiss</cite>.</p></li>
-<li><p><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface
-residues, by default False.</p></li>
-<li><p><strong>selection</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A list of integer labels or a list of cavity names to be selected, by default None.</p></li>
-<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
-<cite>os.cpu_count() - 1</cite>.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
+<cite>EisenbergWeiss</cite>.</li>
+<li><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface
+residues, by default False.</li>
+<li><strong>selection</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A list of integer labels or a list of cavity names to be selected, by default None.</li>
+<li><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
+<cite>os.cpu_count() - 1</cite>.</li>
+<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>scales</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
-points (scales[nx][ny][nz]).</p></li>
-<li><p><strong>avg_hydropathy</strong> (<em>Dict[str, float]</em>) – A dictionary with average hydropathy for each detected cavity and
-the range of the hydrophobicity scale (min, max).</p></li>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<li><strong>scales</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
+points (scales[nx][ny][nz]).</li>
+<li><strong>avg_hydropathy</strong> (<em>Dict[str, float]</em>) – A dictionary with average hydropathy for each detected cavity and
+the range of the hydrophobicity scale (min, max).</li>
 </ul>
 </p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>surface</cite> must be a numpy.ndarray.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>surface</cite> has the incorrect shape. It must be (nx, ny, nz).</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>atomic</cite> must be a list or a numpy.ndarray.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>atomic</cite> has incorrect shape. It must be (n, 8).</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>vertices</cite> must be a list or a numpy.ndarray.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>vertices</cite> has incorrect shape. It must be (4, 3).</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>probe_in</cite> must be a non-negative real number.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>probe_in</cite> must be a non-negative real number.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>hydrophobicity_scale</cite> must be a string or a pathlib.Path.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>ignore_backbone</cite> must be a boolean.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>selection</cite> must be a list of strings (cavity names) or integers (cavity labels).</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Invalid <cite>selection</cite>: {selection}.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – <cite>nthreads</cite> must be a positive integer.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>verbose</cite> must be a boolean.</p></li>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>surface</cite> must be a numpy.ndarray.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – <cite>surface</cite> has the incorrect shape. It must be (nx, ny, nz).</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>atomic</cite> must be a list or a numpy.ndarray.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – <cite>atomic</cite> has incorrect shape. It must be (n, 8).</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>vertices</cite> must be a list or a numpy.ndarray.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – <cite>vertices</cite> has incorrect shape. It must be (4, 3).</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>step</cite> must be a positive real number.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – <cite>step</cite> must be a positive real number.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>probe_in</cite> must be a non-negative real number.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – <cite>probe_in</cite> must be a non-negative real number.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>hydrophobicity_scale</cite> must be a string or a pathlib.Path.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>ignore_backbone</cite> must be a boolean.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>selection</cite> must be a list of strings (cavity names) or integers (cavity labels).</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – Invalid <cite>selection</cite>: {selection}.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>nthreads</cite> must be a positive integer.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – <cite>nthreads</cite> must be a positive integer.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>verbose</cite> must be a boolean.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The cavity nomenclature is based on the integer label. The cavity marked
+<p class="first admonition-title">Note</p>
+<p class="last">The cavity nomenclature is based on the integer label. The cavity marked
 with 2, the first integer corresponding to a cavity, is KAA, the cavity
 marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The hydrophobicity scale file defines the name of the scale and the
+<p class="first admonition-title">Note</p>
+<p class="last">The hydrophobicity scale file defines the name of the scale and the
 hydrophobicity value for each residue and when not defined, it assigns
 zero to the missing residues (see <cite>Hydrophobicity scale file
 template</cite>). The package contains six built-in hydrophobicity scales:
-EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id7">1</a>, HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id8">2</a>, KyteDoolittle <a class="footnote-reference brackets" href="#id15" id="id9">3</a>,
-MoonFleming <a class="footnote-reference brackets" href="#id16" id="id10">4</a>, WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id11">5</a> and ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id12">6</a>.</p>
+EisenbergWeiss <a class="footnote-reference" href="#id13" id="id7">[1]</a>, HessaHeijne <a class="footnote-reference" href="#id14" id="id8">[2]</a>, KyteDoolittle <a class="footnote-reference" href="#id15" id="id9">[3]</a>,
+MoonFleming <a class="footnote-reference" href="#id16" id="id10">[4]</a>, WimleyWhite <a class="footnote-reference" href="#id17" id="id11">[5]</a> and ZhaoLondon <a class="footnote-reference" href="#id18" id="id12">[6]</a>.</p>
 </div>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id13"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id7">2</a>)</span></dt>
-<dd><p>Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
+<table class="docutils footnote" frame="void" id="id13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id7">2</a>)</em> Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
 detects periodicity in protein hydrophobicity. Proceedings of the
-National Academy of Sciences. 1984;81.</p>
-</dd>
-<dt class="label" id="id14"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id8">2</a>)</span></dt>
-<dd><p>Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
+National Academy of Sciences. 1984;81.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id14" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id8">2</a>)</em> Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
 Recognition of transmembrane helices by the endoplasmic reticulum
-translocon. Nature. 2005;433.</p>
-</dd>
-<dt class="label" id="id15"><span class="brackets">3</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id9">2</a>)</span></dt>
-<dd><p>Kyte J, Doolittle RF. A simple method for displaying the hydropathic
-character of a protein. Journal of Molecular Biology. 1982;157.</p>
-</dd>
-<dt class="label" id="id16"><span class="brackets">4</span><span class="fn-backref">(<a href="#id4">1</a>,<a href="#id10">2</a>)</span></dt>
-<dd><p>Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
+translocon. Nature. 2005;433.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id15" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id9">2</a>)</em> Kyte J, Doolittle RF. A simple method for displaying the hydropathic
+character of a protein. Journal of Molecular Biology. 1982;157.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id16" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[4]</td><td><em>(<a class="fn-backref" href="#id4">1</a>, <a class="fn-backref" href="#id10">2</a>)</em> Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
 transmembrane protein folding into lipid bilayers. Proceedings of the
-National Academy of Sciences. 2011;108.</p>
-</dd>
-<dt class="label" id="id17"><span class="brackets">5</span><span class="fn-backref">(<a href="#id5">1</a>,<a href="#id11">2</a>)</span></dt>
-<dd><p>Wimley WC, White SH. Experimentally determined hydrophobicity scale
+National Academy of Sciences. 2011;108.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id17" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[5]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id11">2</a>)</em> Wimley WC, White SH. Experimentally determined hydrophobicity scale
 for proteins at membrane interfaces. Nature Structural &amp; Molecular
-Biology. 1996;3.</p>
-</dd>
-<dt class="label" id="id18"><span class="brackets">6</span><span class="fn-backref">(<a href="#id6">1</a>,<a href="#id12">2</a>)</span></dt>
-<dd><p>Zhao G, London E. An amino acid “transmembrane tendency” scale that
+Biology. 1996;3.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id18" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[6]</td><td><em>(<a class="fn-backref" href="#id6">1</a>, <a class="fn-backref" href="#id12">2</a>)</em> Zhao G, London E. An amino acid “transmembrane tendency” scale that
 approaches the theoretical limit to accuracy for prediction of
 transmembrane helices: Relationship to biological hydrophobicity.
-Protein Science. 2006;15.</p>
-</dd>
-</dl>
+Protein Science. 2006;15.</td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
-<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
-<li><p><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></p></li>
-<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
-<li><p><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></p></li>
-<li><p><a class="reference external" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale file template</a></p></li>
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
+<li><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></li>
+<li><a class="reference external" href="export.html">pyKVFinder.export</a></li>
+<li><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></li>
+<li><a class="reference external" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale file template</a></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the surface points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial</span></code> and atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code>, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy</p>

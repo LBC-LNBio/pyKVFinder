@@ -1,20 +1,18 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.pyKVFinderResults.plot_frequencies &mdash; pyKVFinder 0.2.0 documentation</title>
+  <title>pyKVFinder.pyKVFinderResults.plot_frequencies &mdash; pyKVFinder 0.2.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -33,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -214,42 +212,45 @@
             
   <div class="section" id="pykvfinder-pykvfinderresults-plot-frequencies">
 <h1>pyKVFinder.pyKVFinderResults.plot_frequencies<a class="headerlink" href="#pykvfinder-pykvfinderresults-plot-frequencies" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.plot_frequencies">
-<span class="sig-prename descclassname"><span class="pre">pyKVFinder.pyKVFinderResults.</span></span><span class="sig-name descname"><span class="pre">plot_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'histograms.pdf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.plot_frequencies" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="pyKVFinder.pyKVFinderResults.plot_frequencies">
+<code class="descclassname">pyKVFinder.pyKVFinderResults.</code><code class="descname">plot_frequencies</code><span class="sig-paren">(</span><em>self</em>, <em>pdf: Union[str</em>, <em>pathlib.Path] = 'histograms.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.plot_frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot histograms of frequencies (residues and classes of residues) in
 a PDF file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pdf</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a PDF file, by default <cite>histograms.pdf</cite>.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdf</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a PDF file, by default <cite>histograms.pdf</cite>.</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The cavity nomenclature is based on the integer label. The cavity
+<p class="first admonition-title">Note</p>
+<p class="last">The cavity nomenclature is based on the integer label. The cavity
 marked with 2, the first integer corresponding to a cavity, is KAA,
 the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
 and so on.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>The classes of residues are:</p>
-<ul class="simple">
-<li><p>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</p></li>
-<li><p>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</p></li>
-<li><p>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</p></li>
-<li><p>Negatively charged (R4): Aspartate, Glutamate.</p></li>
-<li><p>Positively charged (R5): Arginine, Histidine, Lysine.</p></li>
-<li><p>Non-standard (RX): Non-standard residues.</p></li>
+<ul class="last simple">
+<li>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</li>
+<li>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</li>
+<li>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</li>
+<li>Negatively charged (R4): Aspartate, Glutamate.</li>
+<li>Positively charged (R5): Arginine, Histidine, Lysine.</li>
+<li>Non-standard (RX): Non-standard residues.</li>
 </ul>
 </div>
 </dd></dl>
 
 <div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
-<li><p><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a></p></li>
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+<li><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">pyKVFinder</span>

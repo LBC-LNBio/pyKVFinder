@@ -1,20 +1,18 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.pyKVFinderResults &mdash; pyKVFinder 0.2.0 documentation</title>
+  <title>pyKVFinder.pyKVFinderResults &mdash; pyKVFinder 0.2.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -33,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -212,259 +210,311 @@
             
   <div class="section" id="pykvfinder-pykvfinderresults">
 <h1>pyKVFinder.pyKVFinderResults<a class="headerlink" href="#pykvfinder-pykvfinderresults" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">pyKVFinderResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cavities</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depths</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scales</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_depth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_hydropathy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residues</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_vertices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_input</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ligand</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyKVFinder/main.html#pyKVFinderResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.pyKVFinderResults" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt id="pyKVFinder.pyKVFinderResults">
+<em class="property">class </em><code class="descclassname">pyKVFinder.</code><code class="descname">pyKVFinderResults</code><span class="sig-paren">(</span><em>cavities: numpy.ndarray, surface: numpy.ndarray, depths: Optional[numpy.ndarray], scales: Optional[numpy.ndarray], volume: Dict[str, float], area: Dict[str, float], max_depth: Optional[Dict[str, float]], avg_depth: Optional[Dict[str, float]], avg_hydropathy: Optional[Dict[str, float]], residues: Dict[str, List[List[str]]], frequencies: Optional[Dict[str, Dict[str, Dict[str, int]]]], _vertices: numpy.ndarray, _step: Union[float, int], _input: Union[str, pathlib.Path, None] = None, _ligand: Union[str, pathlib.Path, None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyKVFinder/main.html#pyKVFinderResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyKVFinder.pyKVFinderResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class containing pyKVFinder detection and characterization results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cavities</strong> (<em>numpy.ndarray</em>) – <p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cavities</strong> (<em>numpy.ndarray</em>) – <p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul>
-<li><p>-1: bulk points;</p></li>
-<li><p>0: biomolecule points;</p></li>
-<li><p>1: empty space points;</p></li>
-<li><p>&gt;=2: cavity points.</p></li>
+<li>-1: bulk points;</li>
+<li>0: biomolecule points;</li>
+<li>1: empty space points;</li>
+<li>&gt;=2: cavity points.</li>
 </ul>
 </div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-</p></li>
-<li><p><strong>surface</strong> (<em>numpy.ndarray</em>) – <p>Surface points in the 3D grid (surface[nx][ny][nz]).
+</li>
+<li><strong>surface</strong> (<em>numpy.ndarray</em>) – <p>Surface points in the 3D grid (surface[nx][ny][nz]).
 Surface array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul>
-<li><p>-1: bulk points;</p></li>
-<li><p>0: biomolecule or empty space points;</p></li>
-<li><p>&gt;=2: surface points.</p></li>
+<li>-1: bulk points;</li>
+<li>0: biomolecule or empty space points;</li>
+<li>&gt;=2: surface points.</li>
 </ul>
 </div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-</p></li>
-<li><p><strong>depths</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p></li>
-<li><p><strong>scales</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
-points (scales[nx][ny][nz]).</p></li>
-<li><p><strong>volume</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – A dictionary with volume of each detected cavity.</p></li>
-<li><p><strong>area</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – A dictionary with area of each detected cavity.</p></li>
-<li><p><strong>max_depth</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with maximum depth of each detected cavity.</p></li>
-<li><p><strong>avg_depth</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with average depth of each detected cavity.</p></li>
-<li><p><strong>avg_hydropathy</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with average hydropathy for each detected cavity and
-the range of the hydrophobicity scale (min, max).</p></li>
-<li><p><strong>residues</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – A dictionary with a list of interface residues for each detected
-cavity.</p></li>
-<li><p><strong>frequencies</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A dictionary with frequencies of residues and class for
-residues of each detected cavity.</p></li>
-<li><p><strong>_vertices</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray or a list with xyz vertices coordinates (origin,
-X-axis, Y-axis, Z-axis).</p></li>
-<li><p><strong>_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Grid spacing (A).</p></li>
-<li><p><strong>_input</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to input PDB or XYZ file, by default None.</p></li>
-<li><p><strong>_ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand PDB or XYZ file, by default None.</p></li>
+</li>
+<li><strong>depths</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</li>
+<li><strong>scales</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
+points (scales[nx][ny][nz]).</li>
+<li><strong>volume</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – A dictionary with volume of each detected cavity.</li>
+<li><strong>area</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – A dictionary with area of each detected cavity.</li>
+<li><strong>max_depth</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with maximum depth of each detected cavity.</li>
+<li><strong>avg_depth</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with average depth of each detected cavity.</li>
+<li><strong>avg_hydropathy</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – A dictionary with average hydropathy for each detected cavity and
+the range of the hydrophobicity scale (min, max).</li>
+<li><strong>residues</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – A dictionary with a list of interface residues for each detected
+cavity.</li>
+<li><strong>frequencies</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A dictionary with frequencies of residues and class for
+residues of each detected cavity.</li>
+<li><strong>_vertices</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray or a list with xyz vertices coordinates (origin,
+X-axis, Y-axis, Z-axis).</li>
+<li><strong>_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Grid spacing (A).</li>
+<li><strong>_input</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to input PDB or XYZ file, by default None.</li>
+<li><strong>_ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand PDB or XYZ file, by default None.</li>
 </ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.cavities">
-<span class="sig-name descname"><span class="pre">cavities</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.cavities" title="Permalink to this definition">¶</a></dt>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.cavities">
+<code class="descname">cavities</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.cavities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>-1: bulk points;</p></li>
-<li><p>0: biomolecule points;</p></li>
-<li><p>1: empty space points;</p></li>
-<li><p>&gt;=2: cavity points.</p></li>
+<li>-1: bulk points;</li>
+<li>0: biomolecule points;</li>
+<li>1: empty space points;</li>
+<li>&gt;=2: cavity points.</li>
 </ul>
 </div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.surface">
-<span class="sig-name descname"><span class="pre">surface</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.surface" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.surface">
+<code class="descname">surface</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.surface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Surface points in the 3D grid (surface[nx][ny][nz]).
 Surface array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>-1: bulk points;</p></li>
-<li><p>0: biomolecule or empty space points;</p></li>
-<li><p>&gt;=2: surface points.</p></li>
+<li>-1: bulk points;</li>
+<li>0: biomolecule or empty space points;</li>
+<li>&gt;=2: surface points.</li>
 </ul>
 </div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.depths">
-<span class="sig-name descname"><span class="pre">depths</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.depths" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.depths">
+<code class="descname">depths</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.depths" title="Permalink to this definition">¶</a></dt>
 <dd><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>numpy.ndarray, optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.scales">
-<span class="sig-name descname"><span class="pre">scales</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.scales" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.scales">
+<code class="descname">scales</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.scales" title="Permalink to this definition">¶</a></dt>
 <dd><p>A numpy.ndarray with hydrophobicity scale value mapped at surface
 points (scales[nx][ny][nz]).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>numpy.ndarray, optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.ncav">
-<span class="sig-name descname"><span class="pre">ncav</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.ncav" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.ncav">
+<code class="descname">ncav</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.ncav" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of cavities.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.volume">
-<span class="sig-name descname"><span class="pre">volume</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.volume" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.volume">
+<code class="descname">volume</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.volume" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with volume of each detected cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.area">
-<span class="sig-name descname"><span class="pre">area</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.area" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.area">
+<code class="descname">area</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.area" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with area of each detected cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.max_depth">
-<span class="sig-name descname"><span class="pre">max_depth</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.max_depth" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.max_depth">
+<code class="descname">max_depth</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.max_depth" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with maximum depth of each detected cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.avg_depth">
-<span class="sig-name descname"><span class="pre">avg_depth</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.avg_depth" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.avg_depth">
+<code class="descname">avg_depth</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.avg_depth" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with average depth of each detected cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.avg_hydropathy">
-<span class="sig-name descname"><span class="pre">avg_hydropathy</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.avg_hydropathy" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.avg_hydropathy">
+<code class="descname">avg_hydropathy</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.avg_hydropathy" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with average hydropathy for each detected cavity and
 the range of the hydrophobicity scale (min, max).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>], optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.residues">
-<span class="sig-name descname"><span class="pre">residues</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.residues" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.residues">
+<code class="descname">residues</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.residues" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with a list of interface residues for each detected
 cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, List[List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]]]</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, List[List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]]]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.frequencies">
-<span class="sig-name descname"><span class="pre">frequencies</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.frequencies" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults.frequencies">
+<code class="descname">frequencies</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary with frequencies of residues and class for
 residues of each detected cavity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>]]], optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>]]], optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults._vertices">
-<span class="sig-name descname"><span class="pre">_vertices</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._vertices" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults._vertices">
+<code class="descname">_vertices</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._vertices" title="Permalink to this definition">¶</a></dt>
 <dd><p>A numpy.ndarray or a list with xyz vertices coordinates (origin,
 X-axis, Y-axis, Z-axis).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults._step">
-<span class="sig-name descname"><span class="pre">_step</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._step" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults._step">
+<code class="descname">_step</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Grid spacing (A).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults._input">
-<span class="sig-name descname"><span class="pre">_input</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._input" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults._input">
+<code class="descname">_input</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._input" title="Permalink to this definition">¶</a></dt>
 <dd><p>A path to input PDB or XYZ file, by default None.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>], optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>], optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults._ligand">
-<span class="sig-name descname"><span class="pre">_ligand</span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._ligand" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pyKVFinder.pyKVFinderResults._ligand">
+<code class="descname">_ligand</code><a class="headerlink" href="#pyKVFinder.pyKVFinderResults._ligand" title="Permalink to this definition">¶</a></dt>
 <dd><p>A path to ligand PDB or XYZ file, by default None.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>], optional</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a>], optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -472,10 +522,10 @@ X-axis, Y-axis, Z-axis).</p>
 <h3>Methods</h3><div class="toctree-wrapper compound">
 </div>
 <ul class="simple">
-<li><p><a class="reference external" href="pyKVFinderResults.export.html">pyKVFinder.pyKVFinderResults.export</a>: Exports cavities and characterizations to PDB-formatted files.</p></li>
-<li><p><a class="reference external" href="pyKVFinderResults.write.html">pyKVFinder.pyKVFinderResults.write</a>: Writes file paths and characterizations to a TOML-formatted results file.</p></li>
-<li><p><a class="reference external" href="pyKVFinderResults.plot_frequencies.html">pyKVFinder.pyKVFinderResults.plot_frequencies</a>: Plot histograms of frequencies (residues and classes of residues) in a PDF file.</p></li>
-<li><p><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a>: Exports cavities and characterizations to PDB-formatted files, writes file paths and characterizations to a TOML-formatted results file, and optionally plot histograms of frequencies in a PDF file.</p></li>
+<li><a class="reference external" href="pyKVFinderResults.export.html">pyKVFinder.pyKVFinderResults.export</a>: Exports cavities and characterizations to PDB-formatted files.</li>
+<li><a class="reference external" href="pyKVFinderResults.write.html">pyKVFinder.pyKVFinderResults.write</a>: Writes file paths and characterizations to a TOML-formatted results file.</li>
+<li><a class="reference external" href="pyKVFinderResults.plot_frequencies.html">pyKVFinder.pyKVFinderResults.plot_frequencies</a>: Plot histograms of frequencies (residues and classes of residues) in a PDF file.</li>
+<li><a class="reference external" href="pyKVFinderResults.export_all.html">pyKVFinder.pyKVFinderResults.export_all</a>: Exports cavities and characterizations to PDB-formatted files, writes file paths and characterizations to a TOML-formatted results file, and optionally plot histograms of frequencies in a PDF file.</li>
 </ul>
 </div>
 

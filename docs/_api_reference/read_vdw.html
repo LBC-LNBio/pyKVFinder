@@ -1,20 +1,18 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.read_vdw &mdash; pyKVFinder 0.2.0 documentation</title>
+  <title>pyKVFinder.read_vdw &mdash; pyKVFinder 0.2.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -33,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -221,33 +219,37 @@
             
   <div class="section" id="pykvfinder-read-vdw">
 <h1>pyKVFinder.read_vdw<a class="headerlink" href="#pykvfinder-read-vdw" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyKVFinder.read_vdw">
-<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">read_vdw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/pyKVFinder/utils.html#read_vdw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.read_vdw" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="pyKVFinder.read_vdw">
+<code class="descclassname">pyKVFinder.</code><code class="descname">read_vdw</code><span class="sig-paren">(</span><em>fn: Union[str</em>, <em>pathlib.Path</em>, <em>None] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Dict[str, float]]<a class="reference internal" href="../_modules/pyKVFinder/utils.html#read_vdw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyKVFinder.read_vdw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads van der Waals radii from .dat file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fn</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
 Waals radii file: <cite>vdw.dat</cite>.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>vdw</strong> – A dictionary containing radii values.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]]</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a string or a pathlib.Path.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – A line in <cite>vdw</cite> has incorrect format. The values must be double
-    tab-separated.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – A line in <cite>vdw</cite> has an incorrect radius type for an atom.</p></li>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>vdw</strong> – A dictionary containing radii values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>]]</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>fn</cite> must be a string or a pathlib.Path.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – A line in <cite>vdw</cite> has incorrect format. The values must be double
+tab-separated.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – A line in <cite>vdw</cite> has an incorrect radius type for an atom.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The van der Waals radii file defines the radius values for each
+<p class="first admonition-title">Note</p>
+<p class="last">The van der Waals radii file defines the radius values for each
 atom by residue and when not defined, it uses a generic value
 based on the atom type (see <cite>van der Waals file template</cite>).
 The package contains a built-in van der Waals radii file: <cite>vdw.dat</cite>.</p>
@@ -255,11 +257,11 @@ The package contains a built-in van der Waals radii file: <cite>vdw.dat</cite>.<
 </dd></dl>
 
 <div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
-<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
-<li><p><a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals file template</a></p></li>
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
+<li><a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals file template</a></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when a <em>.dat</em> file is not specified.</p>
@@ -270,7 +272,7 @@ The package contains a built-in van der Waals radii file: <cite>vdw.dat</cite>.<
 </pre></div>
 </div>
 <p>Otherwise, user must specify a <em>.dat</em> file following template of <a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals radii file</a>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&gt;RES</span><span class="se">\n</span><span class="s2">C</span><span class="se">\t\t</span><span class="s2">1.66</span><span class="se">\n</span><span class="s2">CA</span><span class="se">\t\t</span><span class="s2">2.00</span><span class="se">\n</span><span class="s2">N</span><span class="se">\t\t</span><span class="s2">1.97</span><span class="se">\n</span><span class="s2">O</span><span class="se">\t\t</span><span class="s2">1.69</span><span class="se">\n</span><span class="s2">H</span><span class="se">\t\t</span><span class="s2">0.91</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span>
