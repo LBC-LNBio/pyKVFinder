@@ -378,7 +378,7 @@ def read_cavity(
         raise TypeError("`cavity` must be a string or a pathlib.Path.")
     if type(receptor) not in [str, pathlib.Path]:
         raise TypeError("`receptor` must be a string or a pathlib.Path.")
-    elif not receptor.endswith('.pdb') and not receptor.endswith('.xyz'):
+    elif not receptor.endswith(".pdb") and not receptor.endswith(".xyz"):
         raise TypeError("`receptor` must have .pdb or .xyz extension.")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
@@ -423,9 +423,9 @@ def read_cavity(
         vdw = read_vdw(VDW)
 
     # Load receptor coordinates and radii
-    if receptor.endswith('.pdb'):
+    if receptor.endswith(".pdb"):
         atomic = read_pdb(receptor, vdw)
-    elif receptor.endswith('.xyz'):
+    elif receptor.endswith(".xyz"):
         atomic = read_xyz(receptor, vdw)
 
     # Extract xyzr from atomic
@@ -820,8 +820,32 @@ def plot_frequencies(
             # Frequency residues
             x = list(frequencies[cavity_tag]["RESIDUES"].keys())
             y = frequencies[cavity_tag]["RESIDUES"].values()
+            colors = [
+                "tab:cyan",
+                "tab:purple",
+                "tab:green",
+                "tab:red",
+                "tab:green",
+                "tab:green",
+                "tab:red",
+                "tab:cyan",
+                "tab:purple",
+                "tab:cyan",
+                "tab:cyan",
+                "tab:purple",
+                "tab:green",
+                "tab:orange",
+                "tab:cyan",
+                "tab:green",
+                "tab:green",
+                "tab:orange",
+                "tab:orange",
+                "tab:cyan",
+            ]
+            for _ in range(len(x) - len(colors)):
+                colors.append("tab:gray")
 
-            ax1.bar(x, y, align="center", edgecolor="black")
+            ax1.bar(x, y, align="center", edgecolor="black", color=colors)
             ax1.set_xlabel(None)
             ax1.set_xlim(-1, len(x))
             ax1.tick_params(axis="x", labelsize=15, rotation=45)
