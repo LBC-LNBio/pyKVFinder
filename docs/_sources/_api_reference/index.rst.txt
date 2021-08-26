@@ -10,7 +10,7 @@ Functions
 .. toctree::
     :maxdepth: 1
 
-    pyKVFinder
+    run_workflow
     read_vdw
     read_pdb
     read_xyz

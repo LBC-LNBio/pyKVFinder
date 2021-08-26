@@ -28,7 +28,7 @@ from .grid import (
     export,
 )
 
-__all__ = ["pyKVFinder", "pyKVFinderResults"]
+__all__ = ["run_workflow", "pyKVFinderResults"]
 
 VDW = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
@@ -632,7 +632,7 @@ class pyKVFinderResults(object):
             self.plot_frequencies(pdf)
 
 
-def pyKVFinder(
+def run_workflow(
     input: Union[str, pathlib.Path],
     ligand: Optional[Union[str, pathlib.Path]] = None,
     vdw: Optional[Union[str, pathlib.Path]] = None,

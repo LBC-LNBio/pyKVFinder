@@ -268,7 +268,7 @@
 <p>The <strong>standard workflow</strong> for cavity detection with spatial and constitutional characterization (volume, area and interface residues) can be run at once with one command:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
 <span class="go">&lt;pyKVFinderResults object&gt;</span>
 </pre></div>
@@ -351,12 +351,12 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.</p>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference external" href="../_api_reference/pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+<li><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></li>
 </ul>
 </div>
 <p>With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:</p>
@@ -376,8 +376,8 @@
 </div>
 <div class="section" id="full-workflow">
 <h2>Full workflow<a class="headerlink" href="#full-workflow" title="Permalink to this headline">¶</a></h2>
-<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (volume and area), constitutional (interface residues), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
+<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (volume and area), constitutional (interface residues), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Inside the <em>pyKVFinderResults object</em>, in addition to cavity and surface points, volume, area, and interface residues and their frequencies showed above, depth and hydropathy points, average depth, maximum depth and average hydropathy are also stored as attributes. Below, we show how to access them:</p>
@@ -431,12 +431,12 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_depth</span></code> and <code class="docutils literal notranslate"><span class="pre">include_hydropathy</span></code> parameters, and therefore parameters can be adjusted to users’ needs.</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_depth</span></code> and <code class="docutils literal notranslate"><span class="pre">include_hydropathy</span></code> parameters, and therefore parameters can be adjusted to users’ needs.</p>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference external" href="../_api_reference/pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+<li><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></li>
 </ul>
 </div>
 <p>With these attributes, we can write the detected cavities with depth annotated on B-factor column, the surface cavity points with hydrophobicity scale annotated on B-factor column, and the characterization to files. Below, we illustrate the usage:</p>
@@ -457,7 +457,7 @@
 </div>
 <div class="section" id="separated-steps">
 <h1>Separated steps<a class="headerlink" href="#separated-steps" title="Permalink to this headline">¶</a></h1>
-<p>If users prefer, instead of running <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each step in detail.</p>
+<p>If users prefer, instead of running <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each step in detail.</p>
 <div class="section" id="loading-van-der-waals-radii-dictionary">
 <h2>1. Loading van der Waals radii dictionary<a class="headerlink" href="#loading-van-der-waals-radii-dictionary" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals radii file</a> define the radius values for each residue and when not defined, it uses a generic value based on the atom type. <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> takes a vdW radii file (<em>.dat</em>) and returns a dictionary contaning radii values for each atom of each residue.</p>
@@ -1075,15 +1075,15 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Box configuration filepath</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Standard workflow</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Full workflow</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference external" href="../_api_reference/pyKVFinder.html">pyKVFinder.pyKVFinder</a></li>
+<li><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></li>
 </ul>
 </div>
 </div>

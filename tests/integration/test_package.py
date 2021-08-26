@@ -173,24 +173,24 @@ class TestPackageWorkflow(unittest.TestCase):
             os.path.dirname(pyKVFinder.__file__), "data", "tests", "1FMO.pdb"
         )
         # Full workflow
-        self.results = pyKVFinder.pyKVFinder(self.pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
+        self.results = pyKVFinder.run_workflow(self.pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
     
     def test_standard(self):
-        results = pyKVFinder.pyKVFinder(self.pdb)
+        results = pyKVFinder.run_workflow(self.pdb)
         self.assertEqual(results.ncav > 0, True)
     
     def test_ligand_mode(self):
-        results = pyKVFinder.pyKVFinder(self.pdb, os.path.join(
+        results = pyKVFinder.run_workflow(self.pdb, os.path.join(
             os.path.dirname(pyKVFinder.__file__), "data", "tests", "ADN.pdb"
         ))
         self.assertEqual(results.ncav > 0, True)
 
     def test_residues_box(self):
-        results = pyKVFinder.pyKVFinder(self.pdb, box=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "residues-box.toml"))
+        results = pyKVFinder.run_workflow(self.pdb, box=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "residues-box.toml"))
         self.assertEqual(results.ncav > 0, True)
 
     def test_custom_box(self):
-        results = pyKVFinder.pyKVFinder(self.pdb, box=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "custom-box.toml"))
+        results = pyKVFinder.run_workflow(self.pdb, box=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "custom-box.toml"))
         self.assertEqual(results.ncav, 1)
     
     def test_pyKVFinderResults_methods(self):

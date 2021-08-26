@@ -41,7 +41,7 @@ The **standard workflow** for cavity detection with spatial and constitutional c
 
   >>> import os
   >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-  >>> results = pyKVFinder.pyKVFinder(pdb)
+  >>> results = pyKVFinder.run_workflow(pdb)
   >>> results
   <pyKVFinderResults object>
 
@@ -119,11 +119,11 @@ Inside the *pyKVFinderResults object*, cavity and surface points, number of cavi
 
 .. note::
 
-  The ``pyKVFinder.pyKVFinder`` function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.
+  The ``pyKVFinder.run_workflow`` function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.
 
 .. seealso::
 
-  * `pyKVFinder.pyKVFinder <../_api_reference/pyKVFinder.html>`_
+  * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_
 
 With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:
 
@@ -142,11 +142,11 @@ With these attributes, we can write the detected cavities and the characterizati
 Full workflow
 -------------
 
-However, users may opt to perform the **full workflow** for cavity detection with spatial (volume and area), constitutional (interface residues), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of ``pyKVFinder.pyKVFinder`` function:
+However, users may opt to perform the **full workflow** for cavity detection with spatial (volume and area), constitutional (interface residues), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of ``pyKVFinder.run_workflow`` function:
 
 .. code-block:: python
 
-  >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
+  >>> results = pyKVFinder.run_workflow(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
 
 Inside the *pyKVFinderResults object*, in addition to cavity and surface points, volume, area, and interface residues and their frequencies showed above, depth and hydropathy points, average depth, maximum depth and average hydropathy are also stored as attributes. Below, we show how to access them:
 
@@ -201,11 +201,11 @@ Inside the *pyKVFinderResults object*, in addition to cavity and surface points,
 
 .. note::
 
-  The ``pyKVFinder.pyKVFinder`` function uses default parameter specifications, except for ``include_depth`` and ``include_hydropathy`` parameters, and therefore parameters can be adjusted to users’ needs.
+  The ``pyKVFinder.run_workflow`` function uses default parameter specifications, except for ``include_depth`` and ``include_hydropathy`` parameters, and therefore parameters can be adjusted to users’ needs.
 
 .. seealso::
 
-  * `pyKVFinder.pyKVFinder <../_api_reference/pyKVFinder.html>`_
+  * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_
 
 With these attributes, we can write the detected cavities with depth annotated on B-factor column, the surface cavity points with hydrophobicity scale annotated on B-factor column, and the characterization to files. Below, we illustrate the usage:
 
@@ -224,7 +224,7 @@ With these attributes, we can write the detected cavities with depth annotated o
 Separated steps
 ===============
 
-If users prefer, instead of running ``pyKVFinder.pyKVFinder`` function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each step in detail.
+If users prefer, instead of running ``pyKVFinder.run_workflow`` function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each step in detail.
 
 1. Loading van der Waals radii dictionary
 -----------------------------------------
@@ -854,13 +854,13 @@ For instance, with *custom-box.toml*:
   >>> # Box configuration filepath
   >>> fn = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'custom-box.toml')
   >>> # Standard workflow
-  >>> results = pyKVFinder.pyKVFinder(pdb, box=fn)
+  >>> results = pyKVFinder.run_workflow(pdb, box=fn)
   >>> # Full workflow
-  >>> results = pyKVFinder.pyKVFinder(pdb, box=fn, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
+  >>> results = pyKVFinder.run_workflow(pdb, box=fn, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
 
 .. seealso::
 
-  * `pyKVFinder.pyKVFinder <../_api_reference/pyKVFinder.html>`_ 
+  * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_ 
 
 Separated steps
 ---------------

@@ -224,7 +224,7 @@
     <span class="n">export</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pyKVFinder&quot;</span><span class="p">,</span> <span class="s2">&quot;pyKVFinderResults&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run_workflow&quot;</span><span class="p">,</span> <span class="s2">&quot;pyKVFinderResults&quot;</span><span class="p">]</span>
 
 <span class="n">VDW</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;data/vdw.dat&quot;</span><span class="p">)</span>
 
@@ -828,7 +828,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="pyKVFinder"><a class="viewcode-back" href="../../_api_reference/pyKVFinder.html#pyKVFinder.pyKVFinder">[docs]</a><span class="k">def</span> <span class="nf">pyKVFinder</span><span class="p">(</span>
+<div class="viewcode-block" id="run_workflow"><a class="viewcode-back" href="../../_api_reference/run_workflow.html#pyKVFinder.run_workflow">[docs]</a><span class="k">def</span> <span class="nf">run_workflow</span><span class="p">(</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.pyKVFinder &mdash; pyKVFinder 0.2.1 documentation</title>
+  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.2.1 documentation</title>
   
 
   
@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.pyKVFinder</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.run_workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
@@ -198,13 +198,13 @@
         
           <li><a href="index.html">Functions</a> &raquo;</li>
         
-      <li>pyKVFinder.pyKVFinder</li>
+      <li>pyKVFinder.run_workflow</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/_api_reference/pyKVFinder.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/_api_reference/run_workflow.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -217,11 +217,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pykvfinder-pykvfinder">
-<h1>pyKVFinder.pyKVFinder<a class="headerlink" href="#pykvfinder-pykvfinder" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pykvfinder-run-workflow">
+<h1>pyKVFinder.run_workflow<a class="headerlink" href="#pykvfinder-run-workflow" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="pyKVFinder.pyKVFinder">
-<code class="descclassname">pyKVFinder.</code><code class="descname">pyKVFinder</code><span class="sig-paren">(</span><em>input: Union[str, pathlib.Path], ligand: Optional[Union[str, pathlib.Path]] = None, vdw: Optional[Union[str, pathlib.Path]] = None, box: Optional[Union[str, pathlib.Path]] = None, step: Union[float, int] = 0.6, probe_in: Union[float, int] = 1.4, probe_out: Union[float, int] = 4.0, removal_distance: Union[float, int] = 2.4, volume_cutoff: Union[float, int] = 5.0, ligand_cutoff: Union[float, int] = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: Union[str, pathlib.Path] = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: Optional[int] = None, verbose: bool = False</em><span class="sig-paren">)</span> &#x2192; pyKVFinder.pyKVFinderResults<a class="reference internal" href="../_modules/pyKVFinder/main.html#pyKVFinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyKVFinder.pyKVFinder" title="Permalink to this definition">¶</a></dt>
+<dt id="pyKVFinder.run_workflow">
+<code class="descclassname">pyKVFinder.</code><code class="descname">run_workflow</code><span class="sig-paren">(</span><em>input: Union[str, pathlib.Path], ligand: Optional[Union[str, pathlib.Path]] = None, vdw: Optional[Union[str, pathlib.Path]] = None, box: Optional[Union[str, pathlib.Path]] = None, step: Union[float, int] = 0.6, probe_in: Union[float, int] = 1.4, probe_out: Union[float, int] = 4.0, removal_distance: Union[float, int] = 2.4, volume_cutoff: Union[float, int] = 5.0, ligand_cutoff: Union[float, int] = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: Union[str, pathlib.Path] = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: Optional[int] = None, verbose: bool = False</em><span class="sig-paren">)</span> &#x2192; pyKVFinder.pyKVFinderResults<a class="reference internal" href="../_modules/pyKVFinder/main.html#run_workflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyKVFinder.run_workflow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects and characterizes cavities (volume, area, depth [optional],
 hydropathy [optional] and interface residues).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -427,7 +427,7 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyKVFinder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
 <span class="go">&lt;pyKVFinderResults object&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">cavities</span>
@@ -481,7 +481,7 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <p>However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.</p>
 <p>The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a <em>.pdb</em> or a <em>.xyz</em> files. Thus, the detected cavities are limited within a radius (<code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code>) of the target ligand(s).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
 <span class="go">&lt;pyKVFinderResults object&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">cavities</span>
@@ -541,7 +541,7 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">p2 = [11.51, 7.34, 1.59]</span>
 <span class="go">p3 = [3.11, 10.74, 1.59]</span>
 <span class="go">p4 = [3.11, 7.34, 6.19]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
 <span class="go">&lt;pyKVFinderResults object&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">cavities</span>
@@ -592,8 +592,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ASN&#39;: 1, &#39;GLU&#39;: 3, &#39;GLY&#39;: 1, &#39;LEU&#39;: 2, &#39;PHE&#39;: 1, &#39;THR&#39;: 2, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 7, &#39;R2&#39;: 2, &#39;R3&#39;: 3, &#39;R4&#39;: 3, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}}</span>
 </pre></div>
 </div>
-<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (surface points, volume and area), constitutional (interface residues and their frequencies), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinder</span></code> function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">pyKVFinder</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
+<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (surface points, volume and area), constitutional (interface residues and their frequencies), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">depths</span>
 <span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>

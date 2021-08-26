@@ -1,7 +1,7 @@
-﻿pyKVFinder.pyKVFinder
-=====================
+﻿pyKVFinder.run_workflow
+=======================
 
-.. autofunction:: pyKVFinder.pyKVFinder(input: Union[str, pathlib.Path], ligand: Optional[Union[str, pathlib.Path]] = None, vdw: Optional[Union[str, pathlib.Path]] = None, box: Optional[Union[str, pathlib.Path]] = None, step: Union[float, int] = 0.6, probe_in: Union[float, int] = 1.4, probe_out: Union[float, int] = 4.0, removal_distance: Union[float, int] = 2.4, volume_cutoff: Union[float, int] = 5.0, ligand_cutoff: Union[float, int] = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: Union[str, pathlib.Path] = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: Optional[int] = None, verbose: bool = False) -> pyKVFinder.pyKVFinderResults
+.. autofunction:: pyKVFinder.run_workflow(input: Union[str, pathlib.Path], ligand: Optional[Union[str, pathlib.Path]] = None, vdw: Optional[Union[str, pathlib.Path]] = None, box: Optional[Union[str, pathlib.Path]] = None, step: Union[float, int] = 0.6, probe_in: Union[float, int] = 1.4, probe_out: Union[float, int] = 4.0, removal_distance: Union[float, int] = 2.4, volume_cutoff: Union[float, int] = 5.0, ligand_cutoff: Union[float, int] = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: Union[str, pathlib.Path] = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: Optional[int] = None, verbose: bool = False) -> pyKVFinder.pyKVFinderResults
 
 .. seealso::
 
@@ -18,7 +18,7 @@ The **standard workflow** for cavity detection with spatial (surface points, vol
     >>> import os
     >>> import pyKVFinder
     >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-    >>> results = pyKVFinder.pyKVFinder(pdb)
+    >>> results = pyKVFinder.run_workflow(pdb)
     >>> results
     <pyKVFinderResults object>
     >>> results.cavities
@@ -75,7 +75,7 @@ The cavity detection can be limited around the target ligand(s), which will be p
 .. code-block:: python
 
     >>> ligand = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'ADN.pdb')
-    >>> results = pyKVFinder.pyKVFinder(pdb, ligand)
+    >>> results = pyKVFinder.run_workflow(pdb, ligand)
     >>> results
     <pyKVFinderResults object>
     >>> results.cavities
@@ -137,7 +137,7 @@ Further, we can also perform cavity detection on a custom 3D grid, where we can 
     p2 = [11.51, 7.34, 1.59]
     p3 = [3.11, 10.74, 1.59]
     p4 = [3.11, 7.34, 6.19]
-    >>> results = pyKVFinder.pyKVFinder(pdb, box=fn)
+    >>> results = pyKVFinder.run_workflow(pdb, box=fn)
     >>> results
     <pyKVFinderResults object>
     >>> results.cavities
@@ -187,11 +187,11 @@ Further, we can also perform cavity detection on a custom 3D grid, where we can 
     >>> results.frequencies
     {'KAA': {'RESIDUES': {'ALA': 1, 'ASN': 1, 'GLU': 3, 'GLY': 1, 'LEU': 2, 'PHE': 1, 'THR': 2, 'TYR': 1, 'VAL': 3}, 'CLASS': {'R1': 7, 'R2': 2, 'R3': 3, 'R4': 3, 'R5': 0, 'RX': 0}}}
 
-However, users may opt to perform the **full workflow** for cavity detection with spatial (surface points, volume and area), constitutional (interface residues and their frequencies), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of ``pyKVFinder.pyKVFinder`` function:
+However, users may opt to perform the **full workflow** for cavity detection with spatial (surface points, volume and area), constitutional (interface residues and their frequencies), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of ``pyKVFinder.run_workflow`` function:
 
 .. code-block:: python
 
-    >>> results = pyKVFinder.pyKVFinder(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
+    >>> results = pyKVFinder.run_workflow(pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
     >>> results.depths
     array([[[0., 0., 0., ..., 0., 0., 0.],
             [0., 0., 0., ..., 0., 0., 0.],
