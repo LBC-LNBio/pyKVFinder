@@ -28,7 +28,7 @@ def get_vertices(
         A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
         and radius) for each atom.
     probe_out : Union[float, int], optional
-        Probe Out size (A), bu default 4.0.
+        Probe Out size (A), by default 4.0.
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
 
@@ -130,7 +130,7 @@ def get_vertices_from_file(
     Raises
     ------
     TypeError
-        `fn` must be a str.
+        `fn` must be a string or a pathlib.Path.
     TypeError
         `atomic` must be a list or a numpy.ndarray.
     ValueError
@@ -171,7 +171,7 @@ def get_vertices_from_file(
 
     # Check arguments types
     if type(fn) not in [str, pathlib.Path]:
-        raise TypeError("`fn` must be a str.")
+        raise TypeError("`fn` must be a string or a pathlib.Path.")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atomic).shape) != 2:
@@ -642,7 +642,7 @@ def detect(
     TypeError
         `box_adjustment` must be a boolean.
     TypeError
-        `surface` must be a str.
+        `surface` must be a string.
     TypeError
         `nthreads` must be a positive integer.
     ValueError
@@ -710,7 +710,7 @@ def detect(
     if type(box_adjustment) not in [bool]:
         raise TypeError("`box_adjustment` must be a boolean.")
     if type(surface) not in [str]:
-        raise TypeError("`surface` must be a str.")
+        raise TypeError("`surface` must be a string.")
     if nthreads is None:
         nthreads = os.cpu_count() - 1
     else:
@@ -1746,7 +1746,7 @@ def hydropathy(
     if type(surface) not in [numpy.ndarray]:
         raise TypeError("`surface` must be a numpy.ndarray.")
     elif len(surface.shape) != 3:
-        raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
+        raise ValueError("`surface` has the incorrect shape. It must be (nx, ny, nz).")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atomic).shape) != 2:
@@ -2001,7 +2001,7 @@ def export(
     TypeError
         `model` must be a integer.
     TypeError
-        `fn` must be a string.
+        `fn` must be a string or pathlib.Path.
     TypeError
         `output_hydropathy` must be a string.
     Exception

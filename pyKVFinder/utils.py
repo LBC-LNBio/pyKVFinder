@@ -3,7 +3,7 @@ import logging
 import argparse
 import pathlib
 import numpy
-from typing import Dict, List, Union, Tuple, Optional
+from typing import Dict, List, Union, Optional
 
 __all__ = [
     "read_vdw",
