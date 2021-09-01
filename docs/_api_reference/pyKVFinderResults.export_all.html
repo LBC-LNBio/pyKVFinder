@@ -1,18 +1,20 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.pyKVFinderResults.export_all &mdash; pyKVFinder 0.2.1 documentation</title>
+  <title>pyKVFinder.pyKVFinderResults.export_all &mdash; pyKVFinder 0.2.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -94,12 +96,12 @@
               
             
             
-              <p class="caption"><span class="caption-text">Installation</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
@@ -108,7 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Functions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html#classes">Classes</a><ul class="current">
@@ -122,18 +124,18 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration files</span></p>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
 </ul>
-<p class="caption"><span class="caption-text">About</span></p>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
@@ -212,59 +214,55 @@
             
   <div class="section" id="pykvfinder-pykvfinderresults-export-all">
 <h1>pyKVFinder.pyKVFinderResults.export_all<a class="headerlink" href="#pykvfinder-pykvfinderresults-export-all" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="pyKVFinder.pyKVFinderResults.export_all">
-<code class="descclassname">pyKVFinder.pyKVFinderResults.</code><code class="descname">export_all</code><span class="sig-paren">(</span><em>self</em>, <em>fn: Union[str</em>, <em>pathlib.Path] = 'results.toml'</em>, <em>output: Union[str</em>, <em>pathlib.Path] = 'cavity.pdb'</em>, <em>output_hydropathy: Union[str</em>, <em>pathlib.Path] = 'hydropathy.pdb'</em>, <em>include_frequencies_pdf: bool = False</em>, <em>pdf: Union[str</em>, <em>pathlib.Path] = 'histograms.pdf'</em>, <em>nthreads: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyKVFinder.pyKVFinderResults.export_all" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.pyKVFinderResults.export_all">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.pyKVFinderResults.</span></span><span class="sig-name descname"><span class="pre">export_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'results.toml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'cavity.pdb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hydropathy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'hydropathy.pdb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_frequencies_pdf</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'histograms.pdf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pyKVFinder.pyKVFinderResults.export_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports cavities and characterization to PDB-formatted files,
 writes file paths and characterization to a TOML-formatted file, and
 optionally plot histograms of frequencies (residues and classes of
 residues) in a PDF file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to TOML-formatted file for writing file paths and
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to TOML-formatted file for writing file paths and
 cavity characterization (volume, area and interface residues)
-per cavity detected, by default <cite>results.toml</cite>.</li>
-<li><strong>output</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to PDB file for writing cavities, by default <cite>cavity.pdb</cite>.</li>
-<li><strong>output_hydropathy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to PDB file for writing hydropathy at surface points,
-by default <cite>hydropathy.pdb</cite>.</li>
-<li><strong>include_frequencies_pdf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot frequencies (residues and classes of residues)
-to PDF file, by default False.</li>
-<li><strong>pdf</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a PDF file, by default <cite>histograms.pdf</cite>.</li>
-<li><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
-<cite>os.cpu_count() - 1</cite>.</li>
+per cavity detected, by default <cite>results.toml</cite>.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to PDB file for writing cavities, by default <cite>cavity.pdb</cite>.</p></li>
+<li><p><strong>output_hydropathy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to PDB file for writing hydropathy at surface points,
+by default <cite>hydropathy.pdb</cite>.</p></li>
+<li><p><strong>include_frequencies_pdf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot frequencies (residues and classes of residues)
+to PDF file, by default False.</p></li>
+<li><p><strong>pdf</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a PDF file, by default <cite>histograms.pdf</cite>.</p></li>
+<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
+<cite>os.cpu_count() - 1</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity
 marked with 2, the first integer corresponding to a cavity, is KAA,
 the cavity marked with 3 is KAB, the cavity marked with 4 is KAC
 and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The classes of residues are:</p>
-<ul class="last simple">
-<li>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</li>
-<li>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</li>
-<li>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</li>
-<li>Negatively charged (R4): Aspartate, Glutamate.</li>
-<li>Positively charged (R5): Arginine, Histidine, Lysine.</li>
-<li>Non-standard (RX): Non-standard residues.</li>
+<ul class="simple">
+<li><p>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</p></li>
+<li><p>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</p></li>
+<li><p>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</p></li>
+<li><p>Negatively charged (R4): Aspartate, Glutamate.</p></li>
+<li><p>Positively charged (R5): Arginine, Histidine, Lysine.</p></li>
+<li><p>Non-standard (RX): Non-standard residues.</p></li>
 </ul>
 </div>
 </dd></dl>
 
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">pyKVFinder</span>

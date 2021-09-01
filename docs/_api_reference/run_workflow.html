@@ -1,18 +1,20 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.2.1 documentation</title>
+  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.2.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -94,12 +96,12 @@
               
             
             
-              <p class="caption"><span class="caption-text">Installation</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
@@ -108,7 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.run_workflow</a></li>
@@ -131,18 +133,18 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#classes">Classes</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration files</span></p>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
 </ul>
-<p class="caption"><span class="caption-text">About</span></p>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
@@ -219,208 +221,188 @@
             
   <div class="section" id="pykvfinder-run-workflow">
 <h1>pyKVFinder.run_workflow<a class="headerlink" href="#pykvfinder-run-workflow" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="pyKVFinder.run_workflow">
-<code class="descclassname">pyKVFinder.</code><code class="descname">run_workflow</code><span class="sig-paren">(</span><em>input: Union[str, pathlib.Path], ligand: Optional[Union[str, pathlib.Path]] = None, vdw: Optional[Union[str, pathlib.Path]] = None, box: Optional[Union[str, pathlib.Path]] = None, step: Union[float, int] = 0.6, probe_in: Union[float, int] = 1.4, probe_out: Union[float, int] = 4.0, removal_distance: Union[float, int] = 2.4, volume_cutoff: Union[float, int] = 5.0, ligand_cutoff: Union[float, int] = 5.0, include_depth: bool = False, include_hydropathy: bool = False, hydrophobicity_scale: Union[str, pathlib.Path] = 'EisenbergWeiss', surface: str = 'SES', ignore_backbone: bool = False, nthreads: Optional[int] = None, verbose: bool = False</em><span class="sig-paren">)</span> &#x2192; pyKVFinder.pyKVFinderResults<a class="reference internal" href="../_modules/pyKVFinder/main.html#run_workflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyKVFinder.run_workflow" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.run_workflow">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">run_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ligand</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vdw</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removal_distance</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">2.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ligand_cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_depth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_hydropathy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hydrophobicity_scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'EisenbergWeiss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'SES'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_backbone</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyKVFinderResults.html#pyKVFinder.pyKVFinderResults" title="pyKVFinder.pyKVFinderResults"><span class="pre">pyKVFinder.pyKVFinderResults</span></a></span></span><a class="reference internal" href="../_modules/pyKVFinder/main.html#run_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.run_workflow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects and characterizes cavities (volume, area, depth [optional],
 hydropathy [optional] and interface residues).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em>) – A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities.</li>
-<li><strong>ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand file, in PDB or XYZ format, by default None.</li>
-<li><strong>vdw</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
-Waals radii file: <cite>vdw.dat</cite>.</li>
-<li><strong>box</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to box configuration file (TOML-formatted), by default None.</li>
-<li><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</li>
-<li><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</li>
-<li><strong>probe_out</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe Out size (A), by default 4.0.</li>
-<li><strong>removal_distance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Length to be removed from the cavity-bulk frontier (A), by default 2.4.</li>
-<li><strong>volume_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Cavities volume filter (A3), by default 5.0.</li>
-<li><strong>ligand_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Radius value to limit a space around a ligand (A), by default 5.0.</li>
-<li><strong>include_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to characterize the depth of the detected cavities, by
-default False.</li>
-<li><strong>include_hydropathy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to characterize the hydropathy of the detected cavities, by
-default False.</li>
-<li><strong>hydrophobicity_scale</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em>) – A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities.</p></li>
+<li><p><strong>ligand</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to ligand file, in PDB or XYZ format, by default None.</p></li>
+<li><p><strong>vdw</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+Waals radii file: <cite>vdw.dat</cite>.</p></li>
+<li><p><strong>box</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A path to box configuration file (TOML-formatted), by default None.</p></li>
+<li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+<li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
+<li><p><strong>probe_out</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe Out size (A), by default 4.0.</p></li>
+<li><p><strong>removal_distance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Length to be removed from the cavity-bulk frontier (A), by default 2.4.</p></li>
+<li><p><strong>volume_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Cavities volume filter (A3), by default 5.0.</p></li>
+<li><p><strong>ligand_cutoff</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Radius value to limit a space around a ligand (A), by default 5.0.</p></li>
+<li><p><strong>include_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to characterize the depth of the detected cavities, by
+default False.</p></li>
+<li><p><strong>include_hydropathy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to characterize the hydropathy of the detected cavities, by
+default False.</p></li>
+<li><p><strong>hydrophobicity_scale</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
 KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a
 TOML-formatted file with a custom hydrophobicity scale, by default
-<cite>EisenbergWeiss</cite>.</li>
-<li><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
-Accessible Surface), by default SES.</li>
-<li><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface
-residues, by default False.</li>
-<li><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
-<cite>os.cpu_count() - 1</cite>.</li>
-<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</li>
+<cite>EisenbergWeiss</cite>.</p></li>
+<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
+Accessible Surface), by default SES.</p></li>
+<li><p><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface
+residues, by default False.</p></li>
+<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is
+<cite>os.cpu_count() - 1</cite>.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p><strong>results</strong> – A class with the following attributes defined:</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>results</strong> – A class with the following attributes defined:</p>
 <ul>
-<li><dl class="first docutils">
-<dt>cavities <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray</span></dt>
-<dd><p class="first">Cavity points in the 3D grid (cavities[nx][ny][nz]).
+<li><dl>
+<dt>cavities<span class="classifier">numpy.ndarray</span></dt><dd><p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
 Cavities array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li>-1: bulk points;</li>
-<li>0: biomolecule points;</li>
-<li>1: empty space points;</li>
-<li>&gt;=2: cavity points.</li>
+<li><p>-1: bulk points;</p></li>
+<li><p>0: biomolecule points;</p></li>
+<li><p>1: empty space points;</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
 </div></blockquote>
-<p class="last">The empty space points are regions that do not meet the chosen
+<p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>surface <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray</span></dt>
-<dd><p class="first">Surface points in the 3D grid (surface[nx][ny][nz]).
+<li><dl>
+<dt>surface<span class="classifier">numpy.ndarray</span></dt><dd><p>Surface points in the 3D grid (surface[nx][ny][nz]).
 Surface array has integer labels in each position, that are:</p>
 <blockquote>
 <div><ul class="simple">
-<li>-1: bulk points;</li>
-<li>0: biomolecule or empty space points;</li>
-<li>&gt;=2: surface points.</li>
+<li><p>-1: bulk points;</p></li>
+<li><p>0: biomolecule or empty space points;</p></li>
+<li><p>&gt;=2: surface points.</p></li>
 </ul>
 </div></blockquote>
-<p class="last">The empty space points are regions that do not meet the chosen
+<p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>depths <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray, optional</span></dt>
-<dd><p class="first last">A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
+<li><dl class="simple">
+<dt>depths<span class="classifier">numpy.ndarray, optional</span></dt><dd><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>scales <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray, optional</span></dt>
-<dd><p class="first last">A numpy.ndarray with hydrophobicity scale value mapped at surface
+<li><dl class="simple">
+<dt>scales<span class="classifier">numpy.ndarray, optional</span></dt><dd><p>A numpy.ndarray with hydrophobicity scale value mapped at surface
 points (scales[nx][ny][nz]).</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>ncav <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of cavities.</p>
+<li><dl class="simple">
+<dt>ncav<span class="classifier">int</span></dt><dd><p>Number of cavities.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>volume <span class="classifier-delimiter">:</span> <span class="classifier">Dict[str, float]</span></dt>
-<dd><p class="first last">A dictionary with volume of each detected cavity.</p>
+<li><dl class="simple">
+<dt>volume<span class="classifier">Dict[str, float]</span></dt><dd><p>A dictionary with volume of each detected cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>area <span class="classifier-delimiter">:</span> <span class="classifier">Dict[str, float]</span></dt>
-<dd><p class="first last">A dictionary with area of each detected cavity.</p>
+<li><dl class="simple">
+<dt>area<span class="classifier">Dict[str, float]</span></dt><dd><p>A dictionary with area of each detected cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>max_depth <span class="classifier-delimiter">:</span> <span class="classifier">Dict[str, float], optional</span></dt>
-<dd><p class="first last">A dictionary with maximum depth of each detected cavity.</p>
+<li><dl class="simple">
+<dt>max_depth<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with maximum depth of each detected cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>avg_depth <span class="classifier-delimiter">:</span> <span class="classifier">Dict[str, float], optional</span></dt>
-<dd><p class="first last">A dictionary with average depth of each detected cavity.</p>
+<li><dl class="simple">
+<dt>avg_depth<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with average depth of each detected cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>avg_hydropathy <span class="classifier-delimiter">:</span> <span class="classifier">Dict[str, float], optional</span></dt>
-<dd><p class="first last">A dictionary with average hydropathy for each detected cavity and
+<li><dl class="simple">
+<dt>avg_hydropathy<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with average hydropathy for each detected cavity and
 the range of the hydrophobicity scale (min, max).</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>residues: Dict[str, List[List[str]]]</dt>
-<dd><p class="first last">A dictionary with a list of interface residues for each detected
+<li><dl class="simple">
+<dt>residues: Dict[str, List[List[str]]]</dt><dd><p>A dictionary with a list of interface residues for each detected
 cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>frequencies <span class="classifier-delimiter">:</span> <span class="classifier">Dict[str, Dict[str, Dict[str, int]]], optional</span></dt>
-<dd><p class="first last">A dictionary with frequencies of residues and class for
+<li><dl class="simple">
+<dt>frequencies<span class="classifier">Dict[str, Dict[str, Dict[str, int]]], optional</span></dt><dd><p>A dictionary with frequencies of residues and class for
 residues of each detected cavity.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>_vertices <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray</span></dt>
-<dd><p class="first last">A numpy.ndarray or a list with xyz vertices coordinates (origin,
+<li><dl class="simple">
+<dt>_vertices<span class="classifier">numpy.ndarray</span></dt><dd><p>A numpy.ndarray or a list with xyz vertices coordinates (origin,
 X-axis, Y-axis, Z-axis).</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>_step <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Grid spacing (A).</p>
+<li><dl class="simple">
+<dt>_step<span class="classifier">float</span></dt><dd><p>Grid spacing (A).</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>_input <span class="classifier-delimiter">:</span> <span class="classifier">Union[str, pathlib.Path], optional</span></dt>
-<dd><p class="first last">A path to input PDB or XYZ file.</p>
+<li><dl class="simple">
+<dt>_input<span class="classifier">Union[str, pathlib.Path], optional</span></dt><dd><p>A path to input PDB or XYZ file.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>_ligand <span class="classifier-delimiter">:</span> <span class="classifier">Union[str, pathlib.Path], optional</span></dt>
-<dd><p class="first last">A path to ligand PDB or XYZ file.</p>
+<li><dl class="simple">
+<dt>_ligand<span class="classifier">Union[str, pathlib.Path], optional</span></dt><dd><p>A path to ligand PDB or XYZ file.</p>
 </dd>
 </dl>
 </li>
 </ul>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="pyKVFinderResults.html#pyKVFinder.pyKVFinderResults" title="pyKVFinder.pyKVFinderResults">pyKVFinderResults</a></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>input</cite> must have .pdb or .xyz extension.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – <cite>ligand</cite> must have .pdb or .xyz extension.</li>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyKVFinderResults.html#pyKVFinder.pyKVFinderResults" title="pyKVFinder.pyKVFinderResults">pyKVFinderResults</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>input</cite> must have .pdb or .xyz extension.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>ligand</cite> must have .pdb or .xyz extension.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked
 with 2, the first integer corresponding to a cavity, is KAA, the cavity
 marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The classes of residues are:</p>
-<ul class="last simple">
-<li>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</li>
-<li>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</li>
-<li>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</li>
-<li>Negatively charged (R4): Aspartate, Glutamate.</li>
-<li>Positively charged (R5): Arginine, Histidine, Lysine.</li>
-<li>Non-standard (RX): Non-standard residues.</li>
+<ul class="simple">
+<li><p>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</p></li>
+<li><p>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</p></li>
+<li><p>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</p></li>
+<li><p>Negatively charged (R4): Aspartate, Glutamate.</p></li>
+<li><p>Positively charged (R5): Arginine, Histidine, Lysine.</p></li>
+<li><p>Non-standard (RX): Non-standard residues.</p></li>
 </ul>
 </div>
 </dd></dl>
 
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>The <strong>standard workflow</strong> for cavity detection with spatial (surface points, volume, area) and constitutional (interface residues and their frequencies) characterization  can be run at once with one command:</p>

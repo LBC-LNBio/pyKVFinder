@@ -1,18 +1,20 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Prerequisites &mdash; pyKVFinder 0.2.1 documentation</title>
+  <title>Prerequisites &mdash; pyKVFinder 0.2.2 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +33,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -94,12 +96,12 @@
               
             
             
-              <p class="caption"><span class="caption-text">Installation</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#getting-started">Getting started</a></li>
@@ -152,23 +154,23 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_api_reference/index.html">Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_api_reference/index.html#classes">Classes</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Command-line interface</span></p>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration files</span></p>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
 </ul>
-<p class="caption"><span class="caption-text">About</span></p>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
@@ -248,8 +250,8 @@
 <p>If you want to run all examples in this tutorial, you should also have toml package installed.</p>
 <p>All files used on this tutorial can be found in our package and in our <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder">GitHub repository</a>:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/1FMO.pdb">1FMO.pdb</a></li>
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb">ADN.pdb</a></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/1FMO.pdb">1FMO.pdb</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb">ADN.pdb</a></p></li>
 </ul>
 </div>
 <div class="section" id="getting-started">
@@ -323,40 +325,40 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li>-1: bulk points.</li>
-<li>0: biomolecule points.</li>
-<li>1: empty space points.</li>
-<li>&gt;=2: cavity points.</li>
+<li><p>-1: bulk points.</p></li>
+<li><p>0: biomolecule points.</p></li>
+<li><p>1: empty space points.</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The surface points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li>-1: bulk points.</li>
-<li>0: biomolecule or empty space points.</li>
-<li>&gt;=2: cavity points.</li>
+<li><p>-1: bulk points.</p></li>
+<li><p>0: biomolecule or empty space points.</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.</p>
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function uses default parameter specifications and therefore parameters can be adjusted to users’ needs.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></p></li>
 </ul>
 </div>
 <p>With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:</p>
@@ -364,13 +366,13 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinderResults.export_all</span></code> methods uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_frequencies_pdf</span></code> parameter, and therefore parameters can be adjusted to users’ needs.</p>
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinderResults.export_all</span></code> methods uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_frequencies_pdf</span></code> parameter, and therefore parameters can be adjusted to users’ needs.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
 </ul>
 </div>
 </div>
@@ -426,17 +428,17 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_depth</span></code> and <code class="docutils literal notranslate"><span class="pre">include_hydropathy</span></code> parameters, and therefore parameters can be adjusted to users’ needs.</p>
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function uses default parameter specifications, except for <code class="docutils literal notranslate"><span class="pre">include_depth</span></code> and <code class="docutils literal notranslate"><span class="pre">include_hydropathy</span></code> parameters, and therefore parameters can be adjusted to users’ needs.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></p></li>
 </ul>
 </div>
 <p>With these attributes, we can write the detected cavities with depth annotated on B-factor column, the surface cavity points with hydrophobicity scale annotated on B-factor column, and the characterization to files. Below, we illustrate the usage:</p>
@@ -444,13 +446,13 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinderResults.export_all</span></code> methods uses default parameter specifications, and therefore parameters can be adjusted to users’ needs.</p>
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.pyKVFinderResults.export_all</span></code> methods uses default parameter specifications, and therefore parameters can be adjusted to users’ needs.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
 </ul>
 </div>
 </div>
@@ -467,14 +469,14 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when a <em>.dat</em> file is not specified. Otherwise, user must specify a <em>.dat</em> file following template of <a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals radii file</a>.</p>
-<p class="last">This step is only necessary if you are reading a custom van der Waals radii file to use in <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>.</p>
+<p>This step is only necessary if you are reading a custom van der Waals radii file to use in <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/read_vdw.html">pyKVFinder.read_vdw</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/read_vdw.html">pyKVFinder.read_vdw</a></p></li>
 </ul>
 </div>
 </div>
@@ -496,18 +498,18 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a>, when the <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> as shown earlier and pass it as <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb(pdb,</span> <span class="pre">vdw=vdw)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a>, when the <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> as shown earlier and pass it as <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb(pdb,</span> <span class="pre">vdw=vdw)</span></code>.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The structural data can be also read from a <em>.xyz</em> file with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code> function. However, XYZ format does not provide information about chain identifier and residue name, thus this fields will have <cite>A</cite> and <cite>UNK</cite>, respectively.</p>
+<p class="admonition-title">Note</p>
+<p>The structural data can be also read from a <em>.xyz</em> file with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code> function. However, XYZ format does not provide information about chain identifier and residue name, thus this fields will have <cite>A</cite> and <cite>UNK</cite>, respectively.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/read_pdb.html">pyKVFinder.read_pdb</a></li>
-<li><a class="reference external" href="../_api_reference/read_xyz.html">pyKVFinder.read_xyz</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/read_pdb.html">pyKVFinder.read_pdb</a></p></li>
+<li><p><a class="reference external" href="../_api_reference/read_xyz.html">pyKVFinder.read_xyz</a></p></li>
 </ul>
 </div>
 </div>
@@ -528,13 +530,13 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> and <code class="docutils literal notranslate"><span class="pre">step</span></code> values are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices(atomic)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> and <code class="docutils literal notranslate"><span class="pre">step</span></code> values are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices(atomic)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/get_vertices.html">pyKVFinder.get_vertices</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/get_vertices.html">pyKVFinder.get_vertices</a></p></li>
 </ul>
 </div>
 </div>
@@ -577,25 +579,25 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If any of the detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>) are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(atomic,</span> <span class="pre">vertices)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If any of the detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>) are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(atomic,</span> <span class="pre">vertices)</span></code>.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li>-1: bulk points.</li>
-<li>0: biomolecule points.</li>
-<li>1: empty space points.</li>
-<li>&gt;=2: cavity points.</li>
+<li><p>-1: bulk points.</p></li>
+<li><p>0: biomolecule points.</p></li>
+<li><p>1: empty space points.</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></p></li>
 </ul>
 </div>
 <div class="section" id="detecting-biomolecular-cavities-with-ligand-adjustment">
@@ -654,24 +656,24 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(atomic,</span> <span class="pre">vertices,</span> <span class="pre">latomic=latomic)</span></code>.</p>
 <p>The cavity points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li>-1: bulk points.</li>
-<li>0: biomolecule points.</li>
-<li>1: empty space points.</li>
-<li>&gt;=2: cavity points.</li>
+<li><p>-1: bulk points.</p></li>
+<li><p>0: biomolecule points.</p></li>
+<li><p>1: empty space points.</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/read_pdb.html">pyKVFinder.read_pdb</a></li>
-<li><a class="reference external" href="../_api_reference/read_xyz.html">pyKVFinder.read_xyz</a></li>
-<li><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/read_pdb.html">pyKVFinder.read_pdb</a></p></li>
+<li><p><a class="reference external" href="../_api_reference/read_xyz.html">pyKVFinder.read_xyz</a></p></li>
+<li><p><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></p></li>
 </ul>
 </div>
 </div>
@@ -706,28 +708,28 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The surface points belonging to the same cavity receive the same integer label in the grid. The code numbering is the following:</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
-<li>-1: bulk points.</li>
-<li>0: biomolecule or empty space points.</li>
-<li>&gt;=2: cavity points.</li>
+<li><p>-1: bulk points.</p></li>
+<li><p>0: biomolecule or empty space points.</p></li>
+<li><p>&gt;=2: cavity points.</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial(cavities)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial(cavities)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/spatial.html">pyKVFinder.spatial</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/spatial.html">pyKVFinder.spatial</a></p></li>
 </ul>
 </div>
 </div>
@@ -749,40 +751,42 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.constitutional(cavities,</span> <span class="pre">atomic,</span> <span class="pre">vertices)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.constitutional(cavities,</span> <span class="pre">atomic,</span> <span class="pre">vertices)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/constitutional.html">pyKVFinder.constitutional</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/constitutional.html">pyKVFinder.constitutional</a></p></li>
 </ul>
 </div>
 <div class="section" id="calculating-and-plotting-frequencies">
 <h3>6.1 Calculating and plotting frequencies<a class="headerlink" href="#calculating-and-plotting-frequencies" title="Permalink to this headline">¶</a></h3>
 <p>With the interface residues defined, you can also calculate the frequencies of residues and classes of residues. The classes of residues are:</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">R1:</th><td class="field-body"><strong>Alipathic apolar:</strong> Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</td>
-</tr>
-<tr class="field-even field"><th class="field-name">R2:</th><td class="field-body"><strong>Aromatic:</strong> Phenylalanine, Tryptophan, Tyrosine</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">R3:</th><td class="field-body"><strong>Polar uncharged</strong>: Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</td>
-</tr>
-<tr class="field-even field"><th class="field-name">R4:</th><td class="field-body"><strong>Negatively charged</strong>: Aspartate, Glutamate</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">R5:</th><td class="field-body"><strong>Positively charged</strong>: Arginine, Histidine, Lysine</td>
-</tr>
-<tr class="field-even field"><th class="field-name">RX:</th><td class="field-body"><strong>Non-standard</strong>: Non-standard residues</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">R1</dt>
+<dd class="field-odd"><p><strong>Alipathic apolar:</strong> Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</p>
+</dd>
+<dt class="field-even">R2</dt>
+<dd class="field-even"><p><strong>Aromatic:</strong> Phenylalanine, Tryptophan, Tyrosine</p>
+</dd>
+<dt class="field-odd">R3</dt>
+<dd class="field-odd"><p><strong>Polar uncharged</strong>: Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</p>
+</dd>
+<dt class="field-even">R4</dt>
+<dd class="field-even"><p><strong>Negatively charged</strong>: Aspartate, Glutamate</p>
+</dd>
+<dt class="field-odd">R5</dt>
+<dd class="field-odd"><p><strong>Positively charged</strong>: Arginine, Histidine, Lysine</p>
+</dd>
+<dt class="field-even">RX</dt>
+<dd class="field-even"><p><strong>Non-standard</strong>: Non-standard residues</p>
+</dd>
+</dl>
 <p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.calculate_frequencies</span></code> takes the dictionary of interface residues calculated above and returns a dictionary with the frequencies of residues and classes of residues of each detected cavity.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span>
@@ -790,8 +794,8 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <p>Afterwards, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies</span></code> takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the histograms of calculated frequencies for each detected cavity in a PDF file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;histograms.pdf&#39;</span>
@@ -799,14 +803,14 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">fn</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies(frequencies)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">fn</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies(frequencies)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
-<li><a class="reference external" href="../_api_reference/plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></p></li>
+<li><p><a class="reference external" href="../_api_reference/plot_frequencies.html">pyKVFinder.plot_frequencies</a></p></li>
 </ul>
 </div>
 </div>
@@ -841,32 +845,32 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">pyKVFinder.hydropathy</span></code> function accepts six built-in hydrophobicity scales:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml">EisenbergWeiss</a>;</li>
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml">HessaHeijne</a>;</li>
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolite.toml">KyteDoolite</a>;</li>
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml">MoonFleming</a>;</li>
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml">WimleyWhite</a>;</li>
-<li><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml">ZhaoLondon</a>.</li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml">EisenbergWeiss</a>;</p></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml">HessaHeijne</a>;</p></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolite.toml">KyteDoolite</a>;</p></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml">MoonFleming</a>;</p></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml">WimleyWhite</a>;</p></li>
+<li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml">ZhaoLondon</a>.</p></li>
 </ul>
 </div></blockquote>
-<p class="last">Otherwise, user must specify a <em>.toml</em> file following <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder#hydrophobicity-scale-file-template">Hydrophobicity Scale File Template</a>.</p>
+<p>Otherwise, user must specify a <em>.toml</em> file following <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder#hydrophobicity-scale-file-template">Hydrophobicity Scale File Template</a>.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">hydrophobicity_scale</span></code> and <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.hydropathy(surface,</span> <span class="pre">atomic,</span> <span class="pre">vertices)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">hydrophobicity_scale</span></code> and <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.hydropathy(surface,</span> <span class="pre">atomic,</span> <span class="pre">vertices)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/hydropathy.html">pyKVFinder.hydropathy</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/hydropathy.html">pyKVFinder.hydropathy</a></p></li>
 </ul>
 </div>
 </div>
@@ -900,17 +904,17 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.depth(cavities)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code> is not defined, the function automatically sets it to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.depth(cavities)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/depth.html">pyKVFinder.depth</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/depth.html">pyKVFinder.depth</a></p></li>
 </ul>
 </div>
 </div>
@@ -946,17 +950,17 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">scales</span></code> and <code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.export(output_cavity,</span> <span class="pre">cavities,</span> <span class="pre">surface,</span> <span class="pre">vertices)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">scales</span></code> and <code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.export(output_cavity,</span> <span class="pre">cavities,</span> <span class="pre">surface,</span> <span class="pre">vertices)</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/export.html">pyKVFinder.export</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/export.html">pyKVFinder.export</a></p></li>
 </ul>
 </div>
 </div>
@@ -999,13 +1003,13 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/write_results.html">pyKVFinder.write_results</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/write_results.html">pyKVFinder.write_results</a></p></li>
 </ul>
 </div>
 </div>
@@ -1017,7 +1021,7 @@
 <p>There are three methods to define a custom 3D grid as shown in <a class="reference external" href="box_file_template.html">Box configuration file template</a>.</p>
 <p>First, we will create a box <em>.toml</em> file with:</p>
 <ul class="simple">
-<li>Four vertices of the box (origin, X-axis, Y-axis and Z-axis):</li>
+<li><p>Four vertices of the box (origin, X-axis, Y-axis and Z-axis):</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">toml</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
@@ -1028,7 +1032,7 @@
 </div>
 <p>or</p>
 <ul class="simple">
-<li>A list of residues and a padding:</li>
+<li><p>A list of residues and a padding:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;residues-box.toml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">toml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -1064,8 +1068,8 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Users can create this box with parKVFinder PyMOL plugin (PyMOL2 parKVFinder Tools) and save the parameters file from it.</p>
+<p class="admonition-title">Note</p>
+<p>Users can create this box with parKVFinder PyMOL plugin (PyMOL2 parKVFinder Tools) and save the parameters file from it.</p>
 </div>
 <div class="section" id="id8">
 <h2>Workflows<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
@@ -1081,9 +1085,9 @@
 </pre></div>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></p></li>
 </ul>
 </div>
 </div>
@@ -1091,7 +1095,7 @@
 <h2>Separated steps<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <p>If you are running pyKVFinder package in a step-by-step fashion (<a class="reference external" href="index.hmtl#separated-steps">Separated steps</a>), the steps <a class="reference external" href="index.hmtl#dimensioning-the-3d-grid">3</a> and <a class="reference external" href="index.hmtl#detecting-biomolecular-cavities">4</a> are different than before.</p>
 <ul class="simple">
-<li>Dimensioning the 3D grid: Instead of calling <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code>, you call <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file</span></code>.</li>
+<li><p>Dimensioning the 3D grid: Instead of calling <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code>, you call <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file</span></code>.</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file</span></code> takes <em>.toml</em> file with box configuration or parKVFinder parameters file, the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom, and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>), and returns a tuple with a NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) of the 3D grid and the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom inside the custom box.</p>
 <p>Users can define the <code class="docutils literal notranslate"><span class="pre">box</span></code> parameter as the filepath of one box configuration file from above (<em>custom-box.toml</em>, <em>residues-box.toml</em> or <em>box.toml</em>). For instance, with <em>custom-box.toml</em>:</p>
@@ -1099,11 +1103,11 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file('box.toml',</span> <span class="pre">atomic)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code> and <code class="docutils literal notranslate"><span class="pre">probe_out</span></code> are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file('box.toml',</span> <span class="pre">atomic)</span></code>.</p>
 </div>
 <ul class="simple">
-<li>Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> parameter as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
+<li><p>Detecting biomolecular cavities: Now, you can explore this box adjustment mode, defining the <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> parameter as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="o">=</span><span class="n">probe_in</span><span class="p">,</span> <span class="n">probe_out</span><span class="o">=</span><span class="n">probe_out</span><span class="p">,</span> <span class="n">removal_distance</span><span class="o">=</span><span class="n">removal_distance</span><span class="p">,</span> <span class="n">volume_cutoff</span><span class="o">=</span><span class="n">volume_cutoff</span><span class="p">,</span> <span class="n">box_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span>
@@ -1129,18 +1133,18 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If any of the detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>) are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(atomic,</span> <span class="pre">vertices,</span> <span class="pre">box_adjustment=True)</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>If any of the detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_out</span></code>, <code class="docutils literal notranslate"><span class="pre">removal_distance</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">surface</span></code>) are not defined, the function automatically sets them to the default value. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect(atomic,</span> <span class="pre">vertices,</span> <span class="pre">box_adjustment=True)</span></code>.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p class="admonition-title">Warning</p>
+<p>If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li><a class="reference external" href="../_api_reference/get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></li>
-<li><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></li>
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../_api_reference/get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></p></li>
+<li><p><a class="reference external" href="../_api_reference/detect.html">pyKVFinder.detect</a></p></li>
 </ul>
 </div>
 </div>
