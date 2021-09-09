@@ -722,9 +722,9 @@ def calculate_frequencies(
 
 def plot_frequencies(
     frequencies: Dict[str, Dict[str, Dict[str, int]]],
-    fn: Union[str, pathlib.Path] = "histograms.pdf",
+    fn: Union[str, pathlib.Path] = "barplots.pdf",
 ) -> None:
-    """Plot histograms of calculated frequencies (residues and classes of
+    """Plot bar charts of calculated frequencies (residues and classes of
     residues) for each detected cavity in a target PDF file.
 
     Parameters
@@ -733,8 +733,8 @@ def plot_frequencies(
         A dictionary with frequencies of residues and class for
         residues of each detected cavity.
     fn : Union[str, pathlib.Path], optional
-        A path to PDF file for plotting histograms of frequencies, by
-        default `histograms.pdf`.
+        A path to PDF file for plotting bar charts of frequencies, by
+        default `barplots.pdf`.
 
     Raises
     ------

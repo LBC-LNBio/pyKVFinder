@@ -204,10 +204,10 @@ def cli() -> None:
         else:
             depths, max_depth, avg_depth = None, None, None
 
-        # Plot histograms of frequencies
+        # Plot bar charts of frequencies
         if args.plot_frequencies:
             output_plot = os.path.join(
-                args.output_directory, f"{args.base_name}.histograms.pdf"
+                args.output_directory, f"{args.base_name}.barplot.pdf"
             )
             plot_frequencies(frequencies, output_plot)
 
@@ -532,14 +532,14 @@ class pyKVFinderResults(object):
             self._step,
         )
 
-    def plot_frequencies(self, pdf: Union[str, pathlib.Path] = "histograms.pdf"):
-        """Plot histograms of frequencies (residues and classes of residues) in
+    def plot_frequencies(self, pdf: Union[str, pathlib.Path] = "barplots.pdf"):
+        """Plot bar charts of frequencies (residues and classes of residues) in
         a PDF file.
 
         Parameters
         ----------
         pdf : Union[str, pathlib.Path], optional
-            A path to a PDF file, by default `histograms.pdf`.
+            A path to a PDF file, by default `barplots.pdf`.
 
         Note
         ----
@@ -572,12 +572,12 @@ class pyKVFinderResults(object):
         output: Union[str, pathlib.Path] = "cavity.pdb",
         output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
         include_frequencies_pdf: bool = False,
-        pdf: Union[str, pathlib.Path] = "histograms.pdf",
+        pdf: Union[str, pathlib.Path] = "barplots.pdf",
         nthreads: Optional[int] = None,
     ) -> None:
         """Exports cavities and characterization to PDB-formatted files,
         writes file paths and characterization to a TOML-formatted file, and
-        optionally plot histograms of frequencies (residues and classes of
+        optionally plot bar charts of frequencies (residues and classes of
         residues) in a PDF file.
 
         Parameters
@@ -595,7 +595,7 @@ class pyKVFinderResults(object):
             Whether to plot frequencies (residues and classes of residues)
             to PDF file, by default False.
         pdf : Union[str, pathlib.Path], optional
-            A path to a PDF file, by default `histograms.pdf`.
+            A path to a PDF file, by default `barplots.pdf`.
         nthreads : int, optional
             Number of threads, by default None. If None, the number of threads is
             `os.cpu_count() - 1`.
@@ -627,7 +627,7 @@ class pyKVFinderResults(object):
         self.export(output, output_hydropathy, nthreads)
         # Write KVFinder results TOML
         self.write(fn, output, output_hydropathy)
-        # Plot histograms of frequencies
+        # Plot bar charts of frequencies
         if include_frequencies_pdf:
             self.plot_frequencies(pdf)
 

@@ -361,8 +361,8 @@
 <li><p><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></p></li>
 </ul>
 </div>
-<p>With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">export_all</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavity.pdb&#39;</span><span class="p">,</span> <span class="n">include_frequencies_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pdf</span><span class="o">=</span><span class="s1">&#39;histograms.pdf&#39;</span><span class="p">)</span>
+<p>With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the bar charts of the frequencies in a PDF file. Below, we illustrate the usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">export_all</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavity.pdb&#39;</span><span class="p">,</span> <span class="n">include_frequencies_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pdf</span><span class="o">=</span><span class="s1">&#39;barplots.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -797,8 +797,8 @@
 <p class="admonition-title">Note</p>
 <p>The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
-<p>Afterwards, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies</span></code> takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the histograms of calculated frequencies for each detected cavity in a PDF file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;histograms.pdf&#39;</span>
+<p>Afterwards, <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies</span></code> takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the bar charts of calculated frequencies for each detected cavity in a PDF file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="s1">&#39;barplots.pdf&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
 </pre></div>
 </div>

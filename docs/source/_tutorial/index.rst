@@ -125,11 +125,11 @@ Inside the *pyKVFinderResults object*, cavity and surface points, number of cavi
 
   * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_
 
-With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the histograms of the frequencies in a PDF file. Below, we illustrate the usage:
+With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the bar charts of the frequencies in a PDF file. Below, we illustrate the usage:
 
 .. code-block:: python
 
-  >>> results.export_all(fn='results.toml', output='cavity.pdb', include_frequencies_pdf=True, pdf='histograms.pdf')
+  >>> results.export_all(fn='results.toml', output='cavity.pdb', include_frequencies_pdf=True, pdf='barplots.pdf')
 
 .. note::
 
@@ -556,11 +556,11 @@ With the interface residues defined, you can also calculate the frequencies of r
 
   The cavity nomenclature is based on the integer label. The cavity marked with 2, the first integer corresponding to a cavity, is KAA, the cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the histograms of calculated frequencies for each detected cavity in a PDF file.
+Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the frequencies of residues and classes of residues of each detected cavity and a path to a PDF file, and plots the bar charts of calculated frequencies for each detected cavity in a PDF file.
 
 .. code-block:: python
 
-  >>> fn = 'histograms.pdf'
+  >>> fn = 'barplots.pdf'
   >>> pyKVFinder.plot_frequencies(frequencies, fn=fn)
 
 .. note::

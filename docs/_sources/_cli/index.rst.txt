@@ -169,7 +169,7 @@ The parameters for additional characterization are:
 
   :Default: ``None``
 
-* ``--plot_frequencies``: Plot histograms of calculated frequencies (residues and classes of residues) of the detected cavities in a PDF file. The classes of residues are aliphatic apolar (R1), aromatic (R2), polar uncharged (R3), negatively charged (R4), positively charged (R5) and non-standard (RX) residues.
+* ``--plot_frequencies``: Plot bar charts of calculated frequencies (residues and classes of residues) of the detected cavities in a PDF file. The classes of residues are aliphatic apolar (R1), aromatic (R2), polar uncharged (R3), negatively charged (R4), positively charged (R5) and non-standard (RX) residues.
 
   .. code-block:: bash
 

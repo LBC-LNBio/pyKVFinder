@@ -317,7 +317,7 @@ the detected cavities. (default: %(default)s)",
         "--plot_frequencies",
         action="store_true",
         default=False,
-        help="Plot histograms of calculated frequencies of the detected \
+        help="Plot bar charts of calculated frequencies of the detected \
 cavities in a PDF file. (default: %(default)s)",
     )
     extra_modes.add_argument(

@@ -19,7 +19,7 @@ pyKVFinder.pyKVFinderResults.export_all
   >>> results = pyKVFinder(pdb)
   >>> results.export_all()
 
-Yet, we can set a ``include_frequencies_pdf`` flag to True to plot the histograms of the frequencies in a PDF file.
+Yet, we can set a ``include_frequencies_pdf`` flag to True to plot the bar charts of the frequencies in a PDF file.
 
 .. code-block:: python
 

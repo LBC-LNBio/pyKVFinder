@@ -139,14 +139,14 @@ class TestPackage(unittest.TestCase):
         self.assertListEqual(list(max_depth.keys()), ['KAA'])
 
     def test_constitutional(self):
-        # Full constitutional (interface residues, frequencies, histograms)
+        # Full constitutional (interface residues, frequencies, bar charts)
         residues = pyKVFinder.constitutional(self.cavities, self.atomic, self.vertices)
         cavity_names = list(residues.keys())
         self.assertEqual(len(cavity_names) > 0, True)
         frequencies = pyKVFinder.calculate_frequencies(residues)        
         cavity_names = list(residues.keys())
         self.assertEqual(len(cavity_names) > 0, True)
-        pyKVFinder.plot_frequencies(frequencies, os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "histograms.pdf"))
+        pyKVFinder.plot_frequencies(frequencies, os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "barplots.pdf"))
         # Ignore backbone
         interface_residues = sum([ len(r) for r in residues.values() ])
         residues = pyKVFinder.constitutional(self.cavities, self.atomic, self.vertices, ignore_backbone=True)
@@ -204,13 +204,13 @@ class TestPackageWorkflow(unittest.TestCase):
         )
         # plot_frequencies
         self.results.plot_frequencies( 
-            pdf=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "histograms.pdf")) 
+            pdf=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "barplots.pdf")) 
         # export_all
         self.results.export_all(
             fn=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "results.toml"),
             output=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "cavities.pdb"), 
             output_hydropathy=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "hydropathy.pdb"),
             include_frequencies_pdf=True,
-            pdf=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "histograms.pdf")
+            pdf=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "barplots.pdf")
             )  
     
