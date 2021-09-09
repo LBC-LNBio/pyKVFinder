@@ -920,9 +920,9 @@
 
 <div class="viewcode-block" id="plot_frequencies"><a class="viewcode-back" href="../../_api_reference/plot_frequencies.html#pyKVFinder.plot_frequencies">[docs]</a><span class="k">def</span> <span class="nf">plot_frequencies</span><span class="p">(</span>
     <span class="n">frequencies</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span>
-    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;histograms.pdf&quot;</span><span class="p">,</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;barplots.pdf&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Plot histograms of calculated frequencies (residues and classes of</span>
+    <span class="sd">&quot;&quot;&quot;Plot bar charts of calculated frequencies (residues and classes of</span>
 <span class="sd">    residues) for each detected cavity in a target PDF file.</span>
 
 <span class="sd">    Parameters</span>
@@ -931,8 +931,8 @@
 <span class="sd">        A dictionary with frequencies of residues and class for</span>
 <span class="sd">        residues of each detected cavity.</span>
 <span class="sd">    fn : Union[str, pathlib.Path], optional</span>
-<span class="sd">        A path to PDF file for plotting histograms of frequencies, by</span>
-<span class="sd">        default `histograms.pdf`.</span>
+<span class="sd">        A path to PDF file for plotting bar charts of frequencies, by</span>
+<span class="sd">        default `barplots.pdf`.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
