@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # System imports
+import sys
 import pathlib
 from setuptools import setup, Extension, dist
 
@@ -33,7 +34,7 @@ _pyKVFinder = Extension(
     sources=["C/pyKVFinder.i", "C/pyKVFinder.c"],
     include_dirs=[numpy_include, "C"],
     extra_compile_args=["-fopenmp", "-Ofast", "-lm"],
-    extra_link_args=["-lgomp"],
+    extra_link_args=["-lgomp", "-static"] if sys.platform != 'linux' else ["-lgomp"],
 )
 
 # Setup

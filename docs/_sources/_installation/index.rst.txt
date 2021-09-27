@@ -18,7 +18,7 @@ On macOS:
 
 .. code-block:: bash
     
-  brew install python3 swig gcc@10
+  brew install python3 swig
 
 .. note:: 
 
