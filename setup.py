@@ -31,7 +31,7 @@ except AttributeError:
 _pyKVFinder = Extension(
     name="_pyKVFinder",
     sources=["C/pyKVFinder.i", "C/pyKVFinder.c"],
-    include_dirs=[numpy_include, "src"],
+    include_dirs=[numpy_include, "C"],
     extra_compile_args=["-fopenmp", "-Ofast", "-lm"],
     extra_link_args=["-lgomp"],
 )
