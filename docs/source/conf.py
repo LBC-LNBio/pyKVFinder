@@ -26,7 +26,7 @@ author = "LBC-LNBio"
 # The short X.Y version
 version = "0.2"
 # The full version, including alpha/beta/rc tags
-release = "0.2.3"
+release = "0.2.4"
 
 
 # -- General configuration ---------------------------------------------------
