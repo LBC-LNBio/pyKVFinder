@@ -37,7 +37,7 @@ If you have any further questions, inquires or if you wish to contribute to KVFi
 Citing pyKVFinder
 =================
 
-Guerra, J.V.d., Ribeiro-Filho, H.V., Jara, G.E. et al. *pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science*. BMC Bioinformatics 22, 607 (2021). `https://doi.org/10.1186/s12859-021-04519-4 <https://doi.org/10.1186/s12859-021-04519-4>`_.
+Guerra, J.V.d., Ribeiro-Filho, H.V., Jara, G.E. et al. pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science. BMC Bioinformatics 22, 607 (2021). `https://doi.org/10.1186/s12859-021-04519-4 <https://doi.org/10.1186/s12859-021-04519-4>`_.
 
 License
 =======
