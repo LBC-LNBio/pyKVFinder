@@ -1,2 +1,3 @@
-tests/* linguist-vendored
-examples/* linguist-vendored
+tests/performance/scripts/* linguist-vendored
+examples/*/*ipynb linguist-vendored
+docs/* linguist-vendored
