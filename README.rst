@@ -8,6 +8,8 @@ pyKVFinder
 .. image:: https://img.shields.io/pypi/pyversions/pyKVFinder
     :target: https://pypi.org/project/pyKVFinder/
 
+.. image:: https://img.shields.io/pypi/dm/pyKVFinder
+    :alt: PyPI - Downloads
 
 A Python package for detecting and characterizing biomolecular cavities.
 
