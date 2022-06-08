@@ -615,7 +615,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 
     * `EisenbergWeiss <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml>`_;
     * `HessaHeijne <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml>`_;
-    * `KyteDoolite <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolite.toml>`_;
+    * `KyteDoolittle <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolittle.toml>`_;
     * `MoonFleming <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml>`_;
     * `WimleyWhite <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml>`_;
     * `ZhaoLondon <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml>`_.
