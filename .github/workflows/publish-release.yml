@@ -3,6 +3,10 @@ name: Python package build and publish
 on:
   release:
     types: [ created ]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   
@@ -34,7 +38,7 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         pip install -U twine
-        twine upload dist/*-manylinux*.whl
+        # twine upload dist/*-manylinux*.whl
       continue-on-error: true
   
   deploy-macos:
@@ -42,7 +46,7 @@ jobs:
     env:
       TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
       TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      CC: /usr/local/bin/gcc-10
+      CC: /usr/local/bin/gcc-11
     strategy:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10']
@@ -54,7 +58,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: | 
-          brew install swig gcc@10
+          brew install swig gcc@11
       - name: build wheel
         run: |
           pip install wheel
@@ -62,5 +66,5 @@ jobs:
       - name: upload wheel
         run: |
           pip install twine
-          twine upload dist/*
+          # twine upload dist/*
         continue-on-error: true
