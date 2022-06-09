@@ -2,3 +2,4 @@ tests/performance/scripts/* linguist-vendored
 tests/performance/scripts/benchmarking/* linguist-vendored
 examples/*/*ipynb linguist-vendored
 docs/* linguist-vendored
+docs/*/* linguist-vendored
