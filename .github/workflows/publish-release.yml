@@ -34,7 +34,7 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         pip install -U twine
-        # twine upload dist/*-manylinux*.whl
+        twine upload dist/*-manylinux*.whl
       continue-on-error: true
   
   deploy-macos:
@@ -62,5 +62,5 @@ jobs:
       - name: upload wheel
         run: |
           pip install twine
-          # twine upload dist/*
+          twine upload dist/*
         continue-on-error: true
