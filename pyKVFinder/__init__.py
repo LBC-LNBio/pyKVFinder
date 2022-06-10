@@ -31,7 +31,7 @@ See also
 """
 
 __name__ = "pyKVFinder"
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 license = "GNU GPL-3.0 License"
 
 try:
