@@ -199,7 +199,7 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdb&quot;</span><span class="p">):</span>
-        <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">vdw</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xyz&quot;</span><span class="p">):</span>
         <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_xyz</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
 
@@ -753,6 +753,7 @@
     <span class="n">hydrophobicity_scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EisenbergWeiss&quot;</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SES&quot;</span><span class="p">,</span>
     <span class="n">ignore_backbone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyKVFinderResults</span><span class="p">:</span>
@@ -799,6 +800,8 @@
 <span class="sd">    ignore_backbone : bool, optional</span>
 <span class="sd">        Whether to ignore backbone atoms (C, CA, N, O) when defining interface</span>
 <span class="sd">        residues, by default False.</span>
+<span class="sd">    model : int, optional</span>
+<span class="sd">        Model number, by default None. If None, keep atoms from all models.</span>
 <span class="sd">    nthreads : int, optional</span>
 <span class="sd">        Number of threads, by default None. If None, the number of threads is</span>
 <span class="sd">        `os.cpu_count() - 1`.</span>
@@ -909,7 +912,7 @@
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Reading PDB coordinates&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">input</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pdb&#39;</span><span class="p">):</span>
-        <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">vdw</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">input</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xyz&#39;</span><span class="p">):</span>
         <span class="n">atomic</span> <span class="o">=</span> <span class="n">read_xyz</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">vdw</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>

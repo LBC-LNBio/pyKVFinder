@@ -94,7 +94,7 @@ def cli() -> None:
     if args.verbose:
         print("> Reading PDB coordinates")
     if args.input.endswith(".pdb"):
-        atomic = read_pdb(args.input, vdw)
+        atomic = read_pdb(args.input, vdw, args.model)
     elif args.input.endswith(".xyz"):
         atomic = read_xyz(args.input, vdw)
 
@@ -648,6 +648,7 @@ def run_workflow(
     hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
     surface: str = "SES",
     ignore_backbone: bool = False,
+    model: Optional[int] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> pyKVFinderResults:
@@ -694,6 +695,8 @@ def run_workflow(
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
+    model : int, optional
+        Model number, by default None. If None, keep atoms from all models.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -804,7 +807,7 @@ def run_workflow(
     if verbose:
         print("> Reading PDB coordinates")
     if input.endswith('.pdb'):
-        atomic = read_pdb(input, vdw)
+        atomic = read_pdb(input, vdw, model)
     elif input.endswith('.xyz'):
         atomic = read_xyz(input, vdw)
     else:
