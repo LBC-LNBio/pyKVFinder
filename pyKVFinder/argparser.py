@@ -221,6 +221,15 @@ def argparser() -> argparse.ArgumentParser:
         help="Output directory. (default: %(default)s)",
     )
     parser.add_argument(
+        "-m",
+        "--model",
+        metavar="<int>",
+        type=int,
+        default=None,
+        help="Define a specific model for a multi-model PDB file. \
+(default: %(default)s (all models))",
+    )
+    parser.add_argument(
         "--nthreads",
         metavar="<int>",
         type=int,

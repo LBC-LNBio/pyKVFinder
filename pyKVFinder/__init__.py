@@ -15,9 +15,9 @@ Python package
 Command Line Interface
 ----------------------
   Usage: pyKVFinder [-h] [-v] [--version] [-b <str>] [-O <str>]\
-                    [--nthreads <int>] [-d <str>] [-s <float>] [-i <float>]\
-                    [-o <float>] [-V <float>] [-R <float>] [-S <str>]\
-                    [--ignore_backbone] [-D] [--plot_frequencies]\
+                    [-m <int>] [--nthreads <int>] [-d <str>] [-s <float>]\
+                    [-i <float>] [-o <float>] [-V <float>] [-R <float>]\
+                    [-S <str>] [--ignore_backbone] [-D] [--plot_frequencies]\
                     [--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle,\
                     MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]]\
                     [-B <.toml>] [-L (<.pdb> | <.xyz>)] [--ligand_cutoff <float>]\
