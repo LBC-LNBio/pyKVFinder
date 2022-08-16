@@ -1,0 +1,16 @@
+MODEL        1
+ATOM      1  N   GLU E  13      -1.111 -15.642 -14.858  1.00100.00      A    N  
+ENDMDL
+MODEL        2
+ATOM      1  N   GLU E  13      -2.222 -15.642 -14.858  1.00100.00      A    N  
+ENDMDL
+MODEL        3
+ATOM      1  N   GLU E  13      -3.333 -15.642 -14.858  1.00100.00      A    N  
+ENDMDL
+MODEL        4
+ATOM      1  N   GLU E  13      -4.444 -15.642 -14.858  1.00100.00      A    N  
+ENDMDL
+MODEL        5
+ATOM      1  N   GLU E  13      -5.555 -15.642 -14.858  1.00100.00      A    N  
+ENDMDL
+END

@@ -143,7 +143,9 @@ radius: {radius} \u00c5."
 
 
 def read_pdb(
-    fn: Union[str, pathlib.Path], vdw: Optional[Dict[str, Dict[str, float]]] = None
+    fn: Union[str, pathlib.Path],
+    vdw: Optional[Dict[str, Dict[str, float]]] = None,
+    model: Optional[int] = None,
 ) -> numpy.ndarray:
     """Reads PDB file into numpy.ndarrays.
 
@@ -153,6 +155,8 @@ def read_pdb(
         A path to PDB file.
     vdw : Dict[str, Dict[str, float]], optional
         A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.
+    model : int, optional
+        Model number, by default None. If None, keep atoms from all models.
 
     Returns
     -------
@@ -175,6 +179,9 @@ def read_pdb(
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:
         raise TypeError("`fn` must be a string or a pathlib.Path.")
+    if model is not None:
+        if type(model) not in [int]:
+            raise TypeError("`model` must be an integer.")
 
     # Define default vdw file
     if vdw is None:
@@ -183,10 +190,19 @@ def read_pdb(
     # Create lists
     atomic = []
 
+    # Keep all models
+    keep = True if model is None else False
+
+    # Read file and process atoms
     with open(fn, "r") as f:
         for line in f.readlines():
-            if line[:4] == "ATOM" or line[:6] == "HETATM":
-                atomic.append(_process_pdb_line(line, vdw))
+            if model is not None:
+                if line[:5] == "MODEL":
+                    nmodel = int(line[5:].replace(" ", "").rstrip("\n"))
+                    keep = True if model == nmodel else False
+            if keep:
+                if line[:4] == "ATOM" or line[:6] == "HETATM":
+                    atomic.append(_process_pdb_line(line, vdw))
 
     return numpy.asarray(atomic)
 
