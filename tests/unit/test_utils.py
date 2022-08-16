@@ -55,12 +55,12 @@ class TestProcessPdbLine(unittest.TestCase):
             }
         }
         self.expected = [
-            [1, 'A', 'UNK', 'C', 0.000, 0.000, 0.000, 1.66],
-            [1, 'A', 'UNK', 'N', 0.000, 0.000, 0.000, 1.824],
-            [1, 'A', 'UNK', 'O', 0.000, 0.000, 0.000, 1.69],
-            [1, 'A', 'UNK', 'H', 0.000, 0.000, 0.000, 0.91],
-            [1, 'A', 'UNK', 'N9', 0.000, 0.000, 0.000, 1.824],
-            [1, 'A', 'UNK', 'C5\'', 0.000, 0.000, 0.000, 1.66],
+            [1, "A", "UNK", "C", 0.000, 0.000, 0.000, 1.66],
+            [1, "A", "UNK", "N", 0.000, 0.000, 0.000, 1.824],
+            [1, "A", "UNK", "O", 0.000, 0.000, 0.000, 1.69],
+            [1, "A", "UNK", "H", 0.000, 0.000, 0.000, 0.91],
+            [1, "A", "UNK", "N9", 0.000, 0.000, 0.000, 1.824],
+            [1, "A", "UNK", "C5'", 0.000, 0.000, 0.000, 1.66],
         ]
 
     def test_line(self):
@@ -68,6 +68,7 @@ class TestProcessPdbLine(unittest.TestCase):
         for data, expected in zip(self.lines, self.expected):
             result = _process_pdb_line(data, self.vdw)
             self.assertListEqual(result, expected)
+
 
 class TestReadPdb(unittest.TestCase):
     def test_atom(self):
@@ -119,6 +120,32 @@ class TestReadPdb(unittest.TestCase):
         ]
         result = read_pdb(os.path.join(UNIT_TESTS_DIR, "skippable.pdb")).tolist()
         self.assertListEqual(result, expected)
+
+    def test_nmr_models(self):
+        # Test MODEL entries
+        expected = [
+            ["13", "E", "GLU", "N", "-1.111", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-2.222", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-3.333", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-4.444", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-5.555", "-15.642", "-14.858", "1.824"],
+        ]
+        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "nmr.pdb")).tolist()
+        self.assertListEqual(result, expected)
+
+    def test_one_nmr_model(self):
+        # Model number
+        model = numpy.random.randint(1, 6)
+        # Test one model in NMR entry
+        expected = [
+            ["13", "E", "GLU", "N", "-1.111", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-2.222", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-3.333", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-4.444", "-15.642", "-14.858", "1.824"],
+            ["13", "E", "GLU", "N", "-5.555", "-15.642", "-14.858", "1.824"],
+        ]
+        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "nmr.pdb"), model=model).tolist()
+        self.assertListEqual(result, [expected[model - 1]])
 
 
 class TestReadXyz(unittest.TestCase):
