@@ -80,7 +80,7 @@ setup(
     # Python package configuration
     packages=["pyKVFinder"],
     # Python versions support
-    python_requires=">=3.7, <4",
+    python_requires=">=3.8, <4",
     # This field lists other packages that your project depends on to run.
     install_requires=reqs,
     # If there are data files included in your packages that need to be
