@@ -1986,8 +1986,22 @@ def openings(
 
     Returns
     -------
-    Tuple[int, numpy.ndarray, Dict[str, float]]
-        _description_
+    nopenings : int
+        Total number of openings.
+    openings : numpy.ndarray
+        Openings points in the 3D grid (openings[nx][ny][nz]).
+        Openings array has integer labels in each position, that are:
+
+            * 0: bulk or biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: Opening points.
+
+        The empty space points are regions that do not meet the chosen
+        openings cutoff to be considered an opening.
+    area : Dict[str, float]
+        A dictionary with area of each detected opening.
 
     Raises
     ------
