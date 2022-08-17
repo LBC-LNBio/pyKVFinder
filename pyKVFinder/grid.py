@@ -1955,7 +1955,7 @@ def openings(
     nthreads: Optional[int] = None,
     verbose: bool = False,
 ) -> Tuple[int, numpy.ndarray, Dict[str, float]]:
-    """Identify openings of the detected cavities and calculate their areas.
+    """[WIP] Identify openings of the detected cavities and calculate their areas.
 
     Parameters
     ----------
