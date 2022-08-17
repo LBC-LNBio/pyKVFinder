@@ -841,7 +841,7 @@ void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
  * nthreads: number of threads for OpenMP
  * 
  */
-int cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
+int _cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
 {
     int i, j, k, i2, j2, k2, tag, vol_aux;
 
@@ -958,7 +958,7 @@ int _detect(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms
 
     if (verbose)
         fprintf(stdout, "> Clustering cavity points\n");
-    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
+    ncav = _cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
 
     // Free PO
     free(PO);
@@ -1044,7 +1044,7 @@ int _detect_ladj(int *PI, int size, int nx, int ny, int nz, double *atoms, int n
 
     if (verbose)
         fprintf(stdout, "> Clustering cavity points\n");
-    ncav = cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
+    ncav = _cluster(PI, nx, ny, nz, step, volume_cutoff, nthreads);
 
     // Free PO
     free(PO);
