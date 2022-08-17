@@ -24,9 +24,10 @@ copyright = "2021, LBC-LNBio"
 author = "LBC-LNBio"
 
 # The short X.Y version
-version = "0.4"
+from pyKVFinder import __version__
+version = ".".join(__version__.split('.')[0:2])
 # The full version, including alpha/beta/rc tags
-release = "0.4.1"
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

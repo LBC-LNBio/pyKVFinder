@@ -1,3 +1,4 @@
+from asyncio import open_unix_connection
 import os
 import pathlib
 import numpy
@@ -11,6 +12,7 @@ __all__ = [
     "depth",
     "constitutional",
     "hydropathy",
+    "openings",
     "export",
 ]
 
@@ -1886,6 +1888,202 @@ def hydropathy(
     avg_hydropathy[f"{name}"] = [float(scale.min()), float(scale.max())]
 
     return scales.reshape(nx, ny, nz), avg_hydropathy
+
+
+def _get_opening_name(index: int) -> str:
+    """Get opening name, eg OAA, OAB, and so on, based on the index.
+
+    Parameters
+    ----------
+    index : int
+        Index in the dictionary.
+
+    Returns
+    -------
+    opening_name : str
+        Opening name
+    """
+    opening_name = f"O{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+    return opening_name
+
+
+def _process_openings(
+    raw_openings: numpy.ndarray,
+    nopenings: int,
+    selection: Optional[List[int]] = None,
+) -> Tuple[Dict[str, float], Dict[str, float]]:
+    """Processes arrays of openings' areas.
+
+    Parameters
+    ----------
+    raw_openings : numpy.ndarray
+        A numpy.ndarray of openings' areas.
+    nopenings : int
+        Number of openings.
+    selection : List[int], optional
+        A list of integer labels of each opening to be selected, by default None.
+
+    Returns
+    -------
+    area : Dict[str, float]
+        A dictionary with area of each detected opening.
+    """
+    area = {}
+
+    # Prepare volume and area dictionary
+    for index in range(nopenings):
+        key = _get_opening_name(index)
+        area[key] = float(round(raw_openings[index], 2))
+
+    if selection is not None:
+        # Get keys from selection
+        all_keys = list(area.keys())
+        keys = [all_keys[sele - 2] for sele in selection]
+
+        # Get area of selection
+        area = {key: area[key] for key in keys}
+
+    return area
+
+
+def openings(
+    cavities: numpy.ndarray,
+    depths: Optional[numpy.ndarray] = None,
+    step: Union[float, int] = 0.6,
+    openings_cutoff: int = 1,
+    selection: Optional[Union[List[int], List[str]]] = None,
+    nthreads: Optional[int] = None,
+    verbose: bool = False,
+) -> Tuple[int, numpy.ndarray, Dict[str, float]]:
+    """[WIP] Identify openings of the detected cavities and calculate their areas.
+
+    Parameters
+    ----------
+    cavities : numpy.ndarray
+        Cavity points in the 3D grid (cavities[nx][ny][nz]).
+        Cavities array has integer labels in each position, that are:
+
+            * -1: bulk points;
+
+            * 0: biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: cavity points.
+    depths : Optional[numpy.ndarray], optional
+        A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]), by default None. If None, depths is calculated from cavities.
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6.
+    openings_cutoff : int, optional
+        The minimum number of voxels an opening must have, by default 1.
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of cavity names to be selected, by default None.
+    nthreads : int, optional
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
+    verbose : bool, optional
+        Print extra information to standard output, by default False.
+
+    Returns
+    -------
+    Tuple[int, numpy.ndarray, Dict[str, float]]
+        _description_
+
+    Raises
+    ------
+    TypeError
+        `cavities` must be a numpy.ndarray.
+    ValueError
+        `cavities` has the incorrect shape. It must be (nx, ny, nz).
+    TypeError
+        `depths` must be a numpy.ndarray.
+    ValueError
+        `depths` has the incorrect shape. It must be (nx, ny, nz).
+    TypeError
+        `step` must be a positive real number.
+    ValueError
+        `step` must be a positive real number.
+    TypeError
+        `openings_cutoff` must be an integer.
+    ValueError
+        `openings_cutoff` must be a positive integer.
+    TypeError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: `selection`.
+    TypeError
+        `nthreads` must be a positive integer.
+    ValueError
+        `nthreads` must be a positive integer.
+    TypeError
+        `verbose` must be a boolean
+    """
+    from _pyKVFinder import _cluster
+
+    # Check arguments
+    if type(cavities) not in [numpy.ndarray]:
+        raise TypeError("`cavities` must be a numpy.ndarray.")
+    elif len(cavities.shape) != 3:
+        raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
+    if depths is None:
+        depths = depth(cavities, step, selection, nthreads, verbose)
+    elif type(depths) not in [numpy.ndarray]:
+        raise TypeError("`depths` must be a numpy.ndarray.")
+    elif len(depths.shape) != 3:
+        raise ValueError("`depths` has the incorrect shape. It must be (nx, ny, nz).")
+    if type(step) not in [float, int]:
+        raise TypeError("`step` must be a positive real number.")
+    elif step <= 0.0:
+        raise ValueError("`step` must be a positive real number.")
+    if type(openings_cutoff) not in [int]:
+        raise TypeError("`openings_cutoff` must be an integer.")
+    elif openings_cutoff < 0:
+        raise ValueError("`openings_cutoff` must be a positive integer.")
+    if selection is not None:
+        # Check selection types
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_cavity_label(sele) for sele in selection]
+        else:
+            raise TypeError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
+    if type(verbose) not in [bool]:
+        raise TypeError("`verbose` must be a boolean.")
+
+    # Convert types
+    if type(step) == int:
+        step = float(step)
+
+    # Select cavities
+    if selection is not None:
+        cavities = _select_cavities(cavities, selection)
+
+    # Find openings
+    openings = (cavities > 1) & (depths == 0.0).astype("int32")
+
+    # Cluster openings
+    nopenings = _cluster(openings, step, openings_cutoff * step**3, verbose)
+
+    # Calculate openings areas
+    # TODO:
+    # - Remove unused steps (volume and surface points)
+    # - Export openings points as OAA, OAB, ...
+    _, _, area = spatial(openings, step, selection, nthreads, verbose)
+    # area = _process_openings(area, nopenings)
+
+    return nopenings, openings, area
 
 
 def export(

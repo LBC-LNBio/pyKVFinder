@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.4.1 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.4.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -103,7 +103,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyKVFinder.grid</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">from</span> <span class="nn">asyncio</span> <span class="kn">import</span> <span class="n">open_unix_connection</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
@@ -116,6 +117,7 @@
     <span class="s2">&quot;depth&quot;</span><span class="p">,</span>
     <span class="s2">&quot;constitutional&quot;</span><span class="p">,</span>
     <span class="s2">&quot;hydropathy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;openings&quot;</span><span class="p">,</span>
     <span class="s2">&quot;export&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -2286,6 +2288,190 @@
                 <span class="n">append</span><span class="p">,</span>
                 <span class="n">model</span><span class="p">,</span>
             <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="openings"><a class="viewcode-back" href="../../_api_reference/openings.html#pyKVFinder.openings">[docs]</a><span class="k">def</span> <span class="nf">openings</span><span class="p">(</span>
+    <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">depths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">openings_cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cavities : numpy.ndarray</span>
+<span class="sd">        _description_</span>
+<span class="sd">    depths : Optional[numpy.ndarray], optional</span>
+<span class="sd">        _description_, by default None</span>
+<span class="sd">    step : Union[float, int], optional</span>
+<span class="sd">        _description_, by default 0.6</span>
+<span class="sd">    openings_cutoff : int, optional</span>
+<span class="sd">        _description_, by default 1</span>
+<span class="sd">    selection : Optional[Union[List[int], List[str]]], optional</span>
+<span class="sd">        _description_, by default None</span>
+<span class="sd">    nthreads : Optional[int], optional</span>
+<span class="sd">        _description_, by default None</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        _description_, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[int, numpy.ndarray, Dict[str, float]]</span>
+<span class="sd">        _description_</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_cluster</span><span class="p">,</span> <span class="n">area</span>
+
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavities` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`cavities` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">depths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">depths</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">depths</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`depths` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">depths</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`depths` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">openings_cutoff</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`openings_cutoff` must be an integer.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">openings_cutoff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`openings_cutoff` must be a positive integer.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check selection types</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Check if selection includes valid cavity labels</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nthreads</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`verbose` must be a boolean.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert types</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+
+    <span class="c1"># Select cavities</span>
+    <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cavities</span> <span class="o">=</span> <span class="n">_select_cavities</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+
+    <span class="c1"># Find openings</span>
+    <span class="n">openings</span> <span class="o">=</span> <span class="p">(</span><span class="n">cavities</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">depths</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Cluster openings</span>
+    <span class="n">nopenings</span> <span class="o">=</span> <span class="n">_cluster</span><span class="p">(</span><span class="n">openings</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">openings_cutoff</span> <span class="o">*</span> <span class="n">step</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1"># Calculate openings areas</span>
+    <span class="c1"># TODO: Remove unused steps (volume and surface points)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">openings</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="c1"># area = _process_openings(area, nopenings)</span>
+
+    <span class="k">return</span> <span class="n">nopenings</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">area</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_opening_name</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get opening name, eg OAA, OAB, and so on, based on the index.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    index : int</span>
+<span class="sd">        Index in the dictionary.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    opening_name : str</span>
+<span class="sd">        Opening name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">opening_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;O</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="mi">26</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="p">(</span><span class="n">index</span> <span class="o">%</span> <span class="mi">26</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">opening_name</span>
+
+
+<span class="k">def</span> <span class="nf">_process_openings</span><span class="p">(</span>
+    <span class="n">raw_openings</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">nopenings</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Processes arrays of openings&#39; areas.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    raw_openings : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray of openings&#39; areas.</span>
+<span class="sd">    nopenings : int</span>
+<span class="sd">        Number of openings.</span>
+<span class="sd">    selection : List[int], optional</span>
+<span class="sd">        A list of integer labels of each opening to be selected, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    area : Dict[str, float]</span>
+<span class="sd">        A dictionary with area of each detected opening.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Prepare volume and area dictionary</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nopenings</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">_get_opening_name</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">area</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">raw_openings</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Get keys from selection</span>
+        <span class="n">all_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_keys</span><span class="p">[</span><span class="n">sele</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
+
+        <span class="c1"># Get area of selection</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">area</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">area</span>
 </pre></div>
 
            </div>

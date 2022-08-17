@@ -30,7 +30,7 @@ void filter(int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2
 int check_unclustered_neighbours(int *grid, int nx, int ny, int nz, int i, int j, int k);
 void DFS(int *grid, int nx, int ny, int nz, int i, int j, int k, int tag);
 void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads);
-int cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads);
+int _cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads);
 
 /* Cavity detection */
 int _detect(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose);
