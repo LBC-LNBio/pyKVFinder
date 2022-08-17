@@ -2000,7 +2000,7 @@ def openings(
 
         The empty space points are regions that do not meet the chosen
         openings cutoff to be considered an opening.
-    area : Dict[str, float]
+    aopenings : Dict[str, float]
         A dictionary with area of each detected opening.
 
     Raises
@@ -2094,10 +2094,10 @@ def openings(
     # TODO:
     # - Remove unused steps (volume and surface points)
     # - Export openings points as OAA, OAB, ...
-    _, _, area = spatial(openings, step, selection, nthreads, verbose)
-    # area = _process_openings(area, nopenings)
+    _, _, aopenings = spatial(openings, step, selection, nthreads, verbose)
+    # aopenings = _process_openings(aopenings, nopenings)
 
-    return nopenings, openings, area
+    return nopenings, openings, aopenings
 
 
 def export(
