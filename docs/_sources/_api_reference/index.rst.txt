@@ -20,6 +20,7 @@ Functions
     detect
     spatial
     depth
+    openings
     hydropathy
     constitutional
     calculate_frequencies
