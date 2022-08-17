@@ -9,9 +9,9 @@ jobs:
   deploy-linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Install dependencies
@@ -24,7 +24,7 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Build manylinux Python wheels
-      uses: RalfG/python-wheels-manylinux-build@v0.4.2-manylinux2010_x86_64
+      uses: RalfG/python-wheels-manylinux-build@v0.5.0-manylinux2014_x86_64
       with:
         python-versions: 'cp38-cp38 cp39-cp39 cp310-cp310'
         build-requirements: 'cython numpy'
@@ -38,7 +38,7 @@ jobs:
       continue-on-error: true
   
   deploy-macos:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     env:
       TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
       TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
@@ -47,9 +47,9 @@ jobs:
       matrix:
         python-version: ['3.8', '3.9', '3.10']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -57,6 +57,7 @@ jobs:
           brew install swig gcc@10
       - name: build wheel
         run: |
+          pip install --upgrade pip 
           pip install wheel
           python setup.py bdist_wheel
       - name: upload wheel
