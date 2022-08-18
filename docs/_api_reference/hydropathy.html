@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyKVFinder.hydropathy &mdash; pyKVFinder 0.4.2 documentation</title>
@@ -134,7 +134,7 @@
 <p>Map a target hydrophobicity scale per surface point and calculate average
 hydropathy of detected cavities.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>surface</strong> (<em>numpy.ndarray</em>) – <p>Surface points in the 3D grid (surface[nx][ny][nz]).
 Surface array has integer labels in each position, that are:</p>
@@ -154,9 +154,9 @@ and radius) for each atom.</p></li>
 X-axis, Y-axis, Z-axis).</p></li>
 <li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
 <li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
-<li><p><strong>hydrophobicity_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>,
-HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, KyteDoolitte <a class="footnote-reference brackets" href="#id15" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, MoonFleming <a class="footnote-reference brackets" href="#id16" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>,
-WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>, ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>) or a path to a
+<li><p><strong>hydrophobicity_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id1">1</a>,
+HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id2">2</a>, KyteDoolitte <a class="footnote-reference brackets" href="#id15" id="id3">3</a>, MoonFleming <a class="footnote-reference brackets" href="#id16" id="id4">4</a>,
+WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id5">5</a>, ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id6">6</a>) or a path to a
 TOML-formatted file with a custom hydrophobicity scale, by default
 <cite>EisenbergWeiss</cite>.</p></li>
 <li><p><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface
@@ -167,7 +167,7 @@ residues, by default False.</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>scales</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with hydrophobicity scale value mapped at surface
 points (scales[nx][ny][nz]).</p></li>
@@ -176,7 +176,7 @@ the range of the hydrophobicity scale (min, max).</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.10)"><strong>TypeError</strong></a> – <cite>surface</cite> must be a numpy.ndarray.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – <cite>surface</cite> has the incorrect shape. It must be (nx, ny, nz).</p></li>
@@ -210,52 +210,42 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 hydrophobicity value for each residue and when not defined, it assigns
 zero to the missing residues (see <cite>Hydrophobicity scale file
 template</cite>). The package contains six built-in hydrophobicity scales:
-EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, KyteDoolittle <a class="footnote-reference brackets" href="#id15" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>,
-MoonFleming <a class="footnote-reference brackets" href="#id16" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>, WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a> and ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>.</p>
+EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id7">1</a>, HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id8">2</a>, KyteDoolittle <a class="footnote-reference brackets" href="#id15" id="id9">3</a>,
+MoonFleming <a class="footnote-reference brackets" href="#id16" id="id10">4</a>, WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id11">5</a> and ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id12">6</a>.</p>
 </div>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id13" role="note">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id7">2</a>)</span>
-<p>Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
+<dl class="footnote brackets">
+<dt class="label" id="id13"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id7">2</a>)</span></dt>
+<dd><p>Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
 detects periodicity in protein hydrophobicity. Proceedings of the
 National Academy of Sciences. 1984;81.</p>
-</aside>
-<aside class="footnote brackets" id="id14" role="note">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
-<p>Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
+</dd>
+<dt class="label" id="id14"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id8">2</a>)</span></dt>
+<dd><p>Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
 Recognition of transmembrane helices by the endoplasmic reticulum
 translocon. Nature. 2005;433.</p>
-</aside>
-<aside class="footnote brackets" id="id15" role="note">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id9">2</a>)</span>
-<p>Kyte J, Doolittle RF. A simple method for displaying the hydropathic
+</dd>
+<dt class="label" id="id15"><span class="brackets">3</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id9">2</a>)</span></dt>
+<dd><p>Kyte J, Doolittle RF. A simple method for displaying the hydropathic
 character of a protein. Journal of Molecular Biology. 1982;157.</p>
-</aside>
-<aside class="footnote brackets" id="id16" role="note">
-<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
-<p>Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
+</dd>
+<dt class="label" id="id16"><span class="brackets">4</span><span class="fn-backref">(<a href="#id4">1</a>,<a href="#id10">2</a>)</span></dt>
+<dd><p>Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
 transmembrane protein folding into lipid bilayers. Proceedings of the
 National Academy of Sciences. 2011;108.</p>
-</aside>
-<aside class="footnote brackets" id="id17" role="note">
-<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id11">2</a>)</span>
-<p>Wimley WC, White SH. Experimentally determined hydrophobicity scale
+</dd>
+<dt class="label" id="id17"><span class="brackets">5</span><span class="fn-backref">(<a href="#id5">1</a>,<a href="#id11">2</a>)</span></dt>
+<dd><p>Wimley WC, White SH. Experimentally determined hydrophobicity scale
 for proteins at membrane interfaces. Nature Structural &amp; Molecular
 Biology. 1996;3.</p>
-</aside>
-<aside class="footnote brackets" id="id18" role="note">
-<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id12">2</a>)</span>
-<p>Zhao G, London E. An amino acid “transmembrane tendency” scale that
+</dd>
+<dt class="label" id="id18"><span class="brackets">6</span><span class="fn-backref">(<a href="#id6">1</a>,<a href="#id12">2</a>)</span></dt>
+<dd><p>Zhao G, London E. An amino acid “transmembrane tendency” scale that
 approaches the theoretical limit to accuracy for prediction of
 transmembrane helices: Relationship to biological hydrophobicity.
 Protein Science. 2006;15.</p>
-</aside>
+</dd>
+</dl>
 </dd></dl>
 
 <div class="admonition seealso">

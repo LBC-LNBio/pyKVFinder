@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prerequisites &mdash; pyKVFinder 0.4.2 documentation</title>
@@ -674,22 +674,22 @@
 <h3>6.1 Calculating and plotting frequencies<a class="headerlink" href="#calculating-and-plotting-frequencies" title="Permalink to this heading"></a></h3>
 <p>With the interface residues defined, you can also calculate the frequencies of residues and classes of residues. The classes of residues are:</p>
 <dl class="field-list simple">
-<dt class="field-odd">R1<span class="colon">:</span></dt>
+<dt class="field-odd">R1</dt>
 <dd class="field-odd"><p><strong>Alipathic apolar:</strong> Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine</p>
 </dd>
-<dt class="field-even">R2<span class="colon">:</span></dt>
+<dt class="field-even">R2</dt>
 <dd class="field-even"><p><strong>Aromatic:</strong> Phenylalanine, Tryptophan, Tyrosine</p>
 </dd>
-<dt class="field-odd">R3<span class="colon">:</span></dt>
+<dt class="field-odd">R3</dt>
 <dd class="field-odd"><p><strong>Polar uncharged</strong>: Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine</p>
 </dd>
-<dt class="field-even">R4<span class="colon">:</span></dt>
+<dt class="field-even">R4</dt>
 <dd class="field-even"><p><strong>Negatively charged</strong>: Aspartate, Glutamate</p>
 </dd>
-<dt class="field-odd">R5<span class="colon">:</span></dt>
+<dt class="field-odd">R5</dt>
 <dd class="field-odd"><p><strong>Positively charged</strong>: Arginine, Histidine, Lysine</p>
 </dd>
-<dt class="field-even">RX<span class="colon">:</span></dt>
+<dt class="field-even">RX</dt>
 <dd class="field-even"><p><strong>Non-standard</strong>: Non-standard residues</p>
 </dd>
 </dl>
@@ -718,6 +718,11 @@
 <li><p><a class="reference external" href="../_api_reference/calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></p></li>
 <li><p><a class="reference external" href="../_api_reference/plot_frequencies.html">pyKVFinder.plot_frequencies</a></p></li>
 </ul>
+</div>
+<p>A sample barplot of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies</span></code> is shown below.</p>
+<a class="reference internal image-reference" href="../_images/plot-frequencies.png"><img alt="../_images/plot-frequencies.png" class="align-center" src="../_images/plot-frequencies.png" style="width: 600px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
 </section>
 </section>
@@ -782,7 +787,7 @@
 </section>
 <section id="performing-depth-characterization">
 <h2>8. Performing depth characterization<a class="headerlink" href="#performing-depth-characterization" title="Permalink to this heading"></a></h2>
-<p>A depth characterization, that includes maximum depth, average depth and defining depth of cavity points, is performed on the detected cavities.</p>
+<p>A depth characterization identifies the degree of burial of the binding site. First, it identifies the cavity volume boundary. Subsequently, the depth of each cavity point is heuristically estimated by the shortest Euclidean distance between the cavity point and its respective boundary points. With this, the maximum and average depths for the detected cavities are calculated.</p>
 <p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.depth</span></code> takes the detected cavities and the grid spacing (<code class="docutils literal notranslate"><span class="pre">step</span></code>) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">depths</span>
