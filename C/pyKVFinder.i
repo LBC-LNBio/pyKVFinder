@@ -26,6 +26,7 @@
 
 /* Depth grid */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depths, int size)}
+%apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* depths, int nxx, int nyy, int nzz)}
 
 /* Hydropathy grid */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* hydropathy, int size)}

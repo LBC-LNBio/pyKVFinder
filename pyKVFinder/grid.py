@@ -2032,7 +2032,7 @@ def openings(
     TypeError
         `verbose` must be a boolean
     """
-    from _pyKVFinder import _cluster
+    from _pyKVFinder import _cluster, _remove_enclosed_cavity
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2040,7 +2040,7 @@ def openings(
     elif len(cavities.shape) != 3:
         raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if depths is None:
-        depths = depth(cavities, step, selection, nthreads, verbose)
+        depths, max_depth, avg_depth = depth(cavities, step, selection, nthreads, verbose)
     elif type(depths) not in [numpy.ndarray]:
         raise TypeError("`depths` must be a numpy.ndarray.")
     elif len(depths.shape) != 3:
@@ -2080,12 +2080,18 @@ def openings(
     if type(step) == int:
         step = float(step)
 
+    # Get number of cavities
+    ncav = int(cavities.max() - 1)
+
     # Select cavities
     if selection is not None:
         cavities = _select_cavities(cavities, selection)
 
+    # Remove enclosed cavities
+    _remove_enclosed_cavity(cavities, depths, ncav, nthreads)
+
     # Find openings
-    openings = (cavities > 1) & (depths == 0.0).astype("int32")
+    openings = ((cavities > 1) & (depths == 0.0)).astype("int32")
 
     # Cluster openings
     nopenings = _cluster(openings, step, openings_cutoff * step**3, verbose)

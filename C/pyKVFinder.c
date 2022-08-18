@@ -8,23 +8,23 @@
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 
 /******* sincos ******
-* sincos[0] = sin a  *
-* sincos[1] = cos a  *
-* sincos[2] = sin b  *
-* sincos[3] = cos b  *
-*********************/
+ * sincos[0] = sin a  *
+ * sincos[1] = cos a  *
+ * sincos[2] = sin b  *
+ * sincos[3] = cos b  *
+ *********************/
 
 /* Grid initialization */
 
 /*
  * Function: igrid
  * ---------------
- * 
+ *
  * Fill integer grid with 1
- * 
+ *
  * grid: empty 3D grid
  * size: number of voxels
- * 
+ *
  */
 void igrid(int *grid, int size)
 {
@@ -37,12 +37,12 @@ void igrid(int *grid, int size)
 /*
  * Function: fgrid
  * ---------------
- * 
+ *
  * Fill float grid with 0.0
- * 
+ *
  * grid: empty 3D grid
  * size: number of voxels
- * 
+ *
  */
 void fgrid(float *grid, int size)
 {
@@ -55,12 +55,12 @@ void fgrid(float *grid, int size)
 /*
  * Function: dgrid
  * ---------------
- * 
+ *
  * Fill double grid with 0.0
- * 
+ *
  * grid: empty 3D grid
  * size: number of voxels
- * 
+ *
  */
 void dgrid(double *grid, int size)
 {
@@ -73,12 +73,12 @@ void dgrid(double *grid, int size)
 /*
  * Function: cgrid
  * ---------------
- * 
+ *
  * Fill char grid with '\0'
- * 
+ *
  * grid: empty 3D grid
  * size: number of voxels
- * 
+ *
  */
 void cgrid(int *grid, int size)
 {
@@ -93,9 +93,9 @@ void cgrid(int *grid, int size)
 /*
  * Function: fill
  * --------------
- * 
+ *
  * Insert atoms with a probe addition inside a 3D grid
- * 
+ *
  * grid: 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -110,7 +110,7 @@ void cgrid(int *grid, int size)
  * step: 3D grid spacing (A)
  * probe: Probe size (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe, int nthreads)
 {
@@ -123,7 +123,7 @@ void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr
 
 #pragma omp parallel default(none), shared(grid, reference, step, probe, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, distance, H, x, y, z, xaux, yaux, zaux)
     {
-#pragma omp for schedule(dynamic) //nowait
+#pragma omp for schedule(dynamic) // nowait
         for (atom = 0; atom < natoms; atom++)
         {
             // Convert atom coordinates in 3D grid coordinates
@@ -160,9 +160,9 @@ void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr
 /*
  * Function: _fill_cavity
  * ----------------------
- * 
+ *
  * Insert cavities inside a 3D grid
- * 
+ *
  * grid: 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -177,7 +177,7 @@ void fill(int *grid, int nx, int ny, int nz, double *atoms, int natoms, int xyzr
  * step: 3D grid spacing (A)
  * probe: Probe size (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void _fill_cavity(int *cavities, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, int nthreads)
 {
@@ -190,7 +190,7 @@ void _fill_cavity(int *cavities, int nx, int ny, int nz, double *atoms, int nato
 
 #pragma omp parallel default(none), shared(cavities, reference, step, natoms, nx, ny, nz, sincos, atoms, nthreads), private(atom, i, j, k, x, y, z, xaux, yaux, zaux)
     {
-#pragma omp for schedule(dynamic) //nowait
+#pragma omp for schedule(dynamic) // nowait
         for (atom = 0; atom < natoms; atom++)
         {
             // Convert atom coordinates in 3D grid coordinates
@@ -224,9 +224,9 @@ void _fill_cavity(int *cavities, int nx, int ny, int nz, double *atoms, int nato
 /*
  * Function: _fill_receptor
  * ------------------------
- * 
+ *
  * Insert atoms with a SES or SAS representation into a 3D grid
- * 
+ *
  * grid: 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -243,7 +243,7 @@ void _fill_cavity(int *cavities, int nx, int ny, int nz, double *atoms, int nato
  * is_ses: surface mode (1: SES or 0: SAS)
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  */
 void _fill_receptor(int *receptor, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int is_ses, int nthreads, int verbose)
 {
@@ -270,9 +270,9 @@ void _fill_receptor(int *receptor, int size, int nx, int ny, int nz, double *ato
 /*
  * Function: check_protein_neighbours
  * ----------------------------------
- * 
+ *
  * Checks if a cavity point on the grid is next to a protein point (0 or -2)
- * 
+ *
  * grid: 3D grid
  * dx: x grid units
  * dy: y grid units
@@ -280,7 +280,7 @@ void _fill_receptor(int *receptor, int size, int nx, int ny, int nz, double *ato
  * i: x coordinate of cavity point
  * j: y coordinate of cavity point
  * k: z coordinate of cavity point
- * 
+ *
  * returns: true (int 1) or false (int 0)
  */
 int check_protein_neighbours(int *grid, int nx, int ny, int nz, int i, int j, int k)
@@ -304,9 +304,9 @@ int check_protein_neighbours(int *grid, int nx, int ny, int nz, int i, int j, in
 /*
  * Function: ses
  * --------------
- * 
+ *
  * Adjust surface representation to Solvent Excluded Surface (SES)
- * 
+ *
  * grid: 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -314,7 +314,7 @@ int check_protein_neighbours(int *grid, int nx, int ny, int nz, int i, int j, in
  * step: 3D grid spacing (A)
  * probe: Probe size (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void ses(int *grid, int nx, int ny, int nz, double step, double probe, int nthreads)
 {
@@ -330,7 +330,7 @@ void ses(int *grid, int nx, int ny, int nz, double step, double probe, int nthre
 
 #pragma omp parallel default(none), shared(grid, step, probe, aux, nx, ny, nz), private(i, j, k, i2, j2, k2, distance)
     {
-#pragma omp for schedule(dynamic) collapse(3) //nowait
+#pragma omp for schedule(dynamic) collapse(3) // nowait
         // Loop around 3D grid
         for (i = 0; i < nx; i++)
             for (j = 0; j < ny; j++)
@@ -377,9 +377,9 @@ void ses(int *grid, int nx, int ny, int nz, double step, double probe, int nthre
 /*
  * Function: subtract
  * ------------------
- * 
+ *
  * Compare Probe In and Probe Out 3D grids to define biomolecular cavities
- * 
+ *
  * PI: Probe In 3D grid
  * PO: Probe Out 3D grid
  * nx: x grid units
@@ -388,7 +388,7 @@ void ses(int *grid, int nx, int ny, int nz, double step, double probe, int nthre
  * step: 3D grid spacing (A)
  * removal_distance: Length to be removed from the cavity-bulk frontier (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void subtract(int *PI, int *PO, int nx, int ny, int nz, double step, double removal_distance, int nthreads)
 {
@@ -431,15 +431,15 @@ void subtract(int *PI, int *PO, int nx, int ny, int nz, double step, double remo
 /*
  * Function: filter_noise
  * ----------------------
- * 
+ *
  * Removes cavities points (1) surrounded by biomolecule (0) or medium (-1) points
- * 
+ *
  * grid: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void filter_noise(int *grid, int nx, int ny, int nz, int nthreads)
 {
@@ -482,9 +482,9 @@ void filter_noise(int *grid, int nx, int ny, int nz, int nthreads)
 /*
  * Function: adjust
  * ----------------
- * 
+ *
  * Adjust cavities to a radius around a ligand atoms
- * 
+ *
  * grid: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -499,7 +499,7 @@ void filter_noise(int *grid, int nx, int ny, int nz, int nthreads)
  * step: 3D grid spacing (A)
  * ligand_cutoff: Radius value to limit a space around a ligand (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void adjust(int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double ligand_cutoff, int nthreads)
 {
@@ -546,9 +546,9 @@ void adjust(int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int 
 /*
  * Function: _filter_pdb
  * ---------------------
- * 
+ *
  * Select pdb atoms inside the 3D grid (box adjustment mode)
- * 
+ *
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
@@ -562,7 +562,7 @@ void adjust(int *grid, int nx, int ny, int nz, double *ligand, int lnatoms, int 
  * step: 3D grid spacing (A)
  * probe_in: Probe In size (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void _filter_pdb(int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, int nthreads)
 {
@@ -574,7 +574,7 @@ void _filter_pdb(int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
 
 #pragma omp parallel default(none), shared(atoms, natoms, reference, sincos, step, probe_in, nx, ny, nz), private(atom, x, y, z, xaux, yaux, zaux)
     {
-#pragma omp for schedule(static) //nowait
+#pragma omp for schedule(static) // nowait
         for (atom = 0; atom < natoms; atom++)
         {
             x = (atoms[atom * 4] - reference[0]) / step;
@@ -610,9 +610,9 @@ void _filter_pdb(int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
 /*
  * Function: filter
  * ----------------
- * 
+ *
  * Adjust cavities to a search box
- * 
+ *
  * grid: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -626,7 +626,7 @@ void _filter_pdb(int nx, int ny, int nz, double *atoms, int natoms, int xyzr, do
  * step: 3D grid spacing (A)
  * probe_out: Radius value to limit a space around a ligand (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void filter(int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2, int nndims, double *sincos, int nvalues, double step, double probe_out, int nthreads)
 {
@@ -705,7 +705,7 @@ void filter(int *grid, int nx, int ny, int nz, double *P1, int ndims, double *P2
 /*
  * Variable: vol
  * -------------
- * 
+ *
  * Accumulate volume of a cavity while clustering a cavity
  *
  */
@@ -713,18 +713,18 @@ int vol;
 
 /*
  * Variable: big
- * 
+ *
  * Flag that marks big cavities on clustering
- * 
+ *
  */
 int big;
 
 /*
  * Function: check_unclustered_neighbours
  * --------------------------------------
- * 
+ *
  * Checks if a cavity point on the grid is next to a unclustered cavity point (1)
- * 
+ *
  * grid: 3D grid
  * dx: x grid units
  * dy: y grid units
@@ -732,7 +732,7 @@ int big;
  * i: x coordinate of cavity point
  * j: y coordinate of cavity point
  * k: z coordinate of cavity point
- * 
+ *
  * returns: true (int 1) or false (int 0)
  */
 int check_unclustered_neighbours(int *grid, int nx, int ny, int nz, int i, int j, int k)
@@ -756,9 +756,9 @@ int check_unclustered_neighbours(int *grid, int nx, int ny, int nz, int i, int j
 /*
  * Function: DFS
  * -------------
- * 
+ *
  * Recursive DFS algorithm
- * 
+ *
  * grid: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -767,7 +767,7 @@ int check_unclustered_neighbours(int *grid, int nx, int ny, int nz, int i, int j
  * j: y coordinate of cavity point
  * k: z coordinate of cavity point
  * tag: cavity integer identifier
- * 
+ *
  */
 void DFS(int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
 {
@@ -797,16 +797,16 @@ void DFS(int *grid, int nx, int ny, int nz, int i, int j, int k, int tag)
 /*
  * Function: remove_cavity
  * -----------------------
- * 
+ *
  * Untag cavity that does not reach volume cutoff
- * 
+ *
  * grid: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
  * tag: cavity integer identifier
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
 {
@@ -817,7 +817,7 @@ void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
     omp_set_nested(1);
 
 #pragma omp parallel default(shared)
-#pragma omp for schedule(static) collapse(3) //nowait
+#pragma omp for schedule(static) collapse(3) // nowait
     for (i = 0; i < nx; i++)
         for (j = 0; j < ny; j++)
             for (k = 0; k < nz; k++)
@@ -829,9 +829,9 @@ void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
 /*
  * Function: cluster
  * -----------------
- * 
+ *
  * Cluster consecutive cavity points together
- * 
+ *
  * grid: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -839,7 +839,7 @@ void remove_cavity(int *grid, int nx, int ny, int nz, int tag, int nthreads)
  * step: 3D grid spacing (A)
  * volume_cutoff: Cavities volume filter (A3)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 int _cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutoff, int nthreads)
 {
@@ -895,9 +895,9 @@ int _cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutof
 /*
  * Function: _detect
  * -----------------
- * 
+ *
  * Detect and cluster cavities
- * 
+ *
  * PI: 3D grid
  * size: number of voxels in 3D grid
  * nx: x grid units
@@ -921,7 +921,7 @@ int _cluster(int *grid, int nx, int ny, int nz, double step, double volume_cutof
  * is_ses: surface mode (1: SES or 0: SAS)
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  * returns: PI[size] (cavities 3D grid) and ncav (number of cavities)
  */
 int _detect(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
@@ -969,9 +969,9 @@ int _detect(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms
 /*
  * Function: _detect_ladj
  * ----------------------
- * 
+ *
  * Detect and cluster cavities with ligand adjustment
- * 
+ *
  * PI: 3D grid
  * size: number of voxels in 3D grid
  * nx: x grid units
@@ -1000,7 +1000,7 @@ int _detect(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms
  * is_ses: surface mode (1: SES or 0: SAS)
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  * returns: PI[size] (cavities 3D grid) and ncav (number of cavities)
  */
 int _detect_ladj(int *PI, int size, int nx, int ny, int nz, double *atoms, int natoms, int xyzr, double *ligand, int lnatoms, int lxyzr, double *reference, int ndims, double *sincos, int nvalues, double step, double probe_in, double probe_out, double removal_distance, double volume_cutoff, int ligand_adjustment, double ligand_cutoff, int box_adjustment, double *P2, int nndims, int is_ses, int nthreads, int verbose)
@@ -1057,9 +1057,9 @@ int _detect_ladj(int *PI, int size, int nx, int ny, int nz, double *atoms, int n
 /*
  * Function: define_surface_points
  * -------------------------------
- * 
+ *
  * Identify surface points based on neighboring points
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1067,7 +1067,7 @@ int _detect_ladj(int *PI, int size, int nx, int ny, int nz, double *atoms, int n
  * i: x coordinate of cavity point
  * j: y coordinate of cavity point
  * k: z coordinate of cavity point
- * 
+ *
  * returns: cavity identifier (>1) or medium point (-1)
  */
 int define_surface_points(int *cavities, int nx, int ny, int nz, int i, int j, int k)
@@ -1097,16 +1097,16 @@ int define_surface_points(int *cavities, int nx, int ny, int nz, int i, int j, i
 /*
  * Function: filter_surface
  * ------------------------
- * 
+ *
  * Inspect cavities 3D grid and mark detected surface points on a surface 3D grid
- * 
+ *
  * cavities: cavities 3D grid
  * surface: surface points 3D grid
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void filter_surface(int *cavities, int *surface, int nx, int ny, int nz, int nthreads)
 {
@@ -1142,9 +1142,9 @@ void filter_surface(int *cavities, int *surface, int nx, int ny, int nz, int nth
 /*
  * Function: check_voxel_class
  * ---------------------------
- * 
+ *
  * Identify voxel class of surface voxel and return class weight
- * 
+ *
  * surface: surface points 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1152,7 +1152,7 @@ void filter_surface(int *cavities, int *surface, int nx, int ny, int nz, int nth
  * i: x coordinate of cavity point
  * j: y coordinate of cavity point
  * k: z coordinate of cavity point
- * 
+ *
  * returns: voxel class weight (double)
  */
 double
@@ -1208,9 +1208,9 @@ check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j, int k)
 /*
  * Function: area
  * --------------
- * 
+ *
  * Calculate area of cavities
- * 
+ *
  * surface: surface points 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1219,7 +1219,7 @@ check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j, int k)
  * step: 3D grid spacing (A)
  * areas: empty array of areas
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads)
 {
@@ -1244,9 +1244,9 @@ void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *a
 /*
  * Function: volume
  * ----------------
- * 
+ *
  * Calculate volume of cavities
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1255,7 +1255,7 @@ void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *a
  * step: 3D grid spacing (A)
  * volumes: empty array of volumes
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void volume(int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads)
 {
@@ -1285,9 +1285,9 @@ void volume(int *cavities, int nx, int ny, int nz, int ncav, double step, double
 /*
  * Function: _spatial
  * -----------------
- * 
+ *
  * Spatial characterization (volume and area) of the detected cavities
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1301,7 +1301,7 @@ void volume(int *cavities, int nx, int ny, int nz, int ncav, double step, double
  * step: 3D grid spacing (A)
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  * returns: surface (surface points 3D grid), volumes (array of volumes) and area (array of areas)
  */
 void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int nthreads, int verbose)
@@ -1333,16 +1333,16 @@ void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size, dou
 /*
  * Struct: points
  * --------------
- * 
+ *
  * Two 3D grid points with xyz coordinates (P1 and P2)
- * 
+ *
  * X1: x coordinate of P1
  * Y1: y coordinate of P1
  * Z1: z coordinate of P1
  * X2: x coordinate of P2
  * Y2: y coordinate of P2
  * Z2: z coordinate of P2
- *  
+ *
  */
 typedef struct POINTS
 {
@@ -1357,9 +1357,9 @@ typedef struct POINTS
 /*
  * Function: define_boundary_points
  * --------------------------------
- * 
+ *
  * Identify cavity-bulk boundary points based on neighboring points
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1367,7 +1367,7 @@ typedef struct POINTS
  * i: x coordinate of cavity point
  * j: y coordinate of cavity point
  * k: z coordinate of cavity point
- * 
+ *
  * returns: cavity identifier (tag) or cavity-bulk boundary identifier (-tag)
  */
 int define_boundary_points(int *cavities, int nx, int ny, int nz, int i, int j, int k)
@@ -1397,15 +1397,15 @@ int define_boundary_points(int *cavities, int nx, int ny, int nz, int i, int j, 
 /*
  * Function: filter_boundary
  * -------------------------
- * 
+ *
  * Inspect cavities 3D grid and mark detected cavity-bulk boundary points
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void filter_boundary(int *cavities, int nx, int ny, int nz, pts *cavs, pts *boundaries, int nthreads)
 {
@@ -1454,15 +1454,15 @@ void filter_boundary(int *cavities, int nx, int ny, int nz, pts *cavs, pts *boun
 /*
  * Function: remove_boundary
  * -------------------------
- * 
+ *
  * Inspect cavities 3D grid and unmark detected cavity-bulk boundary points
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
  * nz: z grid units
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void remove_boundary(int *cavities, int nx, int ny, int nz, int ncav, pts *boundaries, int nthreads)
 {
@@ -1488,9 +1488,9 @@ void remove_boundary(int *cavities, int nx, int ny, int nz, int ncav, pts *bound
 /*
  * Function: estimate_depth
  * ------------------------
- * 
+ *
  * Calculate depth of each cavity point and maximum and average depth of cavities
- * 
+ *
  * cavities: cavities 3D grid
  * depths: depth of cavities 3D grid points
  * nx: x grid units
@@ -1504,7 +1504,7 @@ void remove_boundary(int *cavities, int nx, int ny, int nz, int ncav, pts *bound
  * boundaries: Array with minimum and maximum grid coordinates of each cavity-bulk boundary
  * step: 3D grid spacing (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, double *max_depth, double *avg_depth, int ncav, pts *cavs, pts *boundaries, double step, int nthreads)
 {
@@ -1578,9 +1578,9 @@ void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, doubl
 /*
  * Function: _depth
  * ----------------
- * 
+ *
  * Characterization of the depth of the detected cavities. Calculate depth per cavity point and maximum and average depths of detected cavities.
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1594,9 +1594,9 @@ void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, doubl
  * step: 3D grid spacing (A)
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  * returns: depths (3D grid with depth of cavity points), max_depth (array of maximum depths) and avg_depth (array of average depths)
- * 
+ *
  */
 void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose)
 {
@@ -1640,17 +1640,65 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, dou
     free(boundaries);
 }
 
+/* Openings characterization */
+
+/*
+ * Function: _remove_enclosed_cavity
+ * ---------------------------------
+ *
+ * Cluster consecutive cavity points together
+ *
+ * grid: cavities 3D grid
+ * nx: x grid units (grid)
+ * ny: y grid units (grid)
+ * nz: z grid units (grid)
+ * depths: depth of cavities 3D grid points
+ * nxx: x grid units (depths)
+ * nyy: y grid units (depths)
+ * nzz: z grid units (depths)
+ * ncav: number of cavities
+ * nthreads: number of threads for OpenMP
+ *
+ */
+void _remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads)
+{
+    int i, j, k, tag;
+    double sum_depth;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+    for (tag = 0; tag < ncav; tag++)
+    {
+        sum_depth = 0.0;
+
+#pragma omp parallel default(shared), private(i, j, k)
+#pragma omp for collapse(3) schedule(static) reduction(+ \
+                                                       : sum_depth)
+        for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (grid[k + nz * (j + (ny * i))] == tag + 2)
+                        sum_depth += depths[k + nz * (j + (ny * i))];
+
+        // Check if kvtag is a enclosed cavity
+        if (sum_depth == 0.0)
+            remove_cavity(grid, nx, ny, nz, tag + 2, nthreads);
+    }
+}
+
 /* Retrieve interface residues */
 
 /*
  * Struct: node
  * ------------
- * 
+ *
  * A linked list node for atom index in xyzr array
- * 
+ *
  * pos: atom index in xyzr array (coordinates and radii of pdb)
  * struct node* next: pointer to next linked list node
- *  
+ *
  */
 typedef struct node
 {
@@ -1661,11 +1709,11 @@ typedef struct node
 /*
  * Function: create
  * ----------------
- * 
+ *
  * Create a res node
- * 
+ *
  * pos: atom index in xyzr array (coordinates and radii of pdb)
- * 
+ *
  * returns: res node with atom index
  */
 res *create(int pos)
@@ -1681,12 +1729,12 @@ res *create(int pos)
 /*
  * Function: insert
  * ----------------
- * 
+ *
  * Insert res node in linked list
- * 
+ *
  * res: pointer to linked list head
  * new: res node
- * 
+ *
  */
 void insert(res **head, res *new)
 {
@@ -1712,9 +1760,9 @@ void insert(res **head, res *new)
 /*
  * Function: interface
  * -------------------
- * 
+ *
  * Retrieve interface residues surrounding cavities
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1731,7 +1779,7 @@ void insert(res **head, res *new)
  * probe_in: Probe In size (A)
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
- * 
+ *
  * returns: array of strings with interface residues with cavities separated by '-1'
  */
 char
@@ -1814,9 +1862,9 @@ char
 /*
  * Function: _constitutional
  * -------------------------
- * 
+ *
  * Constitutional characterization (interface residues) of the detected cavities
- * 
+ *
  * cavities: cavities 3D grid
  * nx: x grid units
  * ny: y grid units
@@ -1834,9 +1882,9 @@ char
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  * returns: array of strings with interface residues with cavities separated by '-1'
- * 
+ *
  */
 char
     **
@@ -1856,14 +1904,14 @@ char
 /*
  * Function: get_hydrophobicity_value
  * ----------------------------------
- * 
+ *
  * Get hydrophobicity scale value for a target residue name
- * 
+ *
  * resname: target residue name
  * resn: 1D-array hydrophobicity scale residues names
  * scales: 1D-array of hydrophocity scale values
  * nscales: size of 1D-array of scales and resn
- * 
+ *
  */
 double
 get_hydrophobicity_value(char *resname, char **resn, double *scales, int nscales)
@@ -1881,9 +1929,9 @@ get_hydrophobicity_value(char *resname, char **resn, double *scales, int nscales
 /*
  * Function: project_hydropathy
  * ---------------------------
- * 
+ *
  * Map a hydrophobicity scale per surface point of detected cavities.
- * 
+ *
  * hydropathy: hydrophobicity scale 3D grid
  * surface: surface points 3D grid
  * nxx: x grid units
@@ -1903,7 +1951,7 @@ get_hydrophobicity_value(char *resname, char **resn, double *scales, int nscales
  * step: 3D grid spacing (A)
  * probe_in: Probe In size (A)
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void project_hydropathy(double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads)
 {
@@ -1970,9 +2018,9 @@ void project_hydropathy(double *hydropathy, int *surface, int nxx, int nyy, int 
 /*
  * Function: estimate_average_hydropathy
  * -------------------------------------
- * 
+ *
  * Calculate average hydropathy of detected cavities.
- * 
+ *
  * avgh: empty array of average hydropathy
  * ncav: number of cavities
  * hydropathy: hydrophobicity scale 3D grid
@@ -1981,7 +2029,7 @@ void project_hydropathy(double *hydropathy, int *surface, int nxx, int nyy, int 
  * ny: y grid units
  * nz: z grid units
  * nthreads: number of threads for OpenMP
- * 
+ *
  */
 void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy, int *surface, int nx, int ny, int nz, int nthreads)
 {
@@ -2023,9 +2071,9 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy, int
 /*
  * Function: _hydropathy
  * ---------------------
- * 
+ *
  * Hydropathy characterization of the detected cavities. Map a hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.
- * 
+ *
  * hydropathy: hydrophobicity scale 3D grid
  * size: number of voxels in 3D grid
  * avgh: empty array of average hydropathy
@@ -2048,9 +2096,9 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy, int
  * probe_in: Probe In size (A)
  * nthreads: number of threads for OpenMP
  * verbose: print extra information to standard output
- * 
+ *
  * returns: hydropathy (3D grid with hydrophobicity scale of surface points), and avg_h (array of average hydropathy)
- * 
+ *
  */
 void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose)
 {
@@ -2068,9 +2116,9 @@ void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surf
 /*
  * Function: _export
  * -----------------
- * 
+ *
  * Export cavities to PDB file
- * 
+ *
  * fn: cavity PDB filename
  * cavities: cavities 3D grid
  * nx: x grid units (cavities)
@@ -2089,7 +2137,7 @@ void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surf
  * nthreads: number of threads for OpenMP
  * append: append cavities to PDB file
  * model: model number
- * 
+ *
  */
 void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
 {
@@ -2154,9 +2202,9 @@ void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int 
 /*
  * Function: _export_b
  * -------------------
- * 
+ *
  * Export cavities with a variable as B-factor to PDB file
- * 
+ *
  * fn: cavity pdb filename
  * cavities: cavities 3D grid
  * nx: x grid units (cavities)
@@ -2179,7 +2227,7 @@ void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int 
  * nthreads: number of threads for OpenMP
  * append: append cavities to PDB file
  * model: model number
- * 
+ *
  */
 void _export_b(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model)
 {

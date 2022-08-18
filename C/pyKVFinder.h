@@ -70,6 +70,9 @@ void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, doubl
 /* Depth characterization */
 void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose);
 
+/* Openings characterization */
+void _remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads);
+
 /* Retrieve interface residues */
 typedef struct node
 {
