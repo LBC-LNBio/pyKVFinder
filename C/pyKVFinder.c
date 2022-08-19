@@ -1221,7 +1221,7 @@ check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j, int k)
  * nthreads: number of threads for OpenMP
  *
  */
-void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads)
+void area(int *surface, int nxx, int nyy, int nzz, double step, double *areas, int narea, int nthreads)
 {
     int i, j, k;
 
@@ -1229,14 +1229,14 @@ void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *a
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-    for (i = 0; i < ncav; i++)
+    for (i = 0; i < narea; i++)
         areas[i] = 0.0;
 
-    for (i = 0; i < nx; i++)
-        for (j = 0; j < ny; j++)
-            for (k = 0; k < nz; k++)
-                if (surface[k + nz * (j + (ny * i))] > 1)
-                    areas[surface[k + nz * (j + (ny * i))] - 2] += check_voxel_class(surface, nx, ny, nz, i, j, k) * pow(step, 2);
+    for (i = 0; i < nxx; i++)
+        for (j = 0; j < nyy; j++)
+            for (k = 0; k < nzz; k++)
+                if (surface[k + nzz * (j + (nyy * i))] > 1)
+                    areas[surface[k + nzz * (j + (nyy * i))] - 2] += check_voxel_class(surface, nxx, nyy, nzz, i, j, k) * pow(step, 2);
 }
 
 /* Estimate volume */
@@ -1323,7 +1323,7 @@ void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size, dou
         {
             if (verbose)
                 fprintf(stdout, "> Estimating area\n");
-            area(surface, nx, ny, nz, narea, step, areas, nthreads);
+            area(surface, nx, ny, nz, step, areas, narea, nthreads);
         }
     }
 }
@@ -1660,7 +1660,7 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, dou
  * nthreads: number of threads for OpenMP
  *
  */
-void remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads)
+void remove_enclosed_cavity(int *openings, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads)
 {
     int i, j, k, tag;
     double sum_depth;
@@ -1679,12 +1679,12 @@ void remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, i
         for (i = 0; i < nx; i++)
             for (j = 0; j < ny; j++)
                 for (k = 0; k < nz; k++)
-                    if (grid[k + nz * (j + (ny * i))] == tag + 2)
+                    if (openings[k + nz * (j + (ny * i))] == tag + 2)
                         sum_depth += depths[k + nz * (j + (ny * i))];
 
         // Check if kvtag is a enclosed cavity
         if (sum_depth == 0.0)
-            remove_cavity(grid, nx, ny, nz, tag + 2, nthreads);
+            remove_cavity(openings, nx, ny, nz, tag + 2, nthreads);
     }
 }
 
@@ -1702,7 +1702,7 @@ void remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, i
  * nthreads: number of threads for OpenMP
  *
  */
-void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int nthreads)
+void filter_openings(int *openings, int *cavities, double *depths, int nx, int ny, int nz, int nthreads)
 {
     int i, j, k;
 
@@ -1710,22 +1710,29 @@ void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int 
     omp_set_num_threads(nthreads);
     omp_set_nested(1);
 
-#pragma omp parallel default(none), shared(openings, depths, nx, ny, nz), private(i, j, k)
+#pragma omp parallel default(none), shared(openings, cavities, depths, nx, ny, nz), private(i, j, k)
     {
 #pragma omp for collapse(3) schedule(static)
     for (i = 0; i < nx; i++)
             for (j = 0; j < ny; j++)
                 for (k = 0; k < nz; k++)
-                    if (openings[k + nz * (j + (ny * i))] == 1)
-                        openings[k + nz * (j + (ny * i))] = -1;
+                    if (cavities[k + nz * (j + (ny * i))] > 1)
+                    {
+                        if (depths[k + nz * (j + (ny * i))] == 0.0)
+                            openings[k + nz * (j + (ny * i))] = 1;
+                        else
+                            openings[k + nz * (j + (ny * i))] = 0;
+                    }
                     else
                     {
-                        if (openings[k + nz * (j + (ny * i))] > 1)
+                        if (cavities[k + nz * (j + (ny * i))] == 1)
+                            openings[k + nz * (j + (ny * i))] = -1;
+                        else
                         {
-                            if (depths[k + nz * (j + (ny * i))] == 0.0)
-                                openings[k + nz * (j + (ny * i))] = 1;
-                            else
+                            if (cavities[k + nz * (j + (ny * i))] == 0)
                                 openings[k + nz * (j + (ny * i))] = 0;
+                            else
+                                openings[k + nz * (j + (ny * i))] = -1;
                         }
                     }
     }
@@ -1753,25 +1760,25 @@ void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int 
  *
  * returns: surface (surface points 3D grid), volumes (array of volumes) and area (array of areas)
  */
-int _openings(int *cavities, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, double *areas, int narea, int openings_cutoff, double step, int nthreads, int verbose)
+int _openings(int *openings, int size, int *cavs, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int openings_cutoff, double step, int nthreads, int verbose)
 {
     int nopenings;
 
     if (verbose)
         fprintf(stdout, "> Removing enclosed cavities\n");
-    remove_enclosed_cavity(cavities, nx, ny, nz, depths, nxx, nyy, nzz, narea, nthreads);
+    remove_enclosed_cavity(cavs, nx, ny, nz, depths, nxx, nyy, nzz, ncav, nthreads);
 
     if (verbose)
         fprintf(stdout, "> Defining opening points\n");
-    filter_openings(cavities, depths, nx, ny, nz, nthreads);
+    filter_openings(openings, cavs, depths, nx, ny, nz, nthreads);
 
     if (verbose)
         fprintf(stdout, "> Clustering opening points\n");
-    nopenings = _cluster(cavities, nx, ny, nz, step, (double)openings_cutoff * pow(step, 3), verbose);
+    nopenings = _cluster(openings, nx, ny, nz, step, (double)openings_cutoff * pow(step, 3), verbose);
 
-    if (verbose)
-        fprintf(stdout, "> Estimating openings area\n");
-    area(cavities, nx, ny, nz, nopenings, step, areas, nthreads);
+    // if (verbose)
+    //     fprintf(stdout, "> Estimating openings area\n");
+    // area(openings, nx, ny, nz, narea, step, areas, nthreads);
 
     return nopenings;
 }

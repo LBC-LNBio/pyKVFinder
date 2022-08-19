@@ -28,12 +28,15 @@
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* depths, int size)}
 %apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* depths, int nxx, int nyy, int nzz)}
 
+/* Clustering grid */
+%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *grid, int nx, int ny, int nz)}
+
 /* Hydropathy grid */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* hydropathy, int size)}
 
 /* Openings grid */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* openings, int size)}
-%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *grid, int nx, int ny, int nz)}
+%apply (int* IN_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *cavs, int nx, int ny, int nz)}
 
 /* Bfactor grid */
 %apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int nxxx, int nyyy, int nzzz)}
