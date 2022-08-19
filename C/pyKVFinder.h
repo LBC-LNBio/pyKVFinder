@@ -71,7 +71,10 @@ void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, doubl
 void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose);
 
 /* Openings characterization */
-void _remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads);
+void remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads);
+void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int nthreads);
+int _openings(int *cavities, int nx, int ny, int nz, double *depths,  int nxx, int nyy, int nzz, double *areas, int narea, int openings_cutoff, double step, int nthreads, int verbose);
+
 
 /* Retrieve interface residues */
 typedef struct node

@@ -2032,7 +2032,7 @@ def openings(
     TypeError
         `verbose` must be a boolean
     """
-    from _pyKVFinder import _cluster, _remove_enclosed_cavity
+    from _pyKVFinder import _cluster, remove_enclosed_cavity
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2088,7 +2088,7 @@ def openings(
         cavities = _select_cavities(cavities, selection)
 
     # Remove enclosed cavities
-    _remove_enclosed_cavity(cavities, depths, ncav, nthreads)
+    remove_enclosed_cavity(cavities, depths, ncav, nthreads)
 
     # Find openings
     openings = ((cavities > 1) & (depths == 0.0)).astype("int32")

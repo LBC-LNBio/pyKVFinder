@@ -32,6 +32,7 @@
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* hydropathy, int size)}
 
 /* Openings grid */
+%apply (int* ARGOUT_ARRAY1, int DIM1) {(int* openings, int size)}
 %apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int *grid, int nx, int ny, int nz)}
 
 /* Bfactor grid */

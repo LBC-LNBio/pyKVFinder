@@ -1643,8 +1643,8 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, dou
 /* Openings characterization */
 
 /*
- * Function: _remove_enclosed_cavity
- * ---------------------------------
+ * Function: remove_enclosed_cavity
+ * --------------------------------
  *
  * Cluster consecutive cavity points together
  *
@@ -1660,7 +1660,7 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, dou
  * nthreads: number of threads for OpenMP
  *
  */
-void _remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads)
+void remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads)
 {
     int i, j, k, tag;
     double sum_depth;
@@ -1686,6 +1686,94 @@ void _remove_enclosed_cavity(int *grid, int nx, int ny, int nz, double *depths, 
         if (sum_depth == 0.0)
             remove_cavity(grid, nx, ny, nz, tag + 2, nthreads);
     }
+}
+
+/*
+ * Function: filter_surface
+ * ------------------------
+ *
+ * Inspect cavities 3D grid and mark detected surface points on a surface 3D grid
+ *
+ * cavities: cavities 3D grid
+ * surface: surface points 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * nthreads: number of threads for OpenMP
+ *
+ */
+void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int nthreads)
+{
+    int i, j, k;
+
+    // Set number of threads in OpenMP
+    omp_set_num_threads(nthreads);
+    omp_set_nested(1);
+
+#pragma omp parallel default(none), shared(openings, depths, nx, ny, nz), private(i, j, k)
+    {
+#pragma omp for collapse(3) schedule(static)
+    for (i = 0; i < nx; i++)
+            for (j = 0; j < ny; j++)
+                for (k = 0; k < nz; k++)
+                    if (openings[k + nz * (j + (ny * i))] == 1)
+                        openings[k + nz * (j + (ny * i))] = -1;
+                    else
+                    {
+                        if (openings[k + nz * (j + (ny * i))] > 1)
+                        {
+                            if (depths[k + nz * (j + (ny * i))] == 0.0)
+                                openings[k + nz * (j + (ny * i))] = 1;
+                            else
+                                openings[k + nz * (j + (ny * i))] = 0;
+                        }
+                    }
+    }
+}
+
+/*
+ * Function: _openings
+ * -------------------
+ *
+ * Spatial characterization (volume and area) of the detected cavities
+ *
+ * cavities: cavities 3D grid
+ * nx: x grid units
+ * ny: y grid units
+ * nz: z grid units
+ * surface: surface points 3D grid
+ * size: number of voxels
+ * volumes: empty array of volumes
+ * nvol: size of array of volumes
+ * areas: empty array of areas
+ * narea: size of array of areas
+ * step: 3D grid spacing (A)
+ * nthreads: number of threads for OpenMP
+ * verbose: print extra information to standard output
+ *
+ * returns: surface (surface points 3D grid), volumes (array of volumes) and area (array of areas)
+ */
+int _openings(int *cavities, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, double *areas, int narea, int openings_cutoff, double step, int nthreads, int verbose)
+{
+    int nopenings;
+
+    if (verbose)
+        fprintf(stdout, "> Removing enclosed cavities\n");
+    remove_enclosed_cavity(cavities, nx, ny, nz, depths, nxx, nyy, nzz, narea, nthreads);
+
+    if (verbose)
+        fprintf(stdout, "> Defining opening points\n");
+    filter_openings(cavities, depths, nx, ny, nz, nthreads);
+
+    if (verbose)
+        fprintf(stdout, "> Clustering opening points\n");
+    nopenings = _cluster(cavities, nx, ny, nz, step, (double)openings_cutoff * pow(step, 3), verbose);
+
+    if (verbose)
+        fprintf(stdout, "> Estimating openings area\n");
+    area(cavities, nx, ny, nz, nopenings, step, areas, nthreads);
+
+    return nopenings;
 }
 
 /* Retrieve interface residues */
