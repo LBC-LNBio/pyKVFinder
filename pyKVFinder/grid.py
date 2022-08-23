@@ -2023,7 +2023,9 @@ def openings(
         Openings points in the 3D grid (openings[nx][ny][nz]).
         Openings array has integer labels in each position, that are:
 
-            * 0: bulk or biomolecule points;
+            * -1: bulk points;
+
+            * 0: cavity or biomolecule points;
 
             * 1: empty space points;
 
@@ -2458,7 +2460,9 @@ def export_openings(
         Openings points in the 3D grid (openings[nx][ny][nz]).
         Openings array has integer labels in each position, that are:
 
-            * 0: bulk or biomolecule points;
+            * -1: bulk points;
+
+            * 0: cavity or biomolecule points;
 
             * 1: empty space points;
 
