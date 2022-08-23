@@ -5,6 +5,7 @@ pyKVFinder.openings
 
 .. seealso::
 
+    * `pyKVFinder.detect <detect.html>`_
     * `pyKVFinder.depth <depth.html>`_
     * `pyKVFinder.export <export.html>`_
     * `pyKVFinder.export_openings <export_openings.html>`_

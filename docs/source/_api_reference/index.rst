@@ -26,6 +26,7 @@ Functions
     calculate_frequencies
     plot_frequencies
     export
+    export_openings
     write_results
 
 Classes
