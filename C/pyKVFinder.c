@@ -1687,6 +1687,57 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size,
 /* Openings characterization */
 
 /*
+ * Function: _openings_in_cavities
+ * -------------------------------
+ *
+ * Cluster consecutive cavity points together
+ *
+ * openings: openings 3D grid
+ * cavities: cavities 3D grid
+ * nx: x grid units (openings/cavities)
+ * ny: y grid units (openings/cavities)
+ * nz: z grid units (openings/cavities)
+ * depths: depth of cavities 3D grid points
+ * nxx: x grid units (depths)
+ * nyy: y grid units (depths)
+ * nzz: z grid units (depths)
+ * ncav: number of cavities
+ * nthreads: number of threads for OpenMP
+ *
+ */
+void _openings2cavities(int *o2c, int nopenings, int *cavities, int nx, int ny,
+                        int nz, int *openings, int nxx, int nyy, int nzz,
+                        int nthreads) {
+  int i, j, k, tag, stop;
+
+  // Set number of threads in OpenMP
+  omp_set_num_threads(nthreads);
+  omp_set_nested(1);
+
+  for (tag = 0; tag < nopenings; tag++) {
+#pragma omp parallel default(none),                                            \
+    shared(stop, tag, o2c, cavities, openings, nx, ny, nz), private(i, j, k)
+    {
+      stop = 0;
+#pragma omp for collapse(3) schedule(static)
+      for (i = 0; i < nx; i++)
+        for (j = 0; j < ny; j++)
+          for (k = 0; k < nz; k++) {
+            if (stop)
+              continue;
+            else {
+              if (openings[k + nz * (j + (ny * i))] == tag + 2 &&
+                  cavities[k + nz * (j + (ny * i))] > 1) {
+                o2c[tag] = cavities[k + nz * (j + (ny * i))] - 2;
+                stop = 1;
+              }
+            }
+          }
+    }
+  }
+}
+
+/*
  * Function: remove_enclosed_cavity
  * --------------------------------
  *

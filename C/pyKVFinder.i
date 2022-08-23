@@ -36,6 +36,8 @@
 
 /* Openings grid */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* openings, int size)}
+%apply (int* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(int* openings, int nxx, int nyy, int nzz)}
+%apply (int* ARGOUT_ARRAY1, int DIM1) {(int* o2c, int nopenings)}
 
 /* Bfactor grid */
 %apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int nxxx, int nyyy, int nzzz)}

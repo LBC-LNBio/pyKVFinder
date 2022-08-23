@@ -1909,8 +1909,7 @@ def _get_opening_name(index: int) -> str:
 
 def _process_openings(
     raw_openings: numpy.ndarray,
-    nopenings: int,
-    selection: Optional[List[int]] = None,
+    opening2cavity: numpy.ndarray,
 ) -> Tuple[Dict[str, float], Dict[str, float]]:
     """Processes arrays of openings' areas.
 
@@ -1918,10 +1917,8 @@ def _process_openings(
     ----------
     raw_openings : numpy.ndarray
         A numpy.ndarray of openings' areas.
-    nopenings : int
-        Number of openings.
-    selection : List[int], optional
-        A list of integer labels of each opening to be selected, by default None.
+    openings2cavity: numpy.ndarray
+        A numpy.ndarray of openings as indexes and cavities as values.
 
     Returns
     -------
@@ -1929,19 +1926,24 @@ def _process_openings(
         A dictionary with area of each detected opening.
     """
     area = {}
-
-    # Prepare volume and area dictionary
+    
+    # Get number of openings
+    nopenings = raw_openings.shape[0]
+    
     for index in range(nopenings):
-        key = _get_opening_name(index)
-        area[key] = float(round(raw_openings[index], 2))
-
-    if selection is not None:
-        # Get keys from selection
-        all_keys = list(area.keys())
-        keys = [all_keys[sele - 2] for sele in selection]
-
-        # Get area of selection
-        area = {key: area[key] for key in keys}
+        # Get opening name
+        opening = _get_opening_name(index)
+        
+        # Get cavity name
+        cavity = _get_cavity_name(opening2cavity[index])
+        
+        # Save opening area
+        if cavity not in area.keys():
+            area[cavity] = {}
+        area[cavity][opening] = float(round(raw_openings[index], 2))
+    
+    # Sort keys
+    area = dict(sorted(area.items()))
 
     return area
 
@@ -2032,7 +2034,7 @@ def openings(
     TypeError
         `verbose` must be a boolean
     """
-    from _pyKVFinder import _openings, _area
+    from _pyKVFinder import _openings, _area, _openings2cavities
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2101,11 +2103,14 @@ def openings(
         print("> Estimating openings area")
     aopenings = _area(openings, step, nopenings, nthreads)
 
+    # Find which openings belongs to each cavity
+    opening2cavity = _openings2cavities(nopenings, cavities, openings, nthreads)
+    
+    # Process openings
+    aopenings = _process_openings(aopenings, opening2cavity)
+
     # TODO:
     # - Export openings points as OAA, OAB, ...
-    # - Process results to relate cavities to openings
-    # Process openings
-    # aopenings = _process_openings(aopenings, nopenings)
 
     return nopenings, openings, aopenings
 
