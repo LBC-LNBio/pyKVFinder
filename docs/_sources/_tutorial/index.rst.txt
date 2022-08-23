@@ -572,6 +572,14 @@ Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the freque
   * `pyKVFinder.calculate_frequencies <../_api_reference/calculate_frequencies.html>`_  
   * `pyKVFinder.plot_frequencies <../_api_reference/plot_frequencies.html>`_  
 
+A sample barplot of ``pyKVFinder.plot_frequencies`` is shown below.
+
+.. image:: ../_images/plot-frequencies.png
+    :width: 600
+    :align: center
+
+|
+
 7. Performing hydropathy characterization
 -----------------------------------------
 
@@ -633,7 +641,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 8. Performing depth characterization
 ------------------------------------
 
-A depth characterization, that includes maximum depth, average depth and defining depth of cavity points, is performed on the detected cavities. 
+A depth characterization identifies the degree of burial of the binding site. First, it identifies the cavity volume boundary. Subsequently, the depth of each cavity point is heuristically estimated by the shortest Euclidean distance between the cavity point and its respective boundary points. With this, the maximum and average depths for the detected cavities are calculated.
 
 ``pyKVFinder.depth`` takes the detected cavities and the grid spacing (``step``) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.
 

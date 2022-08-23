@@ -42,10 +42,10 @@ void filter_surface(int *cavities, int *surface, int nx, int ny, int nz, int nth
 
 /* Estimate area */
 double check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j, int k);
-void area(int *surface, int nx, int ny, int nz, int ncav, double step, double *areas, int nthreads);
+void _area(int *surface, int nxx, int nyy, int nzz, double step, double *areas, int narea, int nthreads);
 
 /* Estimate volume */
-void volume(int *cavities, int nx, int ny, int nz, int ncav, double step, double *volumes, int nthreads);
+void _volume(int *cavities, int nx, int ny, int nz, double step, double *volumes, int nvol, int nthreads);
 
 /* Spatial characterization */
 void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size, double *volumes, int nvol, double *areas, int narea, double step, int nthreads, int verbose);
@@ -69,6 +69,12 @@ void estimate_depth(int *cavities, double *depths, int nx, int ny, int nz, doubl
 
 /* Depth characterization */
 void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size, double *max_depth, int nmax, double *avg_depth, int navg, double step, int nthreads, int verbose);
+
+/* Openings characterization */
+void _openings2cavities(int *o2c, int nopenings, int *cavities, int nx, int ny, int nz, int *openings, int nxx, int nyy, int nzz, int nthreads);
+void remove_enclosed_cavity(int *openings, int *cavities, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int nthreads);
+void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int nthreads);
+int _openings(int *openings, int size, int *cavities, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int openings_cutoff, double step, int nthreads, int verbose);
 
 /* Retrieve interface residues */
 typedef struct node
@@ -96,3 +102,4 @@ void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surf
 /* Export cavity PDB */
 void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
 void _export_b(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
+void _export_openings(char *fn, int *openings, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int nopenings, int nthreads, int append, int model);
