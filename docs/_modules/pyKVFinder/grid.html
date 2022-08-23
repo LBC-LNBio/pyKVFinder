@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.4.2 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.4.3 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -2014,8 +2014,7 @@
 
 <span class="k">def</span> <span class="nf">_process_openings</span><span class="p">(</span>
     <span class="n">raw_openings</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">nopenings</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">opening2cavity</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Processes arrays of openings&#39; areas.</span>
 
@@ -2023,10 +2022,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    raw_openings : numpy.ndarray</span>
 <span class="sd">        A numpy.ndarray of openings&#39; areas.</span>
-<span class="sd">    nopenings : int</span>
-<span class="sd">        Number of openings.</span>
-<span class="sd">    selection : List[int], optional</span>
-<span class="sd">        A list of integer labels of each opening to be selected, by default None.</span>
+<span class="sd">    openings2cavity: numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray of openings as indexes and cavities as values.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2034,19 +2031,24 @@
 <span class="sd">        A dictionary with area of each detected opening.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">area</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="c1"># Prepare volume and area dictionary</span>
+    
+    <span class="c1"># Get number of openings</span>
+    <span class="n">nopenings</span> <span class="o">=</span> <span class="n">raw_openings</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
     <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nopenings</span><span class="p">):</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">_get_opening_name</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-        <span class="n">area</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">raw_openings</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Get keys from selection</span>
-        <span class="n">all_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_keys</span><span class="p">[</span><span class="n">sele</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
-
-        <span class="c1"># Get area of selection</span>
-        <span class="n">area</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">area</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+        <span class="c1"># Get opening name</span>
+        <span class="n">opening</span> <span class="o">=</span> <span class="n">_get_opening_name</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        
+        <span class="c1"># Get cavity name</span>
+        <span class="n">cavity</span> <span class="o">=</span> <span class="n">_get_cavity_name</span><span class="p">(</span><span class="n">opening2cavity</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        
+        <span class="c1"># Save opening area</span>
+        <span class="k">if</span> <span class="n">cavity</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">area</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">area</span><span class="p">[</span><span class="n">cavity</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">area</span><span class="p">[</span><span class="n">cavity</span><span class="p">][</span><span class="n">opening</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">raw_openings</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+    
+    <span class="c1"># Sort keys</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 
     <span class="k">return</span> <span class="n">area</span>
 
@@ -2105,7 +2107,7 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        openings cutoff to be considered an opening.</span>
-<span class="sd">    area : Dict[str, float]</span>
+<span class="sd">    aopenings : Dict[str, float]</span>
 <span class="sd">        A dictionary with area of each detected opening.</span>
 
 <span class="sd">    Raises</span>
@@ -2137,7 +2139,7 @@
 <span class="sd">    TypeError</span>
 <span class="sd">        `verbose` must be a boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_cluster</span>
+    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_openings</span><span class="p">,</span> <span class="n">_area</span><span class="p">,</span> <span class="n">_openings2cavities</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
@@ -2145,7 +2147,7 @@
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`cavities` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">depths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">depths</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="n">depths</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">depths</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`depths` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">depths</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
@@ -2189,20 +2191,33 @@
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cavities</span> <span class="o">=</span> <span class="n">_select_cavities</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
 
-    <span class="c1"># Find openings</span>
-    <span class="n">openings</span> <span class="o">=</span> <span class="p">(</span><span class="n">cavities</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">depths</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+    <span class="c1"># Get number of cavities</span>
+    <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1"># Cluster openings</span>
-    <span class="n">nopenings</span> <span class="o">=</span> <span class="n">_cluster</span><span class="p">(</span><span class="n">openings</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">openings_cutoff</span> <span class="o">*</span> <span class="n">step</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="c1"># Get cavities shape</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Find openings</span>
+    <span class="n">nopenings</span><span class="p">,</span> <span class="n">openings</span> <span class="o">=</span> <span class="n">_openings</span><span class="p">(</span><span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">depths</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">openings_cutoff</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    
+    <span class="c1"># Reshape openings</span>
+    <span class="n">openings</span> <span class="o">=</span> <span class="n">openings</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span>
 
     <span class="c1"># Calculate openings areas</span>
-    <span class="c1"># TODO:</span>
-    <span class="c1"># - Remove unused steps (volume and surface points)</span>
-    <span class="c1"># - Export openings points as OAA, OAB, ...</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">openings</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="c1"># area = _process_openings(area, nopenings)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Estimating openings area&quot;</span><span class="p">)</span>
+    <span class="n">aopenings</span> <span class="o">=</span> <span class="n">_area</span><span class="p">(</span><span class="n">openings</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nopenings</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">nopenings</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">area</span></div>
+    <span class="c1"># Find which openings belongs to each cavity</span>
+    <span class="n">opening2cavity</span> <span class="o">=</span> <span class="n">_openings2cavities</span><span class="p">(</span><span class="n">nopenings</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
+    
+    <span class="c1"># Process openings</span>
+    <span class="n">aopenings</span> <span class="o">=</span> <span class="n">_process_openings</span><span class="p">(</span><span class="n">aopenings</span><span class="p">,</span> <span class="n">opening2cavity</span><span class="p">)</span>
+
+    <span class="c1"># TODO:</span>
+    <span class="c1"># - Export openings points as OAA, OAB, ...</span>
+
+    <span class="k">return</span> <span class="n">nopenings</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">aopenings</span></div>
 
 
 <div class="viewcode-block" id="export"><a class="viewcode-back" href="../../_api_reference/export.html#pyKVFinder.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.depth &mdash; pyKVFinder 0.4.2 documentation</title>
+  <title>pyKVFinder.depth &mdash; pyKVFinder 0.4.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -133,7 +133,7 @@
 <dd><p>Characterization of the depth of the detected cavities, including depth
 per cavity point and maximum and average depths of detected cavities.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cavities</strong> (<em>numpy.ndarray</em>) – <p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
 Cavities array has integer labels in each position, that are:</p>
@@ -155,7 +155,7 @@ volume cutoff to be considered a cavity.</p>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>depths</strong> (<em>numpy.ndarray</em>) – A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p></li>
 <li><p><strong>max_depth</strong> (<em>Dict[str, float]</em>) – A dictionary with maximum depth of each detected cavity.</p></li>
@@ -163,7 +163,7 @@ volume cutoff to be considered a cavity.</p>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.10)"><strong>TypeError</strong></a> – <cite>cavities</cite> must be a numpy.ndarray.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – <cite>cavities</cite> has the incorrect shape. It must be (nx, ny, nz).</p></li>

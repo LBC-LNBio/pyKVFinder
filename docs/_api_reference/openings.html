@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.openings &mdash; pyKVFinder 0.4.2 documentation</title>
+  <title>pyKVFinder.openings &mdash; pyKVFinder 0.4.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -132,7 +132,7 @@
 <span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">openings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cavities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openings_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#openings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.openings" title="Permalink to this definition"></a></dt>
 <dd><p>[WIP] Identify openings of the detected cavities and calculate their areas.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cavities</strong> (<em>numpy.ndarray</em>) – <p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
 Cavities array has integer labels in each position, that are:</p>
@@ -154,7 +154,7 @@ Cavities array has integer labels in each position, that are:</p>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul>
 <li><p><strong>nopenings</strong> (<em>int</em>) – Total number of openings.</p></li>
 <li><p><strong>openings</strong> (<em>numpy.ndarray</em>) – Openings points in the 3D grid (openings[nx][ny][nz]).
@@ -169,11 +169,11 @@ Openings array has integer labels in each position, that are:</p>
 <p>The empty space points are regions that do not meet the chosen
 openings cutoff to be considered an opening.</p>
 </li>
-<li><p><strong>area</strong> (<em>Dict[str, float]</em>) – A dictionary with area of each detected opening.</p></li>
+<li><p><strong>aopenings</strong> (<em>Dict[str, float]</em>) – A dictionary with area of each detected opening.</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.10)"><strong>TypeError</strong></a> – <cite>cavities</cite> must be a numpy.ndarray.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – <cite>cavities</cite> has the incorrect shape. It must be (nx, ny, nz).</p></li>
@@ -196,53 +196,53 @@ openings cutoff to be considered an opening.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference external" href="spatial.html">pyKVFinder.detect</a></p></li>
 <li><p><a class="reference external" href="depth.html">pyKVFinder.depth</a></p></li>
 <li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
+<li><p><a class="reference external" href="export_openings.html">pyKVFinder.export_openings</a></p></li>
 </ul>
 </div>
 <h4><u>Example</u></h4><p>With the cavity points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.detect</span></code>, we can characterize their openings, that includes number and area of openings and defining opening points:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">openings</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nopenings</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">aopenings</span> <span class="o">=</span> <span class="n">openings</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nopenings</span>
-<span class="go">19</span>
+<span class="go">16</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">openings</span>
-<span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
 
 <span class="go">    ...,</span>
 
-<span class="go">    [[0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">    [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
-<span class="go">        [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">        [-1, -1, -1, ..., -1, -1, -1]]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aopenings</span>
-<span class="go">{&#39;KAA&#39;: 70.18, &#39;KAB&#39;: 36.5, &#39;KAC&#39;: 85.98, &#39;KAD&#39;: 18.93, &#39;KAE&#39;: 41.56, &#39;KAF&#39;: 28.61, &#39;KAG&#39;: 1.08, &#39;KAH&#39;: 17.34, &#39;KAI&#39;: 30.58, &#39;KAJ&#39;: 22.8, &#39;KAK&#39;: 30.58, &#39;KAL&#39;: 27.17, &#39;KAM&#39;: 94.99, &#39;KAN&#39;: 53.6, &#39;KAO&#39;: 129.77, &#39;KAP&#39;: 13.78, &#39;KAQ&#39;: 17.89, &#39;KAR&#39;: 22.56, &#39;KAS&#39;: 27.54}</span>
+<span class="go">{&#39;KAA&#39;: {&#39;OAA&#39;: 47.41, &#39;OAG&#39;: 3.6}, &#39;KAB&#39;: {&#39;OAB&#39;: 25.84}, &#39;KAC&#39;: {&#39;OAC&#39;: 53.62}, &#39;KAD&#39;: {&#39;OAD&#39;: 12.59}, &#39;KAE&#39;: {&#39;OAE&#39;: 26.3}, &#39;KAF&#39;: {&#39;OAF&#39;: 18.46}, &#39;KAG&#39;: {&#39;OAH&#39;: 12.83}, &#39;KAH&#39;: {&#39;OAK&#39;: 59.96}, &#39;KAJ&#39;: {&#39;OAI&#39;: 16.11}, &#39;KAL&#39;: {&#39;OAJ&#39;: 17.3}, &#39;KAM&#39;: {&#39;OAL&#39;: 35.27}, &#39;KAO&#39;: {&#39;OAM&#39;: 8.49}, &#39;KAP&#39;: {&#39;OAN&#39;: 13.71}, &#39;KAQ&#39;: {&#39;OAO&#39;: 13.16}, &#39;KAR&#39;: {&#39;OAP&#39;: 15.36}}</span>
 </pre></div>
 </div>
 <p>With the cavity and opening points identified, we can:</p>
 <ul class="simple">
-<li><p>Export opening points with same nomenclature from <code class="docutils literal notranslate"><span class="pre">aopenings</span></code>:</p></li>
+<li><p>Export cavity points with opening points mapped on them:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">export</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s2">&quot;openings.pdb&quot;</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s2">&quot;cavities_with_openings.pdb&quot;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">openings</span><span class="p">)</span>
 </pre></div>
 </div>
-<ul>
-<li><p>Export cavity points with opening points mapped on them:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s2">&quot;cavities_with_openings.pdb&quot;</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">openings</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
+<ul class="simple">
+<li><p>Export opening points with same nomenclature from <code class="docutils literal notranslate"><span class="pre">aopenings</span></code>:</p></li>
 </ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">export_openings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">export_openings</span><span class="p">(</span><span class="s2">&quot;openings.pdb&quot;</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 
 
