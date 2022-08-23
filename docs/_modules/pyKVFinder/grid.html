@@ -2560,7 +2560,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    fn : Union[str, pathlib.Path]</span>
-<span class="sd">        A path to PDB file for writing cavities.</span>
+<span class="sd">        A path to PDB file for writing openings.</span>
 <span class="sd">    openings : numpy.ndarray</span>
 <span class="sd">        Openings points in the 3D grid (openings[nx][ny][nz]).</span>
 <span class="sd">        Openings array has integer labels in each position, that are:</span>
@@ -2586,7 +2586,7 @@
 <span class="sd">        Number of threads, by default None. If None, the number of threads is</span>
 <span class="sd">        `os.cpu_count() - 1`.</span>
 <span class="sd">    append : bool, optional</span>
-<span class="sd">        Whether to append cavities to the PDB file, by default False.</span>
+<span class="sd">        Whether to append openings to the PDB file, by default False.</span>
 <span class="sd">    model : int, optional</span>
 <span class="sd">        Model number, by default 0.</span>
 
@@ -2605,7 +2605,7 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
+<span class="sd">        `selection` must be a list of strings (opening names) or integers (opening labels).</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        Invalid `selection`: {selection}.</span>
 <span class="sd">    TypeError</span>

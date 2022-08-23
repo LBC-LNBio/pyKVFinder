@@ -2455,7 +2455,7 @@ def export_openings(
     Parameters
     ----------
     fn : Union[str, pathlib.Path]
-        A path to PDB file for writing cavities.
+        A path to PDB file for writing openings.
     openings : numpy.ndarray
         Openings points in the 3D grid (openings[nx][ny][nz]).
         Openings array has integer labels in each position, that are:
@@ -2481,7 +2481,7 @@ def export_openings(
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
     append : bool, optional
-        Whether to append cavities to the PDB file, by default False.
+        Whether to append openings to the PDB file, by default False.
     model : int, optional
         Model number, by default 0.
 
@@ -2500,7 +2500,7 @@ def export_openings(
     ValueError
         `step` must be a positive real number.
     TypeError
-        `selection` must be a list of strings (cavity names) or integers (cavity labels).
+        `selection` must be a list of strings (opening names) or integers (opening labels).
     ValueError
         Invalid `selection`: {selection}.
     TypeError
