@@ -1909,8 +1909,7 @@ def _get_opening_name(index: int) -> str:
 
 def _process_openings(
     raw_openings: numpy.ndarray,
-    nopenings: int,
-    selection: Optional[List[int]] = None,
+    opening2cavity: numpy.ndarray,
 ) -> Tuple[Dict[str, float], Dict[str, float]]:
     """Processes arrays of openings' areas.
 
@@ -1918,10 +1917,8 @@ def _process_openings(
     ----------
     raw_openings : numpy.ndarray
         A numpy.ndarray of openings' areas.
-    nopenings : int
-        Number of openings.
-    selection : List[int], optional
-        A list of integer labels of each opening to be selected, by default None.
+    openings2cavity: numpy.ndarray
+        A numpy.ndarray of openings as indexes and cavities as values.
 
     Returns
     -------
@@ -1929,19 +1926,24 @@ def _process_openings(
         A dictionary with area of each detected opening.
     """
     area = {}
-
-    # Prepare volume and area dictionary
+    
+    # Get number of openings
+    nopenings = raw_openings.shape[0]
+    
     for index in range(nopenings):
-        key = _get_opening_name(index)
-        area[key] = float(round(raw_openings[index], 2))
-
-    if selection is not None:
-        # Get keys from selection
-        all_keys = list(area.keys())
-        keys = [all_keys[sele - 2] for sele in selection]
-
-        # Get area of selection
-        area = {key: area[key] for key in keys}
+        # Get opening name
+        opening = _get_opening_name(index)
+        
+        # Get cavity name
+        cavity = _get_cavity_name(opening2cavity[index])
+        
+        # Save opening area
+        if cavity not in area.keys():
+            area[cavity] = {}
+        area[cavity][opening] = float(round(raw_openings[index], 2))
+    
+    # Sort keys
+    area = dict(sorted(area.items()))
 
     return area
 
@@ -2032,7 +2034,7 @@ def openings(
     TypeError
         `verbose` must be a boolean
     """
-    from _pyKVFinder import _cluster, remove_enclosed_cavity
+    from _pyKVFinder import _openings, _area, _openings2cavities
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2040,7 +2042,7 @@ def openings(
     elif len(cavities.shape) != 3:
         raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if depths is None:
-        depths, max_depth, avg_depth = depth(cavities, step, selection, nthreads, verbose)
+        depths, _, _ = depth(cavities, step, selection, nthreads, verbose)
     elif type(depths) not in [numpy.ndarray]:
         raise TypeError("`depths` must be a numpy.ndarray.")
     elif len(depths.shape) != 3:
@@ -2080,28 +2082,35 @@ def openings(
     if type(step) == int:
         step = float(step)
 
-    # Get number of cavities
-    ncav = int(cavities.max() - 1)
-
     # Select cavities
     if selection is not None:
         cavities = _select_cavities(cavities, selection)
 
-    # Remove enclosed cavities
-    remove_enclosed_cavity(cavities, depths, ncav, nthreads)
+    # Get number of cavities
+    ncav = int(cavities.max() - 1)
+
+    # Get cavities shape
+    nx, ny, nz = cavities.shape
 
     # Find openings
-    openings = ((cavities > 1) & (depths == 0.0)).astype("int32")
-
-    # Cluster openings
-    nopenings = _cluster(openings, step, openings_cutoff * step**3, verbose)
+    nopenings, openings = _openings(nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose)
+    
+    # Reshape openings
+    openings = openings.reshape(nx, ny, nz)
 
     # Calculate openings areas
+    if verbose:
+        print("> Estimating openings area")
+    aopenings = _area(openings, step, nopenings, nthreads)
+
+    # Find which openings belongs to each cavity
+    opening2cavity = _openings2cavities(nopenings, cavities, openings, nthreads)
+    
+    # Process openings
+    aopenings = _process_openings(aopenings, opening2cavity)
+
     # TODO:
-    # - Remove unused steps (volume and surface points)
     # - Export openings points as OAA, OAB, ...
-    _, _, aopenings = spatial(openings, step, selection, nthreads, verbose)
-    # aopenings = _process_openings(aopenings, nopenings)
 
     return nopenings, openings, aopenings
 
