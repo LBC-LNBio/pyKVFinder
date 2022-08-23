@@ -1692,15 +1692,16 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size,
  *
  * Cluster consecutive cavity points together
  *
- * openings: openings 3D grid
+ * o2c: empty array with openings as indexes and cavities as values
+ * nopenings: number of openings
  * cavities: cavities 3D grid
- * nx: x grid units (openings/cavities)
- * ny: y grid units (openings/cavities)
- * nz: z grid units (openings/cavities)
- * depths: depth of cavities 3D grid points
- * nxx: x grid units (depths)
- * nyy: y grid units (depths)
- * nzz: z grid units (depths)
+ * nx: x grid units (cavities)
+ * ny: y grid units (cavities)
+ * nz: z grid units (cavities)
+ * openings: openings 3D grid
+ * nxx: x grid units (openings)
+ * nyy: y grid units (openings)
+ * nzz: z grid units (openings)
  * ncav: number of cavities
  * nthreads: number of threads for OpenMP
  *
@@ -2511,6 +2512,97 @@ void _export_b(char *fn, int *cavities, int nx, int ny, int nz, int *surface,
                           (((cavities[k + nz * (j + (ny * i))] - 2) / 26) % 26),
                       65 + ((cavities[k + nz * (j + (ny * i))] - 2) % 26), xaux,
                       yaux, zaux, B[k + nz * (j + (ny * i))]);
+            count++;
+          }
+        }
+  }
+  // Write ENDMDL
+  if (abs(model) > 0)
+    fprintf(output, "ENDMDL\n");
+  // Write END
+  if (model < 0)
+    fprintf(output, "END\n");
+  // Close file
+  fclose(output);
+}
+
+/*
+ * Function: _export_openings
+ * --------------------------
+ *
+ * Export openings to PDB file
+ *
+ * fn: openings PDB filename
+ * openings: openings 3D grid
+ * nxx: x grid units
+ * nyy: y grid units
+ * nzz: z grid units
+ * reference: xyz coordinates of 3D grid origin
+ * ndims: number of coordinates (3: xyz)
+ * sincos: sin and cos of 3D grid angles
+ * nvalues: number of sin and cos (sina, cosa, sinb, cosb)
+ * step: 3D grid spacing (A)
+ * nopenings: number of openings
+ * nthreads: number of threads for OpenMP
+ * append: append cavities to PDB file
+ * model: model number
+ *
+ */
+void _export_openings(char *fn, int *openings, int nxx, int nyy, int nzz,
+                      double *reference, int ndims, double *sincos, int nvalues,
+                      double step, int nopenings, int nthreads, int append,
+                      int model) {
+  int i, j, k, count, tag;
+  double x, y, z, xaux, yaux, zaux;
+  FILE *output;
+
+  // Set number of threads in OpenMP
+  omp_set_num_threads(nthreads);
+  omp_set_nested(1);
+
+  // Open cavity PDB file
+  if (append)
+    output = fopen(fn, "a+");
+  else
+    output = fopen(fn, "w");
+
+  // Write model number
+  if (abs(model) > 0)
+    fprintf(output, "MODEL     %4.d\n", model);
+
+  for (count = 1, tag = 2; tag <= nopenings + 2; tag++)
+#pragma omp parallel default(none)                                             \
+    shared(openings, reference, sincos, step, nopenings, tag, count, nxx, nyy, \
+           nzz, output),                                                       \
+    private(i, j, k, x, y, z, xaux, yaux, zaux)
+  {
+#pragma omp for schedule(static) collapse(3) ordered nowait
+    for (i = 0; i < nxx; i++)
+      for (j = 0; j < nyy; j++)
+        for (k = 0; k < nzz; k++) {
+          // Check if cavity point with value tag
+          if (openings[k + nzz * (j + (nyy * i))] == tag) {
+            // Convert 3D grid coordinates to real coordinates
+            x = i * step;
+            y = j * step;
+            z = k * step;
+
+            xaux = (x * sincos[3]) + (y * sincos[0] * sincos[2]) -
+                   (z * sincos[1] * sincos[2]) + reference[0];
+            yaux = (y * sincos[1]) + (z * sincos[0]) + reference[1];
+            zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) +
+                   (z * sincos[1] * sincos[3]) + reference[2];
+
+// Write cavity point
+#pragma omp critical
+            fprintf(output,
+                    "ATOM  %5.d  H   O%c%c   259    %8.3lf%8.3lf%8.3lf  "
+                    "1.00%6.2lf\n",
+                    count % 100000,
+                    65 +
+                        (((openings[k + nzz * (j + (nyy * i))] - 2) / 26) % 26),
+                    65 + ((openings[k + nzz * (j + (nyy * i))] - 2) % 26), xaux,
+                    yaux, zaux, 0.0);
             count++;
           }
         }

@@ -14,6 +14,7 @@ __all__ = [
     "hydropathy",
     "openings",
     "export",
+    "export_openings",
 ]
 
 
@@ -1907,6 +1908,34 @@ def _get_opening_name(index: int) -> str:
     return opening_name
 
 
+def _get_opening_label(opening_name: str) -> int:
+    """Get opening label, eg 2, 3, and so on, based on the opening name.
+
+    Parameters
+    ----------
+    opening_name : str
+        Opening name
+
+    Returns
+    -------
+    copening_label : int
+        Integer label of each opening.
+
+    Raises
+    ------
+    ValueError
+        Invalid opening name: `opening_name`.
+    """
+    # Check opening name
+    if opening_name[0] != "O":
+        raise ValueError(f"Invalid opening name: {opening_name}.")
+
+    # Get cavity label
+    cavity_label = (ord(opening_name[1]) - 65) * 26 + (ord(opening_name[2]) - 65) + 2
+
+    return cavity_label
+
+
 def _process_openings(
     raw_openings: numpy.ndarray,
     opening2cavity: numpy.ndarray,
@@ -1926,22 +1955,22 @@ def _process_openings(
         A dictionary with area of each detected opening.
     """
     area = {}
-    
+
     # Get number of openings
     nopenings = raw_openings.shape[0]
-    
+
     for index in range(nopenings):
         # Get opening name
         opening = _get_opening_name(index)
-        
+
         # Get cavity name
         cavity = _get_cavity_name(opening2cavity[index])
-        
+
         # Save opening area
         if cavity not in area.keys():
             area[cavity] = {}
         area[cavity][opening] = float(round(raw_openings[index], 2))
-    
+
     # Sort keys
     area = dict(sorted(area.items()))
 
@@ -2093,8 +2122,10 @@ def openings(
     nx, ny, nz = cavities.shape
 
     # Find openings
-    nopenings, openings = _openings(nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose)
-    
+    nopenings, openings = _openings(
+        nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose
+    )
+
     # Reshape openings
     openings = openings.reshape(nx, ny, nz)
 
@@ -2105,12 +2136,9 @@ def openings(
 
     # Find which openings belongs to each cavity
     opening2cavity = _openings2cavities(nopenings, cavities, openings, nthreads)
-    
+
     # Process openings
     aopenings = _process_openings(aopenings, opening2cavity)
-
-    # TODO:
-    # - Export openings points as OAA, OAB, ...
 
     return nopenings, openings, aopenings
 
@@ -2180,7 +2208,7 @@ def export(
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
     selection : Union[List[int], List[str]], optional
-        A list of integer labels or a list of cavity names to be selectedA list of integer labels of each cavity to be selected, by default None.
+        A list of integer labels or a list of cavity names to be selected, by default None.
     nthreads : int, optional
         Number of threads, by default None. If None, the number of threads is
         `os.cpu_count() - 1`.
@@ -2408,3 +2436,153 @@ def export(
                 append,
                 model,
             )
+
+
+def export_openings(
+    fn: Union[str, pathlib.Path],
+    openings: numpy.ndarray,
+    vertices: Union[numpy.ndarray, List[List[float]]],
+    step: Union[float, int] = 0.6,
+    selection: Optional[Union[List[int], List[str]]] = None,
+    nthreads: Optional[int] = None,
+    append: bool = False,
+    model: int = 0,
+) -> None:
+    """Exports opening (H) points to PDB-formatted file.
+
+    Parameters
+    ----------
+    fn : Union[str, pathlib.Path]
+        A path to PDB file for writing cavities.
+    openings : numpy.ndarray
+        Openings points in the 3D grid (openings[nx][ny][nz]).
+        Openings array has integer labels in each position, that are:
+
+            * 0: bulk or biomolecule points;
+
+            * 1: empty space points;
+
+            * >=2: Opening points.
+
+        The empty space points are regions that do not meet the chosen
+        openings cutoff to be considered an opening.
+    vertices : Union[numpy.ndarray, List[List[float]]]
+        A numpy.ndarray or a list with xyz vertices coordinates (origin,
+        X-axis, Y-axis, Z-axis).
+    step : Union[float, int], optional
+        Grid spacing (A), by default 0.6.
+    selection : Union[List[int], List[str]], optional
+        A list of integer labels or a list of opening names to be selected, by default None.
+    nthreads : int, optional
+        Number of threads, by default None. If None, the number of threads is
+        `os.cpu_count() - 1`.
+    append : bool, optional
+        Whether to append cavities to the PDB file, by default False.
+    model : int, optional
+        Model number, by default 0.
+
+    Raises
+    ------
+    TypeError
+        `openings` must be a numpy.ndarray.
+    ValueError
+        `openings` has the incorrect shape. It must be (nx, ny, nz).
+    TypeError
+        `vertices` must be a list or a numpy.ndarray.
+    ValueError
+        `vertices` has incorrect shape. It must be (4, 3).
+    TypeError
+        `step` must be a positive real number.
+    ValueError
+        `step` must be a positive real number.
+    TypeError
+        `selection` must be a list of strings (cavity names) or integers (cavity labels).
+    ValueError
+        Invalid `selection`: {selection}.
+    TypeError
+        `nthreads` must be a positive integer.
+    ValueError
+        `nthreads` must be a positive integer.
+    TypeError
+        `append` must be a boolean.
+    TypeError
+        `model` must be a integer.
+    TypeError
+        `fn` must be a string or pathlib.Path.
+
+    Note
+    ----
+    The opening nomenclature is based on the integer label. The opening marked
+    with 2, the first integer corresponding to a opening, is OAA, the opening
+    marked with 3 is OAB, the opening marked with 4 is OAC and so on.
+    """
+    from _pyKVFinder import _export_openings
+
+    # Check arguments
+    if type(openings) not in [numpy.ndarray]:
+        raise TypeError("`openings` must be a numpy.ndarray.")
+    elif len(openings.shape) != 3:
+        raise ValueError("`openings` has the incorrect shape. It must be (nx, ny, nz).")
+    if type(vertices) not in [numpy.ndarray, list]:
+        raise TypeError("`vertices` must be a list or a numpy.ndarray.")
+    elif numpy.asarray(vertices).shape != (4, 3):
+        raise ValueError("`vertices` has incorrect shape. It must be (4, 3).")
+    if type(step) not in [float, int]:
+        raise TypeError("`step` must be a positive real number.")
+    elif step <= 0.0:
+        raise ValueError("`step` must be a positive real number.")
+    if selection is not None:
+        # Check selection types
+        if all(isinstance(x, int) for x in selection):
+            pass
+        elif all(isinstance(x, str) for x in selection):
+            selection = [_get_opening_label(sele) for sele in selection]
+        else:
+            raise TypeError(
+                "`selection` must be a list of strings (cavity names) or integers (cavity labels)."
+            )
+        # Check if selection includes valid cavity labels
+        if any(x < 2 for x in selection):
+            raise ValueError(f"Invalid `selection`: {selection}.")
+    if nthreads is None:
+        nthreads = os.cpu_count() - 1
+    else:
+        if type(nthreads) not in [int]:
+            raise TypeError("`nthreads` must be a positive integer.")
+        elif nthreads <= 0:
+            raise ValueError("`nthreads` must be a positive integer.")
+    if type(append) not in [bool]:
+        raise TypeError("`append` must be a boolean.")
+    if type(model) not in [int]:
+        raise TypeError("`model` must be a integer.")
+
+    # Convert types
+    if type(vertices) == list:
+        vertices = numpy.asarray(vertices)
+    if type(step) == int:
+        step = float(step)
+
+    # Convert numpy.ndarray data types
+    vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
+
+    # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    sincos = _get_sincos(vertices)
+
+    # Create base directories of results
+    if fn is not None:
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
+
+    # Unpack vertices
+    P1, _, _, _ = vertices
+
+    # Select cavities
+    if selection is not None:
+        openings = _select_cavities(openings, selection)
+
+    # Get number of openings
+    nopenings = int(openings.max() - 1)
+
+    # Export openings
+    _export_openings(fn, openings, P1, sincos, step, nopenings, nthreads, append, model)

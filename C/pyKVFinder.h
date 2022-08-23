@@ -76,8 +76,6 @@ void remove_enclosed_cavity(int *openings, int *cavities, int nx, int ny, int nz
 void filter_openings(int *openings, double *depths, int nx, int ny, int nz, int nthreads);
 int _openings(int *openings, int size, int *cavities, int nx, int ny, int nz, double *depths, int nxx, int nyy, int nzz, int ncav, int openings_cutoff, double step, int nthreads, int verbose);
 
-
-
 /* Retrieve interface residues */
 typedef struct node
 {
@@ -104,3 +102,4 @@ void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surf
 /* Export cavity PDB */
 void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
 void _export_b(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
+void _export_openings(char *fn, int *openings, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int nopenings, int nthreads, int append, int model);
