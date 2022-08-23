@@ -2044,7 +2044,7 @@
 <span class="k">def</span> <span class="nf">_process_openings</span><span class="p">(</span>
     <span class="n">raw_openings</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">opening2cavity</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">float</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Processes arrays of openings&#39; areas.</span>
 
 <span class="sd">    Parameters</span>
@@ -2056,7 +2056,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    area : Dict[str, float]</span>
+<span class="sd">    area : Dict[str, Dict[str,float]]</span>
 <span class="sd">        A dictionary with area of each detected opening.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">area</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2090,7 +2090,7 @@
     <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">float</span><span class="p">]]]:</span>
     <span class="sd">&quot;&quot;&quot;[WIP] Identify openings of the detected cavities and calculate their areas.</span>
 
 <span class="sd">    Parameters</span>
@@ -2138,7 +2138,7 @@
 
 <span class="sd">        The empty space points are regions that do not meet the chosen</span>
 <span class="sd">        openings cutoff to be considered an opening.</span>
-<span class="sd">    aopenings : Dict[str, float]</span>
+<span class="sd">    aopenings : Dict[str, Dict[str,float]]</span>
 <span class="sd">        A dictionary with area of each detected opening.</span>
 
 <span class="sd">    Raises</span>

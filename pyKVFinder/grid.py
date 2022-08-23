@@ -1939,7 +1939,7 @@ def _get_opening_label(opening_name: str) -> int:
 def _process_openings(
     raw_openings: numpy.ndarray,
     opening2cavity: numpy.ndarray,
-) -> Tuple[Dict[str, float], Dict[str, float]]:
+) -> Dict[str, Dict[str,float]]:
     """Processes arrays of openings' areas.
 
     Parameters
@@ -1951,7 +1951,7 @@ def _process_openings(
 
     Returns
     -------
-    area : Dict[str, float]
+    area : Dict[str, Dict[str,float]]
         A dictionary with area of each detected opening.
     """
     area = {}
@@ -1985,7 +1985,7 @@ def openings(
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
-) -> Tuple[int, numpy.ndarray, Dict[str, float]]:
+) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str,float]]]:
     """[WIP] Identify openings of the detected cavities and calculate their areas.
 
     Parameters
@@ -2033,7 +2033,7 @@ def openings(
 
         The empty space points are regions that do not meet the chosen
         openings cutoff to be considered an opening.
-    aopenings : Dict[str, float]
+    aopenings : Dict[str, Dict[str,float]]
         A dictionary with area of each detected opening.
 
     Raises
