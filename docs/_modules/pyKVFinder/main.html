@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.main &mdash; pyKVFinder 0.4.3 documentation</title>
+  <title>pyKVFinder.main &mdash; pyKVFinder 0.4.4 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -979,14 +979,6 @@
         <span class="c1"># Spatial characterization</span>
         <span class="n">surface</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 
-        <span class="c1"># Depth characterization</span>
-        <span class="k">if</span> <span class="n">include_depth</span><span class="p">:</span>
-            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span>
-                <span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-
         <span class="c1"># Constitutional characterization</span>
         <span class="n">residues</span> <span class="o">=</span> <span class="n">constitutional</span><span class="p">(</span>
             <span class="n">cavities</span><span class="p">,</span>
@@ -1000,6 +992,14 @@
             <span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
+
+        <span class="c1"># Depth characterization</span>
+        <span class="k">if</span> <span class="n">include_depth</span><span class="p">:</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">(</span>
+                <span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">verbose</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="c1"># Hydropathy hydrophobicity scales</span>
         <span class="k">if</span> <span class="n">include_hydropathy</span><span class="p">:</span>
