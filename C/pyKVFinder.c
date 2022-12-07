@@ -1981,7 +1981,7 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
   char **residues;
 
   // Allocate memory for reslist structure
-  res *reslist[ncav], *new;
+  res *reslist[ncav], *new, *old;
 
   // Initialize linked list
   for (i = 0; i < ncav; i++)
@@ -2031,9 +2031,10 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
     new = reslist[i];
     while (new != NULL) {
       residues[j++] = pdb[new->pos];
-      new = new->next;
+      old = new;
+      new = old->next;
+      free(old);
     }
-    free(reslist[i]);
     residues[j++] = "-1";
   }
   residues[j] = NULL;
