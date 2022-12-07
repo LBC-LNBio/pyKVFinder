@@ -174,11 +174,20 @@ class TestPackageWorkflow(unittest.TestCase):
         )
         # Full workflow
         self.results = pyKVFinder.run_workflow(self.pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
-    
+
     def test_standard(self):
         results = pyKVFinder.run_workflow(self.pdb)
         self.assertEqual(results.ncav > 0, True)
-    
+
+    def test_with_tags_that_may_be_out_of_range(self):
+        results = pyKVFinder.run_workflow(
+            os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "1H6J_B.pdb"),
+            include_depth=True,
+            include_hydropathy=True,
+            hydrophobicity_scale='EisenbergWeiss'
+        )
+        self.assertEqual(results.ncav > 0, True)
+
     def test_ligand_mode(self):
         results = pyKVFinder.run_workflow(self.pdb, os.path.join(
             os.path.dirname(pyKVFinder.__file__), "data", "tests", "ADN.pdb"

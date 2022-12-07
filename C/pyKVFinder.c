@@ -2012,7 +2012,7 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
             if (abs(cavities[k + nz * (j + (ny * i))]) > 1) {
               tag = cavities[k + nz * (j + (ny * i))] - 2;
               distance = sqrt(pow(i - x, 2) + pow(j - y, 2) + pow(k - z, 2));
-              if (distance <= H) {
+              if (distance <= H && tag >= 0 && tag < ncav) {
                 if (old_atom != atom || old_tag != tag) {
                   new = create(atom);
                   insert(&reslist[tag], new);
