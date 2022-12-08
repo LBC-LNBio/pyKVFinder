@@ -874,14 +874,6 @@ def run_workflow(
         # Spatial characterization
         surface, volume, area = spatial(cavities, step, None, nthreads, verbose)
 
-        # Depth characterization
-        if include_depth:
-            depths, max_depth, avg_depth = depth(
-                cavities, step, None, nthreads, verbose
-            )
-        else:
-            depths, max_depth, avg_depth = None, None, None
-
         # Constitutional characterization
         residues = constitutional(
             cavities,
@@ -895,6 +887,14 @@ def run_workflow(
             verbose,
         )
         frequencies = calculate_frequencies(residues)
+
+        # Depth characterization
+        if include_depth:
+            depths, max_depth, avg_depth = depth(
+                cavities, step, None, nthreads, verbose
+            )
+        else:
+            depths, max_depth, avg_depth = None, None, None
 
         # Hydropathy hydrophobicity scales
         if include_hydropathy:
