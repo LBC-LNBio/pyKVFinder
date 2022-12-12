@@ -1,4 +1,3 @@
-from asyncio import open_unix_connection
 import os
 import pathlib
 import numpy

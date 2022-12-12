@@ -1,7 +1,18 @@
 import unittest
 import os
-import numpy
 import pyKVFinder
+
+
+def repeat(times):
+    def repeatHelper(f):
+        def callHelper(*args):
+            for _ in range(0, times):
+                f(*args)
+
+        return callHelper
+
+    return repeatHelper
+
 
 class TestPackage(unittest.TestCase):
     def setUp(self):
@@ -86,7 +97,7 @@ class TestPackage(unittest.TestCase):
 
     def test_read_cavity(self):
         grid = pyKVFinder.read_cavity(self.cavity, self.pdb)
-        self.assertEqual(grid.max()-1 > 0, True)
+        self.assertEqual(grid.max() - 1 > 0, True)
 
     def test_get_vertices(self):
         # Expected
@@ -124,46 +135,119 @@ class TestPackage(unittest.TestCase):
         )
         self.assertListEqual(vertices.tolist(), expected)
         self.assertEqual(len(atomic), 388)
-    
+
     def test_detect(self):
-        self.assertEqual(self.cavities.max()-1 > 0, True)
+        self.assertEqual(self.cavities.max() - 1 > 0, True)
+
+    @repeat(100)
+    def test_cavity_tags_within_bounds(self):
+        # Check if cavity tags are within expeted bounds [-1, ncav+1]
+        # NOTE: A segmentation fault error has occurred in ~1/70 times.
+        # So we run the test 100 times to make sure it's not happening.
+        # Detection
+        ncav, cavities = pyKVFinder.detect(self.atomic, self.vertices)
+        self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
+        # Depth characterization
+        depths, max_depth, avg_depth = pyKVFinder.depth(cavities)
+        self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
+        # Constitutional characterization
+        residues = pyKVFinder.constitutional(cavities, self.atomic, self.vertices)
+        self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
+        # Surface characterization
+        surface, volume, area = pyKVFinder.spatial(cavities)
+        self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
+        # Hydropathy characterization
+        pyKVFinder.hydropathy(surface, self.atomic, self.vertices)
+        self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
 
     def test_surface(self):
-        self.assertEqual(self.surface.max()-1 > 0, True)
+        self.assertEqual(self.surface.max() - 1 > 0, True)
 
     def test_depth(self):
         self.depths, max_depth, avg_depth = pyKVFinder.depth(self.cavities)
         self.assertEqual(self.depths.sum() > 0.0, True)
         # Apply selection
-        depths, max_depth, avg_depth = pyKVFinder.depth(self.cavities, selection=['KAA'])
-        self.assertListEqual(list(max_depth.keys()), ['KAA'])
+        depths, max_depth, avg_depth = pyKVFinder.depth(
+            self.cavities, selection=["KAA"]
+        )
+        self.assertListEqual(list(max_depth.keys()), ["KAA"])
 
     def test_constitutional(self):
         # Full constitutional (interface residues, frequencies, bar charts)
         residues = pyKVFinder.constitutional(self.cavities, self.atomic, self.vertices)
         cavity_names = list(residues.keys())
         self.assertEqual(len(cavity_names) > 0, True)
-        frequencies = pyKVFinder.calculate_frequencies(residues)        
+        frequencies = pyKVFinder.calculate_frequencies(residues)
         cavity_names = list(residues.keys())
         self.assertEqual(len(cavity_names) > 0, True)
-        pyKVFinder.plot_frequencies(frequencies, os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "barplots.pdf"))
+        pyKVFinder.plot_frequencies(
+            frequencies,
+            os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "barplots.pdf",
+            ),
+        )
         # Ignore backbone
-        interface_residues = sum([ len(r) for r in residues.values() ])
-        residues = pyKVFinder.constitutional(self.cavities, self.atomic, self.vertices, ignore_backbone=True)
-        self.assertEqual(interface_residues > sum([ len(r) for r in residues.values() ]), True)
+        interface_residues = sum([len(r) for r in residues.values()])
+        residues = pyKVFinder.constitutional(
+            self.cavities, self.atomic, self.vertices, ignore_backbone=True
+        )
+        self.assertEqual(
+            interface_residues > sum([len(r) for r in residues.values()]), True
+        )
 
     def test_hydropathy(self):
-        scales, avg_hydropathy = pyKVFinder.hydropathy(self.surface, self.atomic, self.vertices)
+        scales, avg_hydropathy = pyKVFinder.hydropathy(
+            self.surface, self.atomic, self.vertices
+        )
         cavity_names = list(avg_hydropathy.keys())
         self.assertEqual(len(cavity_names) > 0, True)
         self.assertEqual(scales.sum() != 0.0, True)
-    
+
     def test_export(self):
-        pyKVFinder.export(os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "cavities-test.pdb"),
-        self.cavities, self.surface, self.vertices)
-    
+        pyKVFinder.export(
+            os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "cavities-test.pdb",
+            ),
+            self.cavities,
+            self.surface,
+            self.vertices,
+        )
+
     def test_write_results(self):
-        pyKVFinder.write_results(os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "results.toml"), input=self.pdb, ligand=self.ligand, output=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "cavities-test.pdb"), output_hydropathy=None, volume=None, area=None, max_depth=None, avg_depth=None, avg_hydropathy=None, residues=None, frequencies=None)
+        pyKVFinder.write_results(
+            os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "results.toml",
+            ),
+            input=self.pdb,
+            ligand=self.ligand,
+            output=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "cavities-test.pdb",
+            ),
+            output_hydropathy=None,
+            volume=None,
+            area=None,
+            max_depth=None,
+            avg_depth=None,
+            avg_hydropathy=None,
+            residues=None,
+            frequencies=None,
+        )
 
 
 class TestPackageWorkflow(unittest.TestCase):
@@ -173,44 +257,137 @@ class TestPackageWorkflow(unittest.TestCase):
             os.path.dirname(pyKVFinder.__file__), "data", "tests", "1FMO.pdb"
         )
         # Full workflow
-        self.results = pyKVFinder.run_workflow(self.pdb, include_depth=True, include_hydropathy=True, hydrophobicity_scale='EisenbergWeiss')
-    
-    def test_standard(self):
+        self.results = pyKVFinder.run_workflow(
+            self.pdb,
+            include_depth=True,
+            include_hydropathy=True,
+            hydrophobicity_scale="EisenbergWeiss",
+        )
+
+    def test_standard_workflow(self):
         results = pyKVFinder.run_workflow(self.pdb)
         self.assertEqual(results.ncav > 0, True)
-    
+
+    def test_full_workflow(self):
+        results = pyKVFinder.run_workflow(
+            self.pdb,
+            include_depth=True,
+            include_hydropathy=True,
+            hydrophobicity_scale="EisenbergWeiss",
+        )
+        self.assertEqual(results.ncav > 0, True)
+
     def test_ligand_mode(self):
-        results = pyKVFinder.run_workflow(self.pdb, os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "ADN.pdb"
-        ))
+        results = pyKVFinder.run_workflow(
+            self.pdb,
+            os.path.join(
+                os.path.dirname(pyKVFinder.__file__), "data", "tests", "ADN.pdb"
+            ),
+        )
         self.assertEqual(results.ncav > 0, True)
 
     def test_residues_box(self):
-        results = pyKVFinder.run_workflow(self.pdb, box=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "residues-box.toml"))
+        results = pyKVFinder.run_workflow(
+            self.pdb,
+            box=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "residues-box.toml",
+            ),
+        )
         self.assertEqual(results.ncav > 0, True)
 
     def test_custom_box(self):
-        results = pyKVFinder.run_workflow(self.pdb, box=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "custom-box.toml"))
+        results = pyKVFinder.run_workflow(
+            self.pdb,
+            box=os.path.join(
+                os.path.dirname(pyKVFinder.__file__), "data", "tests", "custom-box.toml"
+            ),
+        )
         self.assertEqual(results.ncav, 1)
-    
+
     def test_pyKVFinderResults_methods(self):
         # export
-        self.results.export(output=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "cavities.pdb"), output_hydropathy=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "hydropathy.pdb"))
+        self.results.export(
+            output=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "cavities.pdb",
+            ),
+            output_hydropathy=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "hydropathy.pdb",
+            ),
+        )
         # write
         self.results.write(
-            fn=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "results.toml"), 
-            output=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "cavities.pdb"), 
-            output_hydropathy=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "hydropathy.pdb")
+            fn=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "results.toml",
+            ),
+            output=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "cavities.pdb",
+            ),
+            output_hydropathy=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "hydropathy.pdb",
+            ),
         )
         # plot_frequencies
-        self.results.plot_frequencies( 
-            pdf=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "barplots.pdf")) 
+        self.results.plot_frequencies(
+            pdf=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "barplots.pdf",
+            )
+        )
         # export_all
         self.results.export_all(
-            fn=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "results.toml"),
-            output=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "cavities.pdb"), 
-            output_hydropathy=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "hydropathy.pdb"),
+            fn=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "results.toml",
+            ),
+            output=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "cavities.pdb",
+            ),
+            output_hydropathy=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "hydropathy.pdb",
+            ),
             include_frequencies_pdf=True,
-            pdf=os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "tests", "output", "barplots.pdf")
-            )  
-    
+            pdf=os.path.join(
+                os.path.dirname(pyKVFinder.__file__),
+                "data",
+                "tests",
+                "output",
+                "barplots.pdf",
+            ),
+        )
