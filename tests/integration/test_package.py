@@ -6,8 +6,7 @@ import pyKVFinder
 def repeat(times):
     def repeatHelper(f):
         def callHelper(*args):
-            for i in range(0, times):
-                print(i, end=", ", flush=True)
+            for _ in range(0, times):
                 f(*args)
 
         return callHelper
