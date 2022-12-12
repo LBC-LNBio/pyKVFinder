@@ -1,4 +1,3 @@
-from asyncio import open_unix_connection
 import os
 import pathlib
 import numpy
@@ -1553,6 +1552,7 @@ def constitutional(
     atominfo = atominfo[:, 0].tolist()
 
     # Get interface residues
+    # BUG: Segmentation Fault when running it after depth characterization
     residues = _constitutional(
         cavities, atominfo, xyzr, P1, sincos, step, probe_in, ncav, nthreads, verbose
     )

@@ -1380,12 +1380,12 @@ void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size,
  *
  */
 typedef struct POINTS {
-  double X1;
-  double Y1;
-  double Z1;
-  double X2;
-  double Y2;
-  double Z2;
+  int X1;
+  int Y1;
+  int Z1;
+  int X2;
+  int Y2;
+  int Z2;
 } pts;
 
 /*
@@ -1456,6 +1456,7 @@ void filter_boundary(int *cavities, int nx, int ny, int nz, pts *cavs,
     for (i = 0; i < nx; i++)
       for (j = 0; j < ny; j++)
         for (k = 0; k < nz; k++)
+          #pragma omp critical
           if (cavities[k + nz * (j + (ny * i))] > 1) {
             // Get cavity identifier
             tag = cavities[k + nz * (j + (ny * i))] - 2;
@@ -1659,12 +1660,18 @@ void _depth(int *cavities, int nx, int ny, int nz, double *depths, int size,
 
   // Initialize boundaries and cavs points
   for (i = 0; i < ncav; i++) {
-    boundaries[i].X1 = cavs[i].X1 = nx;
-    boundaries[i].Y1 = cavs[i].Y1 = ny;
-    boundaries[i].Z1 = cavs[i].Z1 = nz;
-    boundaries[i].X2 = cavs[i].X2 = 0.0;
-    boundaries[i].Y2 = cavs[i].Y2 = 0.0;
-    boundaries[i].Z2 = cavs[i].Z2 = 0.0;
+    boundaries[i].X1 = nx;
+    boundaries[i].Y1 = ny;
+    boundaries[i].Z1 = nz;
+    boundaries[i].X2 = 0.0;
+    boundaries[i].Y2 = 0.0;
+    boundaries[i].Z2 = 0.0;
+    cavs[i].X1 = nx;
+    cavs[i].Y1 = ny;
+    cavs[i].Z1 = nz;
+    cavs[i].X2 = 0.0;
+    cavs[i].Y2 = 0.0;
+    cavs[i].Z2 = 0.0;
   }
 
   if (verbose)
@@ -1981,7 +1988,7 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
   char **residues;
 
   // Allocate memory for reslist structure
-  res *reslist[ncav], *new;
+  res *reslist[ncav], *new, *old;
 
   // Initialize linked list
   for (i = 0; i < ncav; i++)
@@ -2031,9 +2038,10 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
     new = reslist[i];
     while (new != NULL) {
       residues[j++] = pdb[new->pos];
-      new = new->next;
+      old = new;
+      new = old->next;
+      free(old);
     }
-    free(reslist[i]);
     residues[j++] = "-1";
   }
   residues[j] = NULL;

@@ -551,11 +551,15 @@ class TestConstitutional(unittest.TestCase):
             ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
         ]
         # Dummy vertices
-        vertices = numpy.array([[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]])
+        vertices = numpy.array(
+            [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]]
+        )
         # Surface
         residues = constitutional(cavities, atomic, vertices)
         # Assert
-        self.assertDictEqual(residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]})
+        self.assertDictEqual(
+            residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]}
+        )
 
 
 class TestConstitutional(unittest.TestCase):
@@ -578,9 +582,13 @@ class TestConstitutional(unittest.TestCase):
             ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
         ]
         # Dummy vertices
-        vertices = numpy.array([[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]])
+        vertices = numpy.array(
+            [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]]
+        )
         # Surface
         scales, avg_hydropathy = hydropathy(surface, atomic, vertices)
         # Assert
         self.assertListEqual(scales.tolist(), expected.tolist())
-        self.assertDictEqual(avg_hydropathy, {'KAA': 0.38, 'KAB': 0.38, 'EisenbergWeiss': [-1.42, 2.6]})
+        self.assertDictEqual(
+            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+        )
