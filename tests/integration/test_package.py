@@ -1,7 +1,18 @@
 import unittest
 import os
-import numpy
 import pyKVFinder
+
+
+def repeat(times):
+    def repeatHelper(f):
+        def callHelper(*args):
+            for i in range(0, times):
+                print(i, end=", ", flush=True)
+                f(*args)
+
+        return callHelper
+
+    return repeatHelper
 
 
 class TestPackage(unittest.TestCase):
@@ -129,8 +140,11 @@ class TestPackage(unittest.TestCase):
     def test_detect(self):
         self.assertEqual(self.cavities.max() - 1 > 0, True)
 
+    @repeat(100)
     def test_cavity_tags_within_bounds(self):
         # Check if cavity tags are within expeted bounds [-1, ncav+1]
+        # NOTE: A segmentation fault error has occurred in ~1/70 times.
+        # So we run the test 100 times to make sure it's not happening.
         # Detection
         ncav, cavities = pyKVFinder.detect(self.atomic, self.vertices)
         self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
