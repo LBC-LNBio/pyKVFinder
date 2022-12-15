@@ -5,7 +5,7 @@
 Issues
 ======
 
-pyKVFinder package uses of GitHub for project management. Please help us by reporting any problems or requests.
+pyKVFinder package uses GitHub for project management. Please help us by reporting any problems or requests.
 
 On `Issues <https://github.com/LBC-LNBio/pyKVFinder/issues>`_ page, you can file a:
 
