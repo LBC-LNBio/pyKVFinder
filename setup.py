@@ -34,7 +34,7 @@ _pyKVFinder = Extension(
     sources=["C/pyKVFinder.i", "C/pyKVFinder.c"],
     include_dirs=[numpy_include, "C"],
     extra_compile_args=["-fopenmp", "-Ofast", "-lm"],
-    extra_link_args=["-lgomp", "-static"] if sys.platform != 'linux' else ["-lgomp"],
+    extra_link_args=["-lgomp"],
 )
 
 # Setup
@@ -71,6 +71,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3 :: Only",
     ],
     # Keywords
