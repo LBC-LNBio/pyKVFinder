@@ -1,34 +1,36 @@
-import os
-import time
 import logging
-import numpy
+import os
 import pathlib
+import time
 from datetime import datetime
-from typing import Union, Optional, Dict, List
+from typing import Any, Dict, List, Tuple, Optional, Union
+
+import numpy
+
 from .argparser import argparser
-from .utils import (
-    read_vdw,
-    read_pdb,
-    read_xyz,
-    calculate_frequencies,
-    plot_frequencies,
-    write_results,
-    _write_parameters,
-)
 from .grid import (
-    get_vertices,
-    get_vertices_from_file,
     _get_dimensions,
     _get_sincos,
-    detect,
-    spatial,
-    depth,
     constitutional,
-    hydropathy,
+    depth,
+    detect,
     export,
+    get_vertices,
+    get_vertices_from_file,
+    hydropathy,
+    spatial,
+)
+from .utils import (
+    _write_parameters,
+    calculate_frequencies,
+    plot_frequencies,
+    read_pdb,
+    read_vdw,
+    read_xyz,
+    write_results,
 )
 
-__all__ = ["run_workflow", "pyKVFinderResults"]
+__all__ = ["run_workflow", "pyKVFinderResults", "Molecule"]
 
 VDW = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
@@ -101,9 +103,9 @@ def cli() -> None:
     if args.ligand:
         if args.verbose:
             print("> Reading ligand coordinates")
-        if args.ligand.endswith('.pdb'):
+        if args.ligand.endswith(".pdb"):
             latomic = read_pdb(args.ligand, vdw)
-        elif args.ligand.endswith('.xyz'):
+        elif args.ligand.endswith(".xyz"):
             latomic = read_xyz(args.ligand, vdw)
     else:
         latomic = None
@@ -658,7 +660,7 @@ def run_workflow(
     Parameters
     ----------
     input : Union[str, pathlib.Path]
-        A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities. 
+        A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities.
     ligand : Union[str, pathlib.Path], optional
         A path to ligand file, in PDB or XYZ format, by default None.
     vdw : Union[str, pathlib.Path], optional
@@ -806,19 +808,19 @@ def run_workflow(
 
     if verbose:
         print("> Reading PDB coordinates")
-    if input.endswith('.pdb'):
+    if input.endswith(".pdb"):
         atomic = read_pdb(input, vdw, model)
-    elif input.endswith('.xyz'):
+    elif input.endswith(".xyz"):
         atomic = read_xyz(input, vdw)
     else:
         raise TypeError("`target` must have .pdb or .xyz extension.")
-    
+
     if ligand:
         if verbose:
             print("> Reading ligand coordinates")
-        if ligand.endswith('.pdb'):
+        if ligand.endswith(".pdb"):
             latomic = read_pdb(ligand, vdw)
-        elif ligand.endswith('.xyz'):
+        elif ligand.endswith(".xyz"):
             latomic = read_xyz(ligand, vdw)
         else:
             raise TypeError("`ligand` must have .pdb or .xyz extension.")
@@ -936,3 +938,493 @@ def run_workflow(
     )
 
     return results
+
+
+class Molecule(object):
+    """A class for representing molecular structures.
+
+    Parameters
+    ----------
+    molecule : Union[str, pathlib.Path]
+        A file path to the molecule in either PDB or XYZ format
+    radii : Union[str, pathlib.Path, Dict[str, Any]], optional
+        A file path to a van der Waals radii file or a dictionary of VDW radii, by default None. If None, apply the built-in van der Waals radii file: `vdw.dat`.
+    model : int, optional
+        The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.
+    nthreads : int, optional
+        Number of threads, by default None. If None, the number of threads is `os.cpu_count() - 1`.
+    verbose : bool, optional
+        Print extra information to standard output, by default False.
+
+    Attributes
+    ----------
+    _atomic : numpy.ndarray
+        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates and radius) for each atom.
+    _dim : tuple
+        Grid dimensions.
+    _grid : numpy.ndarray
+        Molecule points in the 3D grid (grid[nx][ny][nz]).
+        Grid array has integer labels in each position, that are:
+
+            * 0: molecule points;
+
+            * 1: solvent points.
+    _molecule : Union[str, pathlib.Path]
+        A file path to the molecule in either PDB or XYZ format.
+    _padding : float
+        The length to add to each direction of the 3D grid.
+    _probe : float
+        Spherical probe size to define the molecular surface based on a molecular representation.
+    _radii : Dict[str, Any]
+        A dictionary containing radii values, by default None.
+    _representation : str, optional
+        Molecular surface representation. Keywords options are vdW (van der Waals surface), SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface), by default SES.
+    _rotation : numpy.ndarray
+        A numpy.ndarray with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb).
+    _step : float
+        Grid spacing (A).
+    _vertices : numpy.ndarray
+        A numpy.ndarray or a list with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis).
+    nthreads : int
+        Number of threads for parallel processing.
+    verbose : bool
+        Whether to print extra information to standard output.
+
+    Properties
+    ----------
+    atomic : numpy.ndarray
+        Get _atomic attribute.
+    dim : tuple
+        Get _dim attribute.
+    grid : numpy.ndarray
+        Get _grid attribute.
+    molecule : Union[str, pathlib.Path]
+        Get _molecule attribute.
+    nx : int
+        Get grid units in X-axis.
+    ny : int
+        Get grid units in Y-axis.
+    ny : int
+        Get grid units in Z-axis.
+    p1 : numpy.ndarray
+        Get origin of the 3D grid.
+    p2 : numpy.ndarray
+        Get X-axis max of the 3D grid.
+    p3 : numpy.ndarray
+        Get Y-axis max of the 3D grid.
+    p4 : numpy.ndarray
+        Get Z-axis max of the 3D grid.
+    padding : float
+        Get _padding attribute.
+    probe : float
+        Get _probe attribute.
+    radii : Dict[str, Any]
+        Get _radii attribute.
+    representation : str
+        Get _representation attribute.
+    rotation : numpy.ndarray
+        Get _rotation attribute.
+    step : float
+        Get _step attribute.
+    vertices : numpy.ndarray
+        Get _vertices attribute.
+    xyzr : numpy.ndarray
+        Get xyz coordinates and radius of molecule atoms.
+    """
+
+    def __init__(
+        self,
+        molecule: Union[str, pathlib.Path],
+        radii: Union[str, pathlib.Path, Dict[str, Any]] = None,
+        model: Optional[int] = None,
+        nthreads: Optional[int] = None,
+        verbose: bool = False,
+    ):
+        """Initialize the Molecule object with molecule, radii, model, nthreads and verbose.
+
+        Parameters
+        ----------
+        molecule : Union[str, pathlib.Path]
+            A file path to the molecule in either PDB or XYZ format.
+        radii : Union[str, pathlib.Path, Dict[str, Any]], optional
+            A file path to a van der Waals radii file or a dictionary of VDW radii, by default None. If None, apply the built-in van der Waals radii file: `vdw.dat`.
+        model : int, optional
+            The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.
+        nthreads : int, optional
+            Number of threads, by default None. If None, the number of threads is `os.cpu_count() - 1`.
+        verbose : bool, optional
+            Print extra information to standard output, by default False.
+
+        Raises
+        ------
+        TypeError
+            `molecule` must be a string or a pathlib.Path.
+        TypeError
+            `molecule` must have .pdb or .xyz extension.
+        TypeError
+            `nthreads` must be a positive integer.
+        ValueError
+            `nthreads` must be a positive integer.
+        """
+
+        # Attributes
+        self._grid = None
+        self._step = None
+        self._padding = None
+        self._probe = None
+        self._representation = None
+        self._vertices = None
+        self._dim = None
+        self._rotation = None
+        self.verbose = verbose
+
+        # Molecule
+        if type(molecule) not in [str, pathlib.Path]:
+            raise TypeError("`molecule` must be a string or a pathlib.Path.")
+        self._molecule = os.path.realpath(molecule)
+
+        # van der Waals radii
+        if self.verbose:
+            print("> Loading van der Waals radii")
+        if radii is None:
+            # default
+            self._radii = read_vdw(VDW)
+        elif type(radii) in [str, pathlib.Path]:
+            # vdw file
+            self._radii = read_vdw(radii)
+        elif type(radii) in [dict]:
+            # Processed dictionary
+            self._radii = radii
+
+        # Atomic information
+        if self.verbose:
+            print("> Reading molecule coordinates")
+        if molecule.endswith(".pdb"):
+            self._atomic = read_pdb(molecule, self.radii, model)
+        elif molecule.endswith(".xyz"):
+            self._atomic = read_xyz(molecule, self.radii)
+        else:
+            raise TypeError("`molecule` must have .pdb or .xyz extension.")
+
+        # Number of threads
+        if nthreads is not None:
+            if type(nthreads) not in [int]:
+                raise TypeError("`nthreads` must be a positive integer.")
+            elif nthreads <= 0:
+                raise ValueError("`nthreads` must be a positive integer.")
+            else:
+                self.nthreads = nthreads
+        else:
+            self.nthreads = os.cpu_count() - 1
+
+    @property
+    def molecule(self) -> Union[str, pathlib.Path]:
+        return self._molecule
+
+    @property
+    def radii(self) -> Dict[str, Any]:
+        return self._radii
+
+    @property
+    def step(self) -> float:
+        if self._step is not None:
+            return self._step
+
+    @property
+    def atomic(self) -> numpy.ndarray:
+        return self._atomic
+
+    @property
+    def xyzr(self) -> numpy.ndarray:
+        return self._atomic[:, 4:].astype(numpy.float64)
+
+    @property
+    def vertices(self) -> numpy.ndarray:
+        return self._vertices
+
+    @property
+    def p1(self) -> numpy.ndarray:
+        if self._vertices is not None:
+            return self._vertices[0]
+
+    @property
+    def p2(self) -> numpy.ndarray:
+        if self._vertices is not None:
+            return self._vertices[1]
+
+    @property
+    def p3(self) -> numpy.ndarray:
+        if self._vertices is not None:
+            return self._vertices[2]
+
+    @property
+    def p4(self) -> numpy.ndarray:
+        if self._vertices is not None:
+            return self._vertices[3]
+
+    @property
+    def nx(self) -> int:
+        if self._dim is not None:
+            return self._dim[0]
+
+    @property
+    def ny(self) -> int:
+        if self._dim is not None:
+            return self._dim[1]
+
+    @property
+    def nz(self) -> int:
+        if self._dim is not None:
+            return self._dim[2]
+
+    @property
+    def dim(self) -> Tuple[int, int, int]:
+        return self._dim
+
+    @property
+    def rotation(self) -> numpy.ndarray:
+        return self._rotation
+
+    @property
+    def padding(self) -> float:
+        return self._padding
+
+    @property
+    def probe(self) -> float:
+        return self._probe
+
+    @property
+    def representation(self) -> str:
+        return self._representation
+
+    @property
+    def grid(self) -> numpy.ndarray:
+        return self._grid
+
+    def _set_grid(self, padding: Optional[float] = None) -> None:
+        """Define the 3D grid for the target molecule.
+
+        Parameters
+        ----------
+        padding : float, optional
+            The length to add to each direction of the 3D grid, by default None. If None, automatically define the length based on molecule coordinates, probe size, grid spacing and atom radii.
+
+        Raises
+        ------
+        TypeError
+            `padding` must be a non-negative real number.
+        ValueError
+            `padding` must be a non-negative real number.
+        """
+        # Padding
+        if padding is not None:
+            if type(padding) not in [int, float]:
+                raise TypeError("`padding` must be a non-negative real number.")
+            elif padding < 0.0:
+                raise ValueError("`padding` must be a non-negative real number.")
+            else:
+                self._padding = padding
+        else:
+            self._padding = self._get_padding()
+
+        # 3D grid
+        if self.verbose:
+            print("> Calculating 3D grid")
+        self._vertices = get_vertices(self.atomic, self.padding, self.step)
+        self._dim = _get_dimensions(self.vertices, self.step)
+        self._rotation = _get_sincos(self.vertices)
+        if self.verbose:
+            print(f"p1: {self.vertices[0]}")
+            print(f"p2: {self.vertices[1]}")
+            print(f"p3: {self.vertices[2]}")
+            print(f"p4: {self.vertices[3]}")
+            print("nx: {}, ny: {}, nz: {}".format(*self.dim))
+            print("sina: {}, sinb: {}, cosa: {}, cosb: {}".format(*self.rotation))
+
+    def _get_padding(self) -> float:
+        """Automatically define the padding based on molecule coordinates, probe size, grid spacing and atom radii.
+
+        Returns
+        -------
+        padding : float
+            The length to add to each direction of the 3D grid.
+        """
+        padding = 1.1 * self.xyzr[:, 3].max()
+        if self.representation in ["SES", "SAS"]:
+            padding += self._probe
+        return float(padding.round(decimals=1))
+
+    def vdw(self, step: float = 0.6, padding: Optional[float] = None) -> None:
+        """Fill the 3D grid with the molecule as the van der Waals surface representation.
+
+        Parameters
+        ----------
+        step : float, optional
+            Grid spacing (A), by default 0.6.
+        padding : float, optional
+            The length to add to each direction of the 3D grid, by default None. If None, automatically define the length based on molecule coordinates, probe size, grid spacing and atom radii.
+
+        Raises
+        ------
+        TypeError
+            `step` must be a positive real number.
+        ValueError
+            `step` must be a positive real number.
+        """
+        from _pyKVFinder import _fill_receptor
+
+        # Check arguments
+        if type(step) not in [int, float]:
+            raise TypeError("`step` must be a postive real number.")
+        elif step <= 0.0:
+            raise ValueError("`step` must be a positive real number.")
+        else:
+            self._step = step
+
+        # Attributes
+        self._representation = "vdW"
+        self._probe = None
+
+        # Define 3D grid
+        self._set_grid(padding)
+
+        # van der Waals atoms (hard sphere model) to grid
+        if self.verbose:
+            print("> Inserting atoms with van der Waals radii into 3D grid")
+        self._grid = _fill_receptor(
+            self.nx * self.ny * self.nz,
+            self.nx,
+            self.ny,
+            self.nz,
+            self.xyzr,
+            self.p1,
+            self.rotation,
+            self.step,
+            0.0,
+            False,
+            self.nthreads,
+            self.verbose,
+        ).reshape(self.nx, self.ny, self.nz)
+
+    def surface(
+        self,
+        step: float = 0.6,
+        probe: float = 1.4,
+        surface: str = "SES",
+        padding: Optional[float] = None,
+    ) -> None:
+        """Fill the 3D grid with the molecule as the van der Waals surface representation.
+
+        Parameters
+        ----------
+        step : float, optional
+            Grid spacing (A), by default 0.6.
+        probe : float, optional
+            Spherical probe size to define the molecular surface based on a molecular representation, by default 1.4.
+        surface : str, optional
+            Molecular surface representation. Keywords options are vdW (van der Waals surface), SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface), by default "SES".
+        padding : float, optional
+            The length to add to each direction of the 3D grid, by default None. If None, automatically define the length based on molecule coordinates, probe size, grid spacing and atom radii.
+
+        Raises
+        ------
+        TypeError
+            `step` must be a positive real number.
+        ValueError
+            `step` must be a positive real number.
+        TypeError
+            `probe_out` must be a positive real number.
+        ValueError
+            `probe_out` must be a positive real number.
+        """
+        from _pyKVFinder import _fill_receptor
+
+        # Check arguments
+        if type(step) not in [int, float]:
+            raise TypeError("`step` must be a postive real number.")
+        elif step <= 0.0:
+            raise ValueError("`step` must be a positive real number.")
+        else:
+            self._step = step
+
+        # Probe
+        if type(probe) not in [int, float, numpy.float64]:
+            raise TypeError("`probe_out` must be a non-negative real number.")
+        elif probe <= 0.0:
+            raise ValueError("`probe_out` must be a non-negative real number.")
+        self._probe = probe
+
+        # Surface
+        if surface == "SES":
+            if self.verbose:
+                print("> Surface representation: Solvent Excluded Surface (SES).")
+            self._representation = surface
+            surface = True
+        elif surface == "SAS":
+            if self.verbose:
+                print("> Surface representation: Solvent Accessible Surface (SAS).")
+            self._representation = surface
+            surface = False
+        else:
+            raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
+
+        # Define 3D grid
+        self._set_grid(padding)
+
+        # Molecular surface (SES or SAS) to grid
+        self._grid = _fill_receptor(
+            self.nx * self.ny * self.nz,
+            self.nx,
+            self.ny,
+            self.nz,
+            self.xyzr,
+            self.p1,
+            self.rotation,
+            self.step,
+            self.probe,
+            surface,
+            self.nthreads,
+            self.verbose,
+        ).reshape(self.nx, self.ny, self.nz)
+
+    def volume(self) -> float:
+        """Estimate the volume of the molecule based on the molecular surface representation, ie, vdW, SES or SAS representations.
+
+        Returns
+        -------
+        volume : float
+            Molecular volume (A³).
+        """
+        from _pyKVFinder import _volume
+
+        if self.grid is not None:
+            volume = _volume(
+                (self.grid == 0).astype(numpy.int32) * 2, self.step, 1, self.nthreads
+            )
+            return float(volume.round(decimals=2))
+
+    def export(
+        self,
+        fn: Union[str, pathlib.Path] = "molecule.pdb",
+    ) -> None:
+        """Export molecule points (H) to a PDB-formatted file.
+
+        Parameters
+        ----------
+        fn : Union[str, pathlib.Path], optional
+            A file path to the molecular volume in the grid-based rerpesentation in PDB format, by default "molecule.pdb".
+
+        Raises
+        ------
+        TypeError
+            `fn` must be a string or a pathlib.Path.
+        """
+        # Filename (fn)
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
+
+        # Save grid to PDB file
+        export(
+            fn, (self.grid == 0).astype(numpy.int32) * 2, None, self.vertices, self.step
+        )

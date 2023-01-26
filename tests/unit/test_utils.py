@@ -1,16 +1,18 @@
-import unittest
-import os
-import numpy
 import argparse
+import os
+import unittest
+
+import numpy
+
 from pyKVFinder.utils import (
-    read_vdw,
-    _process_pdb_line,
-    read_pdb,
-    read_xyz,
-    _read_cavity,
-    read_cavity,
     _process_box,
+    _process_pdb_line,
+    _read_cavity,
     calculate_frequencies,
+    read_cavity,
+    read_pdb,
+    read_vdw,
+    read_xyz,
 )
 
 UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")

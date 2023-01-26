@@ -1,7 +1,8 @@
 import os
 import pathlib
+from typing import Dict, List, Optional, Tuple, Union
+
 import numpy
-from typing import Union, Tuple, Optional, Dict, List
 
 __all__ = [
     "get_vertices",
@@ -62,11 +63,11 @@ def get_vertices(
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     elif numpy.asarray(atomic).shape[1] != 8:
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
-    if type(probe_out) not in [int, float]:
+    if type(probe_out) not in [int, float, numpy.float64]:
         raise TypeError("`probe_out` must be a non-negative real number.")
     elif probe_out < 0.0:
         raise ValueError("`probe_out` must be a non-negative real number.")
-    if type(step) not in [int, float]:
+    if type(step) not in [int, float, numpy.float64]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
@@ -1939,7 +1940,7 @@ def _get_opening_label(opening_name: str) -> int:
 def _process_openings(
     raw_openings: numpy.ndarray,
     opening2cavity: numpy.ndarray,
-) -> Dict[str, Dict[str,float]]:
+) -> Dict[str, Dict[str, float]]:
     """Processes arrays of openings' areas.
 
     Parameters
@@ -1985,7 +1986,7 @@ def openings(
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
-) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str,float]]]:
+) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str, float]]]:
     """[WIP] Identify openings of the detected cavities and calculate their areas.
 
     Parameters
@@ -2065,7 +2066,7 @@ def openings(
     TypeError
         `verbose` must be a boolean
     """
-    from _pyKVFinder import _openings, _area, _openings2cavities
+    from _pyKVFinder import _area, _openings, _openings2cavities
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2159,7 +2160,7 @@ def export(
     append: bool = False,
     model: int = 0,
 ) -> None:
-    """Exports cavitiy (H) and surface (HA) points to PDB-formatted file with
+    """Export cavitiy (H) and surface (HA) points to PDB-formatted file with
     a variable (B; optional) in B-factor column, and hydropathy to
     PDB-formatted file in B-factor column at surface points (HA).
 
@@ -2450,7 +2451,7 @@ def export_openings(
     append: bool = False,
     model: int = 0,
 ) -> None:
-    """Exports opening (H) points to PDB-formatted file.
+    """Export opening points (H) to a PDB-formatted file.
 
     Parameters
     ----------

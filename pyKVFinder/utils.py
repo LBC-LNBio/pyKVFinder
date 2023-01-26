@@ -1,9 +1,10 @@
-import os
-import logging
 import argparse
+import logging
+import os
 import pathlib
+from typing import Dict, List, Optional, Union
+
 import numpy
-from typing import Dict, List, Union, Optional
 
 __all__ = [
     "read_vdw",
@@ -156,7 +157,7 @@ def read_pdb(
     vdw : Dict[str, Dict[str, float]], optional
         A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.
     model : int, optional
-        Model number, by default None. If None, keep atoms from all models.
+        The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.
 
     Returns
     -------
@@ -386,8 +387,9 @@ def read_cavity(
     ValueError
         `surface` must be SAS or SES, not {surface}.
     """
-    from .grid import get_vertices, _get_sincos, _get_dimensions
-    from _pyKVFinder import _fill_receptor, _fill_cavity
+    from _pyKVFinder import _fill_cavity, _fill_receptor
+
+    from .grid import _get_dimensions, _get_sincos, get_vertices
 
     # Check arguments
     if type(cavity) not in [str, pathlib.Path]:

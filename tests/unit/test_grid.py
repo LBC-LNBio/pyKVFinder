@@ -1,30 +1,32 @@
-from typing import Union
-import unittest
 import os
-import toml
+import unittest
+from typing import Union
+
 import numpy
+import toml
+
 import pyKVFinder
 from pyKVFinder.grid import (
-    get_vertices,
-    _get_vertices_from_box,
-    _get_vertices_from_residues,
-    get_vertices_from_file,
+    _get_cavity_label,
+    _get_cavity_name,
     _get_dimensions,
     _get_sincos,
-    _get_cavity_name,
-    _get_cavity_label,
-    _select_cavities,
-    _process_spatial,
+    _get_vertices_from_box,
+    _get_vertices_from_residues,
     _process_depth,
-    _process_residues,
     _process_hydropathy,
-    detect,
-    spatial,
-    depth,
+    _process_residues,
+    _process_spatial,
+    _select_cavities,
     constitutional,
+    depth,
+    detect,
+    get_vertices,
+    get_vertices_from_file,
     hydropathy,
+    spatial,
 )
-from pyKVFinder.utils import read_pdb, read_cavity
+from pyKVFinder.utils import read_cavity, read_pdb
 
 PYKVFINDER_TESTS_DIR = os.path.join(
     os.path.dirname(pyKVFinder.__file__), "data", "tests"
@@ -592,3 +594,156 @@ class TestConstitutional(unittest.TestCase):
         self.assertDictEqual(
             avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
         )
+
+
+class TestMolecule(unittest.TestCase):
+    def setUp(self):
+        self.C = pyKVFinder.Molecule(
+            os.path.join(UNIT_TESTS_DIR, "C.pdb"), radii={"GEN": {"C": 1.66}}
+        )
+        self.H = pyKVFinder.Molecule(os.path.join(UNIT_TESTS_DIR, "H.pdb"))
+        self.N = pyKVFinder.Molecule(os.path.join(UNIT_TESTS_DIR, "N.pdb"))
+
+    def test_atomic(self):
+        self.assertListEqual(
+            self.C.atomic.tolist(),
+            [["1", "A", "UNK", "C", "0.0", "0.0", "0.0", "1.66"]],
+        )
+
+    def test_radii(self):
+        self.assertDictEqual(self.C.radii, {"GEN": {"C": 1.66}})
+
+    def test_get_padding(self):
+        self.assertEqual(self.C._get_padding(), 1.8)
+        self.assertEqual(self.H._get_padding(), 1.0)
+        self.assertEqual(self.N._get_padding(), 2.2)
+
+    def test_vdw(self):
+        expected = [
+            [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+            [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+            [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 1], [1, 1, 1, 1]],
+            [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+        ]
+        self.H.vdw(1.0)
+        self.assertListEqual(self.H.grid.tolist(), expected)
+
+    def test_vdw_volume(self):
+        self.H.vdw(1.0)
+        self.assertEqual(self.H.volume(), 1.0)
+
+    def test_ses(self):
+        expected = [
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+        ]
+        self.H.surface(1.0, 1.0, "SES", None)
+        self.assertListEqual(self.H.grid.tolist(), expected)
+
+    def test_ses_volume(self):
+        self.H.surface(1.0, 1.0, "SES", None)
+        self.assertEqual(self.H.volume(), 27.0)
+
+    def test_sas(self):
+        expected = [
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+            [
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1],
+            ],
+        ]
+        self.H.surface(1.0, 1.0, "SAS", None)
+        self.assertListEqual(self.H.grid.tolist(), expected)
+
+    def test_sas_volume(self):
+        self.H.surface(1.0, 1.0, "SAS", None)
+        self.assertEqual(self.H.volume(), 27.0)
