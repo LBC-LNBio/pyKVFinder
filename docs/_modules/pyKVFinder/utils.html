@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.utils &mdash; pyKVFinder 0.4.5 documentation</title>
+  <title>pyKVFinder.utils &mdash; pyKVFinder 0.4.6 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -47,11 +47,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#getting-started">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#workflows">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#separated-steps">Separated steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#examples">Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -104,12 +101,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyKVFinder.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;read_vdw&quot;</span><span class="p">,</span>
@@ -262,7 +260,7 @@
 <span class="sd">    vdw : Dict[str, Dict[str, float]], optional</span>
 <span class="sd">        A dictionary containing radii values, by default None. If None, use output of `pyKVFinder.read_vdw()`.</span>
 <span class="sd">    model : int, optional</span>
-<span class="sd">        Model number, by default None. If None, keep atoms from all models.</span>
+<span class="sd">        The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -492,8 +490,9 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `surface` must be SAS or SES, not {surface}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">get_vertices</span><span class="p">,</span> <span class="n">_get_sincos</span><span class="p">,</span> <span class="n">_get_dimensions</span>
-    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_fill_receptor</span><span class="p">,</span> <span class="n">_fill_cavity</span>
+    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_fill_cavity</span><span class="p">,</span> <span class="n">_fill_receptor</span>
+
+    <span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">_get_dimensions</span><span class="p">,</span> <span class="n">_get_sincos</span><span class="p">,</span> <span class="n">get_vertices</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavity</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>

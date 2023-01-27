@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.read_pdb &mdash; pyKVFinder 0.4.5 documentation</title>
+  <title>pyKVFinder.read_pdb &mdash; pyKVFinder 0.4.6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -50,11 +50,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#workflows">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#separated-steps">Separated steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -138,7 +135,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>]</em>) – A path to PDB file.</p></li>
 <li><p><strong>vdw</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A dictionary containing radii values, by default None. If None, use output of <cite>pyKVFinder.read_vdw()</cite>.</p></li>
-<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Model number, by default None. If None, keep atoms from all models.</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

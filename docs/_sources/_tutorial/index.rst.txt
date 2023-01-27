@@ -4,24 +4,7 @@
 
 This section is an introductory overview of pyKVFinder features. For detailed reference documentation of the functions and classes contained in the package, see the `API reference <../_api_reference/index.html>`_.
 
-Prerequisites
-=============
-
 Before reading this section, you should know a bit of Python. If you would like to refresh your memory, refer to this `Python tutorial <https://docs.python.org/3/tutorial/>`_.
-
-If you want to run all examples in this tutorial, you should also have toml package installed. 
-
-All files used on this tutorial can be found in our package and in our `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>`_:
-
-* `1FMO.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/1FMO.pdb>`_
-* `ADN.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb>`_
-
-Getting started
-===============
-
-In this tutorial, we will use pyKVFinder on a catalytic subunit of a cAMP-dependent protein kinase (cADK) to identify and characterize its cavities.
-
-pyKVFinder can be imported as a Python package in Python environment and users can decide to run the full pyKVFinder `workflow <index.html#workflows>`_ through the single pyKVFinder function or run pyKVFinder functions in a `stepwise <index.html#separated-steps>`_ fashion.
 
 First of all, import pyKVFinder package on Python:
 
@@ -29,11 +12,20 @@ First of all, import pyKVFinder package on Python:
 
   >>> import pyKVFinder
 
-Workflows
-=========
+Cavity detection and characterization
+#####################################
+
+All files used on this tutorial can be found in our package and in our `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>`_:
+
+* `1FMO.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/1FMO.pdb>`_
+* `ADN.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb>`_
+
+In this tutorial, we will use pyKVFinder on a catalytic subunit of a cAMP-dependent protein kinase (cADK) to identify and characterize its cavities.
+
+pyKVFinder can be imported as a Python package in Python environment and users can decide to run the full pyKVFinder `workflow <index.html#workflows>`_ through the single pyKVFinder function or run pyKVFinder functions in a `stepwise <index.html#separated-steps>`_ fashion.
 
 Standard workflow
------------------
+*****************
 
 The **standard workflow** for cavity detection with spatial and constitutional characterization (volume, area and interface residues) can be run at once with one command:
 
@@ -140,7 +132,7 @@ With these attributes, we can write the detected cavities and the characterizati
   * `pyKVFinder.pyKVFinderResults <../_api_reference/pyKVFinderResults.html>`_
 
 Full workflow
--------------
+*************
 
 However, users may opt to perform the **full workflow** for cavity detection with spatial (volume and area), constitutional (interface residues), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of ``pyKVFinder.run_workflow`` function:
 
@@ -222,12 +214,12 @@ With these attributes, we can write the detected cavities with depth annotated o
   * `pyKVFinder.pyKVFinderResults <../_api_reference/pyKVFinderResults.html>`_
 
 Separated steps
-===============
+***************
 
 If users prefer, instead of running ``pyKVFinder.run_workflow`` function, you can apply the cavity detection and characterization in a step-by-step fashion. Below we describe each step in detail.
 
 1. Loading van der Waals radii dictionary
------------------------------------------
+=========================================
 
 The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define the radius values for each residue and when not defined, it uses a generic value based on the atom type. ``pyKVFinder.read_vdw`` takes a vdW radii file (*.dat*) and returns a dictionary contaning radii values for each atom of each residue.
 
@@ -248,7 +240,7 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
   * `pyKVFinder.read_vdw <../_api_reference/read_vdw.html>`_
 
 2. Loading data from target structure
--------------------------------------
+=====================================
 
 ``pyKVFinder.read_pdb`` takes a target *.pdb* file and returns a NumPy array (``atomic``) with residue number, chain identifier, residue name, atom name, xyz coordinates and radius, considering a van der Waals radii dictionary, for each atom.
 
@@ -281,7 +273,7 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
   * `pyKVFinder.read_xyz <../_api_reference/read_xyz.html>`_
 
 3. Dimensioning the 3D grid
----------------------------
+===========================
 
 The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* file, the Probe Out diameter and the grid spacing. 
 
@@ -309,7 +301,7 @@ The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* f
   * `pyKVFinder.get_vertices <../_api_reference/get_vertices.html>`_
 
 4. Detecting biomolecular cavities
-----------------------------------
+==================================
 
 ``pyKVFinder.detect`` takes the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom, a NumPy array with vertices and a collection of detection parameters (``step``, ``probe_in``, ``probe_out``, ``removal_distance``, ``volume_cutoff``, ``surface``), and returns a tuple with the number of detected cavities and a NumPy array with the cavity points in the 3D grid.
 
@@ -367,7 +359,7 @@ The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* f
   * `pyKVFinder.detect <../_api_reference/detect.html>`_
 
 4.1 Detecting biomolecular cavities with ligand adjustment
-**********************************************************
+----------------------------------------------------------
 
 The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* or *.xyz* file. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).
 
@@ -445,7 +437,7 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``atomic`` an
   * `pyKVFinder.detect <../_api_reference/detect.html>`_
 
 5. Performing spatial characterization
---------------------------------------
+======================================
 
 A spatial characterization, that includes volume, area and defining surface points, is performed on the detected cavities. 
 
@@ -498,7 +490,7 @@ A spatial characterization, that includes volume, area and defining surface poin
   * `pyKVFinder.spatial <../_api_reference/spatial.html>`_  
 
 6. Performing constitutional characterization
----------------------------------------------
+=============================================
 
 A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.
 
@@ -533,7 +525,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
   * `pyKVFinder.constitutional <../_api_reference/constitutional.html>`_  
 
 6.1 Calculating and plotting frequencies
-****************************************
+----------------------------------------
 
 With the interface residues defined, you can also calculate the frequencies of residues and classes of residues. The classes of residues are:
 
@@ -581,7 +573,7 @@ A sample barplot of ``pyKVFinder.plot_frequencies`` is shown below.
 |
 
 7. Performing hydropathy characterization
------------------------------------------
+=========================================
 
 A hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy, is performed on the surface points of the detected cavities.
 
@@ -639,7 +631,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
   * `pyKVFinder.hydropathy <../_api_reference/hydropathy.html>`_    
 
 8. Performing depth characterization
-------------------------------------
+====================================
 
 A depth characterization identifies the degree of burial of the binding site. First, it identifies the cavity volume boundary. Subsequently, the depth of each cavity point is heuristically estimated by the shortest Euclidean distance between the cavity point and its respective boundary points. With this, the maximum and average depths for the detected cavities are calculated.
 
@@ -684,12 +676,12 @@ A depth characterization identifies the degree of burial of the binding site. Fi
   * `pyKVFinder.depth <../_api_reference/depth.html>`_  
 
 9. Exporting cavities
----------------------
+=====================
 
 There are four different ways to export the detected cavities to PDB-formatted files. 
 
 9.1 Exporting only cavity points
-********************************
+--------------------------------
 
 .. code-block:: python
 
@@ -697,7 +689,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, None, vertices, step=step)
 
 9.2 Exporting cavity and surface points
-***************************************
+---------------------------------------
 
 .. code-block:: python
 
@@ -705,7 +697,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step)
 
 9.3 Exporting cavity and surface points with depth mapped on B-factor
-*********************************************************************
+---------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -713,7 +705,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step, B=depths)
 
 9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor
-*************************************************************************************************************************************
+-------------------------------------------------------------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -733,13 +725,13 @@ There are four different ways to export the detected cavities to PDB-formatted f
 
   * `pyKVFinder.export <../_api_reference/export.html>`_  
 
-10. Writing results
--------------------
+10.  Writing results
+====================
 
 The function call depends on the characterizations performed on the detected cavities.
 
 10.1 Cavity detection only
-**************************
+--------------------------
 
 .. code-block:: python
 
@@ -747,7 +739,7 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, step=step)
 
 10.2 Spatial characterization
-*****************************
+-----------------------------
 
 .. code-block:: python
 
@@ -755,7 +747,7 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, step=step)
 
 10.3 Spatial and constitutional characterization
-************************************************
+------------------------------------------------
 
 .. code-block:: python
 
@@ -763,7 +755,7 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, residues=residues, frequencies=frequencies, step=step)
 
 10.4 Spatial, constitutional and depth characterization
-*******************************************************
+-------------------------------------------------------
 
 .. code-block:: python
 
@@ -771,7 +763,7 @@ The function call depends on the characterizations performed on the detected cav
   >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, residues=residues, frequencies=frequencies, step=step)
 
 10.5 Spatial, constitutional, depth and hydropathy characterization
-*******************************************************************
+-------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -787,7 +779,7 @@ The function call depends on the characterizations performed on the detected cav
   * `pyKVFinder.write_results <../_api_reference/write_results.html>`_ 
 
 Steered detection
-=================
+*****************
 
 All these steps showed so far were performed the detection on the whole target biomolecule; however, we can perform them on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a *.toml* file.
 
@@ -850,7 +842,7 @@ A third way is to define a custom 3D grid with `parKVFinder <https://github.com/
   Users can create this box with parKVFinder PyMOL plugin (PyMOL2 parKVFinder Tools) and save the parameters file from it.
 
 Workflows
----------
+=========
 
 Then, you can explore the box adjustment mode with the standard and full workflows, defining the ``box`` parameter as the filepath of one box configuration file from above (*custom-box.toml*, *residues-box.toml* or *box.toml*).
 
@@ -871,7 +863,7 @@ For instance, with *custom-box.toml*:
   * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_ 
 
 Separated steps
----------------
+===============
 
 If you are running pyKVFinder package in a step-by-step fashion (`Separated steps <index.hmtl#separated-steps>`_), the steps `3 <index.hmtl#dimensioning-the-3d-grid>`_ and `4 <index.hmtl#detecting-biomolecular-cavities>`_ are different than before.
 
@@ -928,8 +920,200 @@ Users can define the ``box`` parameter as the filepath of one box configuration 
   * `pyKVFinder.get_vertices_from_file <../_api_reference/get_vertices_from_file.html>`_
   * `pyKVFinder.detect <../_api_reference/detect.html>`_ 
 
+Molecular volume
+################
+
+All files used on this tutorial can be found in our package and in our `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>`_:
+
+* `ClO4.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ClO4.pdb>`_
+
+In this tutorial, we will use pyKVFinder on perchlorate (ClO\ :sub:`4` \) to estimate the molecular volume, using van der Waals (vdW) surface, solvent excluded surface (SES) and solvent accessible surface (SAS) to represent the molecular surface (see Figure below).
+
++-------------------------------+--------------------------------+--------------------------------+
+| .. image:: ../_images/vdw.png | .. image:: ../_images/ses.png  | .. image:: ../_images/sas.png  |
+|                               |                                |                                |
+| .. centered:: (a) vdW         | .. centered:: (b) SES          | .. centered:: (c) SAS          |
++-------------------------------+--------------------------------+--------------------------------+
+| .. centered:: **Molecular surface represenation**                                               |
++-------------------------------------------------------------------------------------------------+
+
+First, we must load the target molecular structure (ClO\ :sub:`4` \)  into ``pyKVFinder.Molecule`` class. 
+
+.. code-block:: python
+
+  >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'ClO4.pdb')
+  >>> molecule pyKVFinder.Molecule(pdb)
+  >>> molecule
+  <pyKVFinder.main.Molecule object at 0x7f5ddacf2230>
+
+With the atomic information and vdW radii dictionary loaded, the molecule is inserted into a regular 3D grid, considering the vdW radii of any of the atoms. Natively, the vdW radii are taken from the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_. In the 3D grid, each voxel corresponds to a molecule (0) or solvent (1) points. Here, we can model our molecule using the vdW surface, SES or SAS.
+
+1. vdW volume
+*************
+
+``Molecule.vdw()`` takes a grid spacing and returns a NumPy array with the molecule points representing the vdW surface in the 3D grid. 
+
+.. code-block:: python
+
+  >>> # Grid Spacing (step): 0.1
+  >>> step = 0.1
+  >>> molecule.vdw(step=step)
+  >>> molecule.grid
+  array([[[1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          ...,
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1]],
+        
+          ...,
+
+        [[1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          ...,
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)
+
+.. note::
+
+  If ``step`` is not defined, the function automatically sets it to the default value. So, you can call the function by ``molecule.vdw()``.
+
+We can preview our modelled molecule in the 3D grid by running:
+
+.. code-block:: python
+  
+  >>> molecule.export("vdw-model.pdb")
+
+.. image:: ../_images/vdw-grid.png
+  :width: 500
+  :align: center
+
+We can also export our modelled molecule int the 3D grid by running:
+
+.. code-block:: python
+  
+  >>> molecule.preview()
+
+Now, we can estimate the vdW volume by running:
+
+.. code-block:: python
+  
+  >>> molecule.volume()
+  83.64
+
+2. SES volume
+*************
+
+``Molecule.surface()`` takes the grid spacing, the spherical probe size to model the surface, the SES representation and returns a NumPy array with the molecule points representing the SES in the 3D grid. 
+
+.. code-block:: python
+
+  >>> # Grid Spacing (step): 0.1
+  >>> step = 0.1
+  >>> # Spherical Probe (probe): 1.4
+  >>> probe = 1.4
+  >>> # Surface Representation: SES
+  >>> surface = 'SES'
+  >>> molecule.surface(step=step, probe=probe, surface=surface)
+  >>> molecule.grid
+  array([[[1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          ...,
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1]],
+        
+          ...,
+
+        [[1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          ...,
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)
+
+.. note::
+
+  If any of the parameters (``step``, ``probe`` or ``surface``) are not defined, the function automatically sets them to the default values. So, you can call the function by ``molecule.surface()``.
+
+We can preview our modelled molecule in the 3D grid by running:
+
+.. code-block:: python
+  
+  >>> molecule.preview()
+
+.. image:: ../_images/ses-grid.png
+  :width: 500
+  :align: center
+
+Now, we can estimate the vdW volume by running:
+
+.. code-block:: python
+  
+  >>> molecule.volume()
+  90.8
+
+3. SAS volume
+*************
+
+``Molecule.surface()`` takes a grid spacing, a spherical probe to model the surface, a SAS representation and returns a NumPy array with the molecule points representing the SES in the 3D grid. 
+
+.. code-block:: python
+
+  >>> # Grid Spacing (step): 0.1
+  >>> step = 0.1
+  >>> # Spherical Probe (probe): 1.4
+  >>> probe = 1.4
+  >>> # Surface Representation: SAS
+  >>> surface = 'SAS'
+  >>> molecule.surface(step=step, probe=probe, surface=surface)
+  >>> molecule.grid
+  array([[[1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          ...,
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1]],
+        
+          ...,
+
+        [[1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          ...,
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1],
+          [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)
+
+.. note::
+
+  If any of the parameters (``step`` or ``probe``) are not defined, the function automatically sets them to the default values. So, you can call the function by ``molecule.surface(surface='SAS')``.
+
+We can preview our modelled molecule in the 3D grid by running:
+
+.. code-block:: python
+  
+  >>> molecule.preview()
+
+.. image:: ../_images/sas-grid.png
+  :width: 500
+  :align: center
+
+Now, we can estimate the vdW volume by running:
+
+.. code-block:: python
+  
+  >>> molecule.volume()
+  340.28
+
 Examples
-========
+########
 
 Jupyter notebook `examples <https://github.com/LBC-LNBio/pyKVFinder/tree/master/examples>`_ are available for:
 
@@ -937,5 +1121,5 @@ Jupyter notebook `examples <https://github.com/LBC-LNBio/pyKVFinder/tree/master/
   :maxdepth: 0
 
   Conservation analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/conservation-analysis/conservation-analysis.ipynb>
-  Molecular dynamics analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/md-analysis/md-analysis.ipynb>
   Data visualization <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/visualization/ngl-visualization.ipynb>
+  Molecular dynamics analysis <https://github.com/LBC-LNBio/pyKVFinder/blob/master/examples/md-analysis/md-analysis.ipynb>

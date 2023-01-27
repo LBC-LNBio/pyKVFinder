@@ -989,47 +989,6 @@ class Molecule(object):
         Number of threads for parallel processing.
     verbose : bool
         Whether to print extra information to standard output.
-
-    Properties
-    ----------
-    atomic : numpy.ndarray
-        Get _atomic attribute.
-    dim : tuple
-        Get _dim attribute.
-    grid : numpy.ndarray
-        Get _grid attribute.
-    molecule : Union[str, pathlib.Path]
-        Get _molecule attribute.
-    nx : int
-        Get grid units in X-axis.
-    ny : int
-        Get grid units in Y-axis.
-    ny : int
-        Get grid units in Z-axis.
-    p1 : numpy.ndarray
-        Get origin of the 3D grid.
-    p2 : numpy.ndarray
-        Get X-axis max of the 3D grid.
-    p3 : numpy.ndarray
-        Get Y-axis max of the 3D grid.
-    p4 : numpy.ndarray
-        Get Z-axis max of the 3D grid.
-    padding : float
-        Get _padding attribute.
-    probe : float
-        Get _probe attribute.
-    radii : Dict[str, Any]
-        Get _radii attribute.
-    representation : str
-        Get _representation attribute.
-    rotation : numpy.ndarray
-        Get _rotation attribute.
-    step : float
-        Get _step attribute.
-    vertices : numpy.ndarray
-        Get _vertices attribute.
-    xyzr : numpy.ndarray
-        Get xyz coordinates and radius of molecule atoms.
     """
 
     def __init__(
@@ -1402,6 +1361,20 @@ class Molecule(object):
                 (self.grid == 0).astype(numpy.int32) * 2, self.step, 1, self.nthreads
             )
             return float(volume.round(decimals=2))
+
+    def preview(self, **kwargs) -> None:
+        """Preview the molecular surface in the 3D grid."""
+        if self.grid is not None:
+            from plotly.express import scatter_3d
+
+            x, y, z = numpy.nonzero(self.grid == 0)
+            fig = scatter_3d(x=x, y=y, z=z, **kwargs)
+            fig.update_layout(
+                scene_xaxis_showticklabels=False,
+                scene_yaxis_showticklabels=False,
+                scene_zaxis_showticklabels=False,
+            )
+            fig.show()
 
     def export(
         self,

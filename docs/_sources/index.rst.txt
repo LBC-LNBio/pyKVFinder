@@ -52,7 +52,6 @@ Welcome to the **Python-C parallel KVFinder (pyKVFinder)** documentation, this p
    :caption: Citing pyKVFinder
    :hidden:
 
-
 .. toctree::
    :maxdepth: 1
    :caption: About

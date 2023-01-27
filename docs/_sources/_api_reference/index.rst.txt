@@ -35,5 +35,6 @@ Classes
 .. toctree::
     :maxdepth: 1
 
+    Molecule
     pyKVFinderResults
     
