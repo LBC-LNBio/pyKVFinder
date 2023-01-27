@@ -35,7 +35,7 @@ jobs:
   #         pip install -U twine
   #         # twine upload dist/*.gz
 
-  # linux:
+  # manylinux:
   #   name: Build wheels on manylinux
   #   runs-on: ubuntu-latest
   #   steps:
@@ -67,6 +67,7 @@ jobs:
   #         # twine upload dist/*-manylinux*.whl
   #       continue-on-error: true
 
+<<<<<<< Updated upstream
   # macos:
   #   runs-on: macos-10.15
   #   env:
@@ -99,6 +100,70 @@ jobs:
   # macos10:
   #   name: Build wheels on macos-10.15
   #   runs-on: macos-10.15
+=======
+  macos10:
+    name: Build wheels on macos-10.15
+    runs-on: macos-10.15
+    env:
+      CIBW_ARCHS_MACOS: "x86_64"
+      MACOSX_DEPLOYMENT_TARGET: "10.13"
+      CC: /usr/local/bin/gcc-10
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          brew install swig gcc@10
+          pip3 install -r requirements.txt
+
+      - name: Build wheels for CPython 3.8
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp38-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
+
+      - name: Build wheels for CPython 3.9
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp39-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
+
+      - name: Build wheels for CPython 3.10
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp310-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
+
+      - name: Build wheels for CPython 3.11
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp311-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: ./wheelhouse/*.whl
+        continue-on-error: true
+      
+      - name: Upload wheels
+        run: |
+          pip install twine
+          # twine upload ./wheelhouse/*.whl
+        continue-on-error: true
+
+  # macos11:
+  #   name: Build wheels on macos-11
+  #   runs-on: macos-11
+>>>>>>> Stashed changes
   #   env:
   #     CIBW_ARCHS_MACOS: "x86_64"
   #     MACOSX_DEPLOYMENT_TARGET: "10.13"
