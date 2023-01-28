@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.detect &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.detect &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -204,6 +204,10 @@ volume cutoff to be considered a cavity.</p>
 </ul>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="read_pdb.html#pyKVFinder.read_pdb" title="pyKVFinder.read_pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pdb</span></code></a>, <a class="reference internal" href="read_xyz.html#pyKVFinder.read_xyz" title="pyKVFinder.read_xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_xyz</span></code></a>, <a class="reference internal" href="get_vertices.html#pyKVFinder.get_vertices" title="pyKVFinder.get_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices</span></code></a>, <a class="reference internal" href="get_vertices_from_file.html#pyKVFinder.get_vertices_from_file" title="pyKVFinder.get_vertices_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_from_file</span></code></a>, <a class="reference internal" href="spatial.html#pyKVFinder.spatial" title="pyKVFinder.spatial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spatial</span></code></a>, <a class="reference internal" href="depth.html#pyKVFinder.depth" title="pyKVFinder.depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth</span></code></a>, <a class="reference internal" href="constitutional.html#pyKVFinder.constitutional" title="pyKVFinder.constitutional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constitutional</span></code></a>, <a class="reference internal" href="export.html#pyKVFinder.export" title="pyKVFinder.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a></p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you are using box adjustment mode, do not forget to set box_adjustment
@@ -215,23 +219,9 @@ function.</p>
 <p>If you are using ligand adjustment mode, do not forget to read ligand atom
 coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 </div>
-</dd></dl>
-
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
-<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
-<li><p><a class="reference external" href="get_vertices.html">pyKVFinder.get_vertices</a></p></li>
-<li><p><a class="reference external" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></p></li>
-<li><p><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></p></li>
-<li><p><a class="reference external" href="depth.html">pyKVFinder.depth</a></p></li>
-<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
-<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
-</ul>
-</div>
-<h4><u>Example</u></h4><p>With the grid vertices defined with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices</span></code> and atomic data loaded with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code>, we can detect cavities on the whole target biomolecule:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">detect</span>
+<p class="rubric">Example</p>
+<p>With the grid vertices defined with <code class="docutils literal notranslate"><span class="pre">get_vertices</span></code> and atomic data loaded with <code class="docutils literal notranslate"><span class="pre">read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">read_xyz</span></code>, we can detect cavities on the whole target biomolecule:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">detect</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span>
 <span class="go">18</span>
@@ -243,9 +233,7 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1]],</span>
-
 <span class="go">   ...,</span>
-
 <span class="go">   [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
@@ -257,7 +245,7 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 </div>
 <p>However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.</p>
 <p>The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a <em>.pdb</em> or a <em>.xyz</em> files. Thus, the detected cavities are limited within a radius (<code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code>) of the target ligand(s).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">read_pdb</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">latomic</span> <span class="o">=</span> <span class="n">read_pdb</span><span class="p">(</span><span class="n">ligand</span><span class="p">)</span>
@@ -272,9 +260,7 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1]],</span>
-
 <span class="go">   ...,</span>
-
 <span class="go">   [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
@@ -284,8 +270,8 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
 </pre></div>
 </div>
-<p>Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a <em>.toml</em> file (see <a class="reference external" href="box_file_template.html">Box configuration file template</a>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<p>Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a <em>.toml</em> file (see <cite>Box configuration file template</cite>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
@@ -296,13 +282,13 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 <span class="go">p4 = [3.11, 7.34, 6.19]</span>
 </pre></div>
 </div>
-<p>With this box adjustment mode, we must defined the 3D grid with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.get_vertices_from_file</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">get_vertices_from_file</span>
+<p>With this box adjustment mode, we must defined the 3D grid with <code class="docutils literal notranslate"><span class="pre">get_vertices_from_file</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">get_vertices_from_file</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">,</span> <span class="n">atomic</span> <span class="o">=</span> <span class="n">get_vertices_from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">atomic</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Then, we can perform cavity detection:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">box_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span> <span class="o">=</span> <span class="n">detect</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">box_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ncav</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cavities</span>
@@ -313,9 +299,7 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1]],</span>
-
 <span class="go">   ...,</span>
-
 <span class="go">   [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">    [-1, -1, -1, ..., -1, -1, -1],</span>
@@ -329,6 +313,8 @@ coordinates with ‘read_pdb’ or ‘read_xyz’ functions.</p>
 <p class="admonition-title">Warning</p>
 <p>If you are using box adjusment mode, do not forget to set <code class="docutils literal notranslate"><span class="pre">box_adjustment</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div>
+</dd></dl>
+
 </section>
 
 

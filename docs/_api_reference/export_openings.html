@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.export_openings &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.export_openings &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -181,22 +181,18 @@ X-axis, Y-axis, Z-axis).</p></li>
 with 2, the first integer corresponding to a opening, is OAA, the opening
 marked with 3 is OAB, the opening marked with 4 is OAC and so on.</p>
 </div>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
-<li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
-<li><p><a class="reference external" href="depth.html">pyKVFinder.depths</a></p></li>
-<li><p><a class="reference external" href="openings.html">pyKVFinder.openings</a></p></li>
-</ul>
+<p><a class="reference internal" href="export.html#pyKVFinder.export" title="pyKVFinder.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a>, <a class="reference internal" href="detect.html#pyKVFinder.detect" title="pyKVFinder.detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detect</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">depths</span></code>, <a class="reference internal" href="openings.html#pyKVFinder.openings" title="pyKVFinder.openings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openings</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>With the opening points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.openings</span></code>, we can export them to a PDB-formatted file:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">export_openings</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;openings.pdb&#39;</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+<p class="rubric">Example</p>
+<p>With the opening points identified with <code class="docutils literal notranslate"><span class="pre">openings</span></code>, we can export them to a PDB-formatted file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">export_openings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">export_openings</span><span class="p">(</span><span class="s1">&#39;openings.pdb&#39;</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
 </section>
 
 

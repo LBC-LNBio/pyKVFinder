@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.plot_frequencies &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.plot_frequencies &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -162,22 +162,21 @@ cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <li><p>Non-standard (RX): Non-standard residues.</p></li>
 </ul>
 </div>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></p></li>
-</ul>
+<p><a class="reference internal" href="calculate_frequencies.html#pyKVFinder.calculate_frequencies" title="pyKVFinder.calculate_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_frequencies</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>With the residues and classes of residues frequencies calculated with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.calculate_frequencies</span></code>, we can plot the bar charts of these frequencies in a PDF file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">plot_frequencies</span>
+<p class="rubric">Example</p>
+<p>With the residues and classes of residues frequencies calculated with <code class="docutils literal notranslate"><span class="pre">calculate_frequencies</span></code>, we can plot the bar charts of these frequencies in a PDF file.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">plot_frequencies</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span>
 <span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;ASN&#39;: 1, &#39;ASP&#39;: 2, &#39;GLN&#39;: 1, &#39;GLU&#39;: 4, &#39;GLY&#39;: 4, &#39;HIS&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 2, &#39;MET&#39;: 1, &#39;PHE&#39;: 3, &#39;SER&#39;: 1, &#39;THR&#39;: 4, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 11, &#39;R2&#39;: 4, &#39;R3&#39;: 8, &#39;R4&#39;: 6, &#39;R5&#39;: 4, &#39;RX&#39;: 0}}}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s1">&#39;barplots.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/barplots.png"><img alt="../_images/barplots.png" class="align-center" src="../_images/barplots.png" style="width: 600px;" /></a>
+</dd></dl>
+
 </section>
 
 

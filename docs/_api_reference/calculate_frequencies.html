@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.calculate_frequencies &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.calculate_frequencies &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -162,18 +162,13 @@ cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <li><p>Non-standard (RX): Non-standard residues.</p></li>
 </ul>
 </div>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
-<li><p><a class="reference external" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></p></li>
-<li><p><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></p></li>
-</ul>
+<p><a class="reference internal" href="constitutional.html#pyKVFinder.constitutional" title="pyKVFinder.constitutional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constitutional</span></code></a>, <a class="reference internal" href="plot_frequencies.html#pyKVFinder.plot_frequencies" title="pyKVFinder.plot_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_frequencies</span></code></a>, <a class="reference internal" href="write_results.html#pyKVFinder.write_results" title="pyKVFinder.write_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_results</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>With the interface residues identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.constitutional</span></code>, we can calculate residues and classes of residues frequencies:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">calculate_frequencies</span>
+<p class="rubric">Example</p>
+<p>With the interface residues identified with <code class="docutils literal notranslate"><span class="pre">constitutional</span></code>, we can calculate residues and classes of residues frequencies:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">calculate_frequencies</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
 <span class="go">{&#39;KAA&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
@@ -181,6 +176,8 @@ cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;ASN&#39;: 1, &#39;ASP&#39;: 2, &#39;GLN&#39;: 1, &#39;GLU&#39;: 4, &#39;GLY&#39;: 4, &#39;HIS&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 2, &#39;MET&#39;: 1, &#39;PHE&#39;: 3, &#39;SER&#39;: 1, &#39;THR&#39;: 4, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 11, &#39;R2&#39;: 4, &#39;R3&#39;: 8, &#39;R4&#39;: 6, &#39;R5&#39;: 4, &#39;RX&#39;: 0}}}</span>
 </pre></div>
 </div>
+</dd></dl>
+
 </section>
 
 

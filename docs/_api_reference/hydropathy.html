@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.hydropathy &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.hydropathy &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -130,8 +130,7 @@
 <dt class="sig sig-object py" id="pyKVFinder.hydropathy">
 <span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">hydropathy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hydrophobicity_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'EisenbergWeiss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_backbone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyKVFinder/grid.html#hydropathy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.hydropathy" title="Permalink to this definition"></a></dt>
 <dd><p>Hydropathy characterization of the detected cavities.</p>
-<p>Map a target hydrophobicity scale per surface point and calculate average
-hydropathy of detected cavities.</p>
+<p>Map a target hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -153,11 +152,24 @@ and radius) for each atom.</p></li>
 X-axis, Y-axis, Z-axis).</p></li>
 <li><p><strong>step</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
 <li><p><strong>probe_in</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Probe In size (A), by default 1.4.</p></li>
-<li><p><strong>hydrophobicity_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>,
-HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, KyteDoolitte <a class="footnote-reference brackets" href="#id15" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, MoonFleming <a class="footnote-reference brackets" href="#id16" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>,
-WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>, ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>) or a path to a
+<li><p><strong>hydrophobicity_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – <p>Name of a built-in hydrophobicity scale or a path to a
 TOML-formatted file with a custom hydrophobicity scale, by default
-<cite>EisenbergWeiss</cite>.</p></li>
+<cite>EisenbergWeiss</cite>.
+The hydrophobicity scale file defines the name of the scale and the
+hydrophobicity value for each residue and when not defined, it assigns
+zero to the missing residues (see <cite>Hydrophobicity scale file
+template</cite>). The package contains six built-in hydrophobicity scales:</p>
+<blockquote>
+<div><ul>
+<li><p>EisenbergWeiss <a class="footnote-reference brackets" href="#id7" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>;</p></li>
+<li><p>HessaHeijne <a class="footnote-reference brackets" href="#id8" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>;</p></li>
+<li><p>KyteDoolittle <a class="footnote-reference brackets" href="#id9" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>;</p></li>
+<li><p>MoonFleming <a class="footnote-reference brackets" href="#id10" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>;</p></li>
+<li><p>WimleyWhite <a class="footnote-reference brackets" href="#id11" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>;</p></li>
+<li><p>ZhaoLondon <a class="footnote-reference brackets" href="#id12" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface
 residues, by default False.</p></li>
 <li><p><strong>selection</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A list of integer labels or a list of cavity names to be selected, by default None.</p></li>
@@ -203,73 +215,13 @@ the range of the hydrophobicity scale (min, max).</p></li>
 with 2, the first integer corresponding to a cavity, is KAA, the cavity
 marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The hydrophobicity scale file defines the name of the scale and the
-hydrophobicity value for each residue and when not defined, it assigns
-zero to the missing residues (see <cite>Hydrophobicity scale file
-template</cite>). The package contains six built-in hydrophobicity scales:
-EisenbergWeiss <a class="footnote-reference brackets" href="#id13" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, HessaHeijne <a class="footnote-reference brackets" href="#id14" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, KyteDoolittle <a class="footnote-reference brackets" href="#id15" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>,
-MoonFleming <a class="footnote-reference brackets" href="#id16" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>, WimleyWhite <a class="footnote-reference brackets" href="#id17" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a> and ZhaoLondon <a class="footnote-reference brackets" href="#id18" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>.</p>
-</div>
-<p class="rubric">References</p>
-<aside class="footnote brackets" id="id13" role="note">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id7">2</a>)</span>
-<p>Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
-detects periodicity in protein hydrophobicity. Proceedings of the
-National Academy of Sciences. 1984;81.</p>
-</aside>
-<aside class="footnote brackets" id="id14" role="note">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
-<p>Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
-Recognition of transmembrane helices by the endoplasmic reticulum
-translocon. Nature. 2005;433.</p>
-</aside>
-<aside class="footnote brackets" id="id15" role="note">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id9">2</a>)</span>
-<p>Kyte J, Doolittle RF. A simple method for displaying the hydropathic
-character of a protein. Journal of Molecular Biology. 1982;157.</p>
-</aside>
-<aside class="footnote brackets" id="id16" role="note">
-<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
-<p>Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
-transmembrane protein folding into lipid bilayers. Proceedings of the
-National Academy of Sciences. 2011;108.</p>
-</aside>
-<aside class="footnote brackets" id="id17" role="note">
-<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id11">2</a>)</span>
-<p>Wimley WC, White SH. Experimentally determined hydrophobicity scale
-for proteins at membrane interfaces. Nature Structural &amp; Molecular
-Biology. 1996;3.</p>
-</aside>
-<aside class="footnote brackets" id="id18" role="note">
-<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id12">2</a>)</span>
-<p>Zhao G, London E. An amino acid “transmembrane tendency” scale that
-approaches the theoretical limit to accuracy for prediction of
-transmembrane helices: Relationship to biological hydrophobicity.
-Protein Science. 2006;15.</p>
-</aside>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
-<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
-<li><p><a class="reference external" href="spatial.html">pyKVFinder.spatial</a></p></li>
-<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
-<li><p><a class="reference external" href="write_results.html">pyKVFinder.write_results</a></p></li>
-<li><p><a class="reference external" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale file template</a></p></li>
-</ul>
+<p><a class="reference internal" href="read_pdb.html#pyKVFinder.read_pdb" title="pyKVFinder.read_pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pdb</span></code></a>, <a class="reference internal" href="read_xyz.html#pyKVFinder.read_xyz" title="pyKVFinder.read_xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_xyz</span></code></a>, <a class="reference internal" href="spatial.html#pyKVFinder.spatial" title="pyKVFinder.spatial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spatial</span></code></a>, <a class="reference internal" href="export.html#pyKVFinder.export" title="pyKVFinder.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a>, <a class="reference internal" href="write_results.html#pyKVFinder.write_results" title="pyKVFinder.write_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_results</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>With the surface points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial</span></code> and atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code>, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">hydropathy</span>
+<p class="rubric">Example</p>
+<p>With the surface points identified with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.spatial</span></code> and atomic coordinates and information read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code>, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">hydropathy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atomic</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span>
 <span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
@@ -279,10 +231,8 @@ Protein Science. 2006;15.</p>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
-
-<span class="go">    ...,</span>
-
-<span class="go">    [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      ...,</span>
+<span class="go">      [[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        ...,</span>
@@ -294,7 +244,7 @@ Protein Science. 2006;15.</p>
 </pre></div>
 </div>
 <p>However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when mapping hydrophobicity scales on surface points. Then, users must set <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">hydropathy</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">hydropathy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">hydropathy</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">atomic</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">ignore_backbone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scales</span>
 <span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
@@ -304,10 +254,8 @@ Protein Science. 2006;15.</p>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
-
-<span class="go">    ...,</span>
-
-<span class="go">    [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">      ...,</span>
+<span class="go">      [[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        ...,</span>
@@ -318,6 +266,45 @@ Protein Science. 2006;15.</p>
 <span class="go">{&#39;KAA&#39;: -0.7, &#39;KAB&#39;: 0.12, &#39;KAC&#39;: -0.08, &#39;KAD&#39;: -0.56, &#39;KAE&#39;: -0.28, &#39;KAF&#39;: -0.25, &#39;KAG&#39;: -0.28, &#39;KAH&#39;: -0.09, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: -0.87, &#39;KAL&#39;: 0.23, &#39;KAM&#39;: 0.06, &#39;KAN&#39;: -0.1, &#39;KAO&#39;: 0.99, &#39;KAP&#39;: -1.04, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: -0.84, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
 </pre></div>
 </div>
+<p class="rubric">References</p>
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Eisenberg D, Weiss RM, Terwilliger TC. The hydrophobic moment
+detects periodicity in protein hydrophobicity. Proceedings of the
+National Academy of Sciences. 1984;81.</p>
+</aside>
+<aside class="footnote brackets" id="id8" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, et al.
+Recognition of transmembrane helices by the endoplasmic reticulum
+translocon. Nature. 2005;433.</p>
+</aside>
+<aside class="footnote brackets" id="id9" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Kyte J, Doolittle RF. A simple method for displaying the hydropathic
+character of a protein. Journal of Molecular Biology. 1982;157.</p>
+</aside>
+<aside class="footnote brackets" id="id10" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p>Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from
+transmembrane protein folding into lipid bilayers. Proceedings of the
+National Academy of Sciences. 2011;108.</p>
+</aside>
+<aside class="footnote brackets" id="id11" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">5</a><span class="fn-bracket">]</span></span>
+<p>Wimley WC, White SH. Experimentally determined hydrophobicity scale
+for proteins at membrane interfaces. Nature Structural &amp; Molecular
+Biology. 1996;3.</p>
+</aside>
+<aside class="footnote brackets" id="id12" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">6</a><span class="fn-bracket">]</span></span>
+<p>Zhao G, London E. An amino acid “transmembrane tendency” scale that
+approaches the theoretical limit to accuracy for prediction of
+transmembrane helices: Relationship to biological hydrophobicity.
+Protein Science. 2006;15.</p>
+</aside>
+</dd></dl>
+
 </section>
 
 

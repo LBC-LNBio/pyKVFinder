@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.read_pdb &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.read_pdb &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -134,7 +134,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>]</em>) – A path to PDB file.</p></li>
-<li><p><strong>vdw</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A dictionary containing radii values, by default None. If None, use output of <cite>pyKVFinder.read_vdw()</cite>.</p></li>
+<li><p><strong>vdw</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A dictionary containing radii values, by default None. If None, use output of <code class="docutils literal notranslate"><span class="pre">read_vdw()</span></code>.</p></li>
 <li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.</p></li>
 </ul>
 </dd>
@@ -151,27 +151,15 @@ and radius) for each atom.</p>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The van der Waals radii file defines the radius values for each atom
-by residue and when not defined, it uses a generic value based on the
-atom type. The function by default loads the built-in van der Waals radii
-file: <cite>vdw.dat</cite>.</p>
+<p>The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type. The function by default loads the built-in van der Waals radii file: <cite>vdw.dat</cite>.</p>
 </div>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="read_vdw.html">pyKVFinder.read_vdw</a></p></li>
-<li><p><a class="reference external" href="get_vertices.html">pyKVFinder.get_vertices</a></p></li>
-<li><p><a class="reference external" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></p></li>
-<li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
-<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
-<li><p><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></p></li>
-<li><p><a class="reference external" href="../_cfg_files/vdw_file_template.html">van der Waals file template</a></p></li>
-</ul>
+<p><a class="reference internal" href="read_vdw.html#pyKVFinder.read_vdw" title="pyKVFinder.read_vdw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_vdw</span></code></a>, <a class="reference internal" href="read_xyz.html#pyKVFinder.read_xyz" title="pyKVFinder.read_xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_xyz</span></code></a>, <a class="reference internal" href="get_vertices.html#pyKVFinder.get_vertices" title="pyKVFinder.get_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices</span></code></a>, <a class="reference internal" href="get_vertices_from_file.html#pyKVFinder.get_vertices_from_file" title="pyKVFinder.get_vertices_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_from_file</span></code></a>, <a class="reference internal" href="detect.html#pyKVFinder.detect" title="pyKVFinder.detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detect</span></code></a>, <a class="reference internal" href="constitutional.html#pyKVFinder.constitutional" title="pyKVFinder.constitutional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constitutional</span></code></a>, <a class="reference internal" href="hydropathy.html#pyKVFinder.hydropathy" title="pyKVFinder.hydropathy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hydropathy</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>With the vdW radii dictionary loaded with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code>, we can read a target PDB file into Numpy array (atomic data):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<p class="rubric">Example</p>
+<p>With the vdW radii dictionary loaded with <code class="docutils literal notranslate"><span class="pre">read_vdw</span></code>, we can read a target PDB file into Numpy array (atomic data):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyKVFinder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">read_pdb</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
@@ -189,8 +177,10 @@ file: <cite>vdw.dat</cite>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when the <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_vdw</span></code> as shown earlier and pass it as <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb(pdb,</span> <span class="pre">vdw=vdw)</span></code>.</p>
+<p>The function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when the <code class="docutils literal notranslate"><span class="pre">vdw</span></code> argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with <code class="docutils literal notranslate"><span class="pre">read_vdw</span></code> as shown earlier and pass it as <code class="docutils literal notranslate"><span class="pre">read_pdb(pdb,</span> <span class="pre">vdw=vdw)</span></code>.</p>
 </div>
+</dd></dl>
+
 </section>
 
 

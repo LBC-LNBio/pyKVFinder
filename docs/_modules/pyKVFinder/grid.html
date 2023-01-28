@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.4.6 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -30,7 +30,7 @@
             <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -158,6 +158,27 @@
 <span class="sd">        `step` must be a positive real number.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        `step` must be a positive real number.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    detect</span>
+<span class="sd">    constitutional</span>
+<span class="sd">    hydropathy</span>
+<span class="sd">    export</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the atomic data read with ``read_pdb`` or ``read_xyz``, we can get the coordinates of 3D grid vertices (origin, X-axis, Y-axis, Z-axis):</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import get_vertices</span>
+<span class="sd">    &gt;&gt;&gt; vertices = get_vertices(atomic)</span>
+<span class="sd">    &gt;&gt;&gt; vertices</span>
+<span class="sd">    array([[-19.911, -32.125, -30.806],</span>
+<span class="sd">        [ 40.188, -32.125, -30.806],</span>
+<span class="sd">        [-19.911,  43.446, -30.806],</span>
+<span class="sd">        [-19.911, -32.125,  27.352]])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check arguments types</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
@@ -264,13 +285,38 @@
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    The box configuration scale file defines the vertices of the 3D grid used</span>
-<span class="sd">    by pyKVFinder to detect and characterize cavities. There are three methods</span>
-<span class="sd">    for defining a custom 3D grid in pyKVFinder. The first directly defines</span>
-<span class="sd">    four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the</span>
-<span class="sd">    second defines a list of residues and a padding, and the the third uses</span>
-<span class="sd">    parKVFinder parameters file created by its PyMOL plugin. For more details,</span>
-<span class="sd">    see `Box configuration file template`.</span>
+<span class="sd">    The box configuration scale file defines the vertices of the 3D grid used by pyKVFinder to detect and characterize cavities. There are three methods for defining a custom 3D grid in pyKVFinder. The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the second defines a list of residues and a padding, and the the third uses parKVFinder parameters file created by its PyMOL plugin. For more details, see `Box configuration file template`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    detect</span>
+<span class="sd">    constitutional</span>
+<span class="sd">    hydropathy</span>
+<span class="sd">    export</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    First, define a box configuration file (see ``Box configuration file template``).</span>
+
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; fn = os.path.join(os.path.dirname(pyKVFinder.__file__), &#39;data&#39;, &#39;tests&#39;, &#39;custom-box.toml&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; with open(fn, &#39;r&#39;) as f:</span>
+<span class="sd">    ...     print(f.read())</span>
+<span class="sd">    [box]</span>
+<span class="sd">    p1 = [3.11, 7.34, 1.59]</span>
+<span class="sd">    p2 = [11.51, 7.34, 1.59]</span>
+<span class="sd">    p3 = [3.11, 10.74, 1.59]</span>
+<span class="sd">    p4 = [3.11, 7.34, 6.19]</span>
+
+<span class="sd">    With the atomic information and coordinates read with ``pyKVFinder.read_pdb`` and a box configuration file, we can get the coordinates of grid vertices and select atoms inside custom 3D grid.</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import get_vertices_from_file</span>
+<span class="sd">    &gt;&gt;&gt; vertices, atomic = pyKVFinder.get_vertices_from_file(fn, atomic)</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_filter_pdb</span>
     <span class="kn">from</span> <span class="nn">toml</span> <span class="kn">import</span> <span class="n">load</span>
@@ -756,6 +802,17 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `surface` must be SAS or SES, not `surface`.</span>
 
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    get_vertices</span>
+<span class="sd">    get_vertices_from_file</span>
+<span class="sd">    spatial</span>
+<span class="sd">    depth</span>
+<span class="sd">    constitutional</span>
+<span class="sd">    export</span>
+
 <span class="sd">    Warning</span>
 <span class="sd">    -------</span>
 <span class="sd">    If you are using box adjustment mode, do not forget to set box_adjustment</span>
@@ -766,6 +823,101 @@
 <span class="sd">    -------</span>
 <span class="sd">    If you are using ligand adjustment mode, do not forget to read ligand atom</span>
 <span class="sd">    coordinates with &#39;read_pdb&#39; or &#39;read_xyz&#39; functions.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the grid vertices defined with ``get_vertices`` and atomic data loaded with ``read_pdb`` or ``read_xyz``, we can detect cavities on the whole target biomolecule:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import detect</span>
+<span class="sd">    &gt;&gt;&gt; ncav, cavities = detect(atomic, vertices)</span>
+<span class="sd">    &gt;&gt;&gt; ncav</span>
+<span class="sd">    18</span>
+<span class="sd">    &gt;&gt;&gt; cavities</span>
+<span class="sd">    array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        ...,</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1]],</span>
+<span class="sd">       ...,</span>
+<span class="sd">       [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        ...,</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+
+<span class="sd">    However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.</span>
+
+<span class="sd">    The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* or a *.xyz* files. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).</span>
+
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; ligand = os.path.join(os.path.dirname(pyKVFinder.__file__), &#39;data&#39;, &#39;tests&#39;, &#39;ADN.pdb&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import read_pdb</span>
+<span class="sd">    &gt;&gt;&gt; latomic = read_pdb(ligand)</span>
+<span class="sd">    &gt;&gt;&gt; ncav, cavities = detect(atomic, vertices, latomic=latomic, ligand_cutoff=5.0)</span>
+<span class="sd">    &gt;&gt;&gt; ncav</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; cavities</span>
+<span class="sd">    array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        ...,</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1]],</span>
+<span class="sd">       ...,</span>
+<span class="sd">       [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        ...,</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+
+<span class="sd">    Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a *.toml* file (see `Box configuration file template`).</span>
+
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; fn = os.path.join(os.path.dirname(pyKVFinder.__file__), &#39;data&#39;, &#39;tests&#39;, &#39;custom-box.toml&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; with open(fn, &#39;r&#39;) as f:</span>
+<span class="sd">    ...     print(f.read())</span>
+<span class="sd">    [box]</span>
+<span class="sd">    p1 = [3.11, 7.34, 1.59]</span>
+<span class="sd">    p2 = [11.51, 7.34, 1.59]</span>
+<span class="sd">    p3 = [3.11, 10.74, 1.59]</span>
+<span class="sd">    p4 = [3.11, 7.34, 6.19]</span>
+
+<span class="sd">    With this box adjustment mode, we must defined the 3D grid with ``get_vertices_from_file``. </span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import get_vertices_from_file</span>
+<span class="sd">    &gt;&gt;&gt; vertices, atomic = get_vertices_from_file(fn, atomic)</span>
+
+<span class="sd">    Then, we can perform cavity detection:</span>
+
+<span class="sd">    &gt;&gt;&gt; ncav, cavities = detect(atomic, vertices, box_adjustment=True)</span>
+<span class="sd">    &gt;&gt;&gt; ncav</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; cavities</span>
+<span class="sd">    array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        ...,</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1]],</span>
+<span class="sd">       ...,</span>
+<span class="sd">       [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        ...,</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        If you are using box adjusment mode, do not forget to set ``box_adjustment`` flag to ``True``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_detect</span><span class="p">,</span> <span class="n">_detect_ladj</span>
 
@@ -1146,6 +1298,39 @@
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `verbose` must be a boolean.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    detect</span>
+<span class="sd">    hydropathy</span>
+<span class="sd">    export</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the cavity points identified with ``detect``, we can perform a spatial characterization, that includes volume, area and defining surface points:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import spatial</span>
+<span class="sd">    &gt;&gt;&gt; surface, volume, area = spatial(cavities)</span>
+<span class="sd">    &gt;&gt;&gt; surface</span>
+<span class="sd">    array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1]],</span>
+<span class="sd">           ...,</span>
+<span class="sd">           [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
+<span class="sd">    &gt;&gt;&gt; volume</span>
+<span class="sd">    {&#39;KAA&#39;: 137.16, &#39;KAB&#39;: 47.52, &#39;KAC&#39;: 66.96, &#39;KAD&#39;: 8.21, &#39;KAE&#39;: 43.63, &#39;KAF&#39;: 12.53, &#39;KAG&#39;: 6.26, &#39;KAH&#39;: 520.13, &#39;KAI&#39;: 12.31, &#39;KAJ&#39;: 26.57, &#39;KAK&#39;: 12.31, &#39;KAL&#39;: 33.91, &#39;KAM&#39;: 23.11, &#39;KAN&#39;: 102.82, &#39;KAO&#39;: 6.05, &#39;KAP&#39;: 15.55, &#39;KAQ&#39;: 7.99, &#39;KAR&#39;: 7.78}</span>
+<span class="sd">    &gt;&gt;&gt; area</span>
+<span class="sd">    {&#39;KAA&#39;: 126.41, &#39;KAB&#39;: 62.37, &#39;KAC&#39;: 74.57, &#39;KAD&#39;: 19.06, &#39;KAE&#39;: 57.08, &#39;KAF&#39;: 22.77, &#39;KAG&#39;: 15.38, &#39;KAH&#39;: 496.97, &#39;KAI&#39;: 30.58, &#39;KAJ&#39;: 45.64, &#39;KAK&#39;: 30.58, &#39;KAL&#39;: 45.58, &#39;KAM&#39;: 45.25, &#39;KAN&#39;: 129.77, &#39;KAO&#39;: 12.28, &#39;KAP&#39;: 25.04, &#39;KAQ&#39;: 13.46, &#39;KAR&#39;: 16.6}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_spatial</span>
 
@@ -1325,17 +1510,38 @@
 <span class="sd">    with 2, the first integer corresponding to a cavity, is KAA, the cavity</span>
 <span class="sd">    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
 
-<span class="sd">    Warning</span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    detect</span>
+<span class="sd">    export</span>
+<span class="sd">    write_results</span>
+
+<span class="sd">    Example</span>
 <span class="sd">    -------</span>
-<span class="sd">    Cavities array has integer labels in each position, that are:</span>
+<span class="sd">    With the cavity points identified with ``detect``, we can perform a depth characterization, that includes maximum depth, average depth and defining depth of cavity points:</span>
 
-<span class="sd">        * -1: bulk points;</span>
-
-<span class="sd">        * 0: biomolecule points;</span>
-
-<span class="sd">        * 1: empty space points;</span>
-
-<span class="sd">        * &gt;=2: cavity points.</span>
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import depth</span>
+<span class="sd">    &gt;&gt;&gt; depths, max_depth, avg_depth = depth(cavities)</span>
+<span class="sd">    &gt;&gt;&gt; depths</span>
+<span class="sd">    array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.]],</span>
+<span class="sd">          ...,</span>
+<span class="sd">          [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="sd">    &gt;&gt;&gt; max_depth</span>
+<span class="sd">    {&#39;KAA&#39;: 3.79, &#39;KAB&#39;: 2.68, &#39;KAC&#39;: 2.62, &#39;KAD&#39;: 0.85, &#39;KAE&#39;: 3.0, &#39;KAF&#39;: 0.85, &#39;KAG&#39;: 0.6, &#39;KAH&#39;: 10.73, &#39;KAI&#39;: 0.0, &#39;KAJ&#39;: 2.24, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 3.0, &#39;KAM&#39;: 1.2, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 1.04, &#39;KAP&#39;: 2.08, &#39;KAQ&#39;: 0.85, &#39;KAR&#39;: 0.6}</span>
+<span class="sd">    &gt;&gt;&gt; avg_depth</span>
+<span class="sd">    {&#39;KAA&#39;: 1.35, &#39;KAB&#39;: 0.91, &#39;KAC&#39;: 0.68, &#39;KAD&#39;: 0.32, &#39;KAE&#39;: 0.99, &#39;KAF&#39;: 0.24, &#39;KAG&#39;: 0.1, &#39;KAH&#39;: 3.91, &#39;KAI&#39;: 0.0, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 1.07, &#39;KAM&#39;: 0.24, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 0.29, &#39;KAP&#39;: 0.7, &#39;KAQ&#39;: 0.22, &#39;KAR&#39;: 0.12}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_depth</span>
 
@@ -1537,7 +1743,6 @@
 <span class="sd">    with 2, the first integer corresponding to a cavity, is KAA, the cavity</span>
 <span class="sd">    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
 
-
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
 <span class="sd">    The classes of residues are:</span>
@@ -1553,6 +1758,29 @@
 <span class="sd">    * Positively charged (R5): Arginine, Histidine, Lysine.</span>
 
 <span class="sd">    * Non-standard (RX): Non-standard residues.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    detect </span>
+<span class="sd">    calculate_frequencies</span>
+<span class="sd">    write_results</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the cavity points identified with ``detect``, atomic data read with ``read_pdb`` or ``read_xyz``, we can perform a constitutional characterization, that identifies the interface residues surrounding the cavities:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import constitutional</span>
+<span class="sd">    &gt;&gt;&gt; residues = constitutional(cavities, atomic, vertices)</span>
+<span class="sd">    &gt;&gt;&gt; residues</span>
+<span class="sd">    {&#39;KAA&#39;: [[&#39;14&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;97&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;141&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;320&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;321&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;322&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;323&#39;, &#39;E&#39;, &#39;ASP&#39;]], &#39;KAE&#39;: [[&#39;95&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;107&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;108&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;163&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;326&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;75&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;336&#39;, &#39;E&#39;, &#39;ARG&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;199&#39;, &#39;E&#39;, &#39;CYS&#39;], [&#39;200&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;331&#39;, &#39;E&#39;, &#39;GLU&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;253&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;275&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;237&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;254&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
+
+<span class="sd">    However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when defining interface residues. Then, users must set ``ignore_backbone`` flag to ``True``.</span>
+
+<span class="sd">    &gt;&gt;&gt; residues = constitutional(cavities, atomic, vertices, ignore_backbone=True)</span>
+<span class="sd">    &gt;&gt;&gt; residues</span>
+<span class="sd">    {&#39;KAA&#39;: [[&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAE&#39;: [[&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_constitutional</span>
 
@@ -1715,8 +1943,7 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Hydropathy characterization of the detected cavities.</span>
 
-<span class="sd">    Map a target hydrophobicity scale per surface point and calculate average</span>
-<span class="sd">    hydropathy of detected cavities.</span>
+<span class="sd">    Map a target hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1743,11 +1970,21 @@
 <span class="sd">    probe_in : Union[float, int], optional</span>
 <span class="sd">        Probe In size (A), by default 1.4.</span>
 <span class="sd">    hydrophobicity_scale : str, optional</span>
-<span class="sd">        Name of a built-in hydrophobicity scale (EisenbergWeiss [1]_,</span>
-<span class="sd">        HessaHeijne [2]_, KyteDoolitte [3]_, MoonFleming [4]_,</span>
-<span class="sd">        WimleyWhite [5]_, ZhaoLondon [6]_) or a path to a</span>
+<span class="sd">        Name of a built-in hydrophobicity scale or a path to a</span>
 <span class="sd">        TOML-formatted file with a custom hydrophobicity scale, by default</span>
 <span class="sd">        `EisenbergWeiss`.</span>
+<span class="sd">        The hydrophobicity scale file defines the name of the scale and the</span>
+<span class="sd">        hydrophobicity value for each residue and when not defined, it assigns</span>
+<span class="sd">        zero to the missing residues (see `Hydrophobicity scale file</span>
+<span class="sd">        template`). The package contains six built-in hydrophobicity scales:</span>
+
+<span class="sd">            * EisenbergWeiss [1]_;</span>
+<span class="sd">            * HessaHeijne [2]_;</span>
+<span class="sd">            * KyteDoolittle [3]_;</span>
+<span class="sd">            * MoonFleming [4]_; </span>
+<span class="sd">            * WimleyWhite [5]_;</span>
+<span class="sd">            * ZhaoLondon [6]_.</span>
+
 <span class="sd">    ignore_backbone : bool, optional</span>
 <span class="sd">        Whether to ignore backbone atoms (C, CA, N, O) when defining interface</span>
 <span class="sd">        residues, by default False.</span>
@@ -1811,14 +2048,61 @@
 <span class="sd">    with 2, the first integer corresponding to a cavity, is KAA, the cavity</span>
 <span class="sd">    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
 
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    The hydrophobicity scale file defines the name of the scale and the</span>
-<span class="sd">    hydrophobicity value for each residue and when not defined, it assigns</span>
-<span class="sd">    zero to the missing residues (see `Hydrophobicity scale file</span>
-<span class="sd">    template`). The package contains six built-in hydrophobicity scales:</span>
-<span class="sd">    EisenbergWeiss [1]_, HessaHeijne [2]_, KyteDoolittle [3]_,</span>
-<span class="sd">    MoonFleming [4]_, WimleyWhite [5]_ and ZhaoLondon [6]_.</span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    spatial</span>
+<span class="sd">    export</span>
+<span class="sd">    write_results</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the surface points identified with ``pyKVFinder.spatial`` and atomic coordinates and information read with ``pyKVFinder.read_pdb`` or ``pyKVFinder.read_xyz``, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import hydropathy</span>
+<span class="sd">    &gt;&gt;&gt; scales, avg_hydropathy = hydropathy(surface, atomic, vertices)</span>
+<span class="sd">    &gt;&gt;&gt; scales</span>
+<span class="sd">    array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.]],</span>
+<span class="sd">          ...,</span>
+<span class="sd">          [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="sd">    &gt;&gt;&gt; avg_hydropathy</span>
+<span class="sd">    {&#39;KAA&#39;: -0.73, &#39;KAB&#39;: -0.05, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.16, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.36, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
+
+<span class="sd">    However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when mapping hydrophobicity scales on surface points. Then, users must set ``ignore_backbone`` flag to ``True``.</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import hydropathy</span>
+<span class="sd">    &gt;&gt;&gt; scales, avg_hydropathy = hydropathy(surface, atomic, vertices, ignore_backbone=True)</span>
+<span class="sd">    &gt;&gt;&gt; scales</span>
+<span class="sd">    array([[[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.]],</span>
+<span class="sd">          ...,</span>
+<span class="sd">          [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., ..., 0., 0., 0.]]])</span>
+<span class="sd">    &gt;&gt;&gt; avg_hydropathy</span>
+<span class="sd">    {&#39;KAA&#39;: -0.7, &#39;KAB&#39;: 0.12, &#39;KAC&#39;: -0.08, &#39;KAD&#39;: -0.56, &#39;KAE&#39;: -0.28, &#39;KAF&#39;: -0.25, &#39;KAG&#39;: -0.28, &#39;KAH&#39;: -0.09, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: -0.87, &#39;KAL&#39;: 0.23, &#39;KAM&#39;: 0.06, &#39;KAN&#39;: -0.1, &#39;KAO&#39;: 0.99, &#39;KAP&#39;: -1.04, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: -0.84, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -2168,6 +2452,52 @@
 <span class="sd">        `nthreads` must be a positive integer.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `verbose` must be a boolean</span>
+<span class="sd">    </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the cavity points identified with ``detect``, we can characterize their openings, that includes number and area of openings and defining opening points:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import openings</span>
+<span class="sd">    &gt;&gt;&gt; nopenings, openings, aopenings = openings(cavities)</span>
+<span class="sd">    &gt;&gt;&gt; nopenings</span>
+<span class="sd">    16</span>
+<span class="sd">    &gt;&gt;&gt; openings</span>
+<span class="sd">    array([[[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1]],</span>
+<span class="sd">          ...,</span>
+<span class="sd">          [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            ...,</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="sd">            [-1, -1, -1, ..., -1, -1, -1]]])   </span>
+<span class="sd">    &gt;&gt;&gt; aopenings</span>
+<span class="sd">    {&#39;KAA&#39;: {&#39;OAA&#39;: 47.41, &#39;OAG&#39;: 3.6}, &#39;KAB&#39;: {&#39;OAB&#39;: 25.84}, &#39;KAC&#39;: {&#39;OAC&#39;: 53.62}, &#39;KAD&#39;: {&#39;OAD&#39;: 12.59}, &#39;KAE&#39;: {&#39;OAE&#39;: 26.3}, &#39;KAF&#39;: {&#39;OAF&#39;: 18.46}, &#39;KAG&#39;: {&#39;OAH&#39;: 12.83}, &#39;KAH&#39;: {&#39;OAK&#39;: 59.96}, &#39;KAJ&#39;: {&#39;OAI&#39;: 16.11}, &#39;KAL&#39;: {&#39;OAJ&#39;: 17.3}, &#39;KAM&#39;: {&#39;OAL&#39;: 35.27}, &#39;KAO&#39;: {&#39;OAM&#39;: 8.49}, &#39;KAP&#39;: {&#39;OAN&#39;: 13.71}, &#39;KAQ&#39;: {&#39;OAO&#39;: 13.16}, &#39;KAR&#39;: {&#39;OAP&#39;: 15.36}}</span>
+
+<span class="sd">    With the cavity and opening points identified, we can:</span>
+
+<span class="sd">    * Export cavity points with opening points mapped on them:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import export</span>
+<span class="sd">    &gt;&gt;&gt; export(&quot;cavities_with_openings.pdb&quot;, cavities, None, vertices, B=openings)</span>
+
+<span class="sd">    * Export opening points with same nomenclature from ``aopenings``:</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import export_openings</span>
+<span class="sd">    &gt;&gt;&gt; export_openings(&quot;openings.pdb&quot;, openings, vertices)    </span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    detect</span>
+<span class="sd">    depth</span>
+<span class="sd">    export</span>
+<span class="sd">    export_openings</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_area</span><span class="p">,</span> <span class="n">_openings</span><span class="p">,</span> <span class="n">_openings2cavities</span>
 
@@ -2373,6 +2703,40 @@
 <span class="sd">    The cavity nomenclature is based on the integer label. The cavity marked</span>
 <span class="sd">    with 2, the first integer corresponding to a cavity, is KAA, the cavity</span>
 <span class="sd">    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</span>
+<span class="sd">    </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    detect</span>
+<span class="sd">    spatial</span>
+<span class="sd">    depth</span>
+<span class="sd">    hydropathy</span>
+<span class="sd">    write_results</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the cavity and surface points identified and depth and hydrophobicity scale mapped in the 3D grid, we can:</span>
+
+<span class="sd">    * Export cavity points</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import export</span>
+<span class="sd">    &gt;&gt;&gt; export(&#39;cavity_wo_surface.pdb&#39;, cavities, None, vertices)</span>
+
+<span class="sd">    * Export cavity and surface points</span>
+
+<span class="sd">    &gt;&gt;&gt; export(&#39;cavities.pdb&#39;, cavities, surface, vertices)</span>
+
+<span class="sd">    * Export cavity and surface points with depth mapped on them</span>
+
+<span class="sd">    &gt;&gt;&gt; export(&#39;cavities_with_depth.pdb&#39;, cavities, surface, vertices, B=depths)</span>
+
+<span class="sd">    * Export surface points with hydrophobicity_scale mapped on them</span>
+
+<span class="sd">    &gt;&gt;&gt; export(None, None, surface, vertices, output_hydropathy=&#39;hydropathy.pdb&#39;, scales=scales)</span>
+
+<span class="sd">    * Export all</span>
+
+<span class="sd">    &gt;&gt;&gt; export(&#39;cavities.pdb&#39;, cavities, surface, vertices, B=depths, output_hydropathy=&#39;hydropathy.pdb&#39;, scales=scales)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_export</span><span class="p">,</span> <span class="n">_export_b</span>
 
@@ -2623,6 +2987,20 @@
 <span class="sd">    The opening nomenclature is based on the integer label. The opening marked</span>
 <span class="sd">    with 2, the first integer corresponding to a opening, is OAA, the opening</span>
 <span class="sd">    marked with 3 is OAB, the opening marked with 4 is OAC and so on.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    export</span>
+<span class="sd">    detect</span>
+<span class="sd">    depths</span>
+<span class="sd">    openings</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the opening points identified with ``openings``, we can export them to a PDB-formatted file:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import export_openings</span>
+<span class="sd">    &gt;&gt;&gt; export_openings(&#39;openings.pdb&#39;, openings, vertices)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_export_openings</span>
 
