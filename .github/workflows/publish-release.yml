@@ -103,10 +103,13 @@ jobs:
         uses: pypa/cibuildwheel@v2.11.4
         env:
           CIBW_BUILD: ${{ matrix.python-version }}
-          CIBW_BEFORE_BUILD: >-
+          CIBW_BEFORE_BUILD: >
             pip3 install certifi &&
             git clean -fxd build
-          CIBW_TEST_COMMAND: >-
+          CIBW_TEST_REQUIRES: unittest
+          CIBW_BEFORE_TEST: >
+            ls -R
+          CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
             python -m unittest discover -vs tests/unit &&
