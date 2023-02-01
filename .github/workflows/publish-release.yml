@@ -112,8 +112,8 @@ jobs:
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
-            python -m unittest discover -vs tests/unit &&
-            python -m unittest discover -vs tests/integration
+            python -m unittest discover -vs {project}/tests/unit &&
+            python -m unittest discover -vs {project}/tests/integration
 
       - uses: actions/upload-artifact@v3
         with:
