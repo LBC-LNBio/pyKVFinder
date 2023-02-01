@@ -112,8 +112,14 @@ jobs:
             pip3 install certifi &&
             git clean -fxd build
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
       - name: Test package build ${{ matrix.python-version }}
         run: |
+          python --version
           pip install ./wheelhouse/pyKVFinder-*-${{ matrix.python-version }}*whl
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
