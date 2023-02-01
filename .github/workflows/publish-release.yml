@@ -106,9 +106,6 @@ jobs:
           CIBW_BEFORE_BUILD: >
             pip3 install certifi &&
             git clean -fxd build
-          CIBW_TEST_REQUIRES: unittest
-          CIBW_BEFORE_TEST: >
-            ls -R
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
