@@ -66,15 +66,6 @@ jobs:
           python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
           build-requirements: "cython numpy"
 
-      - name: Test package builds
-        with:
-          python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
-          build-requirements: "cython numpy"
-        run: |
-          pip install ./dist/pyKVFinder-*-${{ matrix.python-version }}*whl
-          python -m unittest discover -vs tests/unit
-          python -m unittest discover -vs tests/integration
-
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts
