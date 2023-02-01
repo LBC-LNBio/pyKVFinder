@@ -409,7 +409,7 @@ jobs:
     strategy:
       matrix:
         # python-version: ["3.8", "3.9", "3.10", "3.11"]
-        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        python-version: ["cp38", "cp39", "cp310", "cp311"]
     needs: [sdist, manylinux]
     steps:
       - name: Checkout repository
