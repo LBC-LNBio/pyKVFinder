@@ -32,7 +32,6 @@ See also
 
 __name__ = "pyKVFinder"
 __version__ = "0.4.5"
-VERSION = "0.4.5"
 license = "GNU GPL-3.0 License"
 
 from .utils import *

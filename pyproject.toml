@@ -43,7 +43,8 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = ["toml==0.10.2", "numpy==1.24.1", "matplotlib==3.6.2"]
-dynamic = ["version"]
+version = "0.4.5"
+# dynamic = ["version"]
 
 [project.urls]
 homepage = "https://github.com/LBC-LNBio/pyKVFinder/"
@@ -57,5 +58,5 @@ pyKVFinder = "pyKVFinder.main:cli"
 py-modules = ["_pyKVFinder"]
 include-package-data = true
 
-[tool.setuptools.dynamic]
-version = { attr = "pyKVFinder.VERSION" }
+# [tool.setuptools.dynamic]
+# version = { attr = "pyKVFinder.VERSION" }
