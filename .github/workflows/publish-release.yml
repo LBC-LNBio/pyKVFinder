@@ -132,7 +132,7 @@ jobs:
     runs-on: macos-11
     strategy:
       matrix:
-        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        python-version: ["cp39-*", "cp310-*", "cp311-*"]
     env:
       CIBW_ARCHS_MACOS: "x86_64"
       CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
@@ -170,7 +170,7 @@ jobs:
     runs-on: macos-11
     strategy:
       matrix:
-        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        python-version: ["cp39-*", "cp310-*", "cp311-*"]
     env:
       CIBW_ARCHS_MACOS: "arm64"
       CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
@@ -208,7 +208,7 @@ jobs:
     runs-on: macos-12
     strategy:
       matrix:
-        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        python-version: ["cp39-*", "cp310-*", "cp311-*"]
     env:
       CIBW_ARCHS_MACOS: "x86_64"
       CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
@@ -246,7 +246,7 @@ jobs:
     runs-on: macos-12
     strategy:
       matrix:
-        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        python-version: ["cp39-*", "cp310-*", "cp311-*"]
     env:
       CIBW_ARCHS_MACOS: "arm64"
       CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
