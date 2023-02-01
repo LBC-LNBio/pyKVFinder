@@ -98,7 +98,7 @@ jobs:
       - name: Build wheels for CPython
         uses: pypa/cibuildwheel@v2.11.4
         with:
-          python-version: "cp38-* cp39-* cp310-* cp311-*"
+          python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
         env:
           CIBW_BUILD: ${{ python-version }}
           CIBW_BEFORE_BUILD: >-
@@ -275,7 +275,6 @@ jobs:
         run: |
           pip install -U twine
           # twine upload ./wheelhouse/*.whl
-          
 
   macos12-x86_64:
     name: Build wheels on macOS12 x86_64
