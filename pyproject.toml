@@ -5,6 +5,7 @@ requires = [
     "Cython>=0.29",
     "numpy>=1.15",
 ]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyKVFinder"
