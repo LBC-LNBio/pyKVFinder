@@ -7,42 +7,40 @@ on:
     branches: [master, publish-workflow]
 
 jobs:
-  # sdist:
-  #   name: Build source distribution
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.x"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
 
-  #     - name: Build sdist
-  #       run: |
-  #         python setup.py sdist
+      - name: Build sdist
+        run: |
+          python setup.py sdist
 
-  #     - name: Test sdist
-  #       run: |
-  #         python --version
-  #         python -m pip install dist/*.gz
-  #         pyKVFinder --version
-  #         python -m unittest discover -vs tests/unit
-  #         python -m unittest discover -vs tests/integration
+      - name: Test sdist
+        run: |
+          pip install dist/*.gz
+          python -m unittest discover -vs tests/unit
+          python -m unittest discover -vs tests/integration
 
-  #     - uses: actions/upload-artifact@v3
-  #       with:
-  #         name: artifacts
-  #         path: ./dist/*gz
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: ./dist/*gz
 
-  #     - name: Publish sdist to PyPI
-  #       env:
-  #         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-  #         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-  #       run: |
-  #         pip install -U twine
-  #         # twine upload dist/*.gz
+      - name: Publish sdist to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          pip install -U twine
+          # twine upload dist/*.gz
 
   # manylinux:
   #   name: Build wheels on manylinux
@@ -97,7 +95,6 @@ jobs:
       - name: Install dependencies
         run: |
           brew install swig gcc@10
-          pip3 install -r requirements.txt
 
       - name: Build wheels for CPython ${{ matrix.python-version }}
         uses: pypa/cibuildwheel@v2.11.4
