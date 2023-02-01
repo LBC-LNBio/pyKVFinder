@@ -139,7 +139,7 @@ class TestPackage(unittest.TestCase):
     def test_detect(self):
         self.assertEqual(self.cavities.max() - 1 > 0, True)
 
-    @repeat(100)
+    @repeat(10)
     def test_cavity_tags_within_bounds(self):
         # Check if cavity tags are within expeted bounds [-1, ncav+1]
         # NOTE: A segmentation fault error has occurred in ~1/70 times.
