@@ -52,4 +52,4 @@ py-modules = ["_pyKVFinder"]
 include-package-data = true
 
 [tool.setuptools.dynamic]
-version = { attr = "pyKVFinder.__version__" }
+version = { attr = "pyKVFinder.VERSION" }
