@@ -98,9 +98,9 @@ jobs:
       - name: Build wheels for CPython 3.8
         uses: pypa/cibuildwheel@v2.11.4
         with:
-          python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
+          python-version: "cp38-* cp39-* cp310-* cp311-*"
         env:
-          CIBW_BUILD: ${{ python-versions }}
+          CIBW_BUILD: ${{ python-version }}
           CIBW_BEFORE_BUILD: >-
             pip3 install certifi &&
             git clean -fxd build
