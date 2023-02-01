@@ -98,7 +98,7 @@ jobs:
           brew install swig gcc@10
           pip3 install -r requirements.txt
 
-      - name: Build wheels for CPython 3.8
+      - name: Build wheels for CPython ${{ matrix.python-version }}
         uses: pypa/cibuildwheel@v2.11.4
         env:
           CIBW_BUILD: ${{ matrix.python-version }}
