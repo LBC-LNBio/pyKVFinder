@@ -68,7 +68,8 @@ jobs:
 
       - name: Test package build ${{ matrix.python-versions }}
         run: |
-          pip install ./sdist/pyKVFinder-*-${{ matrix.python-versions }}*whl
+          python --version
+          pip install ./dist/pyKVFinder-*-${{ matrix.python-versions }}*whl
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
