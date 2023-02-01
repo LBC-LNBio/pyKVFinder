@@ -67,13 +67,6 @@ jobs:
           python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
           build-requirements: "cython numpy"
 
-      # - name: Test package build ${{ matrix.python-versions }}
-      #   run: |
-      #     python --version
-      #     pip install ./dist/pyKVFinder-*-${{ matrix.python-versions }}*whl
-      #     python -m unittest discover -vs tests/unit
-      #     python -m unittest discover -vs tests/integration
-
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts
@@ -113,6 +106,13 @@ jobs:
           CIBW_BEFORE_BUILD: >-
             pip3 install certifi &&
             git clean -fxd build
+          CIBW_TEST_COMMAND: >-
+            python --version &&
+            pip install -r requirements.txt &&
+            pip install ./wheelhouse/pyKVFinder*${{ matrix.python-version }}*.whl
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)"
+            python -m unittest discover -vs tests/unit
+            python -m unittest discover -vs tests/integration
 
       - uses: actions/upload-artifact@v3
         with:
