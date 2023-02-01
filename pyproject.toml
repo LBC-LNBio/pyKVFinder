@@ -1,5 +1,10 @@
 [build-system]
-requires = ["setuptools>=62.0", "wheel>=0.37.1"]
+requires = [
+    "setuptools>=62.0",
+    "wheel>=0.37.1",
+    "Cython>=0.29",
+    "numpy>=1.15",
+]
 
 [project]
 name = "pyKVFinder"
@@ -12,10 +17,10 @@ authors = [
     { name = "Paulo Sergio Lopes-de-Oliveira" },
 ]
 maintainers = [
-  { name = "João Victor da Silva Guerra", email = "jvsguerra@gmail.com" },
+    { name = "João Victor da Silva Guerra", email = "jvsguerra@gmail.com" },
 ]
-license = {file = "LICENSE.txt"}
-readme = {file = "README.rst", content-type = "text/x-rst"}
+license = { file = "LICENSE.txt" }
+readme = { file = "README.rst", content-type = "text/x-rst" }
 requires-python = ">=3.9"
 keywords = [
     "structural biology",
