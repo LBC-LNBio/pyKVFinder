@@ -95,47 +95,37 @@ jobs:
           brew install swig gcc@10
           pip3 install -r requirements.txt
 
-      - name: Build wheels for CPython
+      - name: Build wheels for CPython 3.8
         uses: pypa/cibuildwheel@v2.11.4
-        with:
-          python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
         env:
-          CIBW_BUILD: ${{ python-version }}
+          CIBW_BUILD: "cp38-*"
           CIBW_BEFORE_BUILD: >-
             pip3 install certifi &&
             git clean -fxd build
 
-      # - name: Build wheels for CPython 3.8
-      #   uses: pypa/cibuildwheel@v2.11.4
-      #   env:
-      #     CIBW_BUILD: "cp38-*"
-      #     CIBW_BEFORE_BUILD: >-
-      #       pip3 install certifi &&
-      #       git clean -fxd build
+      - name: Build wheels for CPython 3.9
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp39-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
 
-      # - name: Build wheels for CPython 3.9
-      #   uses: pypa/cibuildwheel@v2.11.4
-      #   env:
-      #     CIBW_BUILD: "cp39-*"
-      #     CIBW_BEFORE_BUILD: >-
-      #       pip3 install certifi &&
-      #       git clean -fxd build
+      - name: Build wheels for CPython 3.10
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp310-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
 
-      # - name: Build wheels for CPython 3.10
-      #   uses: pypa/cibuildwheel@v2.11.4
-      #   env:
-      #     CIBW_BUILD: "cp310-*"
-      #     CIBW_BEFORE_BUILD: >-
-      #       pip3 install certifi &&
-      #       git clean -fxd build
-
-      # - name: Build wheels for CPython 3.11
-      #   uses: pypa/cibuildwheel@v2.11.4
-      #   env:
-      #     CIBW_BUILD: "cp311-*"
-      #     CIBW_BEFORE_BUILD: >-
-      #       pip3 install certifi &&
-      #       git clean -fxd build
+      - name: Build wheels for CPython 3.11
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CIBW_BUILD: "cp311-*"
+          CIBW_BEFORE_BUILD: >-
+            pip3 install certifi &&
+            git clean -fxd build
 
       - uses: actions/upload-artifact@v3
         with:
