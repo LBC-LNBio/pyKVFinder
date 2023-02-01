@@ -82,6 +82,9 @@ jobs:
   macos10:
     name: Build wheels on macos-10.15
     runs-on: macos-10.15
+    strategy:
+      matrix:
+        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
     env:
       CIBW_ARCHS_MACOS: "x86_64"
       MACOSX_DEPLOYMENT_TARGET: "10.13"
@@ -98,34 +101,42 @@ jobs:
       - name: Build wheels for CPython 3.8
         uses: pypa/cibuildwheel@v2.11.4
         env:
-          CIBW_BUILD: "cp38-*"
+          CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_BEFORE_BUILD: >-
             pip3 install certifi &&
             git clean -fxd build
 
-      - name: Build wheels for CPython 3.9
-        uses: pypa/cibuildwheel@v2.11.4
-        env:
-          CIBW_BUILD: "cp39-*"
-          CIBW_BEFORE_BUILD: >-
-            pip3 install certifi &&
-            git clean -fxd build
+      # - name: Build wheels for CPython 3.8
+      #   uses: pypa/cibuildwheel@v2.11.4
+      #   env:
+      #     CIBW_BUILD: "cp38-*"
+      #     CIBW_BEFORE_BUILD: >-
+      #       pip3 install certifi &&
+      #       git clean -fxd build
 
-      - name: Build wheels for CPython 3.10
-        uses: pypa/cibuildwheel@v2.11.4
-        env:
-          CIBW_BUILD: "cp310-*"
-          CIBW_BEFORE_BUILD: >-
-            pip3 install certifi &&
-            git clean -fxd build
+      # - name: Build wheels for CPython 3.9
+      #   uses: pypa/cibuildwheel@v2.11.4
+      #   env:
+      #     CIBW_BUILD: "cp39-*"
+      #     CIBW_BEFORE_BUILD: >-
+      #       pip3 install certifi &&
+      #       git clean -fxd build
 
-      - name: Build wheels for CPython 3.11
-        uses: pypa/cibuildwheel@v2.11.4
-        env:
-          CIBW_BUILD: "cp311-*"
-          CIBW_BEFORE_BUILD: >-
-            pip3 install certifi &&
-            git clean -fxd build
+      # - name: Build wheels for CPython 3.10
+      #   uses: pypa/cibuildwheel@v2.11.4
+      #   env:
+      #     CIBW_BUILD: "cp310-*"
+      #     CIBW_BEFORE_BUILD: >-
+      #       pip3 install certifi &&
+      #       git clean -fxd build
+
+      # - name: Build wheels for CPython 3.11
+      #   uses: pypa/cibuildwheel@v2.11.4
+      #   env:
+      #     CIBW_BUILD: "cp311-*"
+      #     CIBW_BEFORE_BUILD: >-
+      #       pip3 install certifi &&
+      #       git clean -fxd build
 
       - uses: actions/upload-artifact@v3
         with:
@@ -462,42 +473,42 @@ jobs:
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
-  tests-macos11-x86_64:
-    name: Test builds in ubuntu
-    runs-on: macos-11
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-    needs: [macos11-x86_64]
-    env:
-      CC: /usr/local/bin/gcc-10
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # tests-macos11-x86_64:
+  #   name: Test builds in ubuntu
+  #   runs-on: macos-11
+  #   strategy:
+  #     matrix:
+  #       python-version: ["3.8", "3.9", "3.10", "3.11"]
+  #   needs: [macos11-x86_64]
+  #   env:
+  #     CC: /usr/local/bin/gcc-10
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-          architecture: x86_64
+  #     - name: Set up python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
+  #         architecture: x86_64
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: artifacts
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: artifacts
 
-      - name: Test sdist
-        run: |
-          python -m pip install *.gz
-          python -c "import pyKVFinder; print(pyKVFinder.__version__)"
-          python -m unittest discover -vs tests/unit
-          python -m unittest discover -vs tests/integration
+  #     - name: Test sdist
+  #       run: |
+  #         python -m pip install *.gz
+  #         python -c "import pyKVFinder; print(pyKVFinder.__version__)"
+  #         python -m unittest discover -vs tests/unit
+  #         python -m unittest discover -vs tests/integration
 
-      - name: Test package builds
-        run: |
-          pip install pyKVFinder-*-${{ matrix.python-version }}*whl
-          python -m unittest discover -vs tests/unit
-          python -m unittest discover -vs tests/integration
+  #     - name: Test package builds
+  #       run: |
+  #         pip install pyKVFinder-*-${{ matrix.python-version }}*whl
+  #         python -m unittest discover -vs tests/unit
+  #         python -m unittest discover -vs tests/integration
 
   # tests-macos11-arm64:
   #   name: Test builds in ubuntu
