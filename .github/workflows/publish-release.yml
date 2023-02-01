@@ -100,7 +100,7 @@ jobs:
         with:
           python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
         env:
-          CIBW_BUILD: ${{ python-version}}
+          CIBW_BUILD: ${{ python-versions }}
           CIBW_BEFORE_BUILD: >-
             pip3 install certifi &&
             git clean -fxd build
