@@ -66,9 +66,9 @@ jobs:
           python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
           build-requirements: "cython numpy"
 
-      - name: Test package build ${{ matrix.python-version }}
+      - name: Test package build ${{ matrix.python-versions }}
         run: |
-          pip install ./sdist/pyKVFinder-*-${{ matrix.python-version }}*whl
+          pip install ./sdist/pyKVFinder-*-${{ matrix.python-versions }}*whl
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
