@@ -390,11 +390,11 @@ jobs:
 
       - name: Set up python
         uses: actions/setup-python@v4
-      
-      - name: Test package builds
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: x64
+          architecture: x86_64
+
+      - name: Test package builds
         run: |
           pip install ./dist/pyKVFinder-*-${{ matrix.python-version }}*whl
           python -m unittest discover -vs tests/unit
