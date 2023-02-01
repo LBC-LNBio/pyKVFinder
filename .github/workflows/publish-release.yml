@@ -408,7 +408,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        # python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
     needs: [sdist, manylinux]
     steps:
       - name: Checkout repository
@@ -437,42 +438,41 @@ jobs:
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
-  tests-macos10:
-    name: Test builds in ubuntu
-    runs-on: macos-10.15
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-        version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
-    needs: [macos10]
-    env:
-      CC: /usr/local/bin/gcc-10
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # tests-macos10:
+  #   name: Test builds in ubuntu
+  #   runs-on: macos-10.15
+  #   strategy:
+  #     matrix:
+  #       python-version: ["3.8", "3.9", "3.10", "3.11"]
+  #   needs: [macos10]
+  #   env:
+  #     CC: /usr/local/bin/gcc-10
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
+  #     - name: Set up python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: artifacts
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: artifacts
 
-      - name: Test sdist
-        run: |
-          python -m pip install *.gz
-          python -c "import pyKVFinder; print(pyKVFinder.__version__)"
-          python -m unittest discover -vs tests/unit
-          python -m unittest discover -vs tests/integration
+  #     - name: Test sdist
+  #       run: |
+  #         python -m pip install *.gz
+  #         python -c "import pyKVFinder; print(pyKVFinder.__version__)"
+  #         python -m unittest discover -vs tests/unit
+  #         python -m unittest discover -vs tests/integration
 
-      - name: Test package builds
-        run: |
-          pip install pyKVFinder-*-${{ matrix.version }}*whl
-          python -m unittest discover -vs tests/unit
-          python -m unittest discover -vs tests/integration
+  #     - name: Test package builds
+  #       run: |
+  #         pip install pyKVFinder-*-${{ matrix.python-version }}*whl
+  #         python -m unittest discover -vs tests/unit
+  #         python -m unittest discover -vs tests/integration
 
   # tests-macos11-x86_64:
   #   name: Test builds in ubuntu
