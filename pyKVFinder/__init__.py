@@ -34,11 +34,6 @@ __name__ = "pyKVFinder"
 __version__ = "0.4.5"
 license = "GNU GPL-3.0 License"
 
-try:
-    from .utils import *
-    from .grid import *
-    from .main import *
-except SyntaxError:
-    pass
-except ModuleNotFoundError:
-    pass
+from .utils import *
+from .grid import *
+from .main import *
