@@ -443,6 +443,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
+        version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
     needs: [macos10]
     env:
       CC: /usr/local/bin/gcc-10
@@ -469,7 +470,7 @@ jobs:
 
       - name: Test package builds
         run: |
-          pip install pyKVFinder-*-${{ matrix.python-version }}*whl
+          pip install pyKVFinder-*-${{ matrix.version }}*whl
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
