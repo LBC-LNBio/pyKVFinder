@@ -108,10 +108,9 @@ jobs:
             git clean -fxd build
           CIBW_TEST_COMMAND: >-
             python --version &&
-            pip install -r requirements.txt &&
-            pip install ./wheelhouse/pyKVFinder*${{ matrix.python-version }}*.whl
-            python -c "import pyKVFinder; print(pyKVFinder.__version__)"
-            python -m unittest discover -vs tests/unit
+            pip install ./wheelhouse/pyKVFinder*${{ matrix.python-version }}*.whl &&
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+            python -m unittest discover -vs tests/unit &&
             python -m unittest discover -vs tests/integration
 
       - uses: actions/upload-artifact@v3
