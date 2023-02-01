@@ -399,7 +399,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["cp38-cp38", "cp39-cp39", "cp310-cp310", "cp311-cp311"]
-    needs: manylinux
+    needs: [sdist, manylinux]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -409,8 +409,25 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Test package builds
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Test sdist
         run: |
-          pip install ./dist/pyKVFinder-*-${{ matrix.python-version }}*whl
+          python -m pip install *.gz
+          python -c "import pyKVFinder; print(pyKVFinder.__version__)"
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
+
+      - name: Test package builds
+        run: |
+          pip install pyKVFinder-*-${{ matrix.python-version }}*whl
+          python -m unittest discover -vs tests/unit
+          python -m unittest discover -vs tests/integration
+      
+
