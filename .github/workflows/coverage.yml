@@ -26,11 +26,11 @@ jobs:
 
       - name: Build coverage file
         run: |
-          pytest --cov-report=term-missing --cov=pyKVFinder tests/ | tee coverage.txt
+          pytest --cov-report=term-missing --cov=pyKVFinder tests/
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: coverage.txt
-
-          # junitxml-path: coverage.xml
+          default-branch: master
+          remove-link-from-badge: true
