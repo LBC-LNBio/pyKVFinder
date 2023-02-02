@@ -55,6 +55,7 @@ issues = "https://github.com/LBC-LNBio/pyKVFinder/issues"
 pyKVFinder = "pyKVFinder.main:cli"
 
 [tool.setuptools]
+packages = ["pyKVFinder"]
 py-modules = ["_pyKVFinder"]
 include-package-data = true
 
