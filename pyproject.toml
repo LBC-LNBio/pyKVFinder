@@ -63,8 +63,8 @@ include-package-data = true
 version = { attr = "pyKVFinder.__version__" }
 
 [tool.coverage.run]
-omit = ["pyKVFinder/argparser.py"]
+omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
 [tool.pytest.ini_options]
-addopts = "--cov pyKVFinder --cov-report=term-missing"
+addopts = "--cov=pyKVFinder --cov-report=term-missing"
 testpaths = ["tests"]
