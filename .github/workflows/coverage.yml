@@ -1,15 +1,17 @@
 name: Pytest Coverage
+
 on:
   push:
     branches: [master, publish-workflow]
 
 jobs:
-  build:
+  coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Python 3.x
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.x
@@ -24,7 +26,7 @@ jobs:
 
       - name: Build coverage file
         run: |
-          pytest --junitxml=coverage.xml --cov-report=term-missing:skip-covered --cov=pyKVFinder tests/ --ignore="pyKVFinder/argparser.py" | tee coverage.txt
+          pytest --junitxml=coverage.xml --cov=pyKVFinder tests/ --ignore pyKVFinder/argparser.py
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main

@@ -61,3 +61,6 @@ include-package-data = true
 
 [tool.setuptools.dynamic]
 version = { attr = "pyKVFinder.__version__" }
+
+[tool.coverage.run]
+omit = ["pyKVFinder/argparser.py"]
