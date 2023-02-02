@@ -12,13 +12,13 @@ pyKVFinder
     :target: https://pypi.org/project/pyKVFinder/
 
 .. image:: https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-tests
-    :target:: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/unit-testing.yml
+    :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/unit-testing.yml
 
 .. image:: https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-tests
-    :target:: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/integration-testing.yml
+    :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/integration-testing.yml
 
 .. image:: https://img.shields.io/github/actions/workflow/status/jvsguerra/pyKVFinder/publish-release.yml?label=build
-    :target:: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/publish-release.yml
+    :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/publish-release.yml
 
 A Python package for detecting and characterizing biomolecular cavities.
 
