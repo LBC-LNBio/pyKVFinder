@@ -29,7 +29,7 @@ from pyKVFinder.utils import read_pdb, read_cavity
 PYKVFINDER_TESTS_DIR = os.path.join(
     pyKVFinder.__path__, "data", "tests"
 )
-UNIT_TESTS_DIR = os.path.join(__path__, "fixtures")
+UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 class TestGetVerticesFromBox(unittest.TestCase):

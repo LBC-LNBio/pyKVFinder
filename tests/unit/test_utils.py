@@ -13,7 +13,7 @@ from pyKVFinder.utils import (
     calculate_frequencies,
 )
 
-UNIT_TESTS_DIR = os.path.join(__path__, "fixtures")
+UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 class TestReadVdw(unittest.TestCase):
