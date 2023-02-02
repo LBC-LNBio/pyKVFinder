@@ -46,9 +46,6 @@ classifiers = [
 dependencies = ["toml==0.10.2", "numpy==1.24.1", "matplotlib==3.6.2"]
 dynamic = ["version"]
 
-[project.optional-dependencies]
-dev = ["pytest", "pytest-cov"]
-
 [project.urls]
 homepage = "https://github.com/LBC-LNBio/pyKVFinder/"
 documentation = "https://lbc-lnbio.github.io/pyKVFinder/"
