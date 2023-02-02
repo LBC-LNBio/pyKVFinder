@@ -1,10 +1,5 @@
 [build-system]
-requires = [
-    "setuptools>=62.0",
-    "wheel>=0.37.1",
-    "Cython>=0.29",
-    "numpy>=1.15",
-]
+requires = ["setuptools>=62.0", "wheel>=0.37.1", "Cython>=0.29"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -22,7 +17,7 @@ maintainers = [
 ]
 license = { file = "LICENSE.txt" }
 readme = { file = "README.rst", content-type = "text/x-rst" }
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 keywords = [
     "structural biology",
     "proteins",
@@ -37,6 +32,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Chemistry",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
