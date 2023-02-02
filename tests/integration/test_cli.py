@@ -18,7 +18,6 @@ class TestCLI(unittest.TestCase):
             ],
             capture_output=True,
         )
-        print(result)
         self.assertEqual(result.returncode, 0)
 
     def test_box_mode(self):
@@ -33,11 +32,11 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
                 "-B",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/custom-box.toml",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/custom-box.toml",
             ],
             capture_output=True,
         )
@@ -50,11 +49,11 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
                 "-B",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/residues-box.toml",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/residues-box.toml",
             ],
             capture_output=True,
         )
@@ -66,14 +65,15 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
                 "-L",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/ADN.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/ADN.pdb",
             ],
             capture_output=True,
         )
+        print(result)
         self.assertEqual(result.returncode, 0)
 
     def test_hydropathy_mode(self):
@@ -82,9 +82,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
                 "--hydropathy",
             ],
             capture_output=True,
@@ -97,9 +97,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
                 "--depth",
             ],
             capture_output=True,
@@ -114,14 +114,14 @@ class TestCLI(unittest.TestCase):
                 "pyKVFinder",
                 "non-existing.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
             ],
             capture_output=True,
         )
         self.assertEqual(result.returncode, 1)  # FileNotFoundError
         # bad float (step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_cutoff)
         result = subprocess.run(
-            ["pyKVFinder", f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb", "-o", "string"],
+            ["pyKVFinder", f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb", "-o", "string"],
             capture_output=True,
         )
         self.assertEqual(result.returncode, 2)  # argparse.ArgumentTypeError
@@ -129,7 +129,7 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-S",
                 "A",
             ],
@@ -140,9 +140,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "-O",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/output",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/output",
                 "-L",
                 "non-existing.pdb",
             ],
@@ -153,9 +153,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "--hydropathy",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
             ],
             capture_output=True,
         )
@@ -164,7 +164,7 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                f"{os.path.dirname(pyKVFinder.__file__)}/tests/1FMO.pdb",
+                f"{os.path.dirname(pyKVFinder.__file__)}/data/tests/1FMO.pdb",
                 "--hydropathy",
                 "non-existing-dictionary.dat",
             ],
