@@ -2,6 +2,7 @@ import argparse
 import os
 import toml
 import unittest
+from unittest import mock
 
 import pyKVFinder
 
@@ -9,7 +10,7 @@ DATADIR = os.path.join(os.path.dirname(pyKVFinder.__file__), "data")
 
 
 class TestCLI(unittest.TestCase):
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -39,7 +40,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder <.pdb>
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -75,7 +76,7 @@ class TestCLI(unittest.TestCase):
         # >>> p4 = [x4, y4, z4]
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -108,7 +109,7 @@ class TestCLI(unittest.TestCase):
         # >>> padding =  3.5
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -138,7 +139,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder <.pdb> -L <.pdb>
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -168,7 +169,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder <.pdb> --hydropathy
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -198,7 +199,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder <.pdb> --depth
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input="non-existing.pdb",
@@ -228,7 +229,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder non-existing.pdb
         self.assertRaises(FileNotFoundError, pyKVFinder.main.cli)  # FileNotFoundError
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -258,7 +259,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder -o string
         self.assertRaises(TypeError, pyKVFinder.main.cli)  # TypeError
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -289,7 +290,7 @@ class TestCLI(unittest.TestCase):
         # self.assertEqual(pyKVFinder.main.cli(), 2)  # argparse.ArgumentTypeError
         self.assertRaises(ValueError, pyKVFinder.main.cli)  # ValueError
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -319,7 +320,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder -L non-existing.pdb
         self.assertRaises(FileNotFoundError, pyKVFinder.main.cli)  # FileNotFoundError
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
@@ -349,7 +350,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder --hydopathy non-existing-dictionary.dat
         self.assertRaises(FileNotFoundError, pyKVFinder.main.cli)  # FileNotFoundError
 
-    @unittest.mock.patch(
+    @mock.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
             input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
