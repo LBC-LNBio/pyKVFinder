@@ -15,6 +15,7 @@ class TestCLI(unittest.TestCase):
             ],
             capture_output=True,
         )
+        print(result)
         self.assertEqual(result.returncode, 0)
 
     def test_box_mode(self):
