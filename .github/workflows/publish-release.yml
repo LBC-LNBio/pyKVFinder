@@ -25,8 +25,8 @@ jobs:
 
       - name: Test sdist
         run: |
-          pip install numpy
           pip install dist/*.gz
+          python -c "import pyKVFinder; print(pyKVFinder.__version__)"
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
