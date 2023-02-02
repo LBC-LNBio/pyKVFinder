@@ -1,33 +1,34 @@
-from typing import Union
-import unittest
 import os
-import toml
+import unittest
+
 import numpy
+import toml
+
 import pyKVFinder
 from pyKVFinder.grid import (
-    get_vertices,
-    _get_vertices_from_box,
-    _get_vertices_from_residues,
-    get_vertices_from_file,
+    _get_cavity_label,
+    _get_cavity_name,
     _get_dimensions,
     _get_sincos,
-    _get_cavity_name,
-    _get_cavity_label,
-    _select_cavities,
-    _process_spatial,
+    _get_vertices_from_box,
+    _get_vertices_from_residues,
     _process_depth,
-    _process_residues,
     _process_hydropathy,
-    detect,
-    spatial,
-    depth,
+    _process_residues,
+    _process_spatial,
+    _select_cavities,
     constitutional,
+    depth,
+    detect,
+    get_vertices,
+    get_vertices_from_file,
     hydropathy,
+    spatial,
 )
-from pyKVFinder.utils import read_pdb, read_cavity
+from pyKVFinder.utils import read_cavity, read_pdb
 
 PYKVFINDER_TESTS_DIR = os.path.join(
-    pyKVFinder.__path__, "data", "tests"
+    os.path.dirname(pyKVFinder.__file__), "data", "tests"
 )
 UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 
