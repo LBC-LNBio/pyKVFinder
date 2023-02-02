@@ -1,0 +1,33 @@
+name: Pytest Coverage
+on:
+  push:
+    branches: [master, publish-workflow]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+
+      - name: Build pyKVFinder
+        run: pip install .
+
+      - name: Build coverage file
+        run: |
+          pytest --junitxml=coverage.xml --cov-report=term-missing:skip-covered --cov=pyKVFinder tests/ --ignore="pyKVFinder/argparser.py" | tee coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./coverage.txt
+          junitxml-path: ./coverage.xml
