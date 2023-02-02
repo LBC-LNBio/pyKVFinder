@@ -1,5 +1,6 @@
 import unittest
 import subprocess
+import pyKVFinder
 
 
 class TestCLI(unittest.TestCase):
@@ -9,9 +10,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/data/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/data/tests/output",
             ],
             capture_output=True,
         )
@@ -30,11 +31,11 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
                 "-B",
-                "pyKVFinder/data/tests/custom-box.toml",
+                f"{pyKVFinder.__path__}/tests/custom-box.toml",
             ],
             capture_output=True,
         )
@@ -47,11 +48,11 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
                 "-B",
-                "pyKVFinder/data/tests/residues-box.toml",
+                f"{pyKVFinder.__path__}/tests/residues-box.toml",
             ],
             capture_output=True,
         )
@@ -63,11 +64,11 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
                 "-L",
-                "pyKVFinder/data/tests/ADN.pdb",
+                f"{pyKVFinder.__path__}/tests/ADN.pdb",
             ],
             capture_output=True,
         )
@@ -79,9 +80,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
                 "--hydropathy",
             ],
             capture_output=True,
@@ -94,9 +95,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
                 "--depth",
             ],
             capture_output=True,
@@ -111,14 +112,14 @@ class TestCLI(unittest.TestCase):
                 "pyKVFinder",
                 "non-existing.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
             ],
             capture_output=True,
         )
         self.assertEqual(result.returncode, 1)  # FileNotFoundError
         # bad float (step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_cutoff)
         result = subprocess.run(
-            ["pyKVFinder", "pyKVFinder/data/tests/1FMO.pdb", "-o", "string"],
+            ["pyKVFinder", f"{pyKVFinder.__path__}/tests/1FMO.pdb", "-o", "string"],
             capture_output=True,
         )
         self.assertEqual(result.returncode, 2)  # argparse.ArgumentTypeError
@@ -126,7 +127,7 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-S",
                 "A",
             ],
@@ -137,9 +138,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "-O",
-                "pyKVFinder/data/tests/output",
+                f"{pyKVFinder.__path__}/tests/output",
                 "-L",
                 "non-existing.pdb",
             ],
@@ -150,9 +151,9 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "--hydropathy",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
             ],
             capture_output=True,
         )
@@ -161,7 +162,7 @@ class TestCLI(unittest.TestCase):
         result = subprocess.run(
             [
                 "pyKVFinder",
-                "pyKVFinder/data/tests/1FMO.pdb",
+                f"{pyKVFinder.__path__}/tests/1FMO.pdb",
                 "--hydropathy",
                 "non-existing-dictionary.dat",
             ],

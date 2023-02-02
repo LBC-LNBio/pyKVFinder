@@ -16,24 +16,24 @@ def repeat(times):
 
 class TestPackage(unittest.TestCase):
     def setUp(self):
-        self.vdw = os.path.join(os.path.dirname(pyKVFinder.__file__), "data", "vdw.dat")
+        self.vdw = os.path.join(pyKVFinder.__path__, "data", "vdw.dat")
         self.pdb = os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "1FMO.pdb"
+            pyKVFinder.__path__, "data", "tests", "1FMO.pdb"
         )
         self.xyz = os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "1FMO.xyz"
+            pyKVFinder.__path__, "data", "tests", "1FMO.xyz"
         )
         self.ligand = os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "ADN.pdb"
+            pyKVFinder.__path__, "data", "tests", "ADN.pdb"
         )
         self.residues_box = os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "residues-box.toml"
+            pyKVFinder.__path__, "data", "tests", "residues-box.toml"
         )
         self.custom_box = os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "custom-box.toml"
+            pyKVFinder.__path__, "data", "tests", "custom-box.toml"
         )
         self.cavity = os.path.join(
-            os.path.dirname(pyKVFinder.__file__),
+            pyKVFinder.__path__,
             "data",
             "tests",
             "1FMO.KVFinder.output.pdb",
@@ -183,7 +183,7 @@ class TestPackage(unittest.TestCase):
         pyKVFinder.plot_frequencies(
             frequencies,
             os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -210,7 +210,7 @@ class TestPackage(unittest.TestCase):
     def test_export(self):
         pyKVFinder.export(
             os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -224,7 +224,7 @@ class TestPackage(unittest.TestCase):
     def test_write_results(self):
         pyKVFinder.write_results(
             os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -233,7 +233,7 @@ class TestPackage(unittest.TestCase):
             input=self.pdb,
             ligand=self.ligand,
             output=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -254,7 +254,7 @@ class TestPackageWorkflow(unittest.TestCase):
     def setUp(self):
         # Pdb
         self.pdb = os.path.join(
-            os.path.dirname(pyKVFinder.__file__), "data", "tests", "1FMO.pdb"
+            pyKVFinder.__path__, "data", "tests", "1FMO.pdb"
         )
         # Full workflow
         self.results = pyKVFinder.run_workflow(
@@ -281,7 +281,7 @@ class TestPackageWorkflow(unittest.TestCase):
         results = pyKVFinder.run_workflow(
             self.pdb,
             os.path.join(
-                os.path.dirname(pyKVFinder.__file__), "data", "tests", "ADN.pdb"
+                pyKVFinder.__path__, "data", "tests", "ADN.pdb"
             ),
         )
         self.assertEqual(results.ncav > 0, True)
@@ -290,7 +290,7 @@ class TestPackageWorkflow(unittest.TestCase):
         results = pyKVFinder.run_workflow(
             self.pdb,
             box=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "residues-box.toml",
@@ -302,7 +302,7 @@ class TestPackageWorkflow(unittest.TestCase):
         results = pyKVFinder.run_workflow(
             self.pdb,
             box=os.path.join(
-                os.path.dirname(pyKVFinder.__file__), "data", "tests", "custom-box.toml"
+                pyKVFinder.__path__, "data", "tests", "custom-box.toml"
             ),
         )
         self.assertEqual(results.ncav, 1)
@@ -311,14 +311,14 @@ class TestPackageWorkflow(unittest.TestCase):
         # export
         self.results.export(
             output=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
                 "cavities.pdb",
             ),
             output_hydropathy=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -328,21 +328,21 @@ class TestPackageWorkflow(unittest.TestCase):
         # write
         self.results.write(
             fn=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
                 "results.toml",
             ),
             output=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
                 "cavities.pdb",
             ),
             output_hydropathy=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -352,7 +352,7 @@ class TestPackageWorkflow(unittest.TestCase):
         # plot_frequencies
         self.results.plot_frequencies(
             pdf=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -362,21 +362,21 @@ class TestPackageWorkflow(unittest.TestCase):
         # export_all
         self.results.export_all(
             fn=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
                 "results.toml",
             ),
             output=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
                 "cavities.pdb",
             ),
             output_hydropathy=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
@@ -384,7 +384,7 @@ class TestPackageWorkflow(unittest.TestCase):
             ),
             include_frequencies_pdf=True,
             pdf=os.path.join(
-                os.path.dirname(pyKVFinder.__file__),
+                pyKVFinder.__path__,
                 "data",
                 "tests",
                 "output",
