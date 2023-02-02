@@ -66,5 +66,5 @@ version = { attr = "pyKVFinder.__version__" }
 omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=pyKVFinder --cov-report=term-missing"
+addopts = "--cov=pyKVFinder --cov-report=term-missing --junitxml=coverage/coverage.xml"
 testpaths = ["tests"]

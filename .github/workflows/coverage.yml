@@ -33,6 +33,7 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: coverage/coverage.txt
+          junitxml-path: coverage/coverage.xml
           default-branch: master
           remove-link-from-badge: true
 
