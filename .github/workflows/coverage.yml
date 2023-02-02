@@ -26,7 +26,7 @@ jobs:
 
       - name: Build coverage file
         run: |
-          pytest --cov-report=term-missing --cov=pyKVFinder tests/
+          pytest --cov-report=term-missing --cov=pyKVFinder tests/ | tee coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
@@ -40,12 +40,12 @@ jobs:
         with:
           output: coverage.svg
         
-      - name: Make badge
-        uses: schneegans/dynamic-badges-action@v1.4.0
-        with:
-          filename: coverage.json
-          label: Coverage
-          message: ${{ env.total }}%
-          minColorRange: 50
-          maxColorRange: 90
-          valColorRange: ${{ env.total }}
+      # - name: Make badge
+      #   uses: schneegans/dynamic-badges-action@v1.4.0
+      #   with:
+      #     filename: coverage.json
+      #     label: Coverage
+      #     message: ${{ env.total }}%
+      #     minColorRange: 50
+      #     maxColorRange: 90
+      #     valColorRange: ${{ env.total }}
