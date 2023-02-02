@@ -1,5 +1,10 @@
 [build-system]
-requires = ["setuptools>=62.0", "wheel>=0.37.1", "Cython>=0.29", "numpy>=1.21.5"]
+requires = [
+    "setuptools>=62.0",
+    "wheel>=0.37.1",
+    "Cython>=0.29",
+    "numpy>=1.21.5",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -42,9 +47,7 @@ dependencies = ["toml==0.10.2", "numpy==1.24.1", "matplotlib==3.6.2"]
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = [
-    "pytest", "pytest-cov"
-]
+dev = ["pytest", "pytest-cov"]
 
 [project.urls]
 homepage = "https://github.com/LBC-LNBio/pyKVFinder/"
