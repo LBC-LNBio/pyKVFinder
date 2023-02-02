@@ -3,6 +3,8 @@ name: Integration Testing
 on:
   release:
     types: [created]
+  push:
+    types: [publish-workflow]
   pull_request:
     branches: [master]
 

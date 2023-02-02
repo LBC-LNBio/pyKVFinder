@@ -2,7 +2,7 @@ name: Unit Testing
 
 on:
   push:
-    branches: [master]
+    branches: [master, publish-workflow]
   pull_request:
     branches: [master]
 
