@@ -27,10 +27,8 @@ from pyKVFinder.grid import (
 )
 from pyKVFinder.utils import read_cavity, read_pdb
 
-PYKVFINDER_TESTS_DIR = os.path.join(
-    os.path.dirname(pyKVFinder.__file__), "data", "tests"
-)
-UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
+DATADIR = os.path.join(os.path.dirname(pyKVFinder.__file__), "data")
+FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 class TestGetVerticesFromBox(unittest.TestCase):
@@ -43,7 +41,7 @@ class TestGetVerticesFromBox(unittest.TestCase):
             [-0.89, 3.34, 10.19],
         ]
         # Prepare data
-        box = toml.load(os.path.join(PYKVFINDER_TESTS_DIR, "custom-box.toml"))["box"]
+        box = toml.load(os.path.join(DATADIR, "tests", "custom-box.toml"))["box"]
         # Result
         result = _get_vertices_from_box(box).tolist()
         self.assertListEqual(expected, result)
@@ -59,12 +57,12 @@ class TestGetVerticesFromResidues(unittest.TestCase):
             [-2.634, 2.843, 16.204],
         ]
         # Prepare data
-        atomic = read_pdb(os.path.join(PYKVFINDER_TESTS_DIR, "1FMO.pdb"))
+        atomic = read_pdb(os.path.join(DATADIR, "tests", "1FMO.pdb"))
         atominfo = numpy.asarray(
             ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
         )
         xyzr = atomic[:, 4:].astype(numpy.float64)
-        box = toml.load(os.path.join(PYKVFINDER_TESTS_DIR, "residues-box.toml"))["box"]
+        box = toml.load(os.path.join(DATADIR, "tests", "residues-box.toml"))["box"]
         # Result
         result = _get_vertices_from_residues(box, atominfo, xyzr).tolist()
         self.assertListEqual(expected, result)
@@ -86,7 +84,7 @@ class TestGetVerticesFromFile(unittest.TestCase):
         ]
         # Get vertices from file
         vertices, selected = get_vertices_from_file(
-            os.path.join(PYKVFINDER_TESTS_DIR, "custom-box.toml"), atomic
+            os.path.join(DATADIR, "tests", "custom-box.toml"), atomic
         )
         # Atom selection
         self.assertListEqual(selected.tolist(), [atomic[0]])
@@ -110,7 +108,7 @@ class TestGetVerticesFromFile(unittest.TestCase):
         ]
         # Get vertices from file
         vertices, selected = get_vertices_from_file(
-            os.path.join(PYKVFINDER_TESTS_DIR, "residues-box.toml"), atomic
+            os.path.join(DATADIR, "tests", "residues-box.toml"), atomic
         )
         # Atom selection
         self.assertListEqual(selected.tolist(), atomic[0:3])
@@ -474,15 +472,15 @@ class TestProcessHydropathy(unittest.TestCase):
 class TestDetect(unittest.TestCase):
     def test_detect(self):
         # Prepare data
-        atomic = read_pdb(os.path.join(PYKVFINDER_TESTS_DIR, "1FMO.pdb"))
+        atomic = read_pdb(os.path.join(DATADIR, "tests", "1FMO.pdb"))
         vertices = get_vertices(atomic)
         # Detect cavities
         ncav, cavities = detect(atomic, vertices)
         cavities[cavities == 1] = 0
         # Expected grid
         expected = read_cavity(
-            os.path.join(PYKVFINDER_TESTS_DIR, "1FMO.KVFinder.output.pdb"),
-            os.path.join(PYKVFINDER_TESTS_DIR, "1FMO.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
         )
         # Assert number of cavities
         self.assertEqual(ncav, int(expected.max() - 1))

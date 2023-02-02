@@ -15,7 +15,7 @@ from pyKVFinder.utils import (
     read_xyz,
 )
 
-UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
+FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 class TestReadVdw(unittest.TestCase):
@@ -25,17 +25,13 @@ class TestReadVdw(unittest.TestCase):
             "ALA": {"N": 1.824, "C": 1.908, "H": 0.6, "O": 1.6612},
             "GEN": {"N": 1.824, "C": 1.908, "H": 0.6, "O": 1.6612},
         }
-        result = read_vdw(os.path.join(UNIT_TESTS_DIR, "vdw1.dat"))
+        result = read_vdw(os.path.join(FIXTURES, "vdw1.dat"))
         self.assertEqual(result, expected)
 
     def test_invalid_vdw(self):
         # Check invalid files formats
-        self.assertRaises(
-            ValueError, read_vdw, os.path.join(UNIT_TESTS_DIR, "vdw2.dat")
-        )
-        self.assertRaises(
-            ValueError, read_vdw, os.path.join(UNIT_TESTS_DIR, "vdw3.dat")
-        )
+        self.assertRaises(ValueError, read_vdw, os.path.join(FIXTURES, "vdw2.dat"))
+        self.assertRaises(ValueError, read_vdw, os.path.join(FIXTURES, "vdw3.dat"))
 
 
 class TestProcessPdbLine(unittest.TestCase):
@@ -85,7 +81,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "E", "GLU", "OE1", "-5.439", "-17.684", "-16.719", "1.6612"],
             ["13", "E", "GLU", "OE2", "-6.178", "-18.047", "-18.817", "1.6612"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "atom.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "atom.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_hetatm(self):
@@ -111,7 +107,7 @@ class TestReadPdb(unittest.TestCase):
             ["351", "E", "ADN", "C8", "7.374", "9.872", "2.291", "1.66"],
             ["351", "E", "ADN", "N9", "7.444", "10.056", "3.646", "1.97"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "hetatm.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "hetatm.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_skippable_entries(self):
@@ -120,7 +116,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "A", "GLY", "N", "12.681", "37.302", "-25.211", "1.824"],
             ["13", "A", "GLY", "CA", "11.982", "37.996", "-26.241", "1.908"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "skippable.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "skippable.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_nmr_models(self):
@@ -132,7 +128,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "E", "GLU", "N", "-4.444", "-15.642", "-14.858", "1.824"],
             ["13", "E", "GLU", "N", "-5.555", "-15.642", "-14.858", "1.824"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "nmr.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "nmr.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_one_nmr_model(self):
@@ -146,7 +142,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "E", "GLU", "N", "-4.444", "-15.642", "-14.858", "1.824"],
             ["13", "E", "GLU", "N", "-5.555", "-15.642", "-14.858", "1.824"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "nmr.pdb"), model=model).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "nmr.pdb"), model=model).tolist()
         self.assertListEqual(result, [expected[model - 1]])
 
 
@@ -163,7 +159,7 @@ class TestReadXyz(unittest.TestCase):
             ["8", "A", "UNK", "O", "-5.439", "-17.684", "-16.719", "1.69"],
             ["9", "A", "UNK", "O", "-6.178", "-18.047", "-18.817", "1.69"],
         ]
-        result = read_xyz(os.path.join(UNIT_TESTS_DIR, "xyz.xyz")).tolist()
+        result = read_xyz(os.path.join(FIXTURES, "xyz.xyz")).tolist()
         self.assertListEqual(result, expected)
 
 
@@ -182,14 +178,14 @@ class TestReadCavity(unittest.TestCase):
             [0.6, 0.0, 0.6, 2.0],
             [0.6, 0.6, 0.6, 2.0],
         ]
-        result = _read_cavity(os.path.join(UNIT_TESTS_DIR, "cavity.pdb")).tolist()
+        result = _read_cavity(os.path.join(FIXTURES, "cavity.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_read_cavity(self):
         expected = [[[2, 2], [2, 2]], [[2, 2], [2, 2]]]
         result = read_cavity(
-            os.path.join(UNIT_TESTS_DIR, "cavity.pdb"),
-            os.path.join(UNIT_TESTS_DIR, "receptor.pdb"),
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
         )[:2, :2, :2].tolist()
         self.assertListEqual(result, expected)
 
