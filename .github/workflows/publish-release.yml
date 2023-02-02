@@ -25,7 +25,7 @@ jobs:
 
       - name: Test sdist
         run: |
-          pip install -e dist/*.gz
+          pip install dist/*.gz
           python -m unittest discover -vs tests/unit
           python -m unittest discover -vs tests/integration
 
