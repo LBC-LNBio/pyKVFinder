@@ -4,7 +4,7 @@ on:
   release:
     types: [created]
   push:
-    types: [publish-workflow]
+    branches: [publish-workflow]
   pull_request:
     branches: [master]
 
