@@ -26,7 +26,7 @@ jobs:
 
       - name: Build coverage file
         run: |
-          pytest --junitxml=coverage.xml --cov=pyKVFinder tests/ --ignore pyKVFinder/argparser.py
+          pytest --junitxml=coverage.xml --cov-report=term-missing:skip-covered --cov=pyKVFinder tests/ | tee coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
