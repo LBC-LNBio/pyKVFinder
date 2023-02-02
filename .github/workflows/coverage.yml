@@ -2,7 +2,7 @@ name: Pytest Coverage
 
 on:
   push:
-    branches: [master, publish-workflow]
+    branches: [master]
 
 jobs:
   coverage:
@@ -40,12 +40,12 @@ jobs:
         uses: tj-actions/coverage-badge-py@v1.8
         with:
           output: coverage/coverage.svg
-      
+
       - name: Publish coverage report to coverage branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: coverage
           folder: coverage
           target-folder: .
-          force: true
           clean: true
+          force: true

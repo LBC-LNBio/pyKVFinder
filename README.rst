@@ -21,7 +21,7 @@ pyKVFinder
     :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/publish-release.yml
 
 .. image:: https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg
-    :target: https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.xml
+
 
 A Python package for detecting and characterizing biomolecular cavities.
 
