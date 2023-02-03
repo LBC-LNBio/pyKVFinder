@@ -185,7 +185,7 @@ class TestReadXyz(unittest.TestCase):
     def test_wrong_fn_format(self):
         # Check wrong fn formats
         for fn in [1, 1.0, [1], {"xyz": 1}, numpy.ones(1)]:
-            self.assertRaises(TypeError, read_xyz, fn, None, None)
+            self.assertRaises(TypeError, read_xyz, fn, None)
 
 
 class TestReadCavity(unittest.TestCase):
@@ -213,6 +213,24 @@ class TestReadCavity(unittest.TestCase):
             os.path.join(FIXTURES, "receptor.pdb"),
         )[:2, :2, :2].tolist()
         self.assertListEqual(result, expected)
+
+    def test_xyz_receptor(self):
+        expected = [[[2, 2], [2, 2]], [[2, 2], [2, 2]]]
+        result = read_cavity(
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.xyz"),
+        )[:2, :2, :2].tolist()
+        self.assertListEqual(result, expected)
+
+    def test_parameters_as_integers(self):
+        for kwargs in [{"step": 1, "probe_in": 1, "probe_out": 4}]:
+            expected = [[[2, 2], [2, 2]], [[2, 2], [2, 2]]]
+            result = read_cavity(
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                **kwargs
+            )[:2, :2, :2].tolist()
+            self.assertListEqual(result, expected)
 
     def test_wrong_cavity_format(self):
         # Check wrong cavity formats
@@ -259,13 +277,13 @@ class TestReadCavity(unittest.TestCase):
 
     def test_wrong_probe_in_format(self):
         # Check wrong probe in format
-        for step in [[1], {"step": 1}, numpy.ones(1), "1"]:
+        for probe_in in [[1], {"step": 1}, numpy.ones(1), "1"]:
             self.assertRaises(
                 TypeError,
                 read_cavity,
                 os.path.join(FIXTURES, "cavity.pdb"),
                 os.path.join(FIXTURES, "receptor.pdb"),
-                step=step,
+                probe_in=probe_in,
             )
 
     def test_invalid_probe_in(self):
@@ -298,7 +316,7 @@ class TestReadCavity(unittest.TestCase):
             os.path.join(FIXTURES, "receptor.pdb"),
             probe_out=-1,
         )
-    
+
     def test_wrong_nthreads_format(self):
         # Check wrong nthreads format
         for nthreads in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
@@ -318,7 +336,50 @@ class TestReadCavity(unittest.TestCase):
                 read_cavity,
                 os.path.join(FIXTURES, "cavity.pdb"),
                 os.path.join(FIXTURES, "receptor.pdb"),
-                nthreads=nthreads
+                nthreads=nthreads,
+            )
+
+    def test_invalid_probe_pair(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            probe_in=4,
+            probe_out=1.4,
+        )
+
+    def test_wrong_surface_format(self):
+        # Check wrong surface format
+        for surface in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                surface=surface,
+            )
+
+    def test_invalid_surface(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            surface="invalid",
+        )
+
+    def test_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                verbose=verbose,
             )
 
 
