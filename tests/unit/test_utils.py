@@ -33,6 +33,14 @@ class TestReadVdw(unittest.TestCase):
         self.assertRaises(ValueError, read_vdw, os.path.join(FIXTURES, "vdw2.dat"))
         self.assertRaises(ValueError, read_vdw, os.path.join(FIXTURES, "vdw3.dat"))
 
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"vdw": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, read_vdw, fn)
+
+    def test_default_input(self):
+        self.assertIsInstance(read_vdw(None), dict)
+
 
 class TestProcessPdbLine(unittest.TestCase):
     def setUp(self):
@@ -145,6 +153,18 @@ class TestReadPdb(unittest.TestCase):
         result = read_pdb(os.path.join(FIXTURES, "nmr.pdb"), model=model).tolist()
         self.assertListEqual(result, [expected[model - 1]])
 
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"vdw": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, read_pdb, fn, None, None)
+
+    def test_wrong_model_format(self):
+        # Check wrong model formats
+        for model in [1.0, [1], {"model": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError, read_pdb, os.path.join(FIXTURES, "nmr.pdb"), None, model
+            )
+
 
 class TestReadXyz(unittest.TestCase):
     def test_xyz(self):
@@ -161,6 +181,11 @@ class TestReadXyz(unittest.TestCase):
         ]
         result = read_xyz(os.path.join(FIXTURES, "xyz.xyz")).tolist()
         self.assertListEqual(result, expected)
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"xyz": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, read_xyz, fn, None, None)
 
 
 class TestReadCavity(unittest.TestCase):
@@ -188,6 +213,113 @@ class TestReadCavity(unittest.TestCase):
             os.path.join(FIXTURES, "receptor.pdb"),
         )[:2, :2, :2].tolist()
         self.assertListEqual(result, expected)
+
+    def test_wrong_cavity_format(self):
+        # Check wrong cavity formats
+        for cavity in [1, 1.0, [1], {"cavity": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, read_cavity, cavity, os.path.join(FIXTURES, "receptor.pdb")
+            )
+
+    def test_wrong_receptor_format(self):
+        # Check wrong receptor formats
+        for receptor in [1, 1.0, [1], {"receptor": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, read_cavity, os.path.join(FIXTURES, "cavity.pdb"), receptor
+            )
+
+    def test_wrong_receptor_extension(self):
+        # Check wrong receptor extension
+        for receptor in ["receptor.mol", "receptor.cif"]:
+            self.assertRaises(
+                TypeError, read_cavity, os.path.join(FIXTURES, "cavity.pdb"), receptor
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [[1], {"step": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                step=step,
+            )
+
+    def test_wrong_probe_in_format(self):
+        # Check wrong probe in format
+        for step in [[1], {"step": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                step=step,
+            )
+
+    def test_invalid_probe_in(self):
+        # Check invalid probe in
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            probe_in=-1,
+        )
+
+    def test_wrong_probe_out_format(self):
+        # Check wrong probe out format
+        for probe_out in [[1], {"step": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                probe_out=probe_out,
+            )
+
+    def test_invalid_probe_out(self):
+        # Check invalid probe out
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            probe_out=-1,
+        )
+    
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                nthreads=nthreads
+            )
 
 
 class TestProcessBox(unittest.TestCase):
