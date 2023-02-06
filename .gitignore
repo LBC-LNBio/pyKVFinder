@@ -10,6 +10,7 @@ examples/*/*.py
 
 # Unittests
 tests/*.toml
+tests/*.png
 
 # Molecular dynamics analysis
 examples/md-analysis/data/

@@ -375,7 +375,7 @@ class TestReadCavity(unittest.TestCase):
             surface="invalid",
         )
 
-    def test_verbose_format(self):
+    def test_wrong_verbose_format(self):
         # Check wrong verbose format
         for verbose in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
             self.assertRaises(
@@ -477,6 +477,11 @@ class TestFrequencies(unittest.TestCase):
         }
         self.assertDictEqual(expected, frequencies)
 
+    def test_plot_frequencies(self):
+        frequencies = calculate_frequencies(self.residues)
+        plot_frequencies(frequencies, "tests/frequencies.png")
+        self.assertEqual(os.path.exists("tests/frequencies.png"), True)
+
     def test_plot_frequencies_fn_wrong_format(self):
         frequencies = calculate_frequencies(self.residues)
         for fn in [1, 1.0, [1], {"fn": 1}, numpy.ones(1)]:
@@ -485,60 +490,74 @@ class TestFrequencies(unittest.TestCase):
 
 class TestWriteResults(unittest.TestCase):
     def test_positional_arguments(self):
-        write_results("tests/standard.toml", "input.pdb", "ligand.pdb", "output.pdb", step=0.1)
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\nLIGAND = \"{os.path.abspath("ligand.pdb")}\"\nOUTPUT = \"{os.path.abspath("output.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.1\n\n[RESULTS]\n'
+        write_results(
+            "tests/standard.toml", "input.pdb", "ligand.pdb", "output.pdb", step=0.1
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nLIGAND = "{os.path.abspath("ligand.pdb")}"\nOUTPUT = "{os.path.abspath("output.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.1\n\n[RESULTS]\n'
         with open("tests/standard.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_hydropathy_pdb(self):
         write_results(
             "tests/output_hydropathy.toml",
-            "input.pdb",
+            None,
             None,
             None,
             output_hydropathy="hydropathy.pdb",
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\nHYDROPATHY = \"{os.path.abspath("hydropathy.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS]\n'
         with open("tests/output_hydropathy.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_volume(self):
-        write_results("tests/volume.toml", "input.pdb", None, None, volume={"KAA": 100})
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
+        write_results("tests/volume.toml", None, None, None, volume={"KAA": 100})
+        expected = f'# pyKVFinder results\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
         with open("tests/volume.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_area(self):
         write_results("tests/area.toml", "input.pdb", None, None, area={"KAA": 100})
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AREA]\nKAA = 100\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AREA]\nKAA = 100\n'
         with open("tests/area.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_max_depth(self):
-        write_results("tests/max_depth.toml", "input.pdb", None, None, max_depth={"KAA": 3.00})
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.MAX_DEPTH]\nKAA = 3.0\n'
+        write_results(
+            "tests/max_depth.toml", "input.pdb", None, None, max_depth={"KAA": 3.00}
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.MAX_DEPTH]\nKAA = 3.0\n'
         with open("tests/max_depth.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_avg_depth(self):
-        write_results("tests/avg_depth.toml", "input.pdb", None, None, avg_depth={"KAA": 2.87})
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_DEPTH]\nKAA = 2.87\n'
+        write_results(
+            "tests/avg_depth.toml", "input.pdb", None, None, avg_depth={"KAA": 2.87}
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_DEPTH]\nKAA = 2.87\n'
         with open("tests/avg_depth.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_avg_hydropathy(self):
         write_results(
-            "tests/avg_hydropathy.toml", "input.pdb", None, None, avg_hydropathy={"KAA": -0.81}
+            "tests/avg_hydropathy.toml",
+            "input.pdb",
+            None,
+            None,
+            avg_hydropathy={"KAA": -0.81},
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_HYDROPATHY]\nKAA = -0.81\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_HYDROPATHY]\nKAA = -0.81\n'
         with open("tests/avg_hydropathy.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_residues(self):
         write_results(
-            "tests/residues.toml", "input.pdb", None, None, residues={"KAA": [["49", "E", "LEU"]]}
+            "tests/residues.toml",
+            "input.pdb",
+            None,
+            None,
+            residues={"KAA": [["49", "E", "LEU"]]},
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.RESIDUES]\nKAA = [ [ "49", "E", "LEU",],]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.RESIDUES]\nKAA = [ [ "49", "E", "LEU",],]\n'
         with open("tests/residues.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
@@ -555,9 +574,89 @@ class TestWriteResults(unittest.TestCase):
                 }
             },
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = \"{os.path.abspath("input.pdb")}\"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.FREQUENCY.KAA.RESIDUES]\nLEU = 1\n\n[RESULTS.FREQUENCY.KAA.CLASS]\nR1 = 1\nR2 = 0\nR3 = 0\nR4 = 0\nR5 = 0\nRX = 0\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.FREQUENCY.KAA.RESIDUES]\nLEU = 1\n\n[RESULTS.FREQUENCY.KAA.CLASS]\nR1 = 1\nR2 = 0\nR3 = 0\nR4 = 0\nR5 = 0\nRX = 0\n'
         with open("tests/frequencies.toml", "r") as f:
             self.assertEqual(f.read(), expected)
+
+    # def test_wrong_fn_format(self):
+    #     # Check wrong fn format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_input_format(self):
+    #     # Check wrong input format
+    #     for input in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+    #         self.assertRaises(
+    #             TypeError, write_results, "results.toml", input, None, None
+    #         )
+
+    # def test_wrong_ligand_format(self):
+    #     # Check wrong ligand format
+    #     for ligand in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+    #         self.assertRaises(
+    #             TypeError, write_results, "results.toml", "input.pdb", ligand, None
+    #         )
+
+    # def test_wrong_output_format(self):
+    #     # Check wrong output format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_output_hydropathy_format(self):
+    #     # Check wrong output_hydropathy format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_volume_format(self):
+    #     # Check wrong volume format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_area_format(self):
+    #     # Check wrong area format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_max_depth_format(self):
+    #     # Check wrong max_depth format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_avg_depth_format(self):
+    #     # Check wrong avg_depth format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_avg_hydropathy_format(self):
+    #     # Check wrong avg_hydropathy format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_residues_format(self):
+    #     # Check wrong residues format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_frequencies_format(self):
+    #     # Check wrong frequencies format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
+
+    # def test_wrong_step_format(self):
+    #     # Check wrong step format
+    #     self.assertRaises(
+    #         TypeError, write_results, "results.toml", "input.pdb", None, None
+    #     )
 
 
 if __name__ == "__main__":
