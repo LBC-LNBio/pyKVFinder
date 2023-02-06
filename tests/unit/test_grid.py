@@ -212,13 +212,16 @@ class TestGetVertices(unittest.TestCase):
     def test_wrong_atomic_format(self):
         # Check wrong atomic format
         for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
-            self.assertRaises(TypeError, get_vertices, atomic, self.probe_out, self.step)
+            self.assertRaises(
+                TypeError, get_vertices, atomic, self.probe_out, self.step
+            )
 
     def test_wrong_probe_out_format(self):
         # Check wrong probe out format
         for probe_out in [True, [4.0], {"step": 4.0}, "4.0", numpy.ones(1)]:
-            self.assertRaises(TypeError, get_vertices, self.atomic, probe_out, self.step)
-
+            self.assertRaises(
+                TypeError, get_vertices, self.atomic, probe_out, self.step
+            )
 
     def test_wrong_step_format(self):
         # Check wrong step format
