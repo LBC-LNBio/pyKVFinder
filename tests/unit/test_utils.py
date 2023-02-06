@@ -581,9 +581,7 @@ class TestWriteResults(unittest.TestCase):
     def test_wrong_fn_format(self):
         # Check wrong fn format
         for fn in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
-            self.assertRaises(
-                TypeError, write_results, fn, "input.pdb", None, None
-            )
+            self.assertRaises(TypeError, write_results, fn, "input.pdb", None, None)
 
     def test_wrong_input_format(self):
         # Check wrong input format
@@ -608,57 +606,127 @@ class TestWriteResults(unittest.TestCase):
 
     def test_wrong_output_hydropathy_format(self):
         # Check wrong output_hydropathy format
-        self.assertRaises(
-            TypeError, write_results, "results.toml", "input.pdb", None, None, output_hydropathy="output_hydropathy"
-        )
+        for output_hydropathy in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                output_hydropathy=output_hydropathy,
+            )
 
-    # def test_wrong_volume_format(self):
-    #     # Check wrong volume format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_volume_format(self):
+        # Check wrong volume format
+        for volume in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                volume=volume,
+            )
 
-    # def test_wrong_area_format(self):
-    #     # Check wrong area format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_area_format(self):
+        # Check wrong area format
+        for area in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                area=area,
+            )
 
-    # def test_wrong_max_depth_format(self):
-    #     # Check wrong max_depth format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_max_depth_format(self):
+        # Check wrong max_depth format
+        for max_depth in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                max_depth=max_depth,
+            )
 
-    # def test_wrong_avg_depth_format(self):
-    #     # Check wrong avg_depth format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_avg_depth_format(self):
+        # Check wrong avg_depth format
+        for avg_depth in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                avg_depth=avg_depth,
+            )
 
-    # def test_wrong_avg_hydropathy_format(self):
-    #     # Check wrong avg_hydropathy format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_avg_hydropathy_format(self):
+        # Check wrong avg_hydropathy format
+        for avg_hydropathy in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                avg_hydropathy=avg_hydropathy,
+            )
 
-    # def test_wrong_residues_format(self):
-    #     # Check wrong residues format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_residues_format(self):
+        # Check wrong residues format
+        for residues in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                residues=residues,
+            )
 
-    # def test_wrong_frequencies_format(self):
-    #     # Check wrong frequencies format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_frequencies_format(self):
+        # Check wrong frequencies format
+        for frequencies in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                frequencies=frequencies,
+            )
 
-    # def test_wrong_step_format(self):
-    #     # Check wrong step format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [{"step": 1}, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError, write_results, "results.toml", "input.pdb", None, None, step=step
+            )
 
 
 if __name__ == "__main__":
