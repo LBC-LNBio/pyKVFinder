@@ -500,18 +500,18 @@ class TestWriteResults(unittest.TestCase):
     def test_hydropathy_pdb(self):
         write_results(
             "tests/output_hydropathy.toml",
-            None,
+            "input.pdb",
             None,
             None,
             output_hydropathy="hydropathy.pdb",
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS]\n'
         with open("tests/output_hydropathy.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
     def test_volume(self):
-        write_results("tests/volume.toml", None, None, None, volume={"KAA": 100})
-        expected = f'# pyKVFinder results\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
+        write_results("tests/volume.toml", "input.pdb", None, None, volume={"KAA": 100})
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
         with open("tests/volume.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
@@ -578,37 +578,39 @@ class TestWriteResults(unittest.TestCase):
         with open("tests/frequencies.toml", "r") as f:
             self.assertEqual(f.read(), expected)
 
-    # def test_wrong_fn_format(self):
-    #     # Check wrong fn format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_fn_format(self):
+        # Check wrong fn format
+        for fn in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, fn, "input.pdb", None, None
+            )
 
-    # def test_wrong_input_format(self):
-    #     # Check wrong input format
-    #     for input in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
-    #         self.assertRaises(
-    #             TypeError, write_results, "results.toml", input, None, None
-    #         )
+    def test_wrong_input_format(self):
+        # Check wrong input format
+        for input in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, "results.toml", input, None, None
+            )
 
-    # def test_wrong_ligand_format(self):
-    #     # Check wrong ligand format
-    #     for ligand in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
-    #         self.assertRaises(
-    #             TypeError, write_results, "results.toml", "input.pdb", ligand, None
-    #         )
+    def test_wrong_ligand_format(self):
+        # Check wrong ligand format
+        for ligand in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, "results.toml", "input.pdb", ligand, None
+            )
 
-    # def test_wrong_output_format(self):
-    #     # Check wrong output format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_output_format(self):
+        # Check wrong output format
+        for output in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, "results.toml", "input.pdb", None, output
+            )
 
-    # def test_wrong_output_hydropathy_format(self):
-    #     # Check wrong output_hydropathy format
-    #     self.assertRaises(
-    #         TypeError, write_results, "results.toml", "input.pdb", None, None
-    #     )
+    def test_wrong_output_hydropathy_format(self):
+        # Check wrong output_hydropathy format
+        self.assertRaises(
+            TypeError, write_results, "results.toml", "input.pdb", None, None, output_hydropathy="output_hydropathy"
+        )
 
     # def test_wrong_volume_format(self):
     #     # Check wrong volume format
