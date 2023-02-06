@@ -210,60 +210,44 @@ class TestGetVertices(unittest.TestCase):
         )
 
     def test_wrong_atomic_format(self):
-        # bad atomic
-        self.assertRaises(TypeError, get_vertices, "string", self.probe_out, self.step)
-        self.assertRaises(TypeError, get_vertices, True, self.probe_out, self.step)
-        self.assertRaises(TypeError, get_vertices, 1, self.probe_out, self.step)
-        self.assertRaises(TypeError, get_vertices, 1.0, self.probe_out, self.step)
+        # Check wrong atomic format
+        for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
+            self.assertRaises(TypeError, get_vertices, atomic, self.probe_out, self.step)
 
     def test_wrong_probe_out_format(self):
-        # bad probe_out
-        self.assertRaises(TypeError, get_vertices, self.atomic, "string", self.step)
-        self.assertRaises(TypeError, get_vertices, self.atomic, True, self.step)
-        self.assertRaises(TypeError, get_vertices, self.atomic, [4.0, 4.0], self.step)
+        # Check wrong probe out format
+        for probe_out in [True, [4.0], {"step": 4.0}, "4.0", numpy.ones(1)]:
+            self.assertRaises(TypeError, get_vertices, self.atomic, probe_out, self.step)
+
 
     def test_wrong_step_format(self):
-        # bad step
-        self.assertRaises(
-            TypeError, get_vertices, self.atomic, self.probe_out, "string"
-        )
-        self.assertRaises(TypeError, get_vertices, self.atomic, self.probe_out, True)
-        self.assertRaises(
-            TypeError, get_vertices, self.atomic, self.probe_out, [0.6, 0.6]
-        )
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, get_vertices, self.atomic, self.probe_out, step
+            )
 
     def test_invalid_atomic(self):
-        # atomic
-        for atomic in [[1.0, 1.0, 1.0, 1.0], [[1.0, 1.0, 1.0, 1.0, 1.0]], [[[1.0, 1.0, 1.0, 1.0]]]]
-        # shape (4,)
-        self.assertRaises(
-            ValueError, get_vertices, atomic, self.probe_out, self.step
-        )
-        # shape (1, 5)
-        self.assertRaises(
-            ValueError,
-            get_vertices,
-            atomic,
-            self.probe_out,
-            self.step,
-        )
-        # shape (1, 1, 4)
-        self.assertRaises(
-            ValueError,
-            get_vertices,
-            atomic,
-            self.probe_out,
-            self.step,
-        )
+        # Check invalid atomic
+        for atomic in [
+            [1.0, 1.0, 1.0, 1.0],  # shape (4,)
+            [[1.0, 1.0, 1.0, 10, 1.0]],  # shape (1, 5)
+            [[[1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 4)
+        ]:
+            self.assertRaises(
+                ValueError, get_vertices, atomic, self.probe_out, self.step
+            )
 
     def test_invalid_probe_out(self):
-        # probe_out
+        # Check invalid probe_out
         self.assertRaises(ValueError, get_vertices, self.atomic, -1, self.step)
 
     def test_invalid_step(self):
-        # step
+        # Check invalid step
         for step in [-1.0, 0.0]:
-            self.assertRaises(ValueError, get_vertices, self.atomic, self.probe_out, step)
+            self.assertRaises(
+                ValueError, get_vertices, self.atomic, self.probe_out, step
+            )
 
 
 class TestGetDimensions(unittest.TestCase):
