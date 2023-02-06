@@ -16,6 +16,7 @@ from pyKVFinder.utils import (
     read_pdb,
     read_vdw,
     read_xyz,
+    write_results,
 )
 
 FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
@@ -480,6 +481,83 @@ class TestFrequencies(unittest.TestCase):
         frequencies = calculate_frequencies(self.residues)
         for fn in [1, 1.0, [1], {"fn": 1}, numpy.ones(1)]:
             self.assertRaises(TypeError, plot_frequencies, frequencies, fn)
+
+
+class TestWriteResults(unittest.TestCase):
+    def test_positional_arguments(self):
+        write_results("standard.toml", "input", "ligand", "output", step=0.1)
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\nLIGAND = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/ligand"\nOUTPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/output"\n\n[PARAMETERS]\nSTEP = 0.1\n\n[RESULTS]\n'
+        with open("standard.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_hydropathy_pdb(self):
+        write_results(
+            "output_hydropathy.toml",
+            "input",
+            None,
+            None,
+            output_hydropathy="hydropathy.pdb",
+        )
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\nHYDROPATHY = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/hydropathy.pdb"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS]\n'
+        with open("output_hydropathy.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_volume(self):
+        write_results("volume.toml", "input", None, None, volume={"KAA": 100})
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
+        with open("volume.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_area(self):
+        write_results("area.toml", "input", None, None, area={"KAA": 100})
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AREA]\nKAA = 100\n'
+        with open("area.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_max_depth(self):
+        write_results("max_depth.toml", "input", None, None, max_depth={"KAA": 3.00})
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.MAX_DEPTH]\nKAA = 3.0\n'
+        with open("max_depth.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_avg_depth(self):
+        write_results("avg_depth.toml", "input", None, None, avg_depth={"KAA": 2.87})
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_DEPTH]\nKAA = 2.87\n'
+        with open("avg_depth.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_avg_hydropathy(self):
+        write_results(
+            "avg_hydropathy.toml", "input", None, None, avg_hydropathy={"KAA": -0.81}
+        )
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_HYDROPATHY]\nKAA = -0.81\n'
+        with open("avg_hydropathy.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_residues(self):
+        write_results(
+            "residues.toml", "input", None, None, residues={"KAA": [["49", "E", "LEU"]]}
+        )
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.RESIDUES]\nKAA = [ [ "49", "E", "LEU",],]\n'
+        with open("residues.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
+    def test_frequencies(self):
+        write_results(
+            "frequencies.toml",
+            "input",
+            None,
+            None,
+            frequencies={
+                "KAA": {
+                    "RESIDUES": {"LEU": 1},
+                    "CLASS": {"R1": 1, "R2": 0, "R3": 0, "R4": 0, "R5": 0, "RX": 0},
+                }
+            },
+        )
+        expected = '# pyKVFinder results\n\n[FILES]\nINPUT = "/home/ABTLUS/joao.guerra/forks/pyKVFinder/input"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.FREQUENCY.KAA.RESIDUES]\nLEU = 1\n\n[RESULTS.FREQUENCY.KAA.CLASS]\nR1 = 1\nR2 = 0\nR3 = 0\nR4 = 0\nR5 = 0\nRX = 0\n'
+        with open("frequencies.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
 
 
 if __name__ == "__main__":
