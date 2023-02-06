@@ -464,11 +464,11 @@ def read_cavity(
 
     if surface == "SES":
         if verbose:
-            print("> Surface representation: Solvent Excluded Surface (SES).")
+            print("> Surface representation: Solvent Excluded Surface (SES)")
         surface = True
     elif surface == "SAS":
         if verbose:
-            print("> Surface representation: Solvent Accessible Surface (SAS).")
+            print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")

@@ -1,6 +1,8 @@
 import argparse
+import io
 import os
 import unittest
+from unittest import mock
 
 import numpy
 
@@ -228,7 +230,7 @@ class TestReadCavity(unittest.TestCase):
             result = read_cavity(
                 os.path.join(FIXTURES, "cavity.pdb"),
                 os.path.join(FIXTURES, "receptor.pdb"),
-                **kwargs
+                **kwargs,
             )[:2, :2, :2].tolist()
             self.assertListEqual(result, expected)
 
@@ -381,6 +383,21 @@ class TestReadCavity(unittest.TestCase):
                 os.path.join(FIXTURES, "receptor.pdb"),
                 verbose=verbose,
             )
+    
+    @mock.patch('_pyKVFinder._fill_receptor', return_value=numpy.zeros(16*16*16))
+    @mock.patch('_pyKVFinder._fill_cavity', return_value=numpy.zeros(16*16*16))
+    @mock.patch("sys.stdout", new_callable=io.StringIO)
+    def test_verbose_prints(self, args1, args2, args3):
+        # Check verbose prints to stdout
+        with mock.patch('_pyKVFinder._fill_receptor', return_value=numpy.zeros(16*16*16)) as _:
+            with mock.patch('_pyKVFinder._fill_cavity', return_value=numpy.zeros(16*16*16)) as _:
+                read_cavity(
+                    os.path.join(FIXTURES, "cavity.pdb"),
+                    os.path.join(FIXTURES, "receptor.pdb"),
+                    verbose=True,
+                )
+        expected = f"> Inserting {os.path.join(FIXTURES, 'receptor.pdb')} into 3D grid\n> Surface representation: Solvent Excluded Surface (SES)\n> Inserting {os.path.join(FIXTURES, 'cavity.pdb')} into 3D grid\n"
+        self.assertEqual(args1.getvalue(), expected)
 
 
 class TestProcessBox(unittest.TestCase):
