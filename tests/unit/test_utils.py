@@ -725,7 +725,13 @@ class TestWriteResults(unittest.TestCase):
         # Check invalid step
         for step in [-1.0, 0.0]:
             self.assertRaises(
-                ValueError, write_results, "results.toml", "input.pdb", None, None, step=step
+                ValueError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                step=step,
             )
 
 
