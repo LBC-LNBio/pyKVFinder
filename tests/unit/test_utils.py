@@ -734,6 +734,19 @@ class TestWriteResults(unittest.TestCase):
                 step=step,
             )
 
+    def test_step_as_integer(self):
+        # Check step as integer
+        write_results(
+            "tests/step.toml",
+            "input.pdb",
+            None,
+            None,
+            step=1
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n\n[RESULTS]\n'
+        with open("tests/step.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+
 
 if __name__ == "__main__":
     unittest.main()
