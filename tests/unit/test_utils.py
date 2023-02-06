@@ -11,6 +11,7 @@ from pyKVFinder.utils import (
     _process_pdb_line,
     _read_cavity,
     calculate_frequencies,
+    plot_frequencies,
     read_cavity,
     read_pdb,
     read_vdw,
@@ -383,21 +384,40 @@ class TestReadCavity(unittest.TestCase):
                 os.path.join(FIXTURES, "receptor.pdb"),
                 verbose=verbose,
             )
-    
-    @mock.patch('_pyKVFinder._fill_receptor', return_value=numpy.zeros(16*16*16))
-    @mock.patch('_pyKVFinder._fill_cavity', return_value=numpy.zeros(16*16*16))
-    @mock.patch("sys.stdout", new_callable=io.StringIO)
-    def test_verbose_prints(self, args1, args2, args3):
+
+    def test_verbose_prints(self):
         # Check verbose prints to stdout
-        with mock.patch('_pyKVFinder._fill_receptor', return_value=numpy.zeros(16*16*16)) as _:
-            with mock.patch('_pyKVFinder._fill_cavity', return_value=numpy.zeros(16*16*16)) as _:
-                read_cavity(
-                    os.path.join(FIXTURES, "cavity.pdb"),
-                    os.path.join(FIXTURES, "receptor.pdb"),
-                    verbose=True,
-                )
+        # surface='SES'
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            with mock.patch(
+                "_pyKVFinder._fill_receptor", return_value=numpy.zeros(16 * 16 * 16)
+            ) as _:
+                with mock.patch(
+                    "_pyKVFinder._fill_cavity", return_value=numpy.zeros(16 * 16 * 16)
+                ) as _:
+                    read_cavity(
+                        os.path.join(FIXTURES, "cavity.pdb"),
+                        os.path.join(FIXTURES, "receptor.pdb"),
+                        verbose=True,
+                    )
         expected = f"> Inserting {os.path.join(FIXTURES, 'receptor.pdb')} into 3D grid\n> Surface representation: Solvent Excluded Surface (SES)\n> Inserting {os.path.join(FIXTURES, 'cavity.pdb')} into 3D grid\n"
-        self.assertEqual(args1.getvalue(), expected)
+        self.assertEqual(stdout.getvalue(), expected)
+        # surface='SAS'
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            with mock.patch(
+                "_pyKVFinder._fill_receptor", return_value=numpy.zeros(16 * 16 * 16)
+            ) as _:
+                with mock.patch(
+                    "_pyKVFinder._fill_cavity", return_value=numpy.zeros(16 * 16 * 16)
+                ) as _:
+                    read_cavity(
+                        os.path.join(FIXTURES, "cavity.pdb"),
+                        os.path.join(FIXTURES, "receptor.pdb"),
+                        surface="SAS",
+                        verbose=True,
+                    )
+        expected = f"> Inserting {os.path.join(FIXTURES, 'receptor.pdb')} into 3D grid\n> Surface representation: Solvent Accessible Surface (SAS)\n> Inserting {os.path.join(FIXTURES, 'cavity.pdb')} into 3D grid\n"
+        self.assertEqual(stdout.getvalue(), expected)
 
 
 class TestProcessBox(unittest.TestCase):
@@ -433,25 +453,33 @@ class TestProcessBox(unittest.TestCase):
         self.assertDictEqual(result, expected)
 
 
-class TestCalculateFrequencies(unittest.TestCase):
-    def test_residues(self):
-        residues = {
+class TestFrequencies(unittest.TestCase):
+    def setUp(self):
+        self.residues = {
             "KAA": [
                 ["49", "E", "LEU"],
                 ["50", "E", "GLY"],
                 ["51", "E", "THR"],
                 ["52", "E", "GLY"],
                 ["53", "E", "SER"],
+                ["54", "E", "HYP"],
             ]
         }
+
+    def test_calculate_frequencies(self):
+        frequencies = calculate_frequencies(self.residues)
         expected = {
             "KAA": {
-                "RESIDUES": {"GLY": 2, "LEU": 1, "SER": 1, "THR": 1},
-                "CLASS": {"R1": 3, "R2": 0, "R3": 2, "R4": 0, "R5": 0, "RX": 0},
+                "RESIDUES": {"GLY": 2, "LEU": 1, "SER": 1, "THR": 1, "HYP": 1},
+                "CLASS": {"R1": 3, "R2": 0, "R3": 2, "R4": 0, "R5": 0, "RX": 1},
             }
         }
-        result = calculate_frequencies(residues)
-        self.assertDictEqual(expected, result)
+        self.assertDictEqual(expected, frequencies)
+
+    def test_plot_frequencies_fn_wrong_format(self):
+        frequencies = calculate_frequencies(self.residues)
+        for fn in [1, 1.0, [1], {"fn": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, plot_frequencies, frequencies, fn)
 
 
 if __name__ == "__main__":
