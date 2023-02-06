@@ -8,6 +8,9 @@ pyKVFinder/data/tests/output/
 examples/*/.ipynb_checkpoints/
 examples/*/*.py
 
+# Unittests
+tests/*.toml
+
 # Molecular dynamics analysis
 examples/md-analysis/data/
 examples/md-analysis/results/
