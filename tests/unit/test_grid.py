@@ -69,6 +69,18 @@ class TestGetVerticesFromResidues(unittest.TestCase):
 
 
 class TestGetVerticesFromFile(unittest.TestCase):
+    def setUp(self):
+        self.atomic1 = [
+            ["13", "E", "GLU", "C", "3.5", "8.0", "4.0", "1.908"],
+            ["13", "E", "GLU", "C", "-6.73", "-14.62", "-15.897", "1.908"],
+        ]
+        self.atomic2 = [
+            ["49", "E", "LEU", "C", "3.5", "8.0", "4.0", "1.908"],
+            ["50", "E", "GLY", "C", "3.5", "8.0", "4.0", "1.908"],
+            ["51", "E", "THR", "C", "3.5", "8.0", "4.0", "1.908"],
+            ["52", "E", "GLU", "C", "-6.73", "-14.62", "-15.897", "1.908"],
+        ]
+
     def test_custom_box(self):
         # Expected vertices
         expected = [
@@ -77,17 +89,12 @@ class TestGetVerticesFromFile(unittest.TestCase):
             [-0.89, 14.74, -2.41],
             [-0.89, 3.34, 10.19],
         ]
-        # Dummy atomic
-        atomic = [
-            ["13", "E", "GLU", "C", "3.5", "8.0", "4.0", "1.908"],
-            ["13", "E", "GLU", "C", "-6.73", "-14.62", "-15.897", "1.908"],
-        ]
         # Get vertices from file
         vertices, selected = get_vertices_from_file(
-            os.path.join(DATADIR, "tests", "custom-box.toml"), atomic
+            os.path.join(DATADIR, "tests", "custom-box.toml"), self.atomic1
         )
         # Atom selection
-        self.assertListEqual(selected.tolist(), [atomic[0]])
+        self.assertListEqual(selected.tolist(), [self.atomic1[0]])
         # Vertices
         self.assertListEqual(vertices.tolist(), expected)
 
@@ -99,21 +106,140 @@ class TestGetVerticesFromFile(unittest.TestCase):
             [-4.0, 15.5, -3.5],
             [-4.0, 0.5, 11.5],
         ]
-        # Dummy atomic
-        atomic = [
-            ["49", "E", "LEU", "C", "3.5", "8.0", "4.0", "1.908"],
-            ["50", "E", "GLY", "C", "3.5", "8.0", "4.0", "1.908"],
-            ["51", "E", "THR", "C", "3.5", "8.0", "4.0", "1.908"],
-            ["52", "E", "GLU", "C", "-6.73", "-14.62", "-15.897", "1.908"],
-        ]
         # Get vertices from file
         vertices, selected = get_vertices_from_file(
-            os.path.join(DATADIR, "tests", "residues-box.toml"), atomic
+            os.path.join(DATADIR, "tests", "residues-box.toml"), self.atomic2
         )
         # Atom selection
-        self.assertListEqual(selected.tolist(), atomic[0:3])
+        self.assertListEqual(selected.tolist(), self.atomic2[0:3])
         # Vertices
         self.assertListEqual(vertices.tolist(), expected)
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"vdw": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, get_vertices_from_file, fn, self.atomic1)
+
+    def test_wrong_atomic_format(self):
+        # Check wrong atomic format
+        for atomic in [True, 4, 4.0, {"atomic": []}, "4.0"]:
+            self.assertRaises(
+                TypeError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                atomic,
+            )
+
+    def test_invalid_atomic(self):
+        # Check invalid atomic
+        for atomic in [
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # shape (8,)
+            [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],  # shape (1, 9)
+            [[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 8)
+        ]:
+            self.assertRaises(
+                ValueError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                atomic,
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                self.atomic1,
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                self.atomic1,
+                step=step,
+            )
+
+    def test_wrong_probe_in_format(self):
+        # Check wrong probe in format
+        for probe_in in [True, [1.4], {"probe_in": 1.4}, "1.4", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                self.atomic1,
+                probe_in=probe_in,
+            )
+
+    def test_invalid_probe_in(self):
+        # Check invalid probe in
+        self.assertRaises(
+            ValueError,
+            get_vertices_from_file,
+            os.path.join(DATADIR, "tests", "custom-box.toml"),
+            self.atomic1,
+            probe_in=-1.0,
+        )
+
+    def test_wrong_probe_out_format(self):
+        # Check wrong probe out format
+        for probe_out in [True, [4.0], {"probe_out": 4.0}, "4.0", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                self.atomic1,
+                probe_out=probe_out,
+            )
+
+    def test_invalid_probe_out(self):
+        # Check invalid probe out
+        self.assertRaises(
+            ValueError,
+            get_vertices_from_file,
+            os.path.join(DATADIR, "tests", "custom-box.toml"),
+            self.atomic1,
+            probe_out=-1.0,
+        )
+
+    def test_invalid_probe_pair(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            get_vertices_from_file,
+            os.path.join(DATADIR, "tests", "custom-box.toml"),
+            self.atomic1,
+            probe_in=4,
+            probe_out=1.4,
+        )
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                self.atomic1,
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                get_vertices_from_file,
+                os.path.join(DATADIR, "tests", "custom-box.toml"),
+                self.atomic1,
+                nthreads=nthreads,
+            )
 
 
 class TestGetCavityName(unittest.TestCase):

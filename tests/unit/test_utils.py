@@ -483,7 +483,7 @@ class TestFrequencies(unittest.TestCase):
         self.assertEqual(os.path.exists("tests/frequencies.png"), True)
         os.remove("tests/frequencies.png")
 
-    def test_plot_frequencies_fn_wrong_format(self):
+    def test_plot_frequencies_wrong_fn_format(self):
         frequencies = calculate_frequencies(self.residues)
         for fn in [1, 1.0, [1], {"fn": 1}, numpy.ones(1)]:
             self.assertRaises(TypeError, plot_frequencies, frequencies, fn)
