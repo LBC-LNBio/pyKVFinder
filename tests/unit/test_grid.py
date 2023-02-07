@@ -1081,26 +1081,106 @@ class TestDetect(unittest.TestCase):
 
 
 class TestSpatial(unittest.TestCase):
-    def test_spatial(self):
+    def setUp(self):
         # Prepare data
-        cavities = numpy.full((5, 5, 5), -1)
+        self.cavities = numpy.full((5, 5, 5), -1)
         for i in range(1, 4):
             for j in range(1, 4):
                 for k in range(1, 4):
-                    cavities[i, j, k] = 0
+                    self.cavities[i, j, k] = 0
 
         for i in range(2, 4):
             for j in range(2, 4):
                 for k in range(2, 4):
-                    cavities[i, j, k] = 2
+                    self.cavities[i, j, k] = 2
 
+    def test_spatial(self):
         # Surface
-        surface, volume, area = spatial(cavities)
+        surface, volume, area = spatial(self.cavities)
         # Assert
         self.assertDictEqual(volume, {"KAA": 1.73})
         self.assertDictEqual(area, {"KAA": 3.13})
-        cavities[3, 3, 3] = -1
-        self.assertListEqual(cavities.tolist(), surface.tolist())
+        self.cavities[3, 3, 3] = -1
+        self.assertListEqual(self.cavities.tolist(), surface.tolist())
+
+    def test_step_as_integer(self):
+        # Surface
+        surface, volume, area = spatial(self.cavities, step=1)
+        # Assert
+        self.assertDictEqual(volume, {"KAA": 8.0})
+        self.assertDictEqual(area, {"KAA": 8.7})
+        self.cavities[3, 3, 3] = -1
+        self.assertListEqual(self.cavities.tolist(), surface.tolist())
+
+    def test_selection(self):
+        cavities = numpy.random.randint(-1, 5, 27).reshape(3, 3, 3)
+        for selection in [[2], ["KAA"]]:
+            surface, _, _ = spatial(cavities, selection=selection)
+            self.assertListEqual(numpy.unique(surface).tolist(), [-1, 0, 2])
+
+    def test_wrong_cavities_format(self):
+        for cavities in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(TypeError, spatial, cavities)
+
+    def test_invalid_cavities(self):
+        for cavities in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(ValueError, spatial, cavities)
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(TypeError, spatial, self.cavities, step=step)
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                spatial,
+                self.cavities,
+                step=step,
+            )
+
+    def test_wrong_selection_format(self):
+        self.assertRaises(TypeError, spatial, self.cavities, selection=["KAA", 2])
+
+    def test_invalid_selection(self):
+        for selection in [[1], [0], [-1]]:
+            self.assertRaises(ValueError, spatial, self.cavities, selection=selection)
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                spatial,
+                self.cavities,
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                spatial,
+                self.cavities,
+                nthreads=nthreads,
+            )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                spatial,
+                self.cavities,
+                verbose=verbose,
+            )
 
 
 class TestDepth(unittest.TestCase):
