@@ -226,13 +226,13 @@ def get_vertices_from_file(
 
         # Check conditions
         if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
-            if all([key in box.keys() for key in ["padding", "residues"]]):
+            if any([key in box.keys() for key in ["padding", "residues"]]):
                 raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
             vertices = _get_vertices_from_box(box, probe_out)
         elif "residues" in box.keys():
-            if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
+            if any([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
                 raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
@@ -761,11 +761,11 @@ def detect(
 
     if surface == "SES":
         if verbose:
-            print("> Surface representation: Solvent Excluded Surface (SES).")
+            print("> Surface representation: Solvent Excluded Surface (SES)")
         surface = True
     elif surface == "SAS":
         if verbose:
-            print("> Surface representation: Solvent Accessible Surface (SAS).")
+            print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")

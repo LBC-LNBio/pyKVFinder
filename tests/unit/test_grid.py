@@ -1,3 +1,4 @@
+import io
 import os
 import unittest
 from unittest import mock
@@ -297,10 +298,11 @@ class TestGetVerticesFromFile(unittest.TestCase):
         "toml.load",
         return_value={
             "box": {
-                "p": {"x": 3.11, "y": 7.34, "z": 1.59},
+                "p1": {"x": 3.11, "y": 7.34, "z": 1.59},
                 "p2": {"x": 11.51, "y": 7.34, "z": 1.59},
                 "p3": {"x": 3.11, "y": 10.74, "z": 1.59},
                 "p4": {"x": 3.11, "y": 7.34, "z": 6.19},
+                "padding": 3.5,
             }
         },
     )
@@ -317,8 +319,8 @@ class TestGetVerticesFromFile(unittest.TestCase):
                     "LEU",
                 ],
             ],
-            "p1": {"x": 3.11, "y": 7.34, "z": 1.59},
             "padding": 3.5,
+            "p1": {"x": 3.11, "y": 7.34, "z": 1.59},
         },
     )
     def test_invalid_residues_keys(self, _):
@@ -358,6 +360,9 @@ class TestGetCavityLabel(unittest.TestCase):
         ]
         labels = [_get_cavity_label(name) for name in cavity_names]
         self.assertListEqual(labels, list(range(2, 100, 10)))
+
+    def test_invalid_cavity_name(self):
+        self.assertRaises(ValueError, _get_cavity_label, "AAA")
 
 
 class TestSelectCavities(unittest.TestCase):
@@ -540,7 +545,7 @@ class TestGetSincos(unittest.TestCase):
 
     def test_wrong_vertices_format(self):
         for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
-            self.assertRaises(TypeError, _get_dimensions, vertices)
+            self.assertRaises(TypeError, _get_sincos, vertices)
 
     def test_invalid_vertices(self):
         for vertices in [
@@ -548,7 +553,7 @@ class TestGetSincos(unittest.TestCase):
             [[1.0, 1.0, 1.0]],  # shape (1, 3)
             [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
         ]:
-            self.assertRaises(ValueError, _get_dimensions, vertices)
+            self.assertRaises(ValueError, _get_sincos, vertices)
 
 
 class TestProcessSpatial(unittest.TestCase):
@@ -699,6 +704,116 @@ class TestDetect(unittest.TestCase):
         tol = 100
         self.assertEqual((cavities - expected).sum() < tol, True)
 
+    def test_atomic_as_list(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic.tolist(), self.vertices)
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_vertices_as_list(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices.tolist())
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_step_as_integer(self):
+        # Detect cavities
+        ncav, _ = detect(self.atomic, self.vertices, step=1)
+        # Assert number of cavities
+        self.assertEqual(ncav, 9)
+
+    def test_probe_in_as_integer(self):
+        # Detect cavities
+        ncav, _ = detect(self.atomic, self.vertices, probe_in=1)
+        # Assert number of cavities
+        self.assertEqual(ncav, 30)
+
+    def test_probe_out_as_integer(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices, probe_out=4)
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_removal_distance_as_integer(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices, removal_distance=2)
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_volume_cutoff_as_integer(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices, volume_cutoff=5)
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_ligand_cutoff_as_integer(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices, ligand_cutoff=5)
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_latomic_as_list(self):
+        # Detect cavities
+        ncav, cavities = detect(
+            self.atomic, self.vertices, latomic=self.atomic.tolist()
+        )
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
+    def test_vertices_as_list(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices.tolist())
+        cavities[cavities == 1] = 0
+        # Expected grid
+        expected = read_cavity(
+            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
+            os.path.join(DATADIR, "tests", "1FMO.pdb"),
+        )
+        # Assert number of cavities
+        self.assertEqual(ncav, int(expected.max() - 1))
+
     def test_wrong_atomic_format(self):
         # Check wrong atomic format
         for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
@@ -808,10 +923,10 @@ class TestDetect(unittest.TestCase):
         # Check invalid removal distance
         self.assertRaises(
             ValueError,
-                detect,
-                self.atomic,
-                self.vertices,
-                removal_distance=-1.0,
+            detect,
+            self.atomic,
+            self.vertices,
+            removal_distance=-1.0,
         )
 
     def test_wrong_volume_cutoff_format(self):
@@ -855,7 +970,9 @@ class TestDetect(unittest.TestCase):
             [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],  # shape (1, 9)
             [[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 8)
         ]:
-            self.assertRaises(ValueError, detect, self.atomic, self.vertices, latomic=latomic)
+            self.assertRaises(
+                ValueError, detect, self.atomic, self.vertices, latomic=latomic
+            )
 
     def test_wrong_ligand_cutoff_format(self):
         # Check wrong ligand cutoff format
@@ -943,6 +1060,24 @@ class TestDetect(unittest.TestCase):
             self.assertRaises(
                 TypeError, detect, self.atomic, self.vertices, verbose=verbose
             )
+
+    def test_verbose_prints(self):
+        # Check verbose prints to stdout
+        ncav, cavities = detect(self.atomic, self.vertices)
+        # surface='SES'
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            with mock.patch("_pyKVFinder._detect", return_value=(ncav, cavities)) as _:
+                # Detect cavities
+                _, _ = detect(self.atomic, self.vertices, verbose=True)
+        expected = f"> Surface representation: Solvent Excluded Surface (SES)\n"
+        self.assertEqual(stdout.getvalue(), expected)
+        # surface='SAS'
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            with mock.patch("_pyKVFinder._detect", return_value=(ncav, cavities)) as _:
+                # Detect cavities
+                _, _ = detect(self.atomic, self.vertices, surface="SAS", verbose=True)
+        expected = f"> Surface representation: Solvent Accessible Surface (SAS)\n"
+        self.assertEqual(stdout.getvalue(), expected)
 
 
 class TestSpatial(unittest.TestCase):
