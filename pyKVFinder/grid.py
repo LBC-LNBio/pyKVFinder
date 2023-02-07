@@ -701,9 +701,9 @@ def detect(
     if latomic is not None:
         if type(latomic) not in [numpy.ndarray, list]:
             raise TypeError("`latomic` must be a list, a numpy.ndarray or None.")
-        if len(latomic.shape) != 2:
+        if len(numpy.asarray(latomic).shape) != 2:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
-        elif latomic.shape[1] != 8:
+        elif numpy.asarray(latomic).shape[1] != 8:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
     if type(ligand_cutoff) not in [float, int]:
         raise TypeError("`ligand_cutoff` must be a positive real number.")

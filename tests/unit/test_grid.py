@@ -326,13 +326,10 @@ class TestGetVerticesFromFile(unittest.TestCase):
 
     @mock.patch(
         "toml.load",
-        return_value={
-            'wrong_key': []
-        },
+        return_value={"wrong_key": []},
     )
     def test_invalid_box(self, _):
         self.assertRaises(ValueError, get_vertices_from_file, "mocked", self.atomic1)
-
 
 
 class TestGetCavityName(unittest.TestCase):
@@ -481,51 +478,37 @@ class TestGetDimensions(unittest.TestCase):
             [0.0, 0.0, 1.0],
         ]
 
-    def test_bad_type(self):
-        # bad vertices
-        self.assertRaises(TypeError, _get_dimensions, "string")
-        self.assertRaises(TypeError, _get_dimensions, True)
-        self.assertRaises(TypeError, _get_dimensions, 1)
-        self.assertRaises(TypeError, _get_dimensions, 1.0)
-        # bad step
-        self.assertRaises(TypeError, _get_dimensions, self.vertices, "string")
-        self.assertRaises(TypeError, _get_dimensions, self.vertices, True)
-        self.assertRaises(TypeError, _get_dimensions, self.vertices, [1, 1.0])
-
-    def test_bad_values(self):
-        # bad vertices
-        # shape (3,)
-        self.assertRaises(ValueError, _get_dimensions, [1.0, 1.0, 1.0])
-        # shape (1, 3)
-        self.assertRaises(ValueError, _get_dimensions, [[1.0, 1.0, 1.0]])
-        # shape (1, 1, 3)
-        self.assertRaises(ValueError, _get_dimensions, [[[1.0, 1.0, 1.0]]])
-        # bad step
-        self.assertRaises(ValueError, _get_dimensions, self.vertices, 0.0)
-        self.assertRaises(ValueError, _get_dimensions, self.vertices, -1)
-
     def test_vertices(self):
         # Test vertices input
         result = _get_dimensions(self.vertices)
         self.assertEqual(result, (2, 2, 2))
 
+    def test_step_as_integer(self):
+        result = _get_dimensions(self.vertices, step=1)
+        self.assertEqual(result, (1, 1, 1))
+
+    def test_wrong_vertices_format(self):
+        for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
+            self.assertRaises(TypeError, _get_dimensions, vertices)
+
+    def test_wrong_step_format(self):
+        for step in ["step", True, {"step": [0.6]}, [0.6, 0.6]]:
+            self.assertRaises(TypeError, _get_dimensions, self.vertices, step=step)
+
+    def test_invalid_vertices(self):
+        for vertices in [
+            [1.0, 1.0, 1.0],  # shape (3,)
+            [[1.0, 1.0, 1.0]],  # shape (1, 3)
+            [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
+        ]:
+            self.assertRaises(ValueError, _get_dimensions, vertices)
+
+    def test_invalid_step(self):
+        for step in [-1.0, 0.0]:
+            self.assertRaises(ValueError, _get_dimensions, self.vertices, step=step)
+
 
 class TestGetSincos(unittest.TestCase):
-    def test_bad_type(self):
-        # bad vertices
-        self.assertRaises(TypeError, _get_sincos, "string")
-        self.assertRaises(TypeError, _get_sincos, True)
-        self.assertRaises(TypeError, _get_sincos, 1)
-        self.assertRaises(TypeError, _get_sincos, 1.0)
-
-    def test_bad_shape(self):
-        # shape (3,)
-        self.assertRaises(ValueError, _get_sincos, [1.0, 1.0, 1.0])
-        # shape (1, 3)
-        self.assertRaises(ValueError, _get_sincos, [[1.0, 1.0, 1.0]])
-        # shape (1, 1, 3)
-        self.assertRaises(ValueError, _get_sincos, [[[1.0, 1.0, 1.0]]])
-
     def test_vertices(self):
         # Aligned vertices
         data = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
@@ -554,6 +537,18 @@ class TestGetSincos(unittest.TestCase):
         self.assertEqual(len(list1), len(list2))
         for a, b in zip(list1, list2):
             self.assertAlmostEqual(a, b, tol)
+
+    def test_wrong_vertices_format(self):
+        for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
+            self.assertRaises(TypeError, _get_dimensions, vertices)
+
+    def test_invalid_vertices(self):
+        for vertices in [
+            [1.0, 1.0, 1.0],  # shape (3,)
+            [[1.0, 1.0, 1.0]],  # shape (1, 3)
+            [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
+        ]:
+            self.assertRaises(ValueError, _get_dimensions, vertices)
 
 
 class TestProcessSpatial(unittest.TestCase):
@@ -685,12 +680,13 @@ class TestProcessHydropathy(unittest.TestCase):
 
 
 class TestDetect(unittest.TestCase):
+    def setUp(self):
+        self.atomic = read_pdb(os.path.join(DATADIR, "tests", "1FMO.pdb"))
+        self.vertices = get_vertices(self.atomic)
+
     def test_detect(self):
-        # Prepare data
-        atomic = read_pdb(os.path.join(DATADIR, "tests", "1FMO.pdb"))
-        vertices = get_vertices(atomic)
         # Detect cavities
-        ncav, cavities = detect(atomic, vertices)
+        ncav, cavities = detect(self.atomic, self.vertices)
         cavities[cavities == 1] = 0
         # Expected grid
         expected = read_cavity(
@@ -702,6 +698,251 @@ class TestDetect(unittest.TestCase):
         # Grid similarity
         tol = 100
         self.assertEqual((cavities - expected).sum() < tol, True)
+
+    def test_wrong_atomic_format(self):
+        # Check wrong atomic format
+        for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
+            self.assertRaises(TypeError, detect, atomic, self.vertices)
+
+    def test_invalid_atomic(self):
+        # Check invalid atomic
+        for atomic in [
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # shape (8,)
+            [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],  # shape (1, 9)
+            [[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 8)
+        ]:
+            self.assertRaises(ValueError, detect, atomic, self.vertices)
+
+    def test_wrong_vertices_format(self):
+        # Check wrong vertices format
+        for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
+            self.assertRaises(TypeError, detect, self.atomic, vertices)
+
+    def test_invalid_vertices(self):
+        for vertices in [
+            [1.0, 1.0, 1.0],  # shape (3,)
+            [[1.0, 1.0, 1.0]],  # shape (1, 3)
+            [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
+        ]:
+            self.assertRaises(ValueError, detect, self.atomic, vertices)
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(TypeError, detect, self.atomic, self.vertices, step=step)
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                detect,
+                self.atomic,
+                self.vertices,
+                step=step,
+            )
+
+    def test_wrong_probe_in_format(self):
+        # Check wrong probe out format
+        for probe_in in [True, [1.4], {"step": 1.4}, "1.4", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, detect, self.atomic, self.vertices, probe_in=probe_in
+            )
+
+    def test_invalid_probe_in(self):
+        # Check invalid probe in
+        self.assertRaises(
+            ValueError,
+            detect,
+            self.atomic,
+            self.vertices,
+            probe_in=-1,
+        )
+
+    def test_wrong_probe_out_format(self):
+        # Check wrong probe out format
+        for probe_out in [True, [4.0], {"step": 4.0}, "4.0", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, detect, self.atomic, self.vertices, probe_out=probe_out
+            )
+
+    def test_invalid_probe_out(self):
+        # Check invalid probe out
+        self.assertRaises(
+            ValueError,
+            detect,
+            self.atomic,
+            self.vertices,
+            probe_out=-1,
+        )
+
+    def test_invalid_probe_pair(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            detect,
+            self.atomic,
+            self.vertices,
+            probe_in=4,
+            probe_out=1.4,
+        )
+
+    def test_wrong_removal_distance_format(self):
+        # Check wrong removal distance format
+        for removal_distance in [
+            True,
+            [2.4],
+            {"removal_distance": 2.4},
+            "2.4",
+            numpy.ones(1),
+        ]:
+            self.assertRaises(
+                TypeError,
+                detect,
+                self.atomic,
+                self.vertices,
+                removal_distance=removal_distance,
+            )
+
+    def test_invalid_removal_distance(self):
+        # Check invalid removal distance
+        self.assertRaises(
+            ValueError,
+                detect,
+                self.atomic,
+                self.vertices,
+                removal_distance=-1.0,
+        )
+
+    def test_wrong_volume_cutoff_format(self):
+        # Check wrong volume cutoff format
+        for volume_cutoff in [
+            True,
+            [5.0],
+            {"volume_cutoff": 5.0},
+            "5.0",
+            numpy.ones(1),
+        ]:
+            self.assertRaises(
+                TypeError,
+                detect,
+                self.atomic,
+                self.vertices,
+                volume_cutoff=volume_cutoff,
+            )
+
+    def test_invalid_volume_cutoff(self):
+        # Check invalid volume cutoff
+        self.assertRaises(
+            ValueError,
+            detect,
+            self.atomic,
+            self.vertices,
+            volume_cutoff=-1,
+        )
+
+    def test_wrong_latomic_format(self):
+        # Check wrong latomic format
+        for latomic in [True, 4, 4.0, {"latomic": []}, "4.0"]:
+            self.assertRaises(
+                TypeError, detect, self.atomic, self.vertices, latomic=latomic
+            )
+
+    def test_invalid_latomic(self):
+        # Check invalid latomic
+        for latomic in [
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # shape (8,)
+            [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],  # shape (1, 9)
+            [[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 8)
+        ]:
+            self.assertRaises(ValueError, detect, self.atomic, self.vertices, latomic=latomic)
+
+    def test_wrong_ligand_cutoff_format(self):
+        # Check wrong ligand cutoff format
+        for ligand_cutoff in [
+            True,
+            [5.0],
+            {"ligand_cutoff": 5.0},
+            "5.0",
+            numpy.ones(1),
+        ]:
+            self.assertRaises(
+                TypeError,
+                detect,
+                self.atomic,
+                self.vertices,
+                ligand_cutoff=ligand_cutoff,
+            )
+
+    def test_invalid_ligand_cutoff(self):
+        # Check invalid ligand cutoff
+        self.assertRaises(
+            ValueError,
+            detect,
+            self.atomic,
+            self.vertices,
+            ligand_cutoff=-1,
+        )
+
+    def test_wrong_box_adjustment_format(self):
+        # Check wrong box adjustment format
+        for box_adjustment in [
+            1,
+            1.0,
+            [1.0],
+            {"box_adjustment": 1.0},
+            "1.0",
+            numpy.ones(1),
+        ]:
+            self.assertRaises(
+                TypeError,
+                detect,
+                self.atomic,
+                self.vertices,
+                box_adjustment=box_adjustment,
+            )
+
+    def test_wrong_surface_format(self):
+        # Check wrong surface format
+        for surface in [True, [4.0], {"surface": "SES"}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, detect, self.atomic, self.vertices, surface=surface
+            )
+
+    def test_invalid_surface(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            detect,
+            self.atomic,
+            self.vertices,
+            surface="invalid",
+        )
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, detect, self.atomic, self.vertices, nthreads=nthreads
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                detect,
+                self.atomic,
+                self.vertices,
+                nthreads=nthreads,
+            )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, detect, self.atomic, self.vertices, verbose=verbose
+            )
 
 
 class TestSpatial(unittest.TestCase):
