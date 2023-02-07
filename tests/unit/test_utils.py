@@ -494,7 +494,7 @@ class TestWriteResults(unittest.TestCase):
         write_results(
             "tests/results.toml", "input.pdb", "ligand.pdb", "output.pdb", step=0.1
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nLIGAND = "{os.path.abspath("ligand.pdb")}"\nOUTPUT = "{os.path.abspath("output.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.1\n\n[RESULTS]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nLIGAND = "{os.path.abspath("ligand.pdb")}"\nOUTPUT = "{os.path.abspath("output.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.1\n'
         with open("tests/results.toml", "r") as f:
             self.assertEqual(f.read(), expected)
         os.remove("tests/results.toml")
@@ -507,7 +507,7 @@ class TestWriteResults(unittest.TestCase):
             None,
             output_hydropathy="hydropathy.pdb",
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n'
         with open("tests/output_hydropathy.toml", "r") as f:
             self.assertEqual(f.read(), expected)
         os.remove("tests/output_hydropathy.toml")
@@ -753,7 +753,7 @@ class TestWriteResults(unittest.TestCase):
             None,
             step=1
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n\n[RESULTS]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n'
         with open("tests/step.toml", "r") as f:
             self.assertEqual(f.read(), expected)
         os.remove("tests/step.toml")
