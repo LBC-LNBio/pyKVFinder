@@ -1,5 +1,6 @@
 import os
 import unittest
+from unittest import mock
 
 import numpy
 import toml
@@ -240,6 +241,98 @@ class TestGetVerticesFromFile(unittest.TestCase):
                 self.atomic1,
                 nthreads=nthreads,
             )
+
+    @mock.patch(
+        "toml.load",
+        return_value={
+            "SETTINGS": {
+                "visiblebox": {
+                    "p1": {"x": 3.11, "y": 7.34, "z": 1.59},
+                    "p2": {"x": 11.51, "y": 7.34, "z": 1.59},
+                    "p3": {"x": 3.11, "y": 10.74, "z": 1.59},
+                    "p4": {"x": 3.11, "y": 7.34, "z": 6.19},
+                }
+            }
+        },
+    )
+    def test_parKVFinder_box_file(self, _):
+        # Expected vertices
+        expected = [
+            [-0.89, 3.34, -2.41],
+            [15.51, 3.34, -2.41],
+            [-0.89, 14.74, -2.41],
+            [-0.89, 3.34, 10.19],
+        ]
+        # Get vertices from file
+        vertices, _ = get_vertices_from_file("mocked", self.atomic1)
+        self.assertListEqual(vertices.tolist(), expected)
+
+    @mock.patch(
+        "toml.load",
+        return_value={
+            "residues": [
+                [
+                    "49",
+                    "E",
+                    "LEU",
+                ],
+            ],
+        },
+    )
+    def test_missing_padding(self, _):
+        # Expected vertices
+        expected = [
+            [-4.0, 0.5, -3.5],
+            [11.0, 0.5, -3.5],
+            [-4.0, 15.5, -3.5],
+            [-4.0, 0.5, 11.5],
+        ]
+        # Get vertices from file
+        vertices, _ = get_vertices_from_file(
+            os.path.join(DATADIR, "tests", "residues-box.toml"), self.atomic2
+        )
+        self.assertListEqual(vertices.tolist(), expected)
+
+    @mock.patch(
+        "toml.load",
+        return_value={
+            "box": {
+                "p": {"x": 3.11, "y": 7.34, "z": 1.59},
+                "p2": {"x": 11.51, "y": 7.34, "z": 1.59},
+                "p3": {"x": 3.11, "y": 10.74, "z": 1.59},
+                "p4": {"x": 3.11, "y": 7.34, "z": 6.19},
+            }
+        },
+    )
+    def test_invalid_box_keys(self, _):
+        self.assertRaises(ValueError, get_vertices_from_file, "mocked", self.atomic1)
+
+    @mock.patch(
+        "toml.load",
+        return_value={
+            "residues": [
+                [
+                    "49",
+                    "E",
+                    "LEU",
+                ],
+            ],
+            "p1": {"x": 3.11, "y": 7.34, "z": 1.59},
+            "padding": 3.5,
+        },
+    )
+    def test_invalid_residues_keys(self, _):
+        self.assertRaises(ValueError, get_vertices_from_file, "mocked", self.atomic1)
+
+    @mock.patch(
+        "toml.load",
+        return_value={
+            'wrong_key': []
+        },
+    )
+    def test_invalid_box(self, _):
+        self.assertRaises(ValueError, get_vertices_from_file, "mocked", self.atomic1)
+
 
 
 class TestGetCavityName(unittest.TestCase):
