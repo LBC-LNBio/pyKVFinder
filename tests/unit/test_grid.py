@@ -1113,7 +1113,7 @@ class TestSpatial(unittest.TestCase):
         self.assertListEqual(self.cavities.tolist(), surface.tolist())
 
     def test_selection(self):
-        cavities = numpy.random.randint(-1, 5, 27).reshape(3, 3, 3)
+        cavities = numpy.random.randint(-1, 3, 27).reshape(3, 3, 3)
         for selection in [[2], ["KAA"]]:
             surface, _, _ = spatial(cavities, selection=selection)
             self.assertListEqual(numpy.unique(surface).tolist(), [-1, 0, 2])
@@ -1184,25 +1184,108 @@ class TestSpatial(unittest.TestCase):
 
 
 class TestDepth(unittest.TestCase):
+    def setUp(self):
+        self.cavities = numpy.full((5, 5, 5), -1)
+        for i in range(1, 4):
+            for j in range(1, 4):
+                for k in range(1, 4):
+                    self.cavities[i, j, k] = 0
+        self.cavities[2, 2, 2] = 2
+        self.cavities[2, 2, 1] = 2
+
     def test_depth(self):
         # Expected
         expected = numpy.zeros((5, 5, 5))
         expected[2, 2, 2] = 0.6
-        # Prepare data
-        cavities = numpy.full((5, 5, 5), -1)
-        for i in range(1, 4):
-            for j in range(1, 4):
-                for k in range(1, 4):
-                    cavities[i, j, k] = 0
-
-        cavities[2, 2, 2] = 2
-        cavities[2, 2, 1] = 2
-        # Surface
-        depths, max_depth, avg_depth = depth(cavities)
+        # Depth
+        depths, max_depth, avg_depth = depth(self.cavities)
         # Assert
         self.assertDictEqual(max_depth, {"KAA": 0.6})
         self.assertDictEqual(avg_depth, {"KAA": 0.3})
         self.assertListEqual(depths.tolist(), expected.tolist())
+
+    def test_step_as_integer(self):
+        # Expected
+        expected = numpy.zeros((5, 5, 5))
+        expected[2, 2, 2] = 1.0
+        # Depth
+        depths, max_depth, avg_depth = depth(self.cavities, step=1)
+        # Assert
+        self.assertDictEqual(max_depth, {"KAA": 1.0})
+        self.assertDictEqual(avg_depth, {"KAA": 0.5})
+        self.assertListEqual(depths.tolist(), expected.tolist())
+
+    def test_selection(self):
+        for selection in [[2], ["KAA"]]:
+            depths, _, _ = depth(self.cavities, selection=selection)
+            self.assertListEqual(
+                numpy.argwhere(self.cavities == 2).tolist(),
+                [[2, 2, 1], [2, 2, 2]],
+            )
+
+    def test_wrong_cavities_format(self):
+        for cavities in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(TypeError, depth, cavities)
+
+    def test_invalid_cavities(self):
+        for cavities in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(ValueError, depth, cavities)
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(TypeError, depth, self.cavities, step=step)
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                depth,
+                self.cavities,
+                step=step,
+            )
+
+    def test_wrong_selection_format(self):
+        self.assertRaises(TypeError, depth, self.cavities, selection=["KAA", 2])
+
+    def test_invalid_selection(self):
+        for selection in [[1], [0], [-1]]:
+            self.assertRaises(ValueError, depth, self.cavities, selection=selection)
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                depth,
+                self.cavities,
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                depth,
+                self.cavities,
+                nthreads=nthreads,
+            )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                depth,
+                self.cavities,
+                verbose=verbose,
+            )
 
 
 class TestConstitutional(unittest.TestCase):
