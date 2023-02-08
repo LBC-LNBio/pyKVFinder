@@ -1421,7 +1421,7 @@ class TestConstitutional(unittest.TestCase):
 
     def test_wrong_probe_in_format(self):
         # Check wrong probe out format
-        for probe_in in [True, [1.4], {"step": 1.4}, "1.4", numpy.ones(1)]:
+        for probe_in in [True, [1.4], {"probe_in": 1.4}, "1.4", numpy.ones(1)]:
             self.assertRaises(
                 TypeError,
                 constitutional,
@@ -1512,32 +1512,246 @@ class TestConstitutional(unittest.TestCase):
 
 
 class TestHydropathy(unittest.TestCase):
-    def test_hydropathy(self):
-        # Expected
-        expected = numpy.zeros((5, 5, 5))
-        expected[2, 2, 1] = 0.76
-        expected[2, 2, 4] = 0.76
+    def setUp(self):
         # Surface
-        surface = numpy.full((5, 5, 5), -1)
+        self.surface = numpy.full((5, 5, 5), -1)
         for i in range(1, 4):
             for j in range(1, 4):
                 for k in range(1, 4):
-                    surface[i, j, k] = 0
+                    self.surface[i, j, k] = 0
 
-        surface[2, 2, 1] = 2
-        surface[2, 2, 4] = 3
+        self.surface[2, 2, 1] = 2
+        self.surface[2, 2, 4] = 3
         # Dummy atomic
-        atomic = [
-            ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
-        ]
+        self.atomic = numpy.array(
+            [
+                ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
+            ]
+        )
         # Dummy vertices
-        vertices = numpy.array(
+        self.vertices = numpy.array(
             [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]]
         )
+        # Expected
+        self.expected = numpy.zeros((5, 5, 5))
+        self.expected[2, 2, 1] = 0.76
+        self.expected[2, 2, 4] = 0.76
+
+    def test_hydropathy(self):
         # Surface
-        scales, avg_hydropathy = hydropathy(surface, atomic, vertices)
+        scales, avg_hydropathy = hydropathy(self.surface, self.atomic, self.vertices)
         # Assert
-        self.assertListEqual(scales.tolist(), expected.tolist())
+        self.assertListEqual(scales.tolist(), self.expected.tolist())
         self.assertDictEqual(
             avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
         )
+
+    def test_atomic_as_list(self):
+        # Surface
+        scales, avg_hydropathy = hydropathy(
+            self.surface, self.atomic.tolist(), self.vertices
+        )
+        # Assert
+        self.assertListEqual(scales.tolist(), self.expected.tolist())
+        self.assertDictEqual(
+            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+        )
+
+    def test_vertices_as_list(self):
+        # Surface
+        scales, avg_hydropathy = hydropathy(
+            self.surface, self.atomic, self.vertices.tolist()
+        )
+        # Assert
+        self.assertListEqual(scales.tolist(), self.expected.tolist())
+        self.assertDictEqual(
+            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+        )
+
+    def test_step_as_integer(self):
+        # Surface
+        scales, avg_hydropathy = hydropathy(
+            self.surface, self.atomic, self.vertices, step=1
+        )
+        # Assert
+        self.assertListEqual(scales.tolist(), self.expected.tolist())
+        self.assertDictEqual(
+            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+        )
+
+    def test_probe_in_as_integer(self):
+        # Surface
+        scales, avg_hydropathy = hydropathy(
+            self.surface, self.atomic, self.vertices, probe_in=1
+        )
+        # Assert
+        self.assertListEqual(scales.tolist(), self.expected.tolist())
+        self.assertDictEqual(
+            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+        )
+
+    def test_wrong_surface_format(self):
+        for surface in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(
+                TypeError, hydropathy, surface, self.atomic, self.vertices
+            )
+
+    def test_invalid_surface(self):
+        for surface in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(
+                ValueError, hydropathy, surface, self.atomic, self.vertices
+            )
+
+    def test_wrong_atomic_format(self):
+        # Check wrong atomic format
+        for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
+            self.assertRaises(
+                TypeError, hydropathy, self.surface, atomic, self.vertices
+            )
+
+    def test_invalid_atomic(self):
+        # Check invalid atomic
+        for atomic in [
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # shape (8,)
+            [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],  # shape (1, 9)
+            [[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 8)
+        ]:
+            self.assertRaises(
+                ValueError, hydropathy, self.surface, atomic, self.vertices
+            )
+
+    def test_wrong_vertices_format(self):
+        # Check wrong vertices format
+        for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
+            self.assertRaises(
+                TypeError, hydropathy, self.surface, self.atomic, vertices
+            )
+
+    def test_invalid_vertices(self):
+        for vertices in [
+            [1.0, 1.0, 1.0],  # shape (3,)
+            [[1.0, 1.0, 1.0]],  # shape (1, 3)
+            [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
+        ]:
+            self.assertRaises(
+                ValueError, hydropathy, self.surface, self.atomic, vertices
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                step=step,
+            )
+
+    def test_wrong_probe_in_format(self):
+        # Check wrong probe out format
+        for probe_in in [True, [1.4], {"probe_in": 1.4}, "1.4", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                probe_in=probe_in,
+            )
+
+    def test_invalid_probe_in(self):
+        # Check invalid probe in
+        self.assertRaises(
+            ValueError,
+            hydropathy,
+            self.surface,
+            self.atomic,
+            self.vertices,
+            probe_in=-1,
+        )
+
+    def test_wrong_ignore_backbone_format(self):
+        for ignore_backbone in [1, 1.0, "1", [True], {"ignore_backbone": True}]:
+            self.assertRaises(
+                TypeError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                ignore_backbone=ignore_backbone,
+            )
+
+    def test_wrong_selection_format(self):
+        self.assertRaises(
+            TypeError,
+            hydropathy,
+            self.surface,
+            self.atomic,
+            self.vertices,
+            selection=["KAA", 2],
+        )
+
+    def test_invalid_selection(self):
+        for selection in [[1], [0], [-1]]:
+            self.assertRaises(
+                ValueError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                selection=selection,
+            )
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                nthreads=nthreads,
+            )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                verbose=verbose,
+            )
