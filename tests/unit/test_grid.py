@@ -802,18 +802,6 @@ class TestDetect(unittest.TestCase):
         # Assert number of cavities
         self.assertEqual(ncav, int(expected.max() - 1))
 
-    def test_vertices_as_list(self):
-        # Detect cavities
-        ncav, cavities = detect(self.atomic, self.vertices.tolist())
-        cavities[cavities == 1] = 0
-        # Expected grid
-        expected = read_cavity(
-            os.path.join(DATADIR, "tests", "1FMO.KVFinder.output.pdb"),
-            os.path.join(DATADIR, "tests", "1FMO.pdb"),
-        )
-        # Assert number of cavities
-        self.assertEqual(ncav, int(expected.max() - 1))
-
     def test_wrong_atomic_format(self):
         # Check wrong atomic format
         for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
@@ -1289,34 +1277,222 @@ class TestDepth(unittest.TestCase):
 
 
 class TestConstitutional(unittest.TestCase):
-    def test_constitutional(self):
-        # Cavities
-        cavities = numpy.full((5, 5, 5), -1)
+    def setUp(self):
+        # Dummy cavities
+        self.cavities = numpy.full((5, 5, 5), -1)
         for i in range(1, 4):
             for j in range(1, 4):
                 for k in range(1, 4):
-                    cavities[i, j, k] = 0
+                    self.cavities[i, j, k] = 0
 
-        cavities[2, 2, 1] = 2
-        cavities[2, 2, 4] = 3
+        self.cavities[2, 2, 1] = 2
+        self.cavities[2, 2, 4] = 3
+
         # Dummy atomic
-        atomic = [
-            ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
-        ]
+        self.atomic = numpy.array(
+            [
+                ["13", "E", "GLU", "C", "1.0", "1.0", "1.0", "1.908"],
+            ]
+        )
+
         # Dummy vertices
-        vertices = numpy.array(
+        self.vertices = numpy.array(
             [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]]
         )
-        # Surface
-        residues = constitutional(cavities, atomic, vertices)
+
+    def test_constitutional(self):
+        # Constitutional
+        residues = constitutional(self.cavities, self.atomic, self.vertices)
         # Assert
         self.assertDictEqual(
             residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]}
         )
 
+    def test_atomic_as_list(self):
+        # Constitutional
+        residues = constitutional(self.cavities, self.atomic.tolist(), self.vertices)
+        # Assert
+        self.assertDictEqual(
+            residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]}
+        )
 
-class TestConstitutional(unittest.TestCase):
-    def test_constitutional(self):
+    def test_vertices_as_list(self):
+        # Constitutional
+        residues = constitutional(self.cavities, self.atomic, self.vertices.tolist())
+        # Assert
+        self.assertDictEqual(
+            residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]}
+        )
+
+    def test_step_as_integer(self):
+        # Constitutional
+        residues = constitutional(self.cavities, self.atomic, self.vertices, step=1)
+        # Assert
+        self.assertDictEqual(
+            residues, {"KAA": [["13", "E", "GLU"]]}
+        )
+
+    def test_probe_in_as_integer(self):
+        # Constitutional
+        residues = constitutional(self.cavities, self.atomic, self.vertices, probe_in=1)
+        # Assert
+        self.assertDictEqual(
+            residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]}
+        )
+
+    def test_selection(self):
+        for selection in [[2], ["KAA"]]:
+            residues = constitutional(
+                self.cavities, self.atomic, self.vertices, selection=selection
+            )
+            self.assertDictEqual(residues, {"KAA": [["13", "E", "GLU"]]})
+
+    def test_wrong_cavities_format(self):
+        for cavities in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(
+                TypeError, constitutional, cavities, self.atomic, self.vertices
+            )
+
+    def test_invalid_cavities(self):
+        for cavities in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(
+                ValueError, constitutional, cavities, self.atomic, self.vertices
+            )
+
+    def test_wrong_atomic_format(self):
+        # Check wrong atomic format
+        for atomic in [True, 4, 4.0, {"step": 4.0}, "4.0"]:
+            self.assertRaises(
+                TypeError, constitutional, self.cavities, atomic, self.vertices
+            )
+
+    def test_invalid_atomic(self):
+        # Check invalid atomic
+        for atomic in [
+            [1.0, 1.0, 1.0, 1.0],  # shape (4,)
+            [[1.0, 1.0, 1.0, 10, 1.0]],  # shape (1, 5)
+            [[[1.0, 1.0, 1.0, 1.0]]],  # shape (1, 1, 4)
+        ]:
+            self.assertRaises(
+                ValueError, constitutional, self.cavities, atomic, self.vertices
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                constitutional,
+                self.cavities,
+                self.atomic,
+                self.vertices,
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                constitutional,
+                self.cavities,
+                self.atomic,
+                self.vertices,
+                step=step,
+            )
+
+    def test_wrong_probe_in_format(self):
+        # Check wrong probe out format
+        for probe_in in [True, [1.4], {"step": 1.4}, "1.4", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                constitutional,
+                self.cavities,
+                self.atomic,
+                self.vertices,
+                probe_in=probe_in,
+            )
+
+    def test_invalid_probe_in(self):
+        # Check invalid probe in
+        self.assertRaises(
+            ValueError,
+            constitutional,
+            self.cavities,
+            self.atomic,
+            self.vertices,
+            probe_in=-1,
+        )
+
+    def test_wrong_ignore_backbone_format(self):
+        for ignore_backbone in [1, 1.0, "1", [True], {"ignore_backbone": True}]:
+            self.assertRaises(
+                TypeError,
+                constitutional,
+                self.cavities,
+                self.atomic,
+                self.vertices,
+                ignore_backbone=ignore_backbone,
+            )
+
+    def test_wrong_selection_format(self):
+        self.assertRaises(
+            TypeError,
+            constitutional,
+            self.cavities,
+            self.atomic,
+            self.vertices,
+            selection=["KAA", 2],
+        )
+
+    def test_invalid_selection(self):
+        for selection in [[1], [0], [-1]]:
+            self.assertRaises(
+                ValueError,
+                constitutional,
+                self.cavities,
+                self.atomic,
+                self.vertices,
+                selection=selection,
+            )
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                depth,
+                self.cavities,
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                depth,
+                self.cavities,
+                nthreads=nthreads,
+            )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                depth,
+                self.cavities,
+                verbose=verbose,
+            )
+
+
+class TestHydropathy(unittest.TestCase):
+    def test_hydropathy(self):
         # Expected
         expected = numpy.zeros((5, 5, 5))
         expected[2, 2, 1] = 0.76

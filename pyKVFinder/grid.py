@@ -1455,6 +1455,8 @@ def constitutional(
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
         raise TypeError("`cavities` must be a numpy.ndarray.")
+    elif len(cavities.shape) != 3:
+        raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atomic).shape) != 2:
