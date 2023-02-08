@@ -1207,8 +1207,8 @@ class TestDepth(unittest.TestCase):
         for selection in [[2], ["KAA"]]:
             depths, _, _ = depth(self.cavities, selection=selection)
             self.assertListEqual(
-                numpy.argwhere(self.cavities == 2).tolist(),
-                [[2, 2, 1], [2, 2, 2]],
+                numpy.argwhere(depths != 0).tolist(),
+                [[2, 2, 2]],
             )
 
     def test_wrong_cavities_format(self):
@@ -1590,6 +1590,31 @@ class TestHydropathy(unittest.TestCase):
             avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
         )
 
+    def test_selection(self):
+        # Expected
+
+        for selection in [[2], ["KAA"]]:
+            scales, avg_hydropathy = hydropathy(
+                self.surface, self.atomic, self.vertices, selection=selection
+            )
+            self.assertListEqual(
+                scales.tolist(), numpy.where(self.surface == 2, self.expected, 0).tolist()
+            )
+            self.assertDictEqual(
+                avg_hydropathy, {"KAA": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+            )
+
+    def test_ignore_backbone(self):
+        # Surface
+        scales, avg_hydropathy = hydropathy(
+            self.surface, self.atomic, self.vertices, ignore_backbone=True
+        )
+        # Assert
+        self.assertListEqual(scales.tolist(), numpy.zeros((5, 5, 5)).tolist())
+        self.assertDictEqual(
+            avg_hydropathy, {"KAA": 0.0, "KAB": 0.0, "EisenbergWeiss": [-1.42, 2.6]}
+        )
+
     def test_wrong_surface_format(self):
         for surface in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
             self.assertRaises(
@@ -1687,6 +1712,23 @@ class TestHydropathy(unittest.TestCase):
             self.vertices,
             probe_in=-1,
         )
+
+    def test_wrong_hydrophobicity_scale_format(self):
+        for hydrophobicity_scale in [
+            True,
+            1,
+            1.0,
+            [""],
+            {"hydrophobicity_scale": True},
+        ]:
+            self.assertRaises(
+                TypeError,
+                hydropathy,
+                self.surface,
+                self.atomic,
+                self.vertices,
+                hydrophobicity_scale=hydrophobicity_scale,
+            )
 
     def test_wrong_ignore_backbone_format(self):
         for ignore_backbone in [1, 1.0, "1", [True], {"ignore_backbone": True}]:
