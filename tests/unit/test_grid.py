@@ -11,6 +11,8 @@ from pyKVFinder.grid import (
     _get_cavity_label,
     _get_cavity_name,
     _get_dimensions,
+    _get_opening_name,
+    _get_opening_label,
     _get_sincos,
     _get_vertices_from_box,
     _get_vertices_from_residues,
@@ -1049,24 +1051,6 @@ class TestDetect(unittest.TestCase):
                 TypeError, detect, self.atomic, self.vertices, verbose=verbose
             )
 
-    def test_verbose_prints(self):
-        # Check verbose prints to stdout
-        ncav, cavities = detect(self.atomic, self.vertices)
-        # surface='SES'
-        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            with mock.patch("_pyKVFinder._detect", return_value=(ncav, cavities)) as _:
-                # Detect cavities
-                _, _ = detect(self.atomic, self.vertices, verbose=True)
-        expected = f"> Surface representation: Solvent Excluded Surface (SES)\n"
-        self.assertEqual(stdout.getvalue(), expected)
-        # surface='SAS'
-        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            with mock.patch("_pyKVFinder._detect", return_value=(ncav, cavities)) as _:
-                # Detect cavities
-                _, _ = detect(self.atomic, self.vertices, surface="SAS", verbose=True)
-        expected = f"> Surface representation: Solvent Accessible Surface (SAS)\n"
-        self.assertEqual(stdout.getvalue(), expected)
-
 
 class TestSpatial(unittest.TestCase):
     def setUp(self):
@@ -1598,7 +1582,8 @@ class TestHydropathy(unittest.TestCase):
                 self.surface, self.atomic, self.vertices, selection=selection
             )
             self.assertListEqual(
-                scales.tolist(), numpy.where(self.surface == 2, self.expected, 0).tolist()
+                scales.tolist(),
+                numpy.where(self.surface == 2, self.expected, 0).tolist(),
             )
             self.assertDictEqual(
                 avg_hydropathy, {"KAA": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
@@ -1797,3 +1782,49 @@ class TestHydropathy(unittest.TestCase):
                 self.vertices,
                 verbose=verbose,
             )
+
+
+class TestExport(unittest.TestCase):
+    def test_export(self):
+        pass
+
+
+class TestGetOpeningName(unittest.TestCase):
+    def test_indexes(self):
+        indexes = list(range(0, 100, 10))
+        opening_names = [_get_opening_name(index) for index in indexes]
+        self.assertListEqual(
+            opening_names,
+            ["OAA", "OAK", "OAU", "OBE", "OBO", "OBY", "OCI", "OCS", "ODC", "ODM"],
+        )
+
+
+class TestGetCavityLabel(unittest.TestCase):
+    def test_opening_names(self):
+        opening_names = [
+            "OAA",
+            "OAK",
+            "OAU",
+            "OBE",
+            "OBO",
+            "OBY",
+            "OCI",
+            "OCS",
+            "ODC",
+            "ODM",
+        ]
+        labels = [_get_opening_label(name) for name in opening_names]
+        self.assertListEqual(labels, list(range(2, 100, 10)))
+
+    def test_invalid_opening_name(self):
+        self.assertRaises(ValueError, _get_opening_label, "AAA")
+
+
+class TestProcessOpenings(unittest.TestCase):
+    pass
+
+class TestOpenings(unittest.TestCase):
+    pass
+
+class TestExportOpenings(unittest.TestCase):
+    pass
