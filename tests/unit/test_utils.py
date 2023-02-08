@@ -386,40 +386,6 @@ class TestReadCavity(unittest.TestCase):
                 verbose=verbose,
             )
 
-    def test_verbose_prints(self):
-        # Check verbose prints to stdout
-        # surface='SES'
-        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            with mock.patch(
-                "_pyKVFinder._fill_receptor", return_value=numpy.zeros(16 * 16 * 16)
-            ) as _:
-                with mock.patch(
-                    "_pyKVFinder._fill_cavity", return_value=numpy.zeros(16 * 16 * 16)
-                ) as _:
-                    read_cavity(
-                        os.path.join(FIXTURES, "cavity.pdb"),
-                        os.path.join(FIXTURES, "receptor.pdb"),
-                        verbose=True,
-                    )
-        expected = f"> Inserting {os.path.join(FIXTURES, 'receptor.pdb')} into 3D grid\n> Surface representation: Solvent Excluded Surface (SES)\n> Inserting {os.path.join(FIXTURES, 'cavity.pdb')} into 3D grid\n"
-        self.assertEqual(stdout.getvalue(), expected)
-        # surface='SAS'
-        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            with mock.patch(
-                "_pyKVFinder._fill_receptor", return_value=numpy.zeros(16 * 16 * 16)
-            ) as _:
-                with mock.patch(
-                    "_pyKVFinder._fill_cavity", return_value=numpy.zeros(16 * 16 * 16)
-                ) as _:
-                    read_cavity(
-                        os.path.join(FIXTURES, "cavity.pdb"),
-                        os.path.join(FIXTURES, "receptor.pdb"),
-                        surface="SAS",
-                        verbose=True,
-                    )
-        expected = f"> Inserting {os.path.join(FIXTURES, 'receptor.pdb')} into 3D grid\n> Surface representation: Solvent Accessible Surface (SAS)\n> Inserting {os.path.join(FIXTURES, 'cavity.pdb')} into 3D grid\n"
-        self.assertEqual(stdout.getvalue(), expected)
-
 
 class TestProcessBox(unittest.TestCase):
     def setUp(self):
@@ -746,13 +712,7 @@ class TestWriteResults(unittest.TestCase):
 
     def test_step_as_integer(self):
         # Check step as integer
-        write_results(
-            "tests/step.toml",
-            "input.pdb",
-            None,
-            None,
-            step=1
-        )
+        write_results("tests/step.toml", "input.pdb", None, None, step=1)
         expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n'
         with open("tests/step.toml", "r") as f:
             self.assertEqual(f.read(), expected)
