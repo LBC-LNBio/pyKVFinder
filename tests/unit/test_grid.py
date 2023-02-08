@@ -1328,9 +1328,7 @@ class TestConstitutional(unittest.TestCase):
         # Constitutional
         residues = constitutional(self.cavities, self.atomic, self.vertices, step=1)
         # Assert
-        self.assertDictEqual(
-            residues, {"KAA": [["13", "E", "GLU"]]}
-        )
+        self.assertDictEqual(residues, {"KAA": [["13", "E", "GLU"]]})
 
     def test_probe_in_as_integer(self):
         # Constitutional
@@ -1379,6 +1377,22 @@ class TestConstitutional(unittest.TestCase):
         ]:
             self.assertRaises(
                 ValueError, constitutional, self.cavities, atomic, self.vertices
+            )
+
+    def test_wrong_vertices_format(self):
+        for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
+            self.assertRaises(
+                TypeError, constitutional, self.cavities, self.atomic, vertices
+            )
+
+    def test_invalid_vertices(self):
+        for vertices in [
+            [1.0, 1.0, 1.0],  # shape (3,)
+            [[1.0, 1.0, 1.0]],  # shape (1, 3)
+            [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
+        ]:
+            self.assertRaises(
+                ValueError, constitutional, self.cavities, self.atomic, vertices
             )
 
     def test_wrong_step_format(self):
@@ -1465,8 +1479,10 @@ class TestConstitutional(unittest.TestCase):
         for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
             self.assertRaises(
                 TypeError,
-                depth,
+                constitutional,
                 self.cavities,
+                self.atomic,
+                self.vertices,
                 nthreads=nthreads,
             )
 
@@ -1475,8 +1491,10 @@ class TestConstitutional(unittest.TestCase):
         for nthreads in [-1, 0]:
             self.assertRaises(
                 ValueError,
-                depth,
+                constitutional,
                 self.cavities,
+                self.atomic,
+                self.vertices,
                 nthreads=nthreads,
             )
 
@@ -1485,8 +1503,10 @@ class TestConstitutional(unittest.TestCase):
         for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
             self.assertRaises(
                 TypeError,
-                depth,
+                constitutional,
                 self.cavities,
+                self.atomic,
+                self.vertices,
                 verbose=verbose,
             )
 
