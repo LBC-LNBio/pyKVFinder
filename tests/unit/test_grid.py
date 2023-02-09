@@ -1,4 +1,3 @@
-import io
 import os
 import unittest
 from unittest import mock
@@ -2225,7 +2224,7 @@ class TestGetOpeningName(unittest.TestCase):
         )
 
 
-class TestGetCavityLabel(unittest.TestCase):
+class TestGetOpeningLabel(unittest.TestCase):
     def test_opening_names(self):
         opening_names = [
             "OAA",

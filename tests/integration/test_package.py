@@ -307,83 +307,138 @@ class TestPackageWorkflow(unittest.TestCase):
         )
         self.assertEqual(results.ncav, 1)
 
+    def test_no_cavities_detected(self):
+        results = pyKVFinder.run_workflow(
+            self.pdb,
+            volume_cutoff=1000000,  # Force ncav = 0
+        )
+        self.assertEqual(results, None)
+
     def test_invalid_input_extension(self):
         self.assertRaises(TypeError, pyKVFinder.run_workflow, "any.mol")
 
     def test_invalid_ligand_extension(self):
-        self.assertRaises(TypeError, pyKVFinder.run_workflow, self.pdb, ligand="any.mol")
+        self.assertRaises(
+            TypeError, pyKVFinder.run_workflow, self.pdb, ligand="any.mol"
+        )
 
-    def test_pyKVFinderResults_methods(self):
+
+class TestPyKVFinderResults(unittest.TestCase):
+    def setUp(self):
+        # PDB
+        self.pdb = os.path.join(DATADIR, "tests", "1FMO.pdb")
+        # Full workflow
+        self.results = pyKVFinder.run_workflow(
+            self.pdb,
+            include_depth=True,
+            include_hydropathy=True,
+            hydrophobicity_scale="EisenbergWeiss",
+        )
+
+    def test_repr(self):
+        self.assertEqual(self.results.__repr__(), "<pyKVFinderResults object>")
+
+    def test_export(self):
+        output = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "cavities.pdb",
+        )
+        output_hydropathy = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "hydropathy.pdb",
+        )
         # export
         self.results.export(
-            output=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "cavities.pdb",
-            ),
-            output_hydropathy=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "hydropathy.pdb",
-            ),
+            output=output,
+            output_hydropathy=output_hydropathy,
+        )
+        self.assertEqual(os.path.exists(output), True)
+        os.remove(output)
+        self.assertEqual(os.path.exists(output_hydropathy), True)
+        os.remove(output_hydropathy)
+
+    def test_write(self):
+        results = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "results.toml",
+        )
+        output = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "cavities.pdb",
+        )
+        output_hydropathy = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "hydropathy.pdb",
         )
         # write
         self.results.write(
-            fn=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "results.toml",
-            ),
-            output=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "cavities.pdb",
-            ),
-            output_hydropathy=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "hydropathy.pdb",
-            ),
+            fn=results,
+            output=output,
+            output_hydropathy=output_hydropathy,
+        )
+        self.assertEqual(os.path.exists(results), True)
+        os.remove(results)
+
+    def test_plot_frequencies(self):
+        pdf = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "barplots.pdf",
         )
         # plot_frequencies
-        self.results.plot_frequencies(
-            pdf=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "barplots.pdf",
-            )
+        self.results.plot_frequencies(pdf=pdf)
+        self.assertEqual(os.path.exists(pdf), True)
+        os.remove(pdf)
+
+    def test_export_all(self):
+        results = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "results.toml",
+        )
+        output = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "cavities.pdb",
+        )
+        output_hydropathy = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "hydropathy.pdb",
+        )
+        pdf = os.path.join(
+            DATADIR,
+            "tests",
+            "output",
+            "barplots.pdf",
         )
         # export_all
         self.results.export_all(
-            fn=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "results.toml",
-            ),
-            output=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "cavities.pdb",
-            ),
-            output_hydropathy=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "hydropathy.pdb",
-            ),
+            fn=results,
+            output=output,
+            output_hydropathy=output_hydropathy,
             include_frequencies_pdf=True,
-            pdf=os.path.join(
-                DATADIR,
-                "tests",
-                "output",
-                "barplots.pdf",
-            ),
+            pdf=pdf,
         )
+        self.assertEqual(os.path.exists(results), True)
+        os.remove(results)
+        self.assertEqual(os.path.exists(output), True)
+        os.remove(output)
+        self.assertEqual(os.path.exists(output_hydropathy), True)
+        os.remove(output_hydropathy)
+        self.assertEqual(os.path.exists(pdf), True)
+        os.remove(pdf)
