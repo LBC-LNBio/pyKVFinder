@@ -101,9 +101,9 @@ def cli() -> None:
     if args.ligand:
         if args.verbose:
             print("> Reading ligand coordinates")
-        if args.ligand.endswith('.pdb'):
+        if args.ligand.endswith(".pdb"):
             latomic = read_pdb(args.ligand, vdw)
-        elif args.ligand.endswith('.xyz'):
+        elif args.ligand.endswith(".xyz"):
             latomic = read_xyz(args.ligand, vdw)
     else:
         latomic = None
@@ -658,7 +658,7 @@ def run_workflow(
     Parameters
     ----------
     input : Union[str, pathlib.Path]
-        A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities. 
+        A path to a target structure file, in PDB or XYZ format, to detect and characterize cavities.
     ligand : Union[str, pathlib.Path], optional
         A path to ligand file, in PDB or XYZ format, by default None.
     vdw : Union[str, pathlib.Path], optional
@@ -806,19 +806,19 @@ def run_workflow(
 
     if verbose:
         print("> Reading PDB coordinates")
-    if input.endswith('.pdb'):
+    if input.endswith(".pdb"):
         atomic = read_pdb(input, vdw, model)
-    elif input.endswith('.xyz'):
+    elif input.endswith(".xyz"):
         atomic = read_xyz(input, vdw)
     else:
         raise TypeError("`target` must have .pdb or .xyz extension.")
-    
+
     if ligand:
         if verbose:
             print("> Reading ligand coordinates")
-        if ligand.endswith('.pdb'):
+        if ligand.endswith(".pdb"):
             latomic = read_pdb(ligand, vdw)
-        elif ligand.endswith('.xyz'):
+        elif ligand.endswith(".xyz"):
             latomic = read_xyz(ligand, vdw)
         else:
             raise TypeError("`ligand` must have .pdb or .xyz extension.")

@@ -1941,7 +1941,7 @@ def _get_opening_label(opening_name: str) -> int:
 def _process_openings(
     raw_openings: numpy.ndarray,
     opening2cavity: numpy.ndarray,
-) -> Dict[str, Dict[str,float]]:
+) -> Dict[str, Dict[str, float]]:
     """Processes arrays of openings' areas.
 
     Parameters
@@ -1987,7 +1987,7 @@ def openings(
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
-) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str,float]]]:
+) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str, float]]]:
     """[WIP] Identify openings of the detected cavities and calculate their areas.
 
     Parameters
@@ -2149,13 +2149,13 @@ def openings(
 
 def export(
     fn: Union[str, pathlib.Path],
-    cavities: numpy.ndarray,
+    cavities: Optional[numpy.ndarray],
     surface: Optional[numpy.ndarray],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
-    B: Union[numpy.ndarray, None] = None,
+    B: Optional[numpy.ndarray] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
-    scales: Union[numpy.ndarray, None] = None,
+    scales: Optional[numpy.ndarray] = None,
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     append: bool = False,
@@ -2169,7 +2169,7 @@ def export(
     ----------
     fn : Union[str, pathlib.Path]
         A path to PDB file for writing cavities.
-    cavities : numpy.ndarray
+    cavities : numpy.ndarray, optional
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
@@ -2201,13 +2201,13 @@ def export(
         X-axis, Y-axis, Z-axis).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
-    B : Union[numpy.ndarray, None], optional
+    B : numpy.ndarray, optional
         A numpy.ndarray with values to be mapped on B-factor column in cavity
         points (B[nx][ny][nz]), by default None.
     output_hydropathy : Union[str, pathlib.Path], optional
         A path to hydropathy PDB file (surface points mapped with a
         hydrophobicity scale), by default `hydropathy.pdb`.
-    scales : Union[numpy.ndarray, None], optional
+    scales : numpy.ndarray, optional
         A numpy.ndarray with hydrophobicity scale values to be mapped on
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
@@ -2223,6 +2223,8 @@ def export(
 
     Raises
     ------
+    TypeError
+        `fn` must be a string or pathlib.Path.
     TypeError
         `cavities` must be a numpy.ndarray.
     ValueError
@@ -2244,6 +2246,8 @@ def export(
     ValueError
         `B` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
+        `output_hydropathy` must be a string.
+    TypeError
         `scales` must be a numpy.ndarray.
     ValueError
         `scales` has the incorrect shape. It must be (nx, ny, nz).
@@ -2259,10 +2263,6 @@ def export(
         `append` must be a boolean.
     TypeError
         `model` must be a integer.
-    TypeError
-        `fn` must be a string or pathlib.Path.
-    TypeError
-        `output_hydropathy` must be a string.
     Exception
         User must define `surface` when not defining `cavities`.
 
@@ -2275,6 +2275,10 @@ def export(
     from _pyKVFinder import _export, _export_b
 
     # Check arguments
+    if fn is not None:
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
     if cavities is not None:
         if type(cavities) not in [numpy.ndarray]:
             raise TypeError("`cavities` must be a numpy.ndarray.")
@@ -2302,6 +2306,10 @@ def export(
             raise TypeError("`B` must be a numpy.ndarray.")
         elif len(B.shape) != 3:
             raise ValueError("`B` has the incorrect shape. It must be (nx, ny, nz).")
+    if output_hydropathy is not None:
+        if type(output_hydropathy) not in [str, pathlib.Path]:
+            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
     if scales is not None:
         if type(scales) not in [numpy.ndarray]:
             raise TypeError("`scales` must be a numpy.ndarray.")
@@ -2349,16 +2357,6 @@ def export(
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
     sincos = _get_sincos(vertices)
-
-    # Create base directories of results
-    if fn is not None:
-        if type(fn) not in [str, pathlib.Path]:
-            raise TypeError("`fn` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
-    if output_hydropathy is not None:
-        if type(output_hydropathy) not in [str, pathlib.Path]:
-            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
 
     # Unpack vertices
     P1, P2, P3, P4 = vertices

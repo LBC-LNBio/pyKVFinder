@@ -24,6 +24,7 @@ from pyKVFinder.grid import (
     constitutional,
     depth,
     detect,
+    export,
     get_vertices,
     get_vertices_from_file,
     hydropathy,
@@ -439,20 +440,6 @@ class TestGetVertices(unittest.TestCase):
                 TypeError, get_vertices, atomic, self.probe_out, self.step
             )
 
-    def test_wrong_probe_out_format(self):
-        # Check wrong probe out format
-        for probe_out in [True, [4.0], {"step": 4.0}, "4.0", numpy.ones(1)]:
-            self.assertRaises(
-                TypeError, get_vertices, self.atomic, probe_out, self.step
-            )
-
-    def test_wrong_step_format(self):
-        # Check wrong step format
-        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
-            self.assertRaises(
-                TypeError, get_vertices, self.atomic, self.probe_out, step
-            )
-
     def test_invalid_atomic(self):
         # Check invalid atomic
         for atomic in [
@@ -464,9 +451,23 @@ class TestGetVertices(unittest.TestCase):
                 ValueError, get_vertices, atomic, self.probe_out, self.step
             )
 
+    def test_wrong_probe_out_format(self):
+        # Check wrong probe out format
+        for probe_out in [True, [4.0], {"step": 4.0}, "4.0", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, get_vertices, self.atomic, probe_out, self.step
+            )
+
     def test_invalid_probe_out(self):
         # Check invalid probe_out
         self.assertRaises(ValueError, get_vertices, self.atomic, -1, self.step)
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, get_vertices, self.atomic, self.probe_out, step
+            )
 
     def test_invalid_step(self):
         # Check invalid step
@@ -498,10 +499,6 @@ class TestGetDimensions(unittest.TestCase):
         for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
             self.assertRaises(TypeError, _get_dimensions, vertices)
 
-    def test_wrong_step_format(self):
-        for step in ["step", True, {"step": [0.6]}, [0.6, 0.6]]:
-            self.assertRaises(TypeError, _get_dimensions, self.vertices, step=step)
-
     def test_invalid_vertices(self):
         for vertices in [
             [1.0, 1.0, 1.0],  # shape (3,)
@@ -509,6 +506,10 @@ class TestGetDimensions(unittest.TestCase):
             [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
         ]:
             self.assertRaises(ValueError, _get_dimensions, vertices)
+
+    def test_wrong_step_format(self):
+        for step in ["step", True, {"step": [0.6]}, [0.6, 0.6]]:
+            self.assertRaises(TypeError, _get_dimensions, self.vertices, step=step)
 
     def test_invalid_step(self):
         for step in [-1.0, 0.0]:
@@ -1785,8 +1786,356 @@ class TestHydropathy(unittest.TestCase):
 
 
 class TestExport(unittest.TestCase):
-    def test_export(self):
-        pass
+    def setUp(self):
+        self.cavities = 2 * numpy.ones((1, 1, 1), dtype=numpy.int32)
+        self.surface = 2 * numpy.ones((1, 1, 1), dtype=numpy.int32)
+        self.depths = numpy.random.randint(0, 10, (1, 1, 1)) * numpy.random.rand(1)
+        self.scales = ((-1.42) + numpy.random.rand(1) * (2.6 - (-1.42))).reshape(
+            1, 1, 1
+        )
+        self.vertices = numpy.array(
+            [
+                [0.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 0.0, 1.0],
+            ]
+        )
+
+    def test_cavity_wo_surface(self):
+        # Cavity without surface
+        export(
+            "tests/cavities_wo_surface.pdb",
+            self.cavities,
+            None,
+            self.vertices,
+            step=1.0,
+        )
+        with open("tests/cavities_wo_surface.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                "ATOM      1  H   KAA   259       0.000   0.000   0.000  1.00  0.00\n",
+            )
+        os.remove("tests/cavities_wo_surface.pdb")
+
+    def test_cavity_w_surface(self):
+        # Cavity with surface
+        export(
+            "tests/cavities.pdb", self.cavities, self.surface, self.vertices, step=1.0
+        )
+        with open("tests/cavities.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                "ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  0.00\n",
+            )
+        os.remove("tests/cavities.pdb")
+
+    def test_cavity_with_depth(self):
+        # Cavity with depth
+        export(
+            "tests/cavities_with_depth.pdb",
+            self.cavities,
+            self.surface,
+            self.vertices,
+            step=1.0,
+            B=self.depths,
+        )
+        with open("tests/cavities_with_depth.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  {self.depths.item():0.2f}\n",
+            )
+        os.remove("tests/cavities_with_depth.pdb")
+
+    def test_cavity_and_hydropathy(self):
+        # Cavity and hydropathy
+        export(
+            "tests/cavities.pdb",
+            self.cavities,
+            self.surface,
+            self.vertices,
+            step=1.0,
+            B=self.depths,
+            output_hydropathy="tests/hydropathy.pdb",
+            scales=self.scales,
+        )
+        # Assert cavity
+        with open("tests/cavities.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  {self.depths.item():.2f}\n",
+            )
+        os.remove("tests/cavities.pdb")
+        # Assert hydropathy
+        with open("tests/hydropathy.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00 {' ' if self.scales.item() > 0 else '-'}{abs(self.scales.item()):.2f}\n",
+            )
+        os.remove("tests/hydropathy.pdb")
+
+    def test_hydropathy(self):
+        # Hydropathy
+        export(
+            None,
+            None,
+            self.surface,
+            self.vertices,
+            step=1.0,
+            output_hydropathy="tests/hydropathy.pdb",
+            scales=self.scales,
+        )
+        # Assert hydropathy
+        with open("tests/hydropathy.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00 {' ' if self.scales.item() > 0 else '-'}{abs(self.scales.item()):.2f}\n",
+            )
+        os.remove("tests/hydropathy.pdb")
+
+    def test_vertices_as_list(self):
+        # Vertices as list
+        export(
+            "tests/cavities.pdb",
+            self.cavities,
+            self.surface,
+            self.vertices.tolist(),
+            step=1.0,
+        )
+        with open("tests/cavities.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                "ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  0.00\n",
+            )
+        os.remove("tests/cavities.pdb")
+
+    def test_step_as_integer(self):
+        # Step as integer
+        export(
+            "tests/cavities.pdb",
+            self.cavities,
+            self.surface,
+            self.vertices.tolist(),
+            step=1,
+        )
+        with open("tests/cavities.pdb", "r") as f:
+            self.assertEqual(
+                f.read(),
+                "ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  0.00\n",
+            )
+        os.remove("tests/cavities.pdb")
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn format
+        for fn in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, export, fn, self.cavities, self.surface, self.vertices
+            )
+
+    def test_wrong_cavities_format(self):
+        for cavities in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(
+                TypeError, export, "any", cavities, self.surface, self.vertices
+            )
+
+    def test_invalid_cavities(self):
+        for cavities in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(
+                ValueError, export, "any", cavities, self.surface, self.vertices
+            )
+
+    def test_wrong_surface_format(self):
+        for surface in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(
+                TypeError, export, "any", self.cavities, surface, self.vertices
+            )
+
+    def test_invalid_surface(self):
+        for surface in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(
+                ValueError, export, "any", self.cavities, surface, self.vertices
+            )
+
+    def test_wrong_vertices_format(self):
+        for vertices in ["vertices", True, 1, 1.0, {"vertices": []}]:
+            self.assertRaises(
+                TypeError, export, "any", self.cavities, self.surface, vertices
+            )
+
+    def test_invalid_vertices(self):
+        for vertices in [
+            [1.0, 1.0, 1.0],  # shape (3,)
+            [[1.0, 1.0, 1.0]],  # shape (1, 3)
+            [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
+        ]:
+            self.assertRaises(
+                ValueError, export, "any", self.cavities, self.surface, vertices
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [True, [0.6], {"step": 0.6}, "0.6", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                step=step,
+            )
+
+    def test_wrong_output_hydropathy_format(self):
+        # Check wrong fn format
+        for output_hydropathy in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                output_hydropathy=output_hydropathy,
+            )
+
+    def test_wrong_B_format(self):
+        for B in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                B=B,
+            )
+
+    def test_invalid_B(self):
+        for B in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(
+                ValueError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                B=B,
+            )
+
+    def test_wrong_scales_format(self):
+        for scales in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                scales=scales,
+            )
+
+    def test_invalid_scales(self):
+        for scales in [
+            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros((1, 1)),  # shape (1, 1)
+            numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
+        ]:
+            self.assertRaises(
+                ValueError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                scales=scales,
+            )
+
+    def test_wrong_selection_format(self):
+        self.assertRaises(
+            TypeError,
+            export,
+            "any",
+            self.cavities,
+            self.surface,
+            self.vertices,
+            selection=["KAA", 2],
+        )
+
+    def test_invalid_selection(self):
+        for selection in [[1], [0], [-1]]:
+            self.assertRaises(
+                ValueError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                selection=selection,
+            )
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1.0], {"nthreads": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                nthreads=nthreads,
+            )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1, 1.0, [4.0], {"verbose": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                verbose=verbose,
+            )
 
 
 class TestGetOpeningName(unittest.TestCase):
@@ -1823,8 +2172,10 @@ class TestGetCavityLabel(unittest.TestCase):
 class TestProcessOpenings(unittest.TestCase):
     pass
 
+
 class TestOpenings(unittest.TestCase):
     pass
+
 
 class TestExportOpenings(unittest.TestCase):
     pass
