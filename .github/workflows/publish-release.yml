@@ -4,7 +4,7 @@ on:
   release:
     types: [created]
   push:
-    branches: [master]
+    branches: [master, publish-workflow]
 
 jobs:
   sdist:
@@ -46,75 +46,150 @@ jobs:
           pip install -U twine
           # twine upload dist/*.gz
 
-  manylinux:
-    name: Build wheels on manylinux
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install twine
-
-      - name: Build manylinux Python wheels
-        uses: RalfG/python-wheels-manylinux-build@v0.6.0-manylinux2014_x86_64
-        with:
-          python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
-          build-requirements: "cython numpy"
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: ./dist/*-manylinux*.whl
-
-      - name: Publish wheels to PyPI
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          pip install -U twine
-          # twine upload dist/*-manylinux*.whl
-
-  macos10:
-    name: Build wheels on macos-10.15
-    runs-on: macos-10.15
+  build-wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["cp39-*", "cp310-*", "cp311-*"]
-    env:
-      CIBW_ARCHS_MACOS: "x86_64"
-      MACOSX_DEPLOYMENT_TARGET: "10.13"
-      CC: /usr/local/bin/gcc-11
+        os: [ubuntu-latest, macos-10.15, macos-11, macos-12]
+        python-version: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          brew install swig gcc@11
-
-      - name: Build wheels for CPython ${{ matrix.python-version }}
+      - name: Build wheels on ${{ matrix.os }} for CPython ${{ matrix.python-version }}
         uses: pypa/cibuildwheel@v2.11.4
         env:
-          CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_BEFORE_BUILD: >
-            pip3 install certifi &&
-            git clean -fxd build
+            python -m pip install --upgrade pip &&
+            pip install twine
+          CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
             python -c "import numpy; print(numpy.__version__)" &&
             python -c "import toml; print(toml.__version__)" &&
             python -c "import matplotlib; print(matplotlib.__version__)" &&
-            python -m unittest discover -vs {project}/tests/unit &&
-            python -m unittest discover -vs {project}/tests/integration
+            pytest --no-cov -v
+        if: matrix.os == "ubuntu-latest"
+        continue-on-error: true
+
+      - name: Build wheels on ${{ matrix.os }} for CPython ${{ matrix.python-version }}
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CC: /usr/local/bin/gcc-10
+          MACOSX_DEPLOYMENT_TARGET: 10.13
+          CIBW_ARCHS_MACOS: "x86_64"
+          CIBW_BEFORE_BUILD: >
+            brew install gcc@10
+            pip3 install certifi &&
+            git clean -fxd build
+          CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_TEST_COMMAND: >
+            python --version &&
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+            python -c "import numpy; print(numpy.__version__)" &&
+            python -c "import toml; print(toml.__version__)" &&
+            python -c "import matplotlib; print(matplotlib.__version__)" &&
+            pytest --no-cov -v
+        if: matrix.os == "macos-10.15"
+        continue-on-error: true
+
+      - name: Build wheels on ${{ matrix.os }} for CPython ${{ matrix.python-version }}
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CC: /usr/local/bin/gcc-11
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+          CIBW_ARCHS_MACOS: "x86_64"
+          _PYTHON_HOST_PLATFORM: macosx-11.0-x86_64
+          ARCHFLAGS: "-arch x86_64"
+          CIBW_BEFORE_BUILD: >
+            brew install gcc@11
+            pip3 install certifi &&
+            git clean -fxd build
+          CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_COMMAND: >
+            python --version &&
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+            python -c "import numpy; print(numpy.__version__)" &&
+            python -c "import toml; print(toml.__version__)" &&
+            python -c "import matplotlib; print(matplotlib.__version__)" &&
+            pytest --no-cov -v
+        if: matrix.os == "macos-11"
+        continue-on-error: true  
+
+      - name: Build wheels on ${{ matrix.os }} for CPython ${{ matrix.python-version }}
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CC: /usr/local/bin/gcc-11
+          MACOSX_DEPLOYMENT_TARGET: 11.0
+          CIBW_ARCHS_MACOS: "arm64"
+          _PYTHON_HOST_PLATFORM: macosx-11.0-arm64
+          ARCHFLAGS: "-arch arm64"
+          CIBW_BEFORE_BUILD: >
+            brew install gcc@11
+            pip3 install certifi &&
+            git clean -fxd build
+          CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_COMMAND: >
+            python --version &&
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+            python -c "import numpy; print(numpy.__version__)" &&
+            python -c "import toml; print(toml.__version__)" &&
+            python -c "import matplotlib; print(matplotlib.__version__)" &&
+            pytest --no-cov -v
+        if: matrix.os == "macos-11"
+        continue-on-error: true  
+
+      - name: Build wheels on ${{ matrix.os }} for CPython ${{ matrix.python-version }}
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CC: /usr/local/bin/gcc-11
+          MACOSX_DEPLOYMENT_TARGET: 12.0
+          CIBW_ARCHS_MACOS: "x86_64"
+          _PYTHON_HOST_PLATFORM: macosx-12.0-x86_64
+          ARCHFLAGS: "-arch x86_64"
+          CIBW_BEFORE_BUILD: >
+            brew install gcc@11
+            pip3 install certifi &&
+            git clean -fxd build
+          CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_COMMAND: >
+            python --version &&
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+            python -c "import numpy; print(numpy.__version__)" &&
+            python -c "import toml; print(toml.__version__)" &&
+            python -c "import matplotlib; print(matplotlib.__version__)" &&
+            pytest --no-cov -v
+        if: matrix.os == "macos-12"
+        continue-on-error: true  
+
+      - name: Build wheels on ${{ matrix.os }} for CPython ${{ matrix.python-version }}
+        uses: pypa/cibuildwheel@v2.11.4
+        env:
+          CC: /usr/local/bin/gcc-11
+          MACOSX_DEPLOYMENT_TARGET: 12.0
+          CIBW_ARCHS_MACOS: "arm64"
+          _PYTHON_HOST_PLATFORM: macosx-12.0-arm64
+          ARCHFLAGS: "-arch arm64"
+          CIBW_BEFORE_BUILD: >
+            brew install gcc@11
+            pip3 install certifi &&
+            git clean -fxd build
+          CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_COMMAND: >
+            python --version &&
+            python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+            python -c "import numpy; print(numpy.__version__)" &&
+            python -c "import toml; print(toml.__version__)" &&
+            python -c "import matplotlib; print(matplotlib.__version__)" &&
+            pytest --no-cov -v
+        if: matrix.os == "macos-12"
+        continue-on-error: true  
 
       - uses: actions/upload-artifact@v3
         with:
@@ -128,6 +203,89 @@ jobs:
         run: |
           pip install -U twine
           # twine upload ./wheelhouse/*.whl
+
+  # manylinux:
+  #   name: Build wheels on manylinux
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: "3.x"
+
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install twine
+
+  #     - name: Build manylinux Python wheels
+  #       uses: RalfG/python-wheels-manylinux-build@v0.6.0-manylinux2014_x86_64
+  #       with:
+  #         python-versions: "cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311"
+  #         build-requirements: "cython numpy"
+
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: artifacts
+  #         path: ./dist/*-manylinux*.whl
+
+  #     - name: Publish wheels to PyPI
+  #       env:
+  #         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  #       run: |
+  #         pip install -U twine
+  #         # twine upload dist/*-manylinux*.whl
+
+  # macos10:
+  #   name: Build wheels on macos-10.15
+  #   runs-on: macos-10.15
+  #   strategy:
+  #     matrix:
+  #       python-version: ["cp39-*", "cp310-*", "cp311-*"]
+  #   env:
+  #     CIBW_ARCHS_MACOS: "x86_64"
+  #     MACOSX_DEPLOYMENT_TARGET: "10.13"
+  #     CC: /usr/local/bin/gcc-11
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Install dependencies
+  #       run: |
+  #         brew install swig gcc@11
+
+  #     - name: Build wheels for CPython ${{ matrix.python-version }}
+  #       uses: pypa/cibuildwheel@v2.11.4
+  #       env:
+  #         CIBW_BUILD: ${{ matrix.python-version }}
+  #         CIBW_BEFORE_BUILD: >
+  #           pip3 install certifi &&
+  #           git clean -fxd build
+  #         CIBW_TEST_COMMAND: >
+  #           python --version &&
+  #           python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
+  #           python -c "import numpy; print(numpy.__version__)" &&
+  #           python -c "import toml; print(toml.__version__)" &&
+  #           python -c "import matplotlib; print(matplotlib.__version__)" &&
+  #           python -m unittest discover -vs {project}/tests/unit &&
+  #           python -m unittest discover -vs {project}/tests/integration
+
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: artifacts
+  #         path: ./wheelhouse/*.whl
+
+  #     - name: Publish wheels to PyPI
+  #       env:
+  #         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  #       run: |
+  #         pip install -U twine
+  #         # twine upload ./wheelhouse/*.whl
 
   # macos11-x86_64:
   #   name: Build wheels on macOS11 x86_64

@@ -2,7 +2,7 @@ name: Pytest Coverage
 
 on:
   push:
-    branches: [master, publish-workflow]
+    branches: [master]
 
 jobs:
   coverage:
