@@ -64,6 +64,7 @@ jobs:
             python -m pip install --upgrade pip &&
             pip install twine
           CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
@@ -85,6 +86,7 @@ jobs:
             pip3 install certifi &&
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
+          CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
@@ -109,6 +111,7 @@ jobs:
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
@@ -133,6 +136,7 @@ jobs:
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
@@ -157,6 +161,7 @@ jobs:
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
@@ -181,6 +186,7 @@ jobs:
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: >
             python --version &&
             python -c "import pyKVFinder; print(pyKVFinder.__version__)" &&
