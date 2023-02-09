@@ -1,8 +1,11 @@
 import argparse
+import io
 import os
-import toml
 import unittest
 from unittest import mock
+
+import numpy
+import toml
 
 import pyKVFinder
 
@@ -35,7 +38,37 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_standard_mode(self, args):
+    def test_standard_mode(self, _):
+        # Run pyKVFinder CLI with standard mode
+        # $ pyKVFinder <.pdb>
+        self.assertEqual(pyKVFinder.main.cli(), 0)
+
+    @mock.patch(
+        "argparse.ArgumentParser.parse_args",
+        return_value=argparse.Namespace(
+            input=os.path.join(DATADIR, "tests", "1FMO.xyz"),
+            verbose=False,
+            base_name=None,
+            output_directory=os.path.join(DATADIR, "tests", "output"),
+            model=None,
+            nthreads=11,
+            dictionary=os.path.join(DATADIR, "vdw.dat"),
+            step=0.6,
+            probe_in=1.4,
+            probe_out=4.0,
+            volume_cutoff=5.0,
+            removal_distance=2.4,
+            surface="SES",
+            ignore_backbone=False,
+            depth=False,
+            plot_frequencies=False,
+            hydropathy=False,
+            box=None,
+            ligand=None,
+            ligand_cutoff=5.0,
+        ),
+    )
+    def test_standard_mode_with_xyz(self, _):
         # Run pyKVFinder CLI with standard mode
         # $ pyKVFinder <.pdb>
         self.assertEqual(pyKVFinder.main.cli(), 0)
@@ -65,7 +98,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_custom_box_mode(self, args):
+    def test_custom_box_mode(self, _):
         # Run pyKVFinder CLI with box mode
         # $ pyKVFinder <.pdb> -B <.toml>
         # - custom_box.toml
@@ -101,7 +134,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_residues_box_mode(self, args):
+    def test_residues_box_mode(self, _):
         # - residues_box.toml
         # >>> [box]
         # >>> residues = [ ["resnum", "chain", "resname",], ["resnum", "chain",
@@ -134,7 +167,37 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_lig_mode(self, args):
+    def test_ligand_mode(self, _):
+        # Run pyKVFinder CLI with ligand mode
+        # $ pyKVFinder <.pdb> -L <.pdb>
+        self.assertEqual(pyKVFinder.main.cli(), 0)
+
+    @mock.patch(
+        "argparse.ArgumentParser.parse_args",
+        return_value=argparse.Namespace(
+            input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
+            verbose=False,
+            base_name=None,
+            output_directory=os.path.join(DATADIR, "tests", "output"),
+            model=None,
+            nthreads=11,
+            dictionary=os.path.join(DATADIR, "vdw.dat"),
+            step=0.6,
+            probe_in=1.4,
+            probe_out=4.0,
+            volume_cutoff=5.0,
+            removal_distance=2.4,
+            surface="SES",
+            ignore_backbone=False,
+            depth=False,
+            plot_frequencies=False,
+            hydropathy=False,
+            box=None,
+            ligand=os.path.join(DATADIR, "tests", "ADN.xyz"),
+            ligand_cutoff=5.0,
+        ),
+    )
+    def test_ligand_mode_with_xyz(self, _):
         # Run pyKVFinder CLI with ligand mode
         # $ pyKVFinder <.pdb> -L <.pdb>
         self.assertEqual(pyKVFinder.main.cli(), 0)
@@ -164,10 +227,72 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_hydropathy_mode(self, args):
+    def test_hydropathy_mode(self, _):
         # Run pyKVFinder CLI with hydropathy mode
         # $ pyKVFinder <.pdb> --hydropathy
         self.assertEqual(pyKVFinder.main.cli(), 0)
+
+    @mock.patch(
+        "argparse.ArgumentParser.parse_args",
+        return_value=argparse.Namespace(
+            input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
+            verbose=False,
+            base_name=None,
+            output_directory=os.path.join(DATADIR, "tests", "output"),
+            model=None,
+            nthreads=11,
+            dictionary=os.path.join(DATADIR, "vdw.dat"),
+            step=0.6,
+            probe_in=1.4,
+            probe_out=4.0,
+            volume_cutoff=5.0,
+            removal_distance=2.4,
+            surface="SES",
+            ignore_backbone=False,
+            depth=True,
+            plot_frequencies=True,
+            hydropathy=False,
+            box=None,
+            ligand=None,
+            ligand_cutoff=5.0,
+        ),
+    )
+    def test_plot_frequencies(self, _):
+        # Run pyKVFinder CLI with depth mode
+        # $ pyKVFinder <.pdb> --depth
+        self.assertEqual(pyKVFinder.main.cli(), 0)
+
+    @mock.patch(
+            "argparse.ArgumentParser.parse_args",
+            return_value=argparse.Namespace(
+                input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
+                verbose=False,
+                base_name=None,
+                output_directory=os.path.join(DATADIR, "tests", "output"),
+                model=None,
+                nthreads=11,
+                dictionary=os.path.join(DATADIR, "vdw.dat"),
+                step=0.6,
+                probe_in=1.4,
+                probe_out=4.0,
+                volume_cutoff=1000000,  # Force ncav = 0
+                removal_distance=2.4,
+                surface="SES",
+                ignore_backbone=False,
+                depth=True,
+                plot_frequencies=True,
+                hydropathy=False,
+                box=None,
+                ligand=None,
+                ligand_cutoff=5.0,
+            ),
+        )
+    def test_no_cavities_detected(self, _):
+        # Run pyKVFinder CLI with depth mode
+        # $ pyKVFinder <.pdb> --depth
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            self.assertEqual(pyKVFinder.main.cli(), 0)
+        self.assertEqual(stdout.getvalue().split('\n')[1], "> No cavities detected!")
 
     @mock.patch(
         "argparse.ArgumentParser.parse_args",
@@ -194,7 +319,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_depth_mode(self, args):
+    def test_depth_mode(self, _):
         # Run pyKVFinder CLI with depth mode
         # $ pyKVFinder <.pdb> --depth
         self.assertEqual(pyKVFinder.main.cli(), 0)
@@ -224,7 +349,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_non_existing_receptor(self, args):
+    def test_non_existing_receptor(self, _):
         # non-existing <.pdb>
         # $ pyKVFinder non-existing.pdb
         self.assertRaises(FileNotFoundError, pyKVFinder.main.cli)  # FileNotFoundError
@@ -254,7 +379,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_bad_float(self, args):
+    def test_invalid_float(self, _):
         # bad float (step, probe_in, probe_out, removal_distance, volume_cutoff, ligand_cutoff)
         # $ pyKVFinder -o string
         self.assertRaises(TypeError, pyKVFinder.main.cli)  # TypeError
@@ -284,7 +409,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_bad_surface(self, args):
+    def test_invalid_surface(self, _):
         # bad surface
         # $ pyKVFinder -S A
         # self.assertEqual(pyKVFinder.main.cli(), 2)  # argparse.ArgumentTypeError
@@ -315,7 +440,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_non_existing_ligand(self, args):
+    def test_non_existing_ligand(self, _):
         # bad surface
         # $ pyKVFinder -L non-existing.pdb
         self.assertRaises(FileNotFoundError, pyKVFinder.main.cli)  # FileNotFoundError
@@ -345,7 +470,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_non_existing_hydropathy_file(self, args):
+    def test_non_existing_hydropathy_file(self, _):
         # bad surface
         # $ pyKVFinder --hydopathy non-existing-dictionary.dat
         self.assertRaises(FileNotFoundError, pyKVFinder.main.cli)  # FileNotFoundError
@@ -375,7 +500,7 @@ class TestCLI(unittest.TestCase):
             ligand_cutoff=5.0,
         ),
     )
-    def test_bad_hydropathy_file(self, args):
+    def test_invalid_hydropathy_file(self, _):
         # bad surface
         # $ pyKVFinder --hydopathy <.pdb>
         self.assertRaises(

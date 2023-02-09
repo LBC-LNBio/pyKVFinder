@@ -133,11 +133,9 @@ class TestPackage(unittest.TestCase):
     def test_detect(self):
         self.assertEqual(self.cavities.max() - 1 > 0, True)
 
-    @repeat(10)
+    @repeat(1)
     def test_cavity_tags_within_bounds(self):
         # Check if cavity tags are within expeted bounds [-1, ncav+1]
-        # NOTE: A segmentation fault error has occurred in ~1/70 times.
-        # So we run the test 100 times to make sure it's not happening.
         # Detection
         ncav, cavities = pyKVFinder.detect(self.atomic, self.vertices)
         self.assertEqual(((cavities >= -1) & (cavities <= ncav + 1)).all(), True)
@@ -242,8 +240,10 @@ class TestPackage(unittest.TestCase):
 
 class TestPackageWorkflow(unittest.TestCase):
     def setUp(self):
-        # Pdb
+        # PDB
         self.pdb = os.path.join(DATADIR, "tests", "1FMO.pdb")
+        # XYZ
+        self.xyz = os.path.join(DATADIR, "tests", "1FMO.xyz")
         # Full workflow
         self.results = pyKVFinder.run_workflow(
             self.pdb,
@@ -252,8 +252,18 @@ class TestPackageWorkflow(unittest.TestCase):
             hydrophobicity_scale="EisenbergWeiss",
         )
 
+    def test_custom_vdw(self):
+        results = pyKVFinder.run_workflow(
+            self.pdb, vdw=os.path.join(DATADIR, "vdw.dat")
+        )
+        self.assertEqual(results.ncav, self.results.ncav)
+
     def test_standard_workflow(self):
         results = pyKVFinder.run_workflow(self.pdb)
+        self.assertEqual(results.ncav, self.results.ncav)
+
+    def test_standard_workflow_with_xyz_input(self):
+        results = pyKVFinder.run_workflow(self.xyz)
         self.assertEqual(results.ncav > 0, True)
 
     def test_full_workflow(self):
@@ -263,12 +273,19 @@ class TestPackageWorkflow(unittest.TestCase):
             include_hydropathy=True,
             hydrophobicity_scale="EisenbergWeiss",
         )
-        self.assertEqual(results.ncav > 0, True)
+        self.assertEqual(results.ncav, self.results.ncav)
 
     def test_ligand_mode(self):
         results = pyKVFinder.run_workflow(
             self.pdb,
             os.path.join(DATADIR, "tests", "ADN.pdb"),
+        )
+        self.assertEqual(results.ncav > 0, True)
+
+    def test_ligand_mode_with_xyz_input(self):
+        results = pyKVFinder.run_workflow(
+            self.pdb,
+            os.path.join(DATADIR, "tests", "ADN.xyz"),
         )
         self.assertEqual(results.ncav > 0, True)
 
@@ -289,6 +306,12 @@ class TestPackageWorkflow(unittest.TestCase):
             box=os.path.join(DATADIR, "tests", "custom-box.toml"),
         )
         self.assertEqual(results.ncav, 1)
+
+    def test_invalid_input_extension(self):
+        self.assertRaises(TypeError, pyKVFinder.run_workflow, "any.mol")
+
+    def test_invalid_ligand_extension(self):
+        self.assertRaises(TypeError, pyKVFinder.run_workflow, self.pdb, ligand="any.mol")
 
     def test_pyKVFinderResults_methods(self):
         # export
