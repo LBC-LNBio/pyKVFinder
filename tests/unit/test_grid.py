@@ -365,7 +365,8 @@ class TestGetCavityLabel(unittest.TestCase):
         self.assertListEqual(labels, list(range(2, 100, 10)))
 
     def test_invalid_cavity_name(self):
-        self.assertRaises(ValueError, _get_cavity_label, "AAA")
+        for cavity_name in ["AAA", "BAA", "CAA", "kaa", "1", 2]:
+            self.assertRaises(ValueError, _get_cavity_label, cavity_name)
 
 
 class TestSelectCavities(unittest.TestCase):
@@ -709,7 +710,7 @@ class TestDetect(unittest.TestCase):
 
     def test_detect_w_SAS(self):
         # Detect cavities
-        ncav, cavities = detect(self.atomic, self.vertices, surface="SAS")
+        ncav, _ = detect(self.atomic, self.vertices, surface="SAS")
         # Assert number of cavities
         self.assertEqual(ncav, 4)
 
@@ -2205,7 +2206,7 @@ class TestExport(unittest.TestCase):
     
     def test_cavity_and_surface_not_defined(self):
         self.assertRaises(
-                Exception,
+                RuntimeError,
                 export,
                 "any",
                 None,

@@ -2263,7 +2263,7 @@ def export(
         `append` must be a boolean.
     TypeError
         `model` must be a integer.
-    Exception
+    RuntimeError
         User must define `surface` when not defining `cavities`.
 
     Note
@@ -2362,10 +2362,11 @@ def export(
     P1, P2, P3, P4 = vertices
 
     # If surface is None, create an empty grid
-    if surface is None:
-        surface = numpy.zeros(cavities.shape, dtype="int32")
-    else:
-        surface = surface.astype("int32") if surface.dtype != "int32" else surface
+    if cavities is not None:
+        if surface is None:
+            surface = numpy.zeros(cavities.shape, dtype="int32")
+        else:
+            surface = surface.astype("int32") if surface.dtype != "int32" else surface
 
     # Select cavities
     if selection is not None:
@@ -2375,12 +2376,13 @@ def export(
 
     if cavities is None:
 
-        # Get number of cavities
-        ncav = int(surface.max() - 1)
-
         if surface is None:
-            raise Exception(f"User must define `surface` when not defining `cavities`.")
+            raise RuntimeError(f"User must define `surface` when not defining `cavities`.")
         else:
+            # Get number of cavities
+            ncav = int(surface.max() - 1)
+
+            # Export hydropathy
             _export_b(
                 output_hydropathy,
                 surface,
