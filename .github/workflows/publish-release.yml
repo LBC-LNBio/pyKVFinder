@@ -25,13 +25,13 @@ jobs:
 
       - name: Test sdist
         run: |
+          pip install pytest pytest-cov
           pip install dist/*.gz
           python -c "import pyKVFinder; print(pyKVFinder.__version__)"
           python -c "import numpy; print(numpy.__version__)"
           python -c "import toml; print(toml.__version__)"
           python -c "import matplotlib; print(matplotlib.__version__)"
-          python -m unittest discover -vs tests/unit
-          python -m unittest discover -vs tests/integration
+          pytest --no-cov -v
 
       - uses: actions/upload-artifact@v3
         with:
@@ -81,7 +81,7 @@ jobs:
           MACOSX_DEPLOYMENT_TARGET: 10.13
           CIBW_ARCHS_MACOS: "x86_64"
           CIBW_BEFORE_BUILD: >
-            brew install gcc@10
+            brew install gcc@10 &&
             pip3 install certifi &&
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
@@ -104,7 +104,7 @@ jobs:
           _PYTHON_HOST_PLATFORM: macosx-11.0-x86_64
           ARCHFLAGS: "-arch x86_64"
           CIBW_BEFORE_BUILD: >
-            brew install gcc@11
+            brew install gcc@11 &&
             pip3 install certifi &&
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
@@ -128,7 +128,7 @@ jobs:
           _PYTHON_HOST_PLATFORM: macosx-11.0-arm64
           ARCHFLAGS: "-arch arm64"
           CIBW_BEFORE_BUILD: >
-            brew install gcc@11
+            brew install gcc@11 &&
             pip3 install certifi &&
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
@@ -152,7 +152,7 @@ jobs:
           _PYTHON_HOST_PLATFORM: macosx-12.0-x86_64
           ARCHFLAGS: "-arch x86_64"
           CIBW_BEFORE_BUILD: >
-            brew install gcc@11
+            brew install gcc@11 &&
             pip3 install certifi &&
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
@@ -176,7 +176,7 @@ jobs:
           _PYTHON_HOST_PLATFORM: macosx-12.0-arm64
           ARCHFLAGS: "-arch arm64"
           CIBW_BEFORE_BUILD: >
-            brew install gcc@11
+            brew install gcc@11 &&
             pip3 install certifi &&
             git clean -fxd build
           CIBW_BUILD: ${{ matrix.python-version }}
