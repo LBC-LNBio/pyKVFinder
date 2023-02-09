@@ -65,6 +65,9 @@ include-package-data = true
 [tool.setuptools.dynamic]
 version = { attr = "pyKVFinder.__version__" }
 
+[tool.cibuildwheel]
+test-command="pytest {project}/tests -v"
+
 [tool.coverage.run]
 omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
