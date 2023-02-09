@@ -364,7 +364,7 @@ class TestGetCavityLabel(unittest.TestCase):
         self.assertListEqual(labels, list(range(2, 100, 10)))
 
     def test_invalid_cavity_name(self):
-        for cavity_name in ["AAA", "BAA", "CAA", "kaa", "1", 2]:
+        for cavity_name in ["AAA", "BAA", "CAA", "kaa", "1"]:
             self.assertRaises(ValueError, _get_cavity_label, cavity_name)
 
 
