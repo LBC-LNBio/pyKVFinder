@@ -707,6 +707,12 @@ class TestDetect(unittest.TestCase):
         tol = 100
         self.assertEqual((cavities - expected).sum() < tol, True)
 
+    def test_detect_w_SAS(self):
+        # Detect cavities
+        ncav, cavities = detect(self.atomic, self.vertices, surface="SAS")
+        # Assert number of cavities
+        self.assertEqual(ncav, 4)
+
     def test_atomic_as_list(self):
         # Detect cavities
         ncav, cavities = detect(self.atomic.tolist(), self.vertices)
@@ -1576,8 +1582,6 @@ class TestHydropathy(unittest.TestCase):
         )
 
     def test_selection(self):
-        # Expected
-
         for selection in [[2], ["KAA"]]:
             scales, avg_hydropathy = hydropathy(
                 self.surface, self.atomic, self.vertices, selection=selection
@@ -1893,6 +1897,42 @@ class TestExport(unittest.TestCase):
             )
         os.remove("tests/hydropathy.pdb")
 
+    def test_selection(self):
+        # Selection
+        for selection in [[2], ["KAA"]]:
+            export(
+                "tests/cavities.pdb",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                step=1.0,
+                selection=selection,
+            )
+            # Assert selection
+            with open("tests/cavities.pdb", "r") as f:
+                self.assertEqual(
+                    f.read(),
+                    f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  0.00\n",
+                )
+            os.remove("tests/cavities.pdb")
+
+        for selection in [[3], ["KAB"]]:
+            export(
+                "tests/cavities.pdb",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                step=1.0,
+                selection=selection,
+            )
+            # Assert selection
+            with open("tests/cavities.pdb", "r") as f:
+                self.assertEqual(
+                    f.read(),
+                    f"",
+                )
+            os.remove("tests/cavities.pdb")
+
     def test_vertices_as_list(self):
         # Vertices as list
         export(
@@ -2135,6 +2175,42 @@ class TestExport(unittest.TestCase):
                 self.surface,
                 self.vertices,
                 verbose=verbose,
+            )
+
+    def test_wrong_append_format(self):
+        # Check wrong append format
+        for append in [1, 1.0, [4.0], {"append": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                append=append,
+            )
+
+    def test_wrong_model_format(self):
+        # Check wrong model format
+        for model in [1.0, [1.0], {"model": 1}, "1", numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                export,
+                "any",
+                self.cavities,
+                self.surface,
+                self.vertices,
+                model=model,
+            )
+    
+    def test_cavity_and_surface_not_defined(self):
+        self.assertRaises(
+                Exception,
+                export,
+                "any",
+                None,
+                None,
+                self.vertices,
             )
 
 
