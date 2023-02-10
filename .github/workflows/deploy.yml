@@ -11,8 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.x
 
@@ -23,8 +22,9 @@ jobs:
 
       - name: Test sdist
         run: |
-          pip install pytest 
-          pip install dist/*.tar.gz
+          pipx install pytest 
+          pipx install numpy
+          pipx install dist/*.tar.gz
           pytest -v
 
       - uses: actions/upload-artifact@v3
