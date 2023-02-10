@@ -93,5 +93,5 @@ environment = { CC = "/usr/local/bin/gcc-11" }
 repair-wheel-command = ""
 
 [tool.cibuildwheel.windows]
-archs = ["auto"]
+archs = ["auto64"]
 before-build = ["gcc --version"]
