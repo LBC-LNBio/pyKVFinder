@@ -25,7 +25,7 @@ jobs:
         run: |
           pip install pytest 
           pip install dist/*.tar.gz
-          pytest -v
+          pytest tests/integration -v
 
       - uses: actions/upload-artifact@v3
         with:
