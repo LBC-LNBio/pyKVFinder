@@ -86,8 +86,7 @@ archs = ["x86_64"]
 skip = "*-musllinux*"
 
 [tool.cibuildwheel.macos]
-environment = { CC = "/usr/local/bin/gcc-11" }
+environment = { CC = "/usr/local/bin/gcc" }
 archs = ["x86_64", "arm64"]
-before-build = ["brew install gcc@11"]
 repair-wheel-command = ""
 test-skip = "*-macosx_arm64"
