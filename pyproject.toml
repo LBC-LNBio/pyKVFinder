@@ -90,4 +90,4 @@ repair-wheel-command = "auditwheel repair --lib-sdir . -w {dest_dir} {wheel}"
 archs = ["x86_64", "arm64"]
 before-build = ["brew install gcc@11"]
 environment = { CC = "/usr/local/bin/gcc-11" }
-# repair-wheel-command = ""
+repair-wheel-command = ""
