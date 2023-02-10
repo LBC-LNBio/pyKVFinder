@@ -17,7 +17,7 @@ jobs:
 
       - name: Test sdist
         run: |
-          pipx install pytest
+          pipx install pytest numpy matplotlib toml
           pipx install dist/*.tar.gz
           pytest -v
 
