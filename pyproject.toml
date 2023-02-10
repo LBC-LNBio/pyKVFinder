@@ -83,7 +83,6 @@ build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
-repair-wheel-command = "auditwheel repair --lib-sdir . -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
@@ -94,4 +93,4 @@ repair-wheel-command = ""
 
 [tool.cibuildwheel.windows]
 archs = ["auto64"]
-before-build = ["gcc --version"]
+build = ["cp310-*", "cp311-*"]
