@@ -13,13 +13,12 @@ jobs:
 
       - name: Build sdist
         run: |
-          pipx run build --sdist
+          python setup.py sdist
 
       - name: Test sdist
         run: |
-          pipx install pytest 
-          pipx install numpy
-          pipx install dist/*.tar.gz
+          pip install pytest 
+          pip install dist/*.tar.gz
           pytest -v
 
       - uses: actions/upload-artifact@v3
