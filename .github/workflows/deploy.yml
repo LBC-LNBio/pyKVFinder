@@ -35,7 +35,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-11, macos-12]
+        os: [ubuntu-latest, macos-10.15, macos-11, macos-12]
 
     steps:
       - uses: actions/checkout@v3
@@ -52,12 +52,12 @@ jobs:
           name: artifacts
           path: ./wheelhouse/*.whl
 
-  build_wheels_macos_legacy:
+  build_windows:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-10.15]
+        os: [windows-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -65,8 +65,29 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.0
 
-
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: ./wheelhouse/*.whl
+
+  # upload_pypi:
+  #   needs: [build_sdist, build_wheels]
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - uses: actions/setup-python@v4
+  #       with:
+  #         python-version: 3.x
+
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: artifacts
+  #         path: ./dist
+
+  #     - name: Upload artifacts to PyPI
+  #       env:
+  #         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  #       run: |
+  #         pip install -U twine
+  #         # twine upload dist/*.gz

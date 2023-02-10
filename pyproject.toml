@@ -73,7 +73,7 @@ omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
 [tool.cibuildwheel]
 test-requires = "pytest"
-test-command = "pytest {project}/tests -v"
+test-command = "pytest {project}/tests/integration -v"
 before-build = [
     "python3 -m pip install --upgrade pip",
     "pip3 install certifi",
@@ -82,12 +82,16 @@ before-build = [
 build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
 
 [tool.cibuildwheel.linux]
-archs = ["auto"]
+archs = ["x86_64"]
 repair-wheel-command = "auditwheel repair --lib-sdir . -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
 before-build = ["brew install gcc@11"]
-test-skip = "*-macosx_arm64 *-macosx_universal2:arm64"
+test-skip = "*-macosx_arm64"
 environment = { CC = "/usr/local/bin/gcc-11" }
 repair-wheel-command = ""
+
+[tool.cibuildwheel.windows]
+archs = ["auto"]
+before-build = ["gcc --version"]
