@@ -18,7 +18,8 @@ jobs:
 
       - name: Build sdist
         run: |
-          python setup.py sdist
+          # python setup.py sdist
+          pipx run build --sdist
 
       - name: Test sdist
         run: |
