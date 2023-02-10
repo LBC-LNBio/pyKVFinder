@@ -27,7 +27,7 @@ jobs:
       - name: Build coverage file
         run: |
           mkdir coverage
-          pytest | tee coverage/coverage.txt
+          pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage/coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main

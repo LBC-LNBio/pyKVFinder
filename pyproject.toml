@@ -65,12 +65,29 @@ include-package-data = true
 [tool.setuptools.dynamic]
 version = { attr = "pyKVFinder.__version__" }
 
-[tool.cibuildwheel]
-test-command="pytest {project}/tests -v"
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.coverage.run]
 omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
-[tool.pytest.ini_options]
-addopts = "--cov=pyKVFinder --cov-report=term-missing"
-testpaths = ["tests"]
+[tool.cibuildwheel]
+test-requires = "pytest"
+test-command = "pytest {project}/tests -v"
+test-skip = "*-macosx_arm64 *-macosx_universal2:arm64"
+before-build = [
+    "python3 -m pip install --upgrade pip",
+    "pip3 install certifi",
+    "git clean -fxd build",
+]
+build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+
+[tool.cibuildwheel.linux]
+archs = ["auto"]
+repair-wheel-command = "auditwheel repair --lib-sdir . -w {dest_dir} {wheel}"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+before-build = ["brew install gcc@11"]
+environment = { CC = "/usr/local/bin/gcc-11" }
+# repair-wheel-command = ""

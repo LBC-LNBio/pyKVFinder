@@ -1,0 +1,27 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [publish-workflow]
+
+jobs:
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build sdist
+        run: |
+          pipx run build --sdist
+
+      - name: Test sdist
+        run: |
+          pipx install pytest
+          pipx install dist/*.tar.gz
+          pytest -v
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: dist/*.tar.gz
