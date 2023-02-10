@@ -32,26 +32,8 @@ jobs:
           name: artifacts
           path: dist/*.tar.gz
 
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.0
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: ./wheelhouse/*.whl
-
   build_legacy_wheels:
-    name: Build wheels on ${{ matrix.targets }}
+    name: Build wheels on macos-${{ matrix.targets }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -67,6 +49,24 @@ jobs:
           CC: /usr/local/bin/gcc-10
           CIBW_ARCHS_MACOS: "x86_64"
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.targets }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: ./wheelhouse/*.whl
+
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.12.0
 
       - uses: actions/upload-artifact@v3
         with:

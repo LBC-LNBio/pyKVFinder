@@ -82,12 +82,11 @@ before-build = [
 build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
 
 [tool.cibuildwheel.linux]
-archs = ["x86_64"]
-skip = "*-musllinux*"
+archs = ["native"]
 
 [tool.cibuildwheel.macos]
 environment = { CC = "/usr/local/bin/gcc-11" }
 before-build = ["brew install gcc@11"]
-archs = ["x86_64", "arm64"]
+archs = ["native"]
 repair-wheel-command = ""
 test-skip = "*-macosx_arm64"
