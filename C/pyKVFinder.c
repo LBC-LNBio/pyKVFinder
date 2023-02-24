@@ -1216,10 +1216,10 @@ double check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j,
   // Three faces in contact with biomolecule
   case 3:
     if ((surface[k + nz * (j + (ny * (i + 1)))] == 0 &&
-         surface[k + nz * (j + (ny * (i - 1)))]) ||
+         surface[k + nz * (j + (ny * (i - 1)))]) == 0 ||
         (surface[k + nz * ((j - 1) + (ny * i))] == 0 &&
-         surface[k + nz * ((j - 1) + (ny * i))] == 0) ||
-        (surface[(k + 1) + nz * (j + (ny * i))] == 0 &&
+         surface[k + nz * ((j + 1) + (ny * i))] == 0) ||
+        (surface[(k - 1) + nz * (j + (ny * i))] == 0 &&
          surface[(k + 1) + nz * (j + (ny * i))] == 0))
       weight = 2;
     else
@@ -1456,7 +1456,7 @@ void filter_boundary(int *cavities, int nx, int ny, int nz, pts *cavs,
     for (i = 0; i < nx; i++)
       for (j = 0; j < ny; j++)
         for (k = 0; k < nz; k++)
-          #pragma omp critical
+#pragma omp critical
           if (cavities[k + nz * (j + (ny * i))] > 1) {
             // Get cavity identifier
             tag = cavities[k + nz * (j + (ny * i))] - 2;
