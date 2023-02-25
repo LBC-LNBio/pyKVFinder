@@ -85,7 +85,7 @@ build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
 archs = ["native"]
 
 [tool.cibuildwheel.macos]
-environment = { CC = "/usr/local/bin/gcc-11", CFLAGS = "-static" }
+environment = { CC = "/usr/local/bin/gcc-11", MACOSX_DEPLOYMENT_TARGET = "11.0" }
 before-build = ["brew install gcc@11"]
 archs = ["native"]
 repair-wheel-command = ""
