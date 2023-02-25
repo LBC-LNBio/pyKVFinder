@@ -12,5 +12,11 @@ include pyKVFinder/data/tests/*.xyz
 # Include the license file
 include LICENSE.txt
 
-# Include the README
+# Include README
 include README.rst
+
+# Include Python requirements
+include requirements.txt
+
+# Include C source code
+include C/*

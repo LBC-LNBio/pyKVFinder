@@ -94,7 +94,9 @@ double get_hydrophobicity_value(char *resname, char **resn, double *scales, int 
 void project_hydropathy(double *hydropathy, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads);
 
 /* Estimate average hydropathy */
-void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy, double *surface, int nx, int ny, int nz, int nthreads);
+void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy,
+                                 int *surface, int nx, int ny, int nz,
+                                 int nthreads);
 
 /* Hydropathy characterization */
 void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose);

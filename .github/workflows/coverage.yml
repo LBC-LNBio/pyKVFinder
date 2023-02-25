@@ -1,0 +1,51 @@
+name: Pytest Coverage
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+
+      - name: Build pyKVFinder
+        run: pip install .
+
+      - name: Build coverage file
+        run: |
+          mkdir coverage
+          pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage/coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: coverage/coverage.txt
+          default-branch: master
+          remove-link-from-badge: true
+
+      - name: Coverage Bagdge
+        uses: tj-actions/coverage-badge-py@v1.8
+        with:
+          output: coverage/coverage.svg
+
+      - name: Publish coverage report to coverage branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: coverage
+          folder: coverage
+          target-folder: .
+          clean: true
+          force: true

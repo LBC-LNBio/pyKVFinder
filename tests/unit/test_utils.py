@@ -1,19 +1,25 @@
-import unittest
-import os
-import numpy
 import argparse
+import io
+import os
+import unittest
+from unittest import mock
+
+import numpy
+
 from pyKVFinder.utils import (
-    read_vdw,
-    _process_pdb_line,
-    read_pdb,
-    read_xyz,
-    _read_cavity,
-    read_cavity,
     _process_box,
+    _process_pdb_line,
+    _read_cavity,
     calculate_frequencies,
+    plot_frequencies,
+    read_cavity,
+    read_pdb,
+    read_vdw,
+    read_xyz,
+    write_results,
 )
 
-UNIT_TESTS_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
+FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 class TestReadVdw(unittest.TestCase):
@@ -23,17 +29,21 @@ class TestReadVdw(unittest.TestCase):
             "ALA": {"N": 1.824, "C": 1.908, "H": 0.6, "O": 1.6612},
             "GEN": {"N": 1.824, "C": 1.908, "H": 0.6, "O": 1.6612},
         }
-        result = read_vdw(os.path.join(UNIT_TESTS_DIR, "vdw1.dat"))
+        result = read_vdw(os.path.join(FIXTURES, "vdw1.dat"))
         self.assertEqual(result, expected)
 
     def test_invalid_vdw(self):
         # Check invalid files formats
-        self.assertRaises(
-            ValueError, read_vdw, os.path.join(UNIT_TESTS_DIR, "vdw2.dat")
-        )
-        self.assertRaises(
-            ValueError, read_vdw, os.path.join(UNIT_TESTS_DIR, "vdw3.dat")
-        )
+        self.assertRaises(ValueError, read_vdw, os.path.join(FIXTURES, "vdw2.dat"))
+        self.assertRaises(ValueError, read_vdw, os.path.join(FIXTURES, "vdw3.dat"))
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"vdw": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, read_vdw, fn)
+
+    def test_default_input(self):
+        self.assertIsInstance(read_vdw(None), dict)
 
 
 class TestProcessPdbLine(unittest.TestCase):
@@ -83,7 +93,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "E", "GLU", "OE1", "-5.439", "-17.684", "-16.719", "1.6612"],
             ["13", "E", "GLU", "OE2", "-6.178", "-18.047", "-18.817", "1.6612"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "atom.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "atom.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_hetatm(self):
@@ -109,7 +119,7 @@ class TestReadPdb(unittest.TestCase):
             ["351", "E", "ADN", "C8", "7.374", "9.872", "2.291", "1.66"],
             ["351", "E", "ADN", "N9", "7.444", "10.056", "3.646", "1.97"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "hetatm.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "hetatm.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_skippable_entries(self):
@@ -118,7 +128,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "A", "GLY", "N", "12.681", "37.302", "-25.211", "1.824"],
             ["13", "A", "GLY", "CA", "11.982", "37.996", "-26.241", "1.908"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "skippable.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "skippable.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_nmr_models(self):
@@ -130,7 +140,7 @@ class TestReadPdb(unittest.TestCase):
             ["13", "E", "GLU", "N", "-4.444", "-15.642", "-14.858", "1.824"],
             ["13", "E", "GLU", "N", "-5.555", "-15.642", "-14.858", "1.824"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "nmr.pdb")).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "nmr.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_one_nmr_model(self):
@@ -144,8 +154,20 @@ class TestReadPdb(unittest.TestCase):
             ["13", "E", "GLU", "N", "-4.444", "-15.642", "-14.858", "1.824"],
             ["13", "E", "GLU", "N", "-5.555", "-15.642", "-14.858", "1.824"],
         ]
-        result = read_pdb(os.path.join(UNIT_TESTS_DIR, "nmr.pdb"), model=model).tolist()
+        result = read_pdb(os.path.join(FIXTURES, "nmr.pdb"), model=model).tolist()
         self.assertListEqual(result, [expected[model - 1]])
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"vdw": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, read_pdb, fn, None, None)
+
+    def test_wrong_model_format(self):
+        # Check wrong model formats
+        for model in [1.0, [1], {"model": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError, read_pdb, os.path.join(FIXTURES, "nmr.pdb"), None, model
+            )
 
 
 class TestReadXyz(unittest.TestCase):
@@ -161,8 +183,13 @@ class TestReadXyz(unittest.TestCase):
             ["8", "A", "UNK", "O", "-5.439", "-17.684", "-16.719", "1.69"],
             ["9", "A", "UNK", "O", "-6.178", "-18.047", "-18.817", "1.69"],
         ]
-        result = read_xyz(os.path.join(UNIT_TESTS_DIR, "xyz.xyz")).tolist()
+        result = read_xyz(os.path.join(FIXTURES, "xyz.xyz")).tolist()
         self.assertListEqual(result, expected)
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn formats
+        for fn in [1, 1.0, [1], {"xyz": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, read_xyz, fn, None)
 
 
 class TestReadCavity(unittest.TestCase):
@@ -180,16 +207,184 @@ class TestReadCavity(unittest.TestCase):
             [0.6, 0.0, 0.6, 2.0],
             [0.6, 0.6, 0.6, 2.0],
         ]
-        result = _read_cavity(os.path.join(UNIT_TESTS_DIR, "cavity.pdb")).tolist()
+        result = _read_cavity(os.path.join(FIXTURES, "cavity.pdb")).tolist()
         self.assertListEqual(result, expected)
 
     def test_read_cavity(self):
         expected = [[[2, 2], [2, 2]], [[2, 2], [2, 2]]]
         result = read_cavity(
-            os.path.join(UNIT_TESTS_DIR, "cavity.pdb"),
-            os.path.join(UNIT_TESTS_DIR, "receptor.pdb"),
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
         )[:2, :2, :2].tolist()
         self.assertListEqual(result, expected)
+
+    def test_xyz_receptor(self):
+        expected = [[[2, 2], [2, 2]], [[2, 2], [2, 2]]]
+        result = read_cavity(
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.xyz"),
+        )[:2, :2, :2].tolist()
+        self.assertListEqual(result, expected)
+
+    def test_parameters_as_integers(self):
+        for kwargs in [{"step": 1, "probe_in": 1, "probe_out": 4}]:
+            expected = [[[2, 2], [2, 2]], [[2, 2], [2, 2]]]
+            result = read_cavity(
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                **kwargs,
+            )[:2, :2, :2].tolist()
+            self.assertListEqual(result, expected)
+
+    def test_wrong_cavity_format(self):
+        # Check wrong cavity formats
+        for cavity in [1, 1.0, [1], {"cavity": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, read_cavity, cavity, os.path.join(FIXTURES, "receptor.pdb")
+            )
+
+    def test_wrong_receptor_format(self):
+        # Check wrong receptor formats
+        for receptor in [1, 1.0, [1], {"receptor": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, read_cavity, os.path.join(FIXTURES, "cavity.pdb"), receptor
+            )
+
+    def test_wrong_receptor_extension(self):
+        # Check wrong receptor extension
+        for receptor in ["receptor.mol", "receptor.cif"]:
+            self.assertRaises(
+                TypeError, read_cavity, os.path.join(FIXTURES, "cavity.pdb"), receptor
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [[1], {"step": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                step=step,
+            )
+
+    def test_wrong_probe_in_format(self):
+        # Check wrong probe in format
+        for probe_in in [[1], {"step": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                probe_in=probe_in,
+            )
+
+    def test_invalid_probe_in(self):
+        # Check invalid probe in
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            probe_in=-1,
+        )
+
+    def test_wrong_probe_out_format(self):
+        # Check wrong probe out format
+        for probe_out in [[1], {"step": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                probe_out=probe_out,
+            )
+
+    def test_invalid_probe_out(self):
+        # Check invalid probe out
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            probe_out=-1,
+        )
+
+    def test_wrong_nthreads_format(self):
+        # Check wrong nthreads format
+        for nthreads in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                nthreads=nthreads,
+            )
+
+    def test_invalid_nthreads(self):
+        # Check invalid nthreads
+        for nthreads in [-1, 0]:
+            self.assertRaises(
+                ValueError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                nthreads=nthreads,
+            )
+
+    def test_invalid_probe_pair(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            probe_in=4,
+            probe_out=1.4,
+        )
+
+    def test_wrong_surface_format(self):
+        # Check wrong surface format
+        for surface in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                surface=surface,
+            )
+
+    def test_invalid_surface(self):
+        # Check probe in greater than probe out
+        self.assertRaises(
+            ValueError,
+            read_cavity,
+            os.path.join(FIXTURES, "cavity.pdb"),
+            os.path.join(FIXTURES, "receptor.pdb"),
+            surface="invalid",
+        )
+
+    def test_wrong_verbose_format(self):
+        # Check wrong verbose format
+        for verbose in [1.0, [1], {"nthreads": 1}, numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                read_cavity,
+                os.path.join(FIXTURES, "cavity.pdb"),
+                os.path.join(FIXTURES, "receptor.pdb"),
+                verbose=verbose,
+            )
 
 
 class TestProcessBox(unittest.TestCase):
@@ -225,25 +420,303 @@ class TestProcessBox(unittest.TestCase):
         self.assertDictEqual(result, expected)
 
 
-class TestCalculateFrequencies(unittest.TestCase):
-    def test_residues(self):
-        residues = {
+class TestFrequencies(unittest.TestCase):
+    def setUp(self):
+        self.residues = {
             "KAA": [
                 ["49", "E", "LEU"],
                 ["50", "E", "GLY"],
                 ["51", "E", "THR"],
                 ["52", "E", "GLY"],
                 ["53", "E", "SER"],
+                ["54", "E", "HYP"],
             ]
         }
+
+    def test_calculate_frequencies(self):
+        frequencies = calculate_frequencies(self.residues)
         expected = {
             "KAA": {
-                "RESIDUES": {"GLY": 2, "LEU": 1, "SER": 1, "THR": 1},
-                "CLASS": {"R1": 3, "R2": 0, "R3": 2, "R4": 0, "R5": 0, "RX": 0},
+                "RESIDUES": {"GLY": 2, "LEU": 1, "SER": 1, "THR": 1, "HYP": 1},
+                "CLASS": {"R1": 3, "R2": 0, "R3": 2, "R4": 0, "R5": 0, "RX": 1},
             }
         }
-        result = calculate_frequencies(residues)
-        self.assertDictEqual(expected, result)
+        self.assertDictEqual(expected, frequencies)
+
+    def test_plot_frequencies(self):
+        frequencies = calculate_frequencies(self.residues)
+        plot_frequencies(frequencies, "tests/frequencies.png")
+        self.assertEqual(os.path.exists("tests/frequencies.png"), True)
+        os.remove("tests/frequencies.png")
+
+    def test_plot_frequencies_wrong_fn_format(self):
+        frequencies = calculate_frequencies(self.residues)
+        for fn in [1, 1.0, [1], {"fn": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, plot_frequencies, frequencies, fn)
+
+
+class TestWriteResults(unittest.TestCase):
+    def test_positional_arguments(self):
+        write_results(
+            "tests/results.toml", "input.pdb", "ligand.pdb", "output.pdb", step=0.1
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nLIGAND = "{os.path.abspath("ligand.pdb")}"\nOUTPUT = "{os.path.abspath("output.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.1\n'
+        with open("tests/results.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/results.toml")
+
+    def test_hydropathy_pdb(self):
+        write_results(
+            "tests/output_hydropathy.toml",
+            "input.pdb",
+            None,
+            None,
+            output_hydropathy="hydropathy.pdb",
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n'
+        with open("tests/output_hydropathy.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/output_hydropathy.toml")
+
+    def test_volume(self):
+        write_results("tests/volume.toml", "input.pdb", None, None, volume={"KAA": 100})
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
+        with open("tests/volume.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/volume.toml")
+
+    def test_area(self):
+        write_results("tests/area.toml", "input.pdb", None, None, area={"KAA": 100})
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AREA]\nKAA = 100\n'
+        with open("tests/area.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/area.toml")
+
+    def test_max_depth(self):
+        write_results(
+            "tests/max_depth.toml", "input.pdb", None, None, max_depth={"KAA": 3.00}
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.MAX_DEPTH]\nKAA = 3.0\n'
+        with open("tests/max_depth.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/max_depth.toml")
+
+    def test_avg_depth(self):
+        write_results(
+            "tests/avg_depth.toml", "input.pdb", None, None, avg_depth={"KAA": 2.87}
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_DEPTH]\nKAA = 2.87\n'
+        with open("tests/avg_depth.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/avg_depth.toml")
+
+    def test_avg_hydropathy(self):
+        write_results(
+            "tests/avg_hydropathy.toml",
+            "input.pdb",
+            None,
+            None,
+            avg_hydropathy={"KAA": -0.81},
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.AVG_HYDROPATHY]\nKAA = -0.81\n'
+        with open("tests/avg_hydropathy.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/avg_hydropathy.toml")
+
+    def test_residues(self):
+        write_results(
+            "tests/residues.toml",
+            "input.pdb",
+            None,
+            None,
+            residues={"KAA": [["49", "E", "LEU"]]},
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.RESIDUES]\nKAA = [ [ "49", "E", "LEU",],]\n'
+        with open("tests/residues.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/residues.toml")
+
+    def test_frequencies(self):
+        write_results(
+            "tests/frequencies.toml",
+            "input.pdb",
+            None,
+            None,
+            frequencies={
+                "KAA": {
+                    "RESIDUES": {"LEU": 1},
+                    "CLASS": {"R1": 1, "R2": 0, "R3": 0, "R4": 0, "R5": 0, "RX": 0},
+                }
+            },
+        )
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.FREQUENCY.KAA.RESIDUES]\nLEU = 1\n\n[RESULTS.FREQUENCY.KAA.CLASS]\nR1 = 1\nR2 = 0\nR3 = 0\nR4 = 0\nR5 = 0\nRX = 0\n'
+        with open("tests/frequencies.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/frequencies.toml")
+
+    def test_wrong_fn_format(self):
+        # Check wrong fn format
+        for fn in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(TypeError, write_results, fn, "input.pdb", None, None)
+
+    def test_wrong_input_format(self):
+        # Check wrong input format
+        for input in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, "results.toml", input, None, None
+            )
+
+    def test_wrong_ligand_format(self):
+        # Check wrong ligand format
+        for ligand in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, "results.toml", "input.pdb", ligand, None
+            )
+
+    def test_wrong_output_format(self):
+        # Check wrong output format
+        for output in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError, write_results, "results.toml", "input.pdb", None, output
+            )
+
+    def test_wrong_output_hydropathy_format(self):
+        # Check wrong output_hydropathy format
+        for output_hydropathy in [1.0, [1], {"nthreads": 1}, numpy.ones(1)]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                output_hydropathy=output_hydropathy,
+            )
+
+    def test_wrong_volume_format(self):
+        # Check wrong volume format
+        for volume in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                volume=volume,
+            )
+
+    def test_wrong_area_format(self):
+        # Check wrong area format
+        for area in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                area=area,
+            )
+
+    def test_wrong_max_depth_format(self):
+        # Check wrong max_depth format
+        for max_depth in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                max_depth=max_depth,
+            )
+
+    def test_wrong_avg_depth_format(self):
+        # Check wrong avg_depth format
+        for avg_depth in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                avg_depth=avg_depth,
+            )
+
+    def test_wrong_avg_hydropathy_format(self):
+        # Check wrong avg_hydropathy format
+        for avg_hydropathy in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                avg_hydropathy=avg_hydropathy,
+            )
+
+    def test_wrong_residues_format(self):
+        # Check wrong residues format
+        for residues in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                residues=residues,
+            )
+
+    def test_wrong_frequencies_format(self):
+        # Check wrong frequencies format
+        for frequencies in [1.0, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                frequencies=frequencies,
+            )
+
+    def test_wrong_step_format(self):
+        # Check wrong step format
+        for step in [{"step": 1}, [1], numpy.ones(1), "1"]:
+            self.assertRaises(
+                TypeError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                step=step,
+            )
+
+    def test_invalid_step(self):
+        # Check invalid step
+        for step in [-1.0, 0.0]:
+            self.assertRaises(
+                ValueError,
+                write_results,
+                "results.toml",
+                "input.pdb",
+                None,
+                None,
+                step=step,
+            )
+
+    def test_step_as_integer(self):
+        # Check step as integer
+        write_results("tests/step.toml", "input.pdb", None, None, step=1)
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n'
+        with open("tests/step.toml", "r") as f:
+            self.assertEqual(f.read(), expected)
+        os.remove("tests/step.toml")
 
 
 if __name__ == "__main__":

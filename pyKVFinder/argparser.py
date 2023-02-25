@@ -1,6 +1,7 @@
-import os
 import argparse
+import os
 from typing import Any
+
 from . import __name__, __version__
 
 __all__ = ["argparser"]
@@ -29,11 +30,7 @@ def _check_pdb_xyz(x: str) -> str:
     elif x.endswith(".xyz"):
         x = os.path.abspath(x)
     else:
-        raise (
-            argparse.ArgumentTypeError(
-                "%r must have .pdb or .xyz extension." % x
-            )
-        )
+        raise (argparse.ArgumentTypeError("%r must have .pdb or .xyz extension." % x))
 
     return x
 

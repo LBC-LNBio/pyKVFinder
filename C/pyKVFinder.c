@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "pyKVFinder.h"
+
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 
@@ -1215,15 +1217,19 @@ double check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j,
     break;
   // Three faces in contact with biomolecule
   case 3:
-    if ((surface[k + nz * (j + (ny * (i + 1)))] == 0 &&
-         surface[k + nz * (j + (ny * (i - 1)))]) ||
+    if ((surface[k + nz * (j + (ny * (i - 1)))] == 0 &&
+         surface[k + nz * (j + (ny * (i + 1)))] == 0) ||
         (surface[k + nz * ((j - 1) + (ny * i))] == 0 &&
-         surface[k + nz * ((j - 1) + (ny * i))] == 0) ||
-        (surface[(k + 1) + nz * (j + (ny * i))] == 0 &&
-         surface[(k + 1) + nz * (j + (ny * i))] == 0))
+         surface[k + nz * ((j + 1) + (ny * i))] == 0) ||
+        (surface[(k - 1) + nz * (j + (ny * i))] == 0 &&
+         surface[(k + 1) + nz * (j + (ny * i))] == 0)) {
       weight = 2;
-    else
+    }
+
+    else {
       weight = 1.5879;
+    }
+
     break;
   // Four faces in contact with biomolecule
   case 4:
@@ -1365,28 +1371,28 @@ void _spatial(int *cavities, int nx, int ny, int nz, int *surface, int size,
 
 /* Bulk-cavity boundary points */
 
-/*
- * Struct: points
- * --------------
- *
- * Two 3D grid points with xyz coordinates (P1 and P2)
- *
- * X1: x coordinate of P1
- * Y1: y coordinate of P1
- * Z1: z coordinate of P1
- * X2: x coordinate of P2
- * Y2: y coordinate of P2
- * Z2: z coordinate of P2
- *
- */
-typedef struct POINTS {
-  int X1;
-  int Y1;
-  int Z1;
-  int X2;
-  int Y2;
-  int Z2;
-} pts;
+// /*
+//  * Struct: points
+//  * --------------
+//  *
+//  * Two 3D grid points with xyz coordinates (P1 and P2)
+//  *
+//  * X1: x coordinate of P1
+//  * Y1: y coordinate of P1
+//  * Z1: z coordinate of P1
+//  * X2: x coordinate of P2
+//  * Y2: y coordinate of P2
+//  * Z2: z coordinate of P2
+//  *
+//  */
+// typedef struct POINTS {
+//   int X1;
+//   int Y1;
+//   int Z1;
+//   int X2;
+//   int Y2;
+//   int Z2;
+// } pts;
 
 /*
  * Function: define_boundary_points
@@ -1456,7 +1462,7 @@ void filter_boundary(int *cavities, int nx, int ny, int nz, pts *cavs,
     for (i = 0; i < nx; i++)
       for (j = 0; j < ny; j++)
         for (k = 0; k < nz; k++)
-          #pragma omp critical
+#pragma omp critical
           if (cavities[k + nz * (j + (ny * i))] > 1) {
             // Get cavity identifier
             tag = cavities[k + nz * (j + (ny * i))] - 2;
@@ -1872,7 +1878,7 @@ void filter_openings(int *openings, double *depths, int nx, int ny, int nz,
 int _openings(int *openings, int size, int *cavities, int nx, int ny, int nz,
               double *depths, int nxx, int nyy, int nzz, int ncav,
               int openings_cutoff, double step, int nthreads, int verbose) {
-  int i, nopenings;
+  int nopenings;
 
   if (verbose)
     fprintf(stdout, "> Removing enclosed cavities\n");
@@ -1893,20 +1899,20 @@ int _openings(int *openings, int size, int *cavities, int nx, int ny, int nz,
 
 /* Retrieve interface residues */
 
-/*
- * Struct: node
- * ------------
- *
- * A linked list node for atom index in xyzr array
- *
- * pos: atom index in xyzr array (coordinates and radii of pdb)
- * struct node* next: pointer to next linked list node
- *
- */
-typedef struct node {
-  int pos;
-  struct node *next;
-} res;
+// /*
+//  * Struct: node
+//  * ------------
+//  *
+//  * A linked list node for atom index in xyzr array
+//  *
+//  * pos: atom index in xyzr array (coordinates and radii of pdb)
+//  * struct node* next: pointer to next linked list node
+//  *
+//  */
+// typedef struct node {
+//   int pos;
+//   struct node *next;
+// } res;
 
 /*
  * Function: create
@@ -2152,8 +2158,8 @@ void project_hydropathy(double *hydropathy, int *surface, int nxx, int nyy,
                         int nvalues, char **resname, char **resn,
                         double *scales, int nscales, double step,
                         double probe_in, int nthreads) {
-  int i, j, k, atom, *ref;
-  double x, y, z, xaux, yaux, zaux, distance, H;
+  int i, j, k, atom;
+  double x, y, z, xaux, yaux, zaux, distance, H, *ref;
 
   // Initiliaze 3D grid for residues distances
   ref = (double *)calloc(nxx * nyy * nzz, sizeof(double));

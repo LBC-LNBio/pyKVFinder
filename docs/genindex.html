@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; pyKVFinder 0.4.5 documentation</title>
+  <title>Index &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/icon.ico"/>
@@ -30,7 +30,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,11 +47,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html#getting-started">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html#workflows">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html#separated-steps">Separated steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html#molecular-volume">Molecular volume</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_tutorial/index.html#examples">Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -122,21 +119,48 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
  
 </div>
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._atomic">_atomic (pyKVFinder.Molecule attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._dim">_dim (pyKVFinder.Molecule attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._grid">_grid (pyKVFinder.Molecule attribute)</a>
+</li>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults._input">_input (pyKVFinder.pyKVFinderResults attribute)</a>
 </li>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults._ligand">_ligand (pyKVFinder.pyKVFinderResults attribute)</a>
 </li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._molecule">_molecule (pyKVFinder.Molecule attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._padding">_padding (pyKVFinder.Molecule attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults._step">_step (pyKVFinder.pyKVFinderResults attribute)</a>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._probe">_probe (pyKVFinder.Molecule attribute)</a>
 </li>
-      <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults._vertices">_vertices (pyKVFinder.pyKVFinderResults attribute)</a>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._radii">_radii (pyKVFinder.Molecule attribute)</a>
 </li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._representation">_representation (pyKVFinder.Molecule attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._rotation">_rotation (pyKVFinder.Molecule attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._step">_step (pyKVFinder.Molecule attribute)</a>
+
+      <ul>
+        <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults._step">(pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule._vertices">_vertices (pyKVFinder.Molecule attribute)</a>
+
+      <ul>
+        <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults._vertices">(pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -144,6 +168,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.area">area (pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.atomic">atomic (pyKVFinder.Molecule property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -173,11 +199,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/depth.html#pyKVFinder.depth">depth() (in module pyKVFinder)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.depths">depths (pyKVFinder.pyKVFinderResults attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/detect.html#pyKVFinder.detect">detect() (in module pyKVFinder)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.dim">dim (pyKVFinder.Molecule property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -188,12 +216,14 @@
       <li><a href="_api_reference/export.html#pyKVFinder.export">export() (in module pyKVFinder)</a>
 
       <ul>
-        <li><a href="_api_reference/pyKVFinderResults.export.html#pyKVFinder.pyKVFinderResults.export">(in module pyKVFinder.pyKVFinderResults)</a>
+        <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.export">(pyKVFinder.Molecule method)</a>
+</li>
+        <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.export">(pyKVFinder.pyKVFinderResults method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_api_reference/pyKVFinderResults.export_all.html#pyKVFinder.pyKVFinderResults.export_all">export_all() (in module pyKVFinder.pyKVFinderResults)</a>
+      <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.export_all">export_all() (pyKVFinder.pyKVFinderResults method)</a>
 </li>
       <li><a href="_api_reference/export_openings.html#pyKVFinder.export_openings">export_openings() (in module pyKVFinder)</a>
 </li>
@@ -217,6 +247,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">get_vertices_from_file() (in module pyKVFinder)</a>
 </li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.grid">grid (pyKVFinder.Molecule property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -234,12 +266,28 @@
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.max_depth">max_depth (pyKVFinder.pyKVFinderResults attribute)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule">Molecule (class in pyKVFinder)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.molecule">molecule (pyKVFinder.Molecule property)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.ncav">ncav (pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.nthreads">nthreads (pyKVFinder.Molecule attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.nx">nx (pyKVFinder.Molecule property)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.ny">ny (pyKVFinder.Molecule property)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.nz">nz (pyKVFinder.Molecule property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -255,14 +303,28 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.p1">p1 (pyKVFinder.Molecule property)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.p2">p2 (pyKVFinder.Molecule property)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.p3">p3 (pyKVFinder.Molecule property)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.p4">p4 (pyKVFinder.Molecule property)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.padding">padding (pyKVFinder.Molecule property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/plot_frequencies.html#pyKVFinder.plot_frequencies">plot_frequencies() (in module pyKVFinder)</a>
 
       <ul>
-        <li><a href="_api_reference/pyKVFinderResults.plot_frequencies.html#pyKVFinder.pyKVFinderResults.plot_frequencies">(in module pyKVFinder.pyKVFinderResults)</a>
+        <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.plot_frequencies">(pyKVFinder.pyKVFinderResults method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.preview">preview() (pyKVFinder.Molecule method)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.probe">probe (pyKVFinder.Molecule property)</a>
+</li>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults">pyKVFinderResults (class in pyKVFinder)</a>
 </li>
   </ul></td>
@@ -271,6 +333,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.radii">radii (pyKVFinder.Molecule property)</a>
+</li>
       <li><a href="_api_reference/read_cavity.html#pyKVFinder.read_cavity">read_cavity() (in module pyKVFinder)</a>
 </li>
       <li><a href="_api_reference/read_pdb.html#pyKVFinder.read_pdb">read_pdb() (in module pyKVFinder)</a>
@@ -281,7 +345,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/read_xyz.html#pyKVFinder.read_xyz">read_xyz() (in module pyKVFinder)</a>
 </li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.representation">representation (pyKVFinder.Molecule property)</a>
+</li>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.residues">residues (pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.rotation">rotation (pyKVFinder.Molecule property)</a>
 </li>
       <li><a href="_api_reference/run_workflow.html#pyKVFinder.run_workflow">run_workflow() (in module pyKVFinder)</a>
 </li>
@@ -293,11 +361,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.scales">scales (pyKVFinder.pyKVFinderResults attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/spatial.html#pyKVFinder.spatial">spatial() (in module pyKVFinder)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.step">step (pyKVFinder.Molecule property)</a>
+</li>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.surface">surface (pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.surface">surface() (pyKVFinder.Molecule method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -305,7 +377,17 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.vdw">vdw() (pyKVFinder.Molecule method)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.verbose">verbose (pyKVFinder.Molecule attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.vertices">vertices (pyKVFinder.Molecule property)</a>
+</li>
       <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.volume">volume (pyKVFinder.pyKVFinderResults attribute)</a>
+</li>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.volume">volume() (pyKVFinder.Molecule method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -313,11 +395,19 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_api_reference/pyKVFinderResults.write.html#pyKVFinder.pyKVFinderResults.write">write() (in module pyKVFinder.pyKVFinderResults)</a>
+      <li><a href="_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.write">write() (pyKVFinder.pyKVFinderResults method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_api_reference/write_results.html#pyKVFinder.write_results">write_results() (in module pyKVFinder)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_api_reference/Molecule.html#pyKVFinder.Molecule.xyzr">xyzr (pyKVFinder.Molecule property)</a>
 </li>
   </ul></td>
 </tr></table>

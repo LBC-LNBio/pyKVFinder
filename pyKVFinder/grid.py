@@ -1,7 +1,8 @@
 import os
 import pathlib
+from typing import Dict, List, Optional, Tuple, Union
+
 import numpy
-from typing import Union, Tuple, Optional, Dict, List
 
 __all__ = [
     "get_vertices",
@@ -54,6 +55,27 @@ def get_vertices(
         `step` must be a positive real number.
     ValueError
         `step` must be a positive real number.
+
+    See Also
+    --------
+    read_pdb
+    read_xyz
+    detect
+    constitutional
+    hydropathy
+    export
+
+    Example
+    -------
+    With the atomic data read with ``read_pdb`` or ``read_xyz``, we can get the coordinates of 3D grid vertices (origin, X-axis, Y-axis, Z-axis):
+
+    >>> from pyKVFinder import get_vertices
+    >>> vertices = get_vertices(atomic)
+    >>> vertices
+    array([[-19.911, -32.125, -30.806],
+        [ 40.188, -32.125, -30.806],
+        [-19.911,  43.446, -30.806],
+        [-19.911, -32.125,  27.352]])
     """
     # Check arguments types
     if type(atomic) not in [numpy.ndarray, list]:
@@ -62,11 +84,11 @@ def get_vertices(
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     elif numpy.asarray(atomic).shape[1] != 8:
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
-    if type(probe_out) not in [int, float]:
+    if type(probe_out) not in [int, float, numpy.float64]:
         raise TypeError("`probe_out` must be a non-negative real number.")
     elif probe_out < 0.0:
         raise ValueError("`probe_out` must be a non-negative real number.")
-    if type(step) not in [int, float]:
+    if type(step) not in [int, float, numpy.float64]:
         raise TypeError("`step` must be a positive real number.")
     elif step <= 0.0:
         raise ValueError("`step` must be a positive real number.")
@@ -160,13 +182,38 @@ def get_vertices_from_file(
 
     Note
     ----
-    The box configuration scale file defines the vertices of the 3D grid used
-    by pyKVFinder to detect and characterize cavities. There are three methods
-    for defining a custom 3D grid in pyKVFinder. The first directly defines
-    four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the
-    second defines a list of residues and a padding, and the the third uses
-    parKVFinder parameters file created by its PyMOL plugin. For more details,
-    see `Box configuration file template`.
+    The box configuration scale file defines the vertices of the 3D grid used by pyKVFinder to detect and characterize cavities. There are three methods for defining a custom 3D grid in pyKVFinder. The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the second defines a list of residues and a padding, and the the third uses parKVFinder parameters file created by its PyMOL plugin. For more details, see `Box configuration file template`.
+
+    See Also
+    --------
+    read_pdb
+    read_xyz
+    detect
+    constitutional
+    hydropathy
+    export
+
+    Example
+    -------
+    First, define a box configuration file (see ``Box configuration file template``).
+
+    >>> import os
+    >>> fn = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'custom-box.toml')
+    >>> with open(fn, 'r') as f:
+    ...     print(f.read())
+    [box]
+    p1 = [3.11, 7.34, 1.59]
+    p2 = [11.51, 7.34, 1.59]
+    p3 = [3.11, 10.74, 1.59]
+    p4 = [3.11, 7.34, 6.19]
+
+    With the atomic information and coordinates read with ``pyKVFinder.read_pdb`` and a box configuration file, we can get the coordinates of grid vertices and select atoms inside custom 3D grid.
+
+    >>> from pyKVFinder import get_vertices_from_file
+    >>> vertices, atomic = pyKVFinder.get_vertices_from_file(fn, atomic)
+
+    .. warning::
+        Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.
     """
     from _pyKVFinder import _filter_pdb
     from toml import load
@@ -226,13 +273,13 @@ def get_vertices_from_file(
 
         # Check conditions
         if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
-            if all([key in box.keys() for key in ["padding", "residues"]]):
+            if any([key in box.keys() for key in ["padding", "residues"]]):
                 raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
             vertices = _get_vertices_from_box(box, probe_out)
         elif "residues" in box.keys():
-            if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
+            if any([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
                 raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
@@ -652,6 +699,17 @@ def detect(
     ValueError
         `surface` must be SAS or SES, not `surface`.
 
+    See also
+    --------
+    read_pdb
+    read_xyz
+    get_vertices
+    get_vertices_from_file
+    spatial
+    depth
+    constitutional
+    export
+
     Warning
     -------
     If you are using box adjustment mode, do not forget to set box_adjustment
@@ -662,6 +720,101 @@ def detect(
     -------
     If you are using ligand adjustment mode, do not forget to read ligand atom
     coordinates with 'read_pdb' or 'read_xyz' functions.
+
+    Example
+    -------
+    With the grid vertices defined with ``get_vertices`` and atomic data loaded with ``read_pdb`` or ``read_xyz``, we can detect cavities on the whole target biomolecule:
+
+    >>> from pyKVFinder import detect
+    >>> ncav, cavities = detect(atomic, vertices)
+    >>> ncav
+    18
+    >>> cavities
+    array([[[-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        ...,
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1]],
+       ...,
+       [[-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        ...,
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
+
+    However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.
+
+    The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* or a *.xyz* files. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).
+
+    >>> import os
+    >>> ligand = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'ADN.pdb')
+    >>> from pyKVFinder import read_pdb
+    >>> latomic = read_pdb(ligand)
+    >>> ncav, cavities = detect(atomic, vertices, latomic=latomic, ligand_cutoff=5.0)
+    >>> ncav
+    2
+    >>> cavities
+    array([[[-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        ...,
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1]],
+       ...,
+       [[-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        ...,
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
+
+    Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a *.toml* file (see `Box configuration file template`).
+
+    >>> import os
+    >>> fn = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', 'custom-box.toml')
+    >>> with open(fn, 'r') as f:
+    ...     print(f.read())
+    [box]
+    p1 = [3.11, 7.34, 1.59]
+    p2 = [11.51, 7.34, 1.59]
+    p3 = [3.11, 10.74, 1.59]
+    p4 = [3.11, 7.34, 6.19]
+
+    With this box adjustment mode, we must defined the 3D grid with ``get_vertices_from_file``. 
+
+    >>> from pyKVFinder import get_vertices_from_file
+    >>> vertices, atomic = get_vertices_from_file(fn, atomic)
+
+    Then, we can perform cavity detection:
+
+    >>> ncav, cavities = detect(atomic, vertices, box_adjustment=True)
+    >>> ncav
+    1
+    >>> cavities
+    array([[[-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        ...,
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1]],
+       ...,
+       [[-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        ...,
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1],
+        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
+
+    .. warning::
+        If you are using box adjusment mode, do not forget to set ``box_adjustment`` flag to ``True``.
     """
     from _pyKVFinder import _detect, _detect_ladj
 
@@ -701,9 +854,9 @@ def detect(
     if latomic is not None:
         if type(latomic) not in [numpy.ndarray, list]:
             raise TypeError("`latomic` must be a list, a numpy.ndarray or None.")
-        if len(latomic.shape) != 2:
+        if len(numpy.asarray(latomic).shape) != 2:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
-        elif latomic.shape[1] != 8:
+        elif numpy.asarray(latomic).shape[1] != 8:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
     if type(ligand_cutoff) not in [float, int]:
         raise TypeError("`ligand_cutoff` must be a positive real number.")
@@ -761,11 +914,11 @@ def detect(
 
     if surface == "SES":
         if verbose:
-            print("> Surface representation: Solvent Excluded Surface (SES).")
+            print("> Surface representation: Solvent Excluded Surface (SES)")
         surface = True
     elif surface == "SAS":
         if verbose:
-            print("> Surface representation: Solvent Accessible Surface (SAS).")
+            print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
@@ -1042,6 +1195,39 @@ def spatial(
         `nthreads` must be a positive integer.
     TypeError
         `verbose` must be a boolean.
+
+    See Also
+    --------
+    detect
+    hydropathy
+    export
+
+    Example
+    -------
+    With the cavity points identified with ``detect``, we can perform a spatial characterization, that includes volume, area and defining surface points:
+
+    >>> from pyKVFinder import spatial
+    >>> surface, volume, area = spatial(cavities)
+    >>> surface
+    array([[[-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            ...,
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1]],
+           ...,
+           [[-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            ...,
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
+    >>> volume
+    {'KAA': 137.16, 'KAB': 47.52, 'KAC': 66.96, 'KAD': 8.21, 'KAE': 43.63, 'KAF': 12.53, 'KAG': 6.26, 'KAH': 520.13, 'KAI': 12.31, 'KAJ': 26.57, 'KAK': 12.31, 'KAL': 33.91, 'KAM': 23.11, 'KAN': 102.82, 'KAO': 6.05, 'KAP': 15.55, 'KAQ': 7.99, 'KAR': 7.78}
+    >>> area
+    {'KAA': 126.41, 'KAB': 62.37, 'KAC': 74.57, 'KAD': 19.06, 'KAE': 57.08, 'KAF': 22.77, 'KAG': 15.38, 'KAH': 496.97, 'KAI': 30.58, 'KAJ': 45.64, 'KAK': 30.58, 'KAL': 45.58, 'KAM': 45.25, 'KAN': 129.77, 'KAO': 12.28, 'KAP': 25.04, 'KAQ': 13.46, 'KAR': 16.6}
     """
     from _pyKVFinder import _spatial
 
@@ -1221,17 +1407,38 @@ def depth(
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
     marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-    Warning
+    See Also
+    --------
+    detect
+    export
+    write_results
+
+    Example
     -------
-    Cavities array has integer labels in each position, that are:
+    With the cavity points identified with ``detect``, we can perform a depth characterization, that includes maximum depth, average depth and defining depth of cavity points:
 
-        * -1: bulk points;
-
-        * 0: biomolecule points;
-
-        * 1: empty space points;
-
-        * >=2: cavity points.
+    >>> from pyKVFinder import depth
+    >>> depths, max_depth, avg_depth = depth(cavities)
+    >>> depths
+    array([[[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]],
+          ...,
+          [[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]]])
+    >>> max_depth
+    {'KAA': 3.79, 'KAB': 2.68, 'KAC': 2.62, 'KAD': 0.85, 'KAE': 3.0, 'KAF': 0.85, 'KAG': 0.6, 'KAH': 10.73, 'KAI': 0.0, 'KAJ': 2.24, 'KAK': 0.0, 'KAL': 3.0, 'KAM': 1.2, 'KAN': 0.0, 'KAO': 1.04, 'KAP': 2.08, 'KAQ': 0.85, 'KAR': 0.6}
+    >>> avg_depth
+    {'KAA': 1.35, 'KAB': 0.91, 'KAC': 0.68, 'KAD': 0.32, 'KAE': 0.99, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.91, 'KAI': 0.0, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.07, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}
     """
     from _pyKVFinder import _depth
 
@@ -1433,7 +1640,6 @@ def constitutional(
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
     marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-
     Note
     ----
     The classes of residues are:
@@ -1449,12 +1655,37 @@ def constitutional(
     * Positively charged (R5): Arginine, Histidine, Lysine.
 
     * Non-standard (RX): Non-standard residues.
+
+    See Also
+    --------
+    read_pdb
+    read_xyz
+    detect 
+    calculate_frequencies
+    write_results
+
+    Example
+    -------
+    With the cavity points identified with ``detect``, atomic data read with ``read_pdb`` or ``read_xyz``, we can perform a constitutional characterization, that identifies the interface residues surrounding the cavities:
+
+    >>> from pyKVFinder import constitutional
+    >>> residues = constitutional(cavities, atomic, vertices)
+    >>> residues
+    {'KAA': [['14', 'E', 'SER'], ['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['97', 'E', 'ALA'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['141', 'E', 'PRO'], ['142', 'E', 'HIS'], ['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE'], ['320', 'E', 'GLY'], ['321', 'E', 'PRO'], ['322', 'E', 'GLY'], ['323', 'E', 'ASP']], 'KAE': [['95', 'E', 'LEU'], ['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['100', 'E', 'PHE'], ['103', 'E', 'LEU'], ['104', 'E', 'VAL'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['124', 'E', 'ALA'], ['175', 'E', 'ASP'], ['176', 'E', 'GLN'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['107', 'E', 'GLU'], ['108', 'E', 'PHE'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['50', 'E', 'GLY'], ['51', 'E', 'THR'], ['52', 'E', 'GLY'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['121', 'E', 'GLU'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['186', 'E', 'GLY'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['163', 'E', 'ILE'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['49', 'E', 'LEU'], ['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['326', 'E', 'ASN'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['55', 'E', 'GLY'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['74', 'E', 'LEU'], ['75', 'E', 'ASP'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE'], ['336', 'E', 'ARG']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['199', 'E', 'CYS'], ['200', 'E', 'GLY'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR'], ['331', 'E', 'GLU']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['253', 'E', 'GLY'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['275', 'E', 'VAL'], ['277', 'E', 'LEU']], 'KAR': [['237', 'E', 'PRO'], ['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['254', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
+
+    However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when defining interface residues. Then, users must set ``ignore_backbone`` flag to ``True``.
+
+    >>> residues = constitutional(cavities, atomic, vertices, ignore_backbone=True)
+    >>> residues
+    {'KAA': [['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE']], 'KAE': [['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['103', 'E', 'LEU'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['175', 'E', 'ASP'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['277', 'E', 'LEU']], 'KAR': [['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
     """
     from _pyKVFinder import _constitutional
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
         raise TypeError("`cavities` must be a numpy.ndarray.")
+    elif len(cavities.shape) != 3:
+        raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atomic).shape) != 2:
@@ -1611,8 +1842,7 @@ def hydropathy(
 ) -> Tuple[numpy.ndarray, Dict[str, float]]:
     """Hydropathy characterization of the detected cavities.
 
-    Map a target hydrophobicity scale per surface point and calculate average
-    hydropathy of detected cavities.
+    Map a target hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.
 
     Parameters
     ----------
@@ -1639,11 +1869,21 @@ def hydropathy(
     probe_in : Union[float, int], optional
         Probe In size (A), by default 1.4.
     hydrophobicity_scale : str, optional
-        Name of a built-in hydrophobicity scale (EisenbergWeiss [1]_,
-        HessaHeijne [2]_, KyteDoolitte [3]_, MoonFleming [4]_,
-        WimleyWhite [5]_, ZhaoLondon [6]_) or a path to a
+        Name of a built-in hydrophobicity scale or a path to a
         TOML-formatted file with a custom hydrophobicity scale, by default
         `EisenbergWeiss`.
+        The hydrophobicity scale file defines the name of the scale and the
+        hydrophobicity value for each residue and when not defined, it assigns
+        zero to the missing residues (see `Hydrophobicity scale file
+        template`). The package contains six built-in hydrophobicity scales:
+
+            * EisenbergWeiss [1]_;
+            * HessaHeijne [2]_;
+            * KyteDoolittle [3]_;
+            * MoonFleming [4]_; 
+            * WimleyWhite [5]_;
+            * ZhaoLondon [6]_.
+
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
         residues, by default False.
@@ -1707,14 +1947,61 @@ def hydropathy(
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
     marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
 
-    Note
-    ----
-    The hydrophobicity scale file defines the name of the scale and the
-    hydrophobicity value for each residue and when not defined, it assigns
-    zero to the missing residues (see `Hydrophobicity scale file
-    template`). The package contains six built-in hydrophobicity scales:
-    EisenbergWeiss [1]_, HessaHeijne [2]_, KyteDoolittle [3]_,
-    MoonFleming [4]_, WimleyWhite [5]_ and ZhaoLondon [6]_.
+    See Also
+    --------
+    read_pdb
+    read_xyz
+    spatial
+    export
+    write_results
+
+    Example
+    -------
+    With the surface points identified with ``pyKVFinder.spatial`` and atomic coordinates and information read with ``pyKVFinder.read_pdb`` or ``pyKVFinder.read_xyz``, we can perform a hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy
+
+    >>> from pyKVFinder import hydropathy
+    >>> scales, avg_hydropathy = hydropathy(surface, atomic, vertices)
+    >>> scales
+    array([[[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]],
+          ...,
+          [[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]]])
+    >>> avg_hydropathy
+    {'KAA': -0.73, 'KAB': -0.05, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.16, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.36, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]}
+
+    However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when mapping hydrophobicity scales on surface points. Then, users must set ``ignore_backbone`` flag to ``True``.
+
+    >>> from pyKVFinder import hydropathy
+    >>> scales, avg_hydropathy = hydropathy(surface, atomic, vertices, ignore_backbone=True)
+    >>> scales
+    array([[[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]],
+          ...,
+          [[0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.],
+            [0., 0., 0., ..., 0., 0., 0.]]])
+    >>> avg_hydropathy
+    {'KAA': -0.7, 'KAB': 0.12, 'KAC': -0.08, 'KAD': -0.56, 'KAE': -0.28, 'KAF': -0.25, 'KAG': -0.28, 'KAH': -0.09, 'KAI': -0.4, 'KAJ': 0.96, 'KAK': -0.87, 'KAL': 0.23, 'KAM': 0.06, 'KAN': -0.1, 'KAO': 0.99, 'KAP': -1.04, 'KAQ': 0.48, 'KAR': -0.84, 'EisenbergWeiss': [-1.42, 2.6]}
 
     References
     ----------
@@ -1939,7 +2226,7 @@ def _get_opening_label(opening_name: str) -> int:
 def _process_openings(
     raw_openings: numpy.ndarray,
     opening2cavity: numpy.ndarray,
-) -> Dict[str, Dict[str,float]]:
+) -> Dict[str, Dict[str, float]]:
     """Processes arrays of openings' areas.
 
     Parameters
@@ -1985,7 +2272,7 @@ def openings(
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     verbose: bool = False,
-) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str,float]]]:
+) -> Tuple[int, numpy.ndarray, Dict[str, Dict[str, float]]]:
     """[WIP] Identify openings of the detected cavities and calculate their areas.
 
     Parameters
@@ -2064,8 +2351,54 @@ def openings(
         `nthreads` must be a positive integer.
     TypeError
         `verbose` must be a boolean
+    
+    Example
+    -------
+    With the cavity points identified with ``detect``, we can characterize their openings, that includes number and area of openings and defining opening points:
+
+    >>> from pyKVFinder import openings
+    >>> nopenings, openings, aopenings = openings(cavities)
+    >>> nopenings
+    16
+    >>> openings
+    array([[[-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            ...,
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1]],
+          ...,
+          [[-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            ...,
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1],
+            [-1, -1, -1, ..., -1, -1, -1]]])   
+    >>> aopenings
+    {'KAA': {'OAA': 47.41, 'OAG': 3.6}, 'KAB': {'OAB': 25.84}, 'KAC': {'OAC': 53.62}, 'KAD': {'OAD': 12.59}, 'KAE': {'OAE': 26.3}, 'KAF': {'OAF': 18.46}, 'KAG': {'OAH': 12.83}, 'KAH': {'OAK': 59.96}, 'KAJ': {'OAI': 16.11}, 'KAL': {'OAJ': 17.3}, 'KAM': {'OAL': 35.27}, 'KAO': {'OAM': 8.49}, 'KAP': {'OAN': 13.71}, 'KAQ': {'OAO': 13.16}, 'KAR': {'OAP': 15.36}}
+
+    With the cavity and opening points identified, we can:
+
+    * Export cavity points with opening points mapped on them:
+
+    >>> from pyKVFinder import export
+    >>> export("cavities_with_openings.pdb", cavities, None, vertices, B=openings)
+
+    * Export opening points with same nomenclature from ``aopenings``:
+    
+    >>> from pyKVFinder import export_openings
+    >>> export_openings("openings.pdb", openings, vertices)    
+
+    See Also
+    --------
+    detect
+    depth
+    export
+    export_openings
     """
-    from _pyKVFinder import _openings, _area, _openings2cavities
+    from _pyKVFinder import _area, _openings, _openings2cavities
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2147,19 +2480,19 @@ def openings(
 
 def export(
     fn: Union[str, pathlib.Path],
-    cavities: numpy.ndarray,
+    cavities: Optional[numpy.ndarray],
     surface: Optional[numpy.ndarray],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
-    B: Union[numpy.ndarray, None] = None,
+    B: Optional[numpy.ndarray] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
-    scales: Union[numpy.ndarray, None] = None,
+    scales: Optional[numpy.ndarray] = None,
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     append: bool = False,
     model: int = 0,
 ) -> None:
-    """Exports cavitiy (H) and surface (HA) points to PDB-formatted file with
+    """Export cavitiy (H) and surface (HA) points to PDB-formatted file with
     a variable (B; optional) in B-factor column, and hydropathy to
     PDB-formatted file in B-factor column at surface points (HA).
 
@@ -2167,7 +2500,7 @@ def export(
     ----------
     fn : Union[str, pathlib.Path]
         A path to PDB file for writing cavities.
-    cavities : numpy.ndarray
+    cavities : numpy.ndarray, optional
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
@@ -2199,13 +2532,13 @@ def export(
         X-axis, Y-axis, Z-axis).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
-    B : Union[numpy.ndarray, None], optional
+    B : numpy.ndarray, optional
         A numpy.ndarray with values to be mapped on B-factor column in cavity
         points (B[nx][ny][nz]), by default None.
     output_hydropathy : Union[str, pathlib.Path], optional
         A path to hydropathy PDB file (surface points mapped with a
         hydrophobicity scale), by default `hydropathy.pdb`.
-    scales : Union[numpy.ndarray, None], optional
+    scales : numpy.ndarray, optional
         A numpy.ndarray with hydrophobicity scale values to be mapped on
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
@@ -2221,6 +2554,8 @@ def export(
 
     Raises
     ------
+    TypeError
+        `fn` must be a string or pathlib.Path.
     TypeError
         `cavities` must be a numpy.ndarray.
     ValueError
@@ -2242,6 +2577,8 @@ def export(
     ValueError
         `B` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
+        `output_hydropathy` must be a string.
+    TypeError
         `scales` must be a numpy.ndarray.
     ValueError
         `scales` has the incorrect shape. It must be (nx, ny, nz).
@@ -2257,11 +2594,7 @@ def export(
         `append` must be a boolean.
     TypeError
         `model` must be a integer.
-    TypeError
-        `fn` must be a string or pathlib.Path.
-    TypeError
-        `output_hydropathy` must be a string.
-    Exception
+    RuntimeError
         User must define `surface` when not defining `cavities`.
 
     Note
@@ -2269,10 +2602,48 @@ def export(
     The cavity nomenclature is based on the integer label. The cavity marked
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
     marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+    
+    See Also
+    --------
+    detect
+    spatial
+    depth
+    hydropathy
+    write_results
+
+    Example
+    -------
+    With the cavity and surface points identified and depth and hydrophobicity scale mapped in the 3D grid, we can:
+
+    * Export cavity points
+
+    >>> from pyKVFinder import export
+    >>> export('cavity_wo_surface.pdb', cavities, None, vertices)
+
+    * Export cavity and surface points
+
+    >>> export('cavities.pdb', cavities, surface, vertices)
+
+    * Export cavity and surface points with depth mapped on them
+
+    >>> export('cavities_with_depth.pdb', cavities, surface, vertices, B=depths)
+
+    * Export surface points with hydrophobicity_scale mapped on them
+
+    >>> export(None, None, surface, vertices, output_hydropathy='hydropathy.pdb', scales=scales)
+
+    * Export all
+
+    >>> export('cavities.pdb', cavities, surface, vertices, B=depths, output_hydropathy='hydropathy.pdb', scales=scales)
+
     """
     from _pyKVFinder import _export, _export_b
 
     # Check arguments
+    if fn is not None:
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
     if cavities is not None:
         if type(cavities) not in [numpy.ndarray]:
             raise TypeError("`cavities` must be a numpy.ndarray.")
@@ -2300,6 +2671,10 @@ def export(
             raise TypeError("`B` must be a numpy.ndarray.")
         elif len(B.shape) != 3:
             raise ValueError("`B` has the incorrect shape. It must be (nx, ny, nz).")
+    if output_hydropathy is not None:
+        if type(output_hydropathy) not in [str, pathlib.Path]:
+            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
     if scales is not None:
         if type(scales) not in [numpy.ndarray]:
             raise TypeError("`scales` must be a numpy.ndarray.")
@@ -2348,24 +2723,15 @@ def export(
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
     sincos = _get_sincos(vertices)
 
-    # Create base directories of results
-    if fn is not None:
-        if type(fn) not in [str, pathlib.Path]:
-            raise TypeError("`fn` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
-    if output_hydropathy is not None:
-        if type(output_hydropathy) not in [str, pathlib.Path]:
-            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
-
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
     # If surface is None, create an empty grid
-    if surface is None:
-        surface = numpy.zeros(cavities.shape, dtype="int32")
-    else:
-        surface = surface.astype("int32") if surface.dtype != "int32" else surface
+    if cavities is not None:
+        if surface is None:
+            surface = numpy.zeros(cavities.shape, dtype="int32")
+        else:
+            surface = surface.astype("int32") if surface.dtype != "int32" else surface
 
     # Select cavities
     if selection is not None:
@@ -2375,12 +2741,13 @@ def export(
 
     if cavities is None:
 
-        # Get number of cavities
-        ncav = int(surface.max() - 1)
-
         if surface is None:
-            raise Exception(f"User must define `surface` when not defining `cavities`.")
+            raise RuntimeError(f"User must define `surface` when not defining `cavities`.")
         else:
+            # Get number of cavities
+            ncav = int(surface.max() - 1)
+
+            # Export hydropathy
             _export_b(
                 output_hydropathy,
                 surface,
@@ -2450,7 +2817,7 @@ def export_openings(
     append: bool = False,
     model: int = 0,
 ) -> None:
-    """Exports opening (H) points to PDB-formatted file.
+    """Export opening points (H) to a PDB-formatted file.
 
     Parameters
     ----------
@@ -2519,6 +2886,20 @@ def export_openings(
     The opening nomenclature is based on the integer label. The opening marked
     with 2, the first integer corresponding to a opening, is OAA, the opening
     marked with 3 is OAB, the opening marked with 4 is OAC and so on.
+
+    See Also
+    --------
+    export
+    detect
+    depths
+    openings
+
+    Example
+    -------
+    With the opening points identified with ``openings``, we can export them to a PDB-formatted file:
+
+    >>> from pyKVFinder import export_openings
+    >>> export_openings('openings.pdb', openings, vertices)
     """
     from _pyKVFinder import _export_openings
 

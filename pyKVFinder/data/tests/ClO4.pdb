@@ -1,0 +1,11 @@
+HETATM    1 Cl   UNK     0      -0.314   0.050  -0.004  0.00  0.00          Cl  
+HETATM    2  O   UNK     0       1.628   0.141  -0.395  0.00  0.00           O  
+HETATM    3  O   UNK     0      -0.999   1.874   0.366  0.00  0.00           O  
+HETATM    4  O   UNK     0      -0.616  -1.104   1.580  0.00  0.00           O  
+HETATM    5  O   UNK     0      -1.268  -0.710  -1.567  0.00  0.00           O  
+CONECT    1    2    3    4    5
+CONECT    2    1
+CONECT    3    1
+CONECT    4    1
+CONECT    5    1
+END

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.get_vertices &mdash; pyKVFinder 0.4.5 documentation</title>
+  <title>pyKVFinder.get_vertices &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -50,11 +50,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#workflows">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#separated-steps">Separated steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -160,21 +157,13 @@ and radius) for each atom.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="read_pdb.html">pyKVFinder.read_pdb</a></p></li>
-<li><p><a class="reference external" href="read_xyz.html">pyKVFinder.read_xyz</a></p></li>
-<li><p><a class="reference external" href="detect.html">pyKVFinder.detect</a></p></li>
-<li><p><a class="reference external" href="constitutional.html">pyKVFinder.constitutional</a></p></li>
-<li><p><a class="reference external" href="hydropathy.html">pyKVFinder.hydropathy</a></p></li>
-<li><p><a class="reference external" href="export.html">pyKVFinder.export</a></p></li>
-</ul>
+<p><a class="reference internal" href="read_pdb.html#pyKVFinder.read_pdb" title="pyKVFinder.read_pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pdb</span></code></a>, <a class="reference internal" href="read_xyz.html#pyKVFinder.read_xyz" title="pyKVFinder.read_xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_xyz</span></code></a>, <a class="reference internal" href="detect.html#pyKVFinder.detect" title="pyKVFinder.detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detect</span></code></a>, <a class="reference internal" href="constitutional.html#pyKVFinder.constitutional" title="pyKVFinder.constitutional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constitutional</span></code></a>, <a class="reference internal" href="hydropathy.html#pyKVFinder.hydropathy" title="pyKVFinder.hydropathy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hydropathy</span></code></a>, <a class="reference internal" href="export.html#pyKVFinder.export" title="pyKVFinder.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>With the atomic data read with <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_xyz</span></code>, we can get the coordinates of 3D grid vertices (origin, X-axis, Y-axis, Z-axis):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">get_vertices</span>
+<p class="rubric">Example</p>
+<p>With the atomic data read with <code class="docutils literal notranslate"><span class="pre">read_pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">read_xyz</span></code>, we can get the coordinates of 3D grid vertices (origin, X-axis, Y-axis, Z-axis):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">get_vertices</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="n">get_vertices</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span>
 <span class="go">array([[-19.911, -32.125, -30.806],</span>
@@ -183,6 +172,8 @@ and radius) for each atom.</p></li>
 <span class="go">    [-19.911, -32.125,  27.352]])</span>
 </pre></div>
 </div>
+</dd></dl>
+
 </section>
 
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.4.5 documentation</title>
+  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.5.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -33,7 +33,7 @@
             <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4
+                0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -50,11 +50,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#getting-started">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#workflows">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#separated-steps">Separated steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#steered-detection">Steered detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -167,115 +164,114 @@ residues, by default False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>results</strong> – A class with the following attributes defined:</p>
-<ul>
-<li><dl>
-<dt>cavities<span class="classifier">numpy.ndarray</span></dt><dd><p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
-Cavities array has integer labels in each position, that are:</p>
+<dd class="field-even"><p><p><strong>results</strong> –</p>
+<p>A class with the following attributes defined:</p>
 <blockquote>
-<div><ul class="simple">
+<div><ul>
+<li><p>cavities : numpy.ndarray</p>
+<blockquote>
+<div><p>Cavity points in the 3D grid (cavities[nx][ny][nz]).
+Cavities array has integer labels in each position, that are:</p>
+<ul class="simple">
 <li><p>-1: bulk points;</p></li>
 <li><p>0: biomolecule points;</p></li>
 <li><p>1: empty space points;</p></li>
 <li><p>&gt;=2: cavity points.</p></li>
 </ul>
-</div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl>
-<dt>surface<span class="classifier">numpy.ndarray</span></dt><dd><p>Surface points in the 3D grid (surface[nx][ny][nz]).
-Surface array has integer labels in each position, that are:</p>
+<li><p>surface : numpy.ndarray</p>
 <blockquote>
-<div><ul class="simple">
+<div><p>Surface points in the 3D grid (surface[nx][ny][nz]).
+Surface array has integer labels in each position, that are:</p>
+<ul class="simple">
 <li><p>-1: bulk points;</p></li>
 <li><p>0: biomolecule or empty space points;</p></li>
 <li><p>&gt;=2: surface points.</p></li>
 </ul>
-</div></blockquote>
 <p>The empty space points are regions that do not meet the chosen
 volume cutoff to be considered a cavity.</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>depths<span class="classifier">numpy.ndarray, optional</span></dt><dd><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
-</dd>
-</dl>
+<li><p>depths : numpy.ndarray, optional</p>
+<blockquote>
+<div><p>A numpy.ndarray with depth of cavity points (depth[nx][ny][nz]).</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>scales<span class="classifier">numpy.ndarray, optional</span></dt><dd><p>A numpy.ndarray with hydrophobicity scale value mapped at surface
+<li><p>scales : numpy.ndarray, optional</p>
+<blockquote>
+<div><p>A numpy.ndarray with hydrophobicity scale value mapped at surface
 points (scales[nx][ny][nz]).</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>ncav<span class="classifier">int</span></dt><dd><p>Number of cavities.</p>
-</dd>
-</dl>
+<li><p>ncav : int</p>
+<blockquote>
+<div><p>Number of cavities.</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>volume<span class="classifier">Dict[str, float]</span></dt><dd><p>A dictionary with volume of each detected cavity.</p>
-</dd>
-</dl>
+<li><p>volume : Dict[str, float]</p>
+<blockquote>
+<div><p>A dictionary with volume of each detected cavity.</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>area<span class="classifier">Dict[str, float]</span></dt><dd><p>A dictionary with area of each detected cavity.</p>
-</dd>
-</dl>
+<li><p>area : Dict[str, float]</p>
+<blockquote>
+<div><p>A dictionary with area of each detected cavity.</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>max_depth<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with maximum depth of each detected cavity.</p>
-</dd>
-</dl>
+<li><p>max_depth : Dict[str, float], optional</p>
+<blockquote>
+<div><p>A dictionary with maximum depth of each detected cavity.</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>avg_depth<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with average depth of each detected cavity.</p>
-</dd>
-</dl>
+<li><p>avg_depth : Dict[str, float], optional</p>
+<blockquote>
+<div><p>A dictionary with average depth of each detected cavity.</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>avg_hydropathy<span class="classifier">Dict[str, float], optional</span></dt><dd><p>A dictionary with average hydropathy for each detected cavity and
+<li><p>avg_hydropathy : Dict[str, float], optional</p>
+<blockquote>
+<div><p>A dictionary with average hydropathy for each detected cavity and
 the range of the hydrophobicity scale (min, max).</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>residues: Dict[str, List[List[str]]]</dt><dd><p>A dictionary with a list of interface residues for each detected
+<li><p>residues: Dict[str, List[List[str]]]</p>
+<blockquote>
+<div><p>A dictionary with a list of interface residues for each detected
 cavity.</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>frequencies<span class="classifier">Dict[str, Dict[str, Dict[str, int]]], optional</span></dt><dd><p>A dictionary with frequencies of residues and class for
+<li><p>frequencies : Dict[str, Dict[str, Dict[str, int]]], optional</p>
+<blockquote>
+<div><p>A dictionary with frequencies of residues and class for
 residues of each detected cavity.</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>_vertices<span class="classifier">numpy.ndarray</span></dt><dd><p>A numpy.ndarray or a list with xyz vertices coordinates (origin,
+<li><p>_vertices : numpy.ndarray</p>
+<blockquote>
+<div><p>A numpy.ndarray or a list with xyz vertices coordinates (origin,
 X-axis, Y-axis, Z-axis).</p>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>_step<span class="classifier">float</span></dt><dd><p>Grid spacing (A).</p>
-</dd>
-</dl>
+<li><p>_step : float</p>
+<blockquote>
+<div><p>Grid spacing (A).</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>_input<span class="classifier">Union[str, pathlib.Path], optional</span></dt><dd><p>A path to input PDB or XYZ file.</p>
-</dd>
-</dl>
+<li><p>_input : Union[str, pathlib.Path], optional</p>
+<blockquote>
+<div><p>A path to input PDB or XYZ file.</p>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>_ligand<span class="classifier">Union[str, pathlib.Path], optional</span></dt><dd><p>A path to ligand PDB or XYZ file.</p>
-</dd>
-</dl>
+<li><p>_ligand : Union[str, pathlib.Path], optional</p>
+<blockquote>
+<div><p>A path to ligand PDB or XYZ file.</p>
+</div></blockquote>
 </li>
 </ul>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -306,16 +302,13 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <li><p>Non-standard (RX): Non-standard residues.</p></li>
 </ul>
 </div>
-</dd></dl>
-
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><a class="reference external" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></p></li>
-</ul>
+<p><a class="reference internal" href="pyKVFinderResults.html#pyKVFinder.pyKVFinderResults" title="pyKVFinder.pyKVFinderResults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyKVFinderResults</span></code></a></p>
 </div>
-<h4><u>Example</u></h4><p>The <strong>standard workflow</strong> for cavity detection with spatial (surface points, volume, area) and constitutional (interface residues and their frequencies) characterization  can be run at once with one command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<p class="rubric">Example</p>
+<p>The <strong>standard workflow</strong> for cavity detection with spatial (surface points, volume, area) and constitutional (interface residues and their frequencies) characterization  can be run at once with one command:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyKVFinder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
@@ -329,10 +322,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
@@ -347,10 +338,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
@@ -371,7 +360,7 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 </div>
 <p>However, users may opt to perform cavity detection in a segmented space through ligand adjustment and/or box adjustment modes.</p>
 <p>The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a <em>.pdb</em> or a <em>.xyz</em> files. Thus, the detected cavities are limited within a radius (<code class="docutils literal notranslate"><span class="pre">ligand_cutoff</span></code>) of the target ligand(s).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ADN.pdb&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
 <span class="go">&lt;pyKVFinderResults object&gt;</span>
@@ -383,10 +372,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
@@ -401,10 +388,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
@@ -423,8 +408,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;ASN&#39;: 1, &#39;ASP&#39;: 2, &#39;GLU&#39;: 3, &#39;GLY&#39;: 3, &#39;LEU&#39;: 2, &#39;LYS&#39;: 2, &#39;MET&#39;: 1, &#39;PHE&#39;: 1, &#39;SER&#39;: 1, &#39;THR&#39;: 2, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 9, &#39;R2&#39;: 2, &#39;R3&#39;: 5, &#39;R4&#39;: 5, &#39;R5&#39;: 3, &#39;RX&#39;: 0}}, &#39;KAB&#39;: {&#39;RESIDUES&#39;: {&#39;ASN&#39;: 1, &#39;ASP&#39;: 1, &#39;GLU&#39;: 1, &#39;LEU&#39;: 1, &#39;PHE&#39;: 1, &#39;SER&#39;: 1, &#39;TYR&#39;: 1}, &#39;CLASS&#39;: {&#39;R1&#39;: 1, &#39;R2&#39;: 2, &#39;R3&#39;: 2, &#39;R4&#39;: 2, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}}</span>
 </pre></div>
 </div>
-<p>Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a <em>.toml</em> file (see <a class="reference external" href="box_file_template.html">Box configuration file template</a>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
+<p>Further, we can also perform cavity detection on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a <em>.toml</em> file (see <cite>Box configuration file template</cite>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="go">[box]</span>
@@ -443,10 +428,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
@@ -461,10 +444,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[-1, -1, -1, ..., -1, -1, -1],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="go">        ...,</span>
@@ -483,8 +464,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ASN&#39;: 1, &#39;GLU&#39;: 3, &#39;GLY&#39;: 1, &#39;LEU&#39;: 2, &#39;PHE&#39;: 1, &#39;THR&#39;: 2, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 7, &#39;R2&#39;: 2, &#39;R3&#39;: 3, &#39;R4&#39;: 3, &#39;R5&#39;: 0, &#39;RX&#39;: 0}}}</span>
 </pre></div>
 </div>
-<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (surface points, volume and area), constitutional (interface residues and their frequencies), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.run_workflow</span></code> function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
+<p>However, users may opt to perform the <strong>full workflow</strong> for cavity detection with spatial (surface points, volume and area), constitutional (interface residues and their frequencies), hydropathy and depth characterization. This full workflow can be run with one command by setting some parameters of <code class="docutils literal notranslate"><span class="pre">run_workflow</span></code> function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">include_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_hydropathy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hydrophobicity_scale</span><span class="o">=</span><span class="s1">&#39;EisenbergWeiss&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">depths</span>
 <span class="go">array([[[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
@@ -493,10 +474,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        ...,</span>
@@ -511,10 +490,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.]],</span>
-
-<span class="go">        ...,</span>
-
-<span class="go">        [[0., 0., 0., ..., 0., 0., 0.],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="go">        ...,</span>
@@ -529,6 +506,8 @@ marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
 <span class="go">{&#39;KAA&#39;: -0.73, &#39;KAB&#39;: -0.05, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.17, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.36, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
 </pre></div>
 </div>
+</dd></dl>
+
 </section>
 
 
