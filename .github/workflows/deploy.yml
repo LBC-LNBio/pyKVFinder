@@ -1,8 +1,6 @@
 name: Build and deploy
 
 on:
-  push:
-    branches: [publish-workflow]
   release:
     types: [published]
 
@@ -70,4 +68,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           pip install -U twine
-          # twine upload dist/*
+          twine upload dist/*
