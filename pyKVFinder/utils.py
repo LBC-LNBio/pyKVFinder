@@ -600,11 +600,11 @@ def read_cavity(
 
     if surface == "SES":
         if verbose:
-            print("> Surface representation: Solvent Excluded Surface (SES).")
+            print("> Surface representation: Solvent Excluded Surface (SES)")
         surface = True
     elif surface == "SAS":
         if verbose:
-            print("> Surface representation: Solvent Accessible Surface (SAS).")
+            print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
@@ -1298,18 +1298,18 @@ def write_results(
     if output_hydropathy:
         output_hydropathy = os.path.abspath(output_hydropathy)
 
-    # Create results dictionary
-    results = {
-        "FILES": {
-            "INPUT": input,
-            "LIGAND": ligand,
-            "OUTPUT": output,
-            "HYDROPATHY": output_hydropathy,
-        },
-        "PARAMETERS": {
-            "STEP": step,
-        },
-        "RESULTS": {
+    # Create output dictionary for results file
+    files = {
+        "INPUT": input,
+        "LIGAND": ligand,
+        "OUTPUT": output,
+        "HYDROPATHY": output_hydropathy,
+    }
+    parameters = {
+        "STEP": step,
+    }
+    results = (
+        {
             "VOLUME": volume,
             "AREA": area,
             "MAX_DEPTH": max_depth,
@@ -1317,8 +1317,16 @@ def write_results(
             "AVG_HYDROPATHY": avg_hydropathy,
             "RESIDUES": residues,
             "FREQUENCY": frequencies,
-        },
-    }
+        }
+        if (volume is not None)
+        or (area is not None)
+        or (max_depth is not None)
+        or (avg_depth is not None)
+        or (avg_hydropathy is not None)
+        or (residues is not None)
+        or (frequencies is not None)
+        else None
+    )
 
     # Create base directories of results TOML file
     os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
@@ -1326,4 +1334,11 @@ def write_results(
     # Write results to TOML file
     with open(fn, "w") as f:
         f.write("# pyKVFinder results\n\n")
-        toml.dump(results, f)
+        toml.dump(
+            {
+                "FILES": files,
+                "PARAMETERS": parameters,
+                "RESULTS": results,
+            },
+            f,
+        )

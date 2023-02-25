@@ -273,13 +273,13 @@ def get_vertices_from_file(
 
         # Check conditions
         if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
-            if all([key in box.keys() for key in ["padding", "residues"]]):
+            if any([key in box.keys() for key in ["padding", "residues"]]):
                 raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
             vertices = _get_vertices_from_box(box, probe_out)
         elif "residues" in box.keys():
-            if all([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
+            if any([key in box.keys() for key in ["p1", "p2", "p3", "p4"]]):
                 raise ValueError(
                     f"You must define (p1, p2, p3, p4) or (residues, padding) keys in {fn}."
                 )
@@ -854,9 +854,9 @@ def detect(
     if latomic is not None:
         if type(latomic) not in [numpy.ndarray, list]:
             raise TypeError("`latomic` must be a list, a numpy.ndarray or None.")
-        if len(latomic.shape) != 2:
+        if len(numpy.asarray(latomic).shape) != 2:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
-        elif latomic.shape[1] != 8:
+        elif numpy.asarray(latomic).shape[1] != 8:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
     if type(ligand_cutoff) not in [float, int]:
         raise TypeError("`ligand_cutoff` must be a positive real number.")
@@ -914,11 +914,11 @@ def detect(
 
     if surface == "SES":
         if verbose:
-            print("> Surface representation: Solvent Excluded Surface (SES).")
+            print("> Surface representation: Solvent Excluded Surface (SES)")
         surface = True
     elif surface == "SAS":
         if verbose:
-            print("> Surface representation: Solvent Accessible Surface (SAS).")
+            print("> Surface representation: Solvent Accessible Surface (SAS)")
         surface = False
     else:
         raise ValueError(f"`surface` must be SAS or SES, not {surface}.")
@@ -1684,6 +1684,8 @@ def constitutional(
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
         raise TypeError("`cavities` must be a numpy.ndarray.")
+    elif len(cavities.shape) != 3:
+        raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
     elif len(numpy.asarray(atomic).shape) != 2:
@@ -2478,13 +2480,13 @@ def openings(
 
 def export(
     fn: Union[str, pathlib.Path],
-    cavities: numpy.ndarray,
+    cavities: Optional[numpy.ndarray],
     surface: Optional[numpy.ndarray],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
-    B: Union[numpy.ndarray, None] = None,
+    B: Optional[numpy.ndarray] = None,
     output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
-    scales: Union[numpy.ndarray, None] = None,
+    scales: Optional[numpy.ndarray] = None,
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     append: bool = False,
@@ -2498,7 +2500,7 @@ def export(
     ----------
     fn : Union[str, pathlib.Path]
         A path to PDB file for writing cavities.
-    cavities : numpy.ndarray
+    cavities : numpy.ndarray, optional
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
@@ -2530,13 +2532,13 @@ def export(
         X-axis, Y-axis, Z-axis).
     step : Union[float, int], optional
         Grid spacing (A), by default 0.6.
-    B : Union[numpy.ndarray, None], optional
+    B : numpy.ndarray, optional
         A numpy.ndarray with values to be mapped on B-factor column in cavity
         points (B[nx][ny][nz]), by default None.
     output_hydropathy : Union[str, pathlib.Path], optional
         A path to hydropathy PDB file (surface points mapped with a
         hydrophobicity scale), by default `hydropathy.pdb`.
-    scales : Union[numpy.ndarray, None], optional
+    scales : numpy.ndarray, optional
         A numpy.ndarray with hydrophobicity scale values to be mapped on
         B-factor column in surface points (scales[nx][ny][nz]), by default
         None.
@@ -2552,6 +2554,8 @@ def export(
 
     Raises
     ------
+    TypeError
+        `fn` must be a string or pathlib.Path.
     TypeError
         `cavities` must be a numpy.ndarray.
     ValueError
@@ -2573,6 +2577,8 @@ def export(
     ValueError
         `B` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
+        `output_hydropathy` must be a string.
+    TypeError
         `scales` must be a numpy.ndarray.
     ValueError
         `scales` has the incorrect shape. It must be (nx, ny, nz).
@@ -2588,11 +2594,7 @@ def export(
         `append` must be a boolean.
     TypeError
         `model` must be a integer.
-    TypeError
-        `fn` must be a string or pathlib.Path.
-    TypeError
-        `output_hydropathy` must be a string.
-    Exception
+    RuntimeError
         User must define `surface` when not defining `cavities`.
 
     Note
@@ -2638,6 +2640,10 @@ def export(
     from _pyKVFinder import _export, _export_b
 
     # Check arguments
+    if fn is not None:
+        if type(fn) not in [str, pathlib.Path]:
+            raise TypeError("`fn` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
     if cavities is not None:
         if type(cavities) not in [numpy.ndarray]:
             raise TypeError("`cavities` must be a numpy.ndarray.")
@@ -2665,6 +2671,10 @@ def export(
             raise TypeError("`B` must be a numpy.ndarray.")
         elif len(B.shape) != 3:
             raise ValueError("`B` has the incorrect shape. It must be (nx, ny, nz).")
+    if output_hydropathy is not None:
+        if type(output_hydropathy) not in [str, pathlib.Path]:
+            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
+        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
     if scales is not None:
         if type(scales) not in [numpy.ndarray]:
             raise TypeError("`scales` must be a numpy.ndarray.")
@@ -2713,24 +2723,15 @@ def export(
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
     sincos = _get_sincos(vertices)
 
-    # Create base directories of results
-    if fn is not None:
-        if type(fn) not in [str, pathlib.Path]:
-            raise TypeError("`fn` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
-    if output_hydropathy is not None:
-        if type(output_hydropathy) not in [str, pathlib.Path]:
-            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
-
     # Unpack vertices
     P1, P2, P3, P4 = vertices
 
     # If surface is None, create an empty grid
-    if surface is None:
-        surface = numpy.zeros(cavities.shape, dtype="int32")
-    else:
-        surface = surface.astype("int32") if surface.dtype != "int32" else surface
+    if cavities is not None:
+        if surface is None:
+            surface = numpy.zeros(cavities.shape, dtype="int32")
+        else:
+            surface = surface.astype("int32") if surface.dtype != "int32" else surface
 
     # Select cavities
     if selection is not None:
@@ -2740,12 +2741,13 @@ def export(
 
     if cavities is None:
 
-        # Get number of cavities
-        ncav = int(surface.max() - 1)
-
         if surface is None:
-            raise Exception(f"User must define `surface` when not defining `cavities`.")
+            raise RuntimeError(f"User must define `surface` when not defining `cavities`.")
         else:
+            # Get number of cavities
+            ncav = int(surface.max() - 1)
+
+            # Export hydropathy
             _export_b(
                 output_hydropathy,
                 surface,

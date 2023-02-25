@@ -279,8 +279,8 @@ def cli() -> None:
 
     # Elapsed time
     elapsed_time = time.time() - start_time
-    print(f"[ \033[1mElapsed time:\033[0m {elapsed_time:.4f} ]")
-    logging.info(f"[ Elapsed time (s): {elapsed_time:.4f} ]\n")
+    print(f"[ \033[1mElapsed time:\033[0m {elapsed_time:.4f}s ]")
+    logging.info(f"[ Elapsed time (s): {elapsed_time:.4f}s ]\n")
 
     return 0
 

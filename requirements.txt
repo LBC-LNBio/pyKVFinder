@@ -1,4 +1,0 @@
-toml>=0.10.2
-numpy>=1.24.1
-matplotlib>=3.6.3
-plotly>=5.13.0

@@ -31,14 +31,9 @@ See also
 """
 
 __name__ = "pyKVFinder"
-__version__ = "0.4.6"
+__version__ = "0.5.0"
 license = "GNU GPL-3.0 License"
 
-try:
-    from .grid import *
-    from .main import *
-    from .utils import *
-except SyntaxError:
-    pass
-except ModuleNotFoundError:
-    pass
+from .utils import *
+from .grid import *
+from .main import *
