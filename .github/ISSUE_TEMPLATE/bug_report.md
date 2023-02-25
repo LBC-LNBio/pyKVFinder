@@ -4,9 +4,7 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-
 ---
-
 <!---
 Please read this!
 
@@ -19,9 +17,11 @@ filtered by the "bug" label and verify the issue you're about to submit isn't a 
 <!-- Summarize the bug encountered concisely. -->
 
 ### Setup
+
 <!-- Please complete the following information. -->
- - OS: [e.g. Linux/MacOS/Windows]
- - Python Version [e.g. v3.x]
+
+- OS: [e.g. Linux/MacOS/Windows]
+- Python Version: [e.g. v3.x]
 
 ### Steps to reproduce
 
