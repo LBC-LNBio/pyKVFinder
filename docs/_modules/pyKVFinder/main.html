@@ -382,8 +382,8 @@
 
     <span class="c1"># Elapsed time</span>
     <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ </span><span class="se">\033</span><span class="s2">[1mElapsed time:</span><span class="se">\033</span><span class="s2">[0m </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ Elapsed time (s): </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ </span><span class="se">\033</span><span class="s2">[1mElapsed time:</span><span class="se">\033</span><span class="s2">[0m </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s ]&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ Elapsed time (s): </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s ]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="mi">0</span>
 
@@ -1360,6 +1360,46 @@
 <span class="sd">        Number of threads for parallel processing.</span>
 <span class="sd">    verbose : bool</span>
 <span class="sd">        Whether to print extra information to standard output.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type. The function by default loads the built-in van der Waals radii file: ``vdw.dat``.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_vdw</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    The ``Molecule`` class loads the target molecular structure (ClO4) into pyKVFinder. class.</span>
+
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), &#39;data&#39;, &#39;tests&#39;, &#39;ClO4.pdb&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; molecule = Molecule(pdb)</span>
+<span class="sd">    &gt;&gt;&gt; molecule</span>
+<span class="sd">    &gt;&gt;&gt; &lt;pyKVFinder.main.Molecule object at 0x7f5ddacf2230&gt;</span>
+
+<span class="sd">    The van der Waals radii can be define by:</span>
+
+<span class="sd">        * creating a Python dictionary:</span>
+
+<span class="sd">        &gt;&gt;&gt; # PyMOL (v2.5.0) vdW radii values</span>
+<span class="sd">        &gt;&gt;&gt; vdw = {&#39;GEN&#39;: {&#39;CL&#39;: 1.75, &#39;O&#39;: 1.52}}</span>
+<span class="sd">        &gt;&gt;&gt; molecule = Molecule(pdb, radii=vdw)</span>
+<span class="sd">        &gt;&gt;&gt; molecule.radii</span>
+<span class="sd">        {&#39;GEN&#39;: {&#39;CL&#39;: 1.75, &#39;O&#39;: 1.52}}</span>
+
+<span class="sd">        * specifying a *.dat* file following template of `van der Waals radii file`.</span>
+
+<span class="sd">        &gt;&gt;&gt; from pyKVFinder import read_vdw</span>
+<span class="sd">        &gt;&gt;&gt; # ChimeraX vdW radii values</span>
+<span class="sd">        &gt;&gt;&gt; with open(&#39;vdw.dat&#39;, &#39;w&#39;) as f:</span>
+<span class="sd">        ...     f.write(&#39;&gt;GEN\\nCL\\t\\t1.98\\nO\\t\\t1.46\\n&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; vdw = read_vdw(&#39;vdw.dat&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; molecule = Molecule(pdb, radii=vdw)</span>
+<span class="sd">        &gt;&gt;&gt; molecule.radii</span>
+<span class="sd">        {&#39;GEN&#39;: {&#39;CL&#39;: 1.98, &#39;O&#39;: 1.46}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -1619,6 +1659,30 @@
 <span class="sd">            `step` must be a positive real number.</span>
 <span class="sd">        ValueError</span>
 <span class="sd">            `step` must be a positive real number.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        The ``Molecule.vdw()`` method takes a grid spacing and returns a NumPy array with the molecule points representing the vdW surface in the 3D grid.</span>
+
+<span class="sd">        &gt;&gt;&gt; # Grid Spacing (step): 0.1</span>
+<span class="sd">        &gt;&gt;&gt; step = 0.1</span>
+<span class="sd">        &gt;&gt;&gt; molecule.vdw(step=step)</span>
+<span class="sd">        &gt;&gt;&gt; molecule.grid</span>
+<span class="sd">        array([[[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                ...,</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1]],</span>
+<span class="sd">               ...,</span>
+<span class="sd">               [[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                ...,</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_fill_receptor</span>
 
@@ -1685,6 +1749,66 @@
 <span class="sd">            `probe_out` must be a positive real number.</span>
 <span class="sd">        ValueError</span>
 <span class="sd">            `probe_out` must be a positive real number.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        The ``Molecule.surface()`` method takes the grid spacing, the spherical probe size to model the surface, the surface representation and returns a NumPy array with the molecule points representing the SES in the 3D grid.</span>
+
+<span class="sd">        The molecular surface can be modelled as:</span>
+
+<span class="sd">            * Solvent Excluded Surface (SES):</span>
+
+<span class="sd">            &gt;&gt;&gt; # Surface Representation: SES</span>
+<span class="sd">            &gt;&gt;&gt; surface = &#39;SES&#39;</span>
+<span class="sd">            &gt;&gt;&gt; # Grid Spacing (step): 0.1</span>
+<span class="sd">            &gt;&gt;&gt; step = 0.1</span>
+<span class="sd">            &gt;&gt;&gt; # Spherical Probe (probe): 1.4</span>
+<span class="sd">            &gt;&gt;&gt; probe = 1.4</span>
+<span class="sd">            &gt;&gt;&gt; molecule.surface(step=step, probe=probe, surface=surface)</span>
+<span class="sd">            &gt;&gt;&gt; molecule.grid</span>
+<span class="sd">            array([[[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    ...,</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1]],</span>
+<span class="sd">                   ...,</span>
+<span class="sd">                   [[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    ...,</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)</span>
+
+<span class="sd">        The molecular surface can be modelled as:</span>
+
+<span class="sd">            * Solvent Accessible Surface (SAS):</span>
+
+<span class="sd">            &gt;&gt;&gt; # Surface Representation: SAS</span>
+<span class="sd">            &gt;&gt;&gt; surface = &#39;SAS&#39;</span>
+<span class="sd">            &gt;&gt;&gt; # Grid Spacing (step): 0.1</span>
+<span class="sd">            &gt;&gt;&gt; step = 0.1</span>
+<span class="sd">            &gt;&gt;&gt; # Spherical Probe (probe): 1.4</span>
+<span class="sd">            &gt;&gt;&gt; probe = 1.4</span>
+<span class="sd">            &gt;&gt;&gt; molecule.surface(step=step, probe=probe, surface=surface)</span>
+<span class="sd">            &gt;&gt;&gt; molecule.grid</span>
+<span class="sd">            array([[[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    ...,</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1]],</span>
+<span class="sd">                   ...,</span>
+<span class="sd">                   [[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    ...,</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="sd">                    [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_fill_receptor</span>
 
@@ -1743,6 +1867,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        volume : float</span>
 <span class="sd">            Molecular volume (A³).</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        With the molecular surface modelled by ``Molecule.vdw()`` or ``Molecule.surface()``, the volume can be estimated by running:</span>
+
+<span class="sd">        &gt;&gt;&gt; molecule.volume()</span>
+<span class="sd">        90.8</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_volume</span>
 
@@ -1753,7 +1884,14 @@
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">volume</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Molecule.preview"><a class="viewcode-back" href="../../_api_reference/Molecule.html#pyKVFinder.Molecule.preview">[docs]</a>    <span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Preview the molecular surface in the 3D grid.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Preview the molecular surface in the 3D grid.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        With the molecular surface modelled by ``Molecule.vdw()`` or ``Molecule.surface()``, the modelled molecule in the 3D grid can be previewed by running:</span>
+
+<span class="sd">        &gt;&gt;&gt; molecule.preview()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">plotly.express</span> <span class="kn">import</span> <span class="n">scatter_3d</span>
 
@@ -1781,6 +1919,12 @@
 <span class="sd">        ------</span>
 <span class="sd">        TypeError</span>
 <span class="sd">            `fn` must be a string or a pathlib.Path.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        With the molecular surface modelled by ``Molecule.vdw()`` or ``Molecule.surface()``, the modelled molecule in the 3D grid can be exported to a PDB-formatted file by running:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; molecule.export(&#39;model.pdb&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Filename (fn)</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
