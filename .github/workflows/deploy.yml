@@ -83,7 +83,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   upload_pypi:
-    needs: [build_sdist, build_legacy_wheels, build_wheels]
+    needs: [build_sdist, build_wheels]
     runs-on: ubuntu-latest
 
     steps:
