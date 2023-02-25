@@ -18,7 +18,7 @@ pyKVFinder
     :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/integration-testing.yml
 
 .. image:: https://img.shields.io/github/actions/workflow/status/jvsguerra/pyKVFinder/publish-release.yml?label=build
-    :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/publish-release.yml
+    :target: https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/deploy.yml
 
 .. image:: https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg
 

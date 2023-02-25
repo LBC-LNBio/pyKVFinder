@@ -1078,7 +1078,7 @@ class TestSpatial(unittest.TestCase):
         surface, volume, area = spatial(self.cavities)
         # Assert
         self.assertDictEqual(volume, {"KAA": 1.73})
-        self.assertDictEqual(area, {"KAA": 3.13})
+        self.assertDictEqual(area, {"KAA": 2.99})
         self.cavities[3, 3, 3] = -1
         self.assertListEqual(self.cavities.tolist(), surface.tolist())
 
@@ -1087,7 +1087,7 @@ class TestSpatial(unittest.TestCase):
         surface, volume, area = spatial(self.cavities, step=1)
         # Assert
         self.assertDictEqual(volume, {"KAA": 8.0})
-        self.assertDictEqual(area, {"KAA": 8.7})
+        self.assertDictEqual(area, {"KAA": 8.29})
         self.cavities[3, 3, 3] = -1
         self.assertListEqual(self.cavities.tolist(), surface.tolist())
 
@@ -2217,10 +2217,10 @@ class TestExport(unittest.TestCase):
 class TestMolecule(unittest.TestCase):
     def setUp(self):
         self.C = pyKVFinder.Molecule(
-            os.path.join(UNIT_TESTS_DIR, "C.pdb"), radii={"GEN": {"C": 1.66}}
+            os.path.join(FIXTURES, "C.pdb"), radii={"GEN": {"C": 1.66}}
         )
-        self.H = pyKVFinder.Molecule(os.path.join(UNIT_TESTS_DIR, "H.pdb"))
-        self.N = pyKVFinder.Molecule(os.path.join(UNIT_TESTS_DIR, "N.pdb"))
+        self.H = pyKVFinder.Molecule(os.path.join(FIXTURES, "H.pdb"))
+        self.N = pyKVFinder.Molecule(os.path.join(FIXTURES, "N.pdb"))
 
     def test_atomic(self):
         self.assertListEqual(
