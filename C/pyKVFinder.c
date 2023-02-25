@@ -1215,15 +1215,19 @@ double check_voxel_class(int *surface, int nx, int ny, int nz, int i, int j,
     break;
   // Three faces in contact with biomolecule
   case 3:
-    if ((surface[k + nz * (j + (ny * (i + 1)))] == 0 &&
-         surface[k + nz * (j + (ny * (i - 1)))]) == 0 ||
+    if ((surface[k + nz * (j + (ny * (i - 1)))] == 0 &&
+         surface[k + nz * (j + (ny * (i + 1)))] == 0) ||
         (surface[k + nz * ((j - 1) + (ny * i))] == 0 &&
          surface[k + nz * ((j + 1) + (ny * i))] == 0) ||
         (surface[(k - 1) + nz * (j + (ny * i))] == 0 &&
-         surface[(k + 1) + nz * (j + (ny * i))] == 0))
+         surface[(k + 1) + nz * (j + (ny * i))] == 0)) {
       weight = 2;
-    else
+    }
+
+    else {
       weight = 1.5879;
+    }
+
     break;
   // Four faces in contact with biomolecule
   case 4:
