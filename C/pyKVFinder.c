@@ -2240,7 +2240,8 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy,
 
   // Initialize array to get number of points in each cavity
   pts = (int *)calloc(ncav, sizeof(int));
-  igrid(pts, ncav);
+  for (i = 0; i < ncav; i++)
+    pts[i] = 0;
 
   // Initialize average hydropathy array
   dgrid(avgh, ncav);
