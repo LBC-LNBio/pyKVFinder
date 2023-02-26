@@ -52,7 +52,7 @@ Or to install the latest developmental version, run:
 Citation
 ********
 
-If you use pyKVFinder in your analysis, please cite:
+If you use pyKVFinder, please cite:
 
 Guerra, J.V.d., Ribeiro-Filho, H.V., Jara, G.E. et al. pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science. BMC Bioinformatics 22, 607 (2021). https://doi.org/10.1186/s12859-021-04519-4.
 
