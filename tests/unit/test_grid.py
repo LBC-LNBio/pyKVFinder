@@ -1534,7 +1534,7 @@ class TestHydropathy(unittest.TestCase):
         # Assert
         self.assertListEqual(scales.tolist(), self.expected.tolist())
         self.assertDictEqual(
-            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+            avg_hydropathy, {"KAA": 0.76, "KAB": 0.76, "EisenbergWeiss": [-1.42, 2.6]}
         )
 
     def test_atomic_as_list(self):
@@ -1545,7 +1545,7 @@ class TestHydropathy(unittest.TestCase):
         # Assert
         self.assertListEqual(scales.tolist(), self.expected.tolist())
         self.assertDictEqual(
-            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+            avg_hydropathy, {"KAA": 0.76, "KAB": 0.76, "EisenbergWeiss": [-1.42, 2.6]}
         )
 
     def test_vertices_as_list(self):
@@ -1556,7 +1556,7 @@ class TestHydropathy(unittest.TestCase):
         # Assert
         self.assertListEqual(scales.tolist(), self.expected.tolist())
         self.assertDictEqual(
-            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+            avg_hydropathy, {"KAA": 0.76, "KAB": 0.76, "EisenbergWeiss": [-1.42, 2.6]}
         )
 
     def test_step_as_integer(self):
@@ -1567,7 +1567,7 @@ class TestHydropathy(unittest.TestCase):
         # Assert
         self.assertListEqual(scales.tolist(), self.expected.tolist())
         self.assertDictEqual(
-            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+            avg_hydropathy, {"KAA": 0.76, "KAB": 0.76, "EisenbergWeiss": [-1.42, 2.6]}
         )
 
     def test_probe_in_as_integer(self):
@@ -1578,7 +1578,7 @@ class TestHydropathy(unittest.TestCase):
         # Assert
         self.assertListEqual(scales.tolist(), self.expected.tolist())
         self.assertDictEqual(
-            avg_hydropathy, {"KAA": 0.38, "KAB": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+            avg_hydropathy, {"KAA": 0.76, "KAB": 0.76, "EisenbergWeiss": [-1.42, 2.6]}
         )
 
     def test_selection(self):
@@ -1591,7 +1591,7 @@ class TestHydropathy(unittest.TestCase):
                 numpy.where(self.surface == 2, self.expected, 0).tolist(),
             )
             self.assertDictEqual(
-                avg_hydropathy, {"KAA": 0.38, "EisenbergWeiss": [-1.42, 2.6]}
+                avg_hydropathy, {"KAA": 0.76, "EisenbergWeiss": [-1.42, 2.6]}
             )
 
     def test_ignore_backbone(self):
