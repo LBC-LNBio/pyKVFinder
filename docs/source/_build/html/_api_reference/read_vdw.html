@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyKVFinder.read_vdw &mdash; pyKVFinder 0.5.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyKVFinder.read_pdb" href="read_pdb.html" />
+    <link rel="prev" title="pyKVFinder.run_workflow" href="run_workflow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="run_workflow.html">pyKVFinder.run_workflow</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.read_vdw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openings.html">pyKVFinder.openings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constitutional.html">pyKVFinder.constitutional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">pyKVFinder.export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export_openings.html">pyKVFinder.export_openings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#classes">Classes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#funding">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Functions</a> &raquo;</li>
+      <li>pyKVFinder.read_vdw</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api_reference/read_vdw.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pykvfinder-read-vdw">
+<h1>pyKVFinder.read_vdw<a class="headerlink" href="#pykvfinder-read-vdw" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.read_vdw">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">read_vdw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyKVFinder/utils.html#read_vdw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.read_vdw" title="Permalink to this definition"></a></dt>
+<dd><p>Reads van der Waals radii from .dat file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – A path to a van der Waals radii file, by default None. If None, apply the built-in van der
+Waals radii file: <cite>vdw.dat</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vdw</strong> – A dictionary containing radii values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a string or a pathlib.Path.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – A line in <cite>vdw</cite> has incorrect format. The values must be double
+    tab-separated.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – A line in <cite>vdw</cite> has an incorrect radius type for an atom.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The van der Waals radii file defines the radius values for each
+atom by residue and when not defined, it uses a generic value
+based on the atom type (see <code class="docutils literal notranslate"><span class="pre">van</span> <span class="pre">der</span> <span class="pre">Waals</span> <span class="pre">file</span> <span class="pre">template</span></code>).
+The package contains a built-in van der Waals radii file: <code class="docutils literal notranslate"><span class="pre">vdw.dat</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="read_pdb.html#pyKVFinder.read_pdb" title="pyKVFinder.read_pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pdb</span></code></a>, <a class="reference internal" href="read_xyz.html#pyKVFinder.read_xyz" title="pyKVFinder.read_xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_xyz</span></code></a>, <a class="reference internal" href="Molecule.html#pyKVFinder.Molecule" title="pyKVFinder.Molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Molecule</span></code></a></p>
+</div>
+<p class="rubric">Example</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">read_vdw</span></code> function takes the <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat">built-in dictionary</a> when a <em>.dat</em> file is not specified.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">read_vdw</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span>
+<span class="go">{&#39;ALA&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB1&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;3HB&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ARG&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.387, &#39;1HD&#39;: 1.387, &#39;2HD&#39;: 1.387, &#39;HD3&#39;: 1.387, &#39;HD1&#39;: 1.387, &#39;NE&#39;: 1.75, &#39;HE&#39;: 0.6, &#39;CZ&#39;: 1.908, &#39;NH1&#39;: 1.75, &#39;HH11&#39;: 0.6, &#39;1HH1&#39;: 0.6, &#39;HH12&#39;: 0.6, &#39;2HH1&#39;: 0.6, &#39;NH2&#39;: 1.75, &#39;HH21&#39;: 0.6, &#39;2HH2&#39;: 0.6, &#39;HH22&#39;: 0.6, &#39;1HH2&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ASH&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;OD1&#39;: 1.6612, &#39;OD2&#39;: 1.721, &#39;HD2&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ASN&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;OD1&#39;: 1.6612, &#39;ND2&#39;: 1.824, &#39;HD21&#39;: 0.6, &#39;1HD2&#39;: 0.6, &#39;HD22&#39;: 0.6, &#39;2HD2&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ASP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;OD1&#39;: 1.6612, &#39;OD2&#39;: 1.6612, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;CYM&#39;: {&#39;N&#39;: 1.824, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB3&#39;: 1.387, &#39;HB2&#39;: 1.387, &#39;SG&#39;: 2.0, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;CYS&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;2HB&#39;: 1.387, &#39;1HB&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;HB1&#39;: 1.387, &#39;SG&#39;: 2.0, &#39;HG&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;CYX&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;SG&#39;: 2.0, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLH&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;OE1&#39;: 1.6612, &#39;OE2&#39;: 1.721, &#39;HE2&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLN&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;OE1&#39;: 1.6612, &#39;NE2&#39;: 1.824, &#39;HE21&#39;: 0.6, &#39;1HE2&#39;: 0.6, &#39;HE22&#39;: 0.6, &#39;2HE2&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLU&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;OE1&#39;: 1.6612, &#39;OE2&#39;: 1.6612, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GLY&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA2&#39;: 1.387, &#39;HA1&#39;: 1.387, &#39;1HA&#39;: 1.387, &#39;2HA&#39;: 1.387, &#39;HA3&#39;: 1.387, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HID&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;HD1&#39;: 0.6, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HIE&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;HE2&#39;: 0.6, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HIP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;HD1&#39;: 0.6, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;HE2&#39;: 0.6, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;ILE&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.487, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;CG1&#39;: 1.908, &#39;HG12&#39;: 1.487, &#39;2HG1&#39;: 1.487, &#39;HG13&#39;: 1.487, &#39;HG11&#39;: 1.487, &#39;1HG1&#39;: 1.487, &#39;CD1&#39;: 1.908, &#39;HD11&#39;: 1.487, &#39;1HD1&#39;: 1.487, &#39;HD12&#39;: 1.487, &#39;2HD1&#39;: 1.487, &#39;HD13&#39;: 1.487, &#39;3HD1&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;LEU&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG&#39;: 1.487, &#39;CD1&#39;: 1.908, &#39;HD11&#39;: 1.487, &#39;1HD1&#39;: 1.487, &#39;HD12&#39;: 1.487, &#39;2HD1&#39;: 1.487, &#39;HD13&#39;: 1.487, &#39;3HD1&#39;: 1.487, &#39;CD2&#39;: 1.908, &#39;HD21&#39;: 1.487, &#39;1HD2&#39;: 1.487, &#39;HD22&#39;: 1.487, &#39;2HD2&#39;: 1.487, &#39;HD23&#39;: 1.487, &#39;3HD2&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;LYN&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.487, &#39;HD3&#39;: 1.487, &#39;CE&#39;: 1.908, &#39;HE2&#39;: 1.1, &#39;HE3&#39;: 1.1, &#39;NZ&#39;: 1.824, &#39;HZ2&#39;: 0.6, &#39;HZ3&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;LYS&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.487, &#39;1HD&#39;: 1.487, &#39;2HD&#39;: 1.487, &#39;HD3&#39;: 1.487, &#39;HD1&#39;: 1.487, &#39;CE&#39;: 1.908, &#39;HE2&#39;: 1.1, &#39;2HE&#39;: 1.1, &#39;HE3&#39;: 1.1, &#39;1HE&#39;: 1.1, &#39;HE1&#39;: 1.1, &#39;NZ&#39;: 1.824, &#39;HZ1&#39;: 0.6, &#39;1HZ&#39;: 0.6, &#39;HZ2&#39;: 0.6, &#39;2HZ&#39;: 0.6, &#39;HZ3&#39;: 0.6, &#39;3HZ&#39;: 0.6, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;MET&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.387, &#39;2HG&#39;: 1.387, &#39;HG3&#39;: 1.387, &#39;HG1&#39;: 1.387, &#39;1HG&#39;: 1.387, &#39;SD&#39;: 2.0, &#39;CE&#39;: 1.908, &#39;HE1&#39;: 1.387, &#39;1HE&#39;: 1.387, &#39;HE2&#39;: 1.387, &#39;2HE&#39;: 1.387, &#39;HE3&#39;: 1.387, &#39;3HE&#39;: 1.387, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;PHE&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;HZ&#39;: 1.459, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;PRO&#39;: {&#39;N&#39;: 1.824, &#39;CD&#39;: 1.908, &#39;HD2&#39;: 1.387, &#39;1HD&#39;: 1.387, &#39;2HD&#39;: 1.387, &#39;HD3&#39;: 1.387, &#39;HD1&#39;: 1.387, &#39;CG&#39;: 1.908, &#39;HG2&#39;: 1.487, &#39;2HG&#39;: 1.487, &#39;HG3&#39;: 1.487, &#39;HG1&#39;: 1.487, &#39;1HG&#39;: 1.487, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;SER&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;2HB&#39;: 1.387, &#39;1HB&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;HB1&#39;: 1.387, &#39;OG&#39;: 1.721, &#39;HG&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;THR&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.387, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;OG1&#39;: 1.721, &#39;HG1&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;TRP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;CD1&#39;: 2.0, &#39;HD1&#39;: 1.409, &#39;NE1&#39;: 1.75, &#39;HE1&#39;: 0.6, &#39;CE2&#39;: 1.85, &#39;CZ2&#39;: 1.908, &#39;HZ2&#39;: 1.459, &#39;CH2&#39;: 1.908, &#39;HH2&#39;: 1.459, &#39;CZ3&#39;: 1.908, &#39;HZ3&#39;: 1.459, &#39;CE3&#39;: 1.908, &#39;HE3&#39;: 1.459, &#39;CD2&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;TYR&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;OH&#39;: 1.721, &#39;HH&#39;: 0.0001, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;VAL&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.487, &#39;CG1&#39;: 1.908, &#39;CG2&#39;: 1.908, &#39;HG11&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;1HG1&#39;: 1.487, &#39;HG21&#39;: 1.487, &#39;HG12&#39;: 1.487, &#39;2HG1&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;HG13&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;3HG1&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;HIS&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;HN&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;2HB&#39;: 1.487, &#39;1HB&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;HB1&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;HD1&#39;: 0.6, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;PTR&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;OH&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;SEP&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;1HB&#39;: 1.387, &#39;2HB&#39;: 1.387, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;TPO&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.387, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;1HG2&#39;: 1.487, &#39;2HG2&#39;: 1.487, &#39;3HG2&#39;: 1.487, &#39;OG1&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;H2D&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.85, &#39;ND1&#39;: 1.75, &#39;CE1&#39;: 1.85, &#39;HE1&#39;: 1.359, &#39;NE2&#39;: 1.75, &#39;HE2&#39;: 0.6, &#39;CD2&#39;: 2.0, &#39;HD2&#39;: 1.409, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.85, &#39;O2P&#39;: 1.85, &#39;O3P&#39;: 1.85, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;Y1P&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.487, &#39;HB3&#39;: 1.487, &#39;CG&#39;: 1.908, &#39;CD1&#39;: 1.908, &#39;HD1&#39;: 1.459, &#39;CE1&#39;: 1.908, &#39;HE1&#39;: 1.459, &#39;CZ&#39;: 1.908, &#39;CE2&#39;: 1.908, &#39;HE2&#39;: 1.459, &#39;CD2&#39;: 1.908, &#39;HD2&#39;: 1.459, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.721, &#39;O2P&#39;: 1.6612, &#39;O3P&#39;: 1.6612, &#39;H1P&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;T1P&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB&#39;: 1.387, &#39;CG2&#39;: 1.908, &#39;HG21&#39;: 1.487, &#39;HG22&#39;: 1.487, &#39;HG23&#39;: 1.487, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.721, &#39;O2P&#39;: 1.6612, &#39;O3P&#39;: 1.6612, &#39;H1P&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;S1P&#39;: {&#39;N&#39;: 1.824, &#39;H&#39;: 0.6, &#39;CA&#39;: 1.908, &#39;HA&#39;: 1.387, &#39;CB&#39;: 1.908, &#39;HB2&#39;: 1.387, &#39;HB3&#39;: 1.387, &#39;OG&#39;: 1.6837, &#39;P&#39;: 2.1, &#39;O1P&#39;: 1.721, &#39;O2P&#39;: 1.6612, &#39;O3P&#39;: 1.6612, &#39;H1P&#39;: 0.0001, &#39;C&#39;: 1.908, &#39;O&#39;: 1.6612}, &#39;GEN&#39;: {&#39;AC&#39;: 2.0, &#39;AG&#39;: 1.72, &#39;AL&#39;: 2.0, &#39;AM&#39;: 2.0, &#39;AR&#39;: 1.88, &#39;AS&#39;: 1.85, &#39;AT&#39;: 2.0, &#39;AU&#39;: 1.66, &#39;B&#39;: 2.0, &#39;BA&#39;: 2.0, &#39;BE&#39;: 2.0, &#39;BH&#39;: 2.0, &#39;BI&#39;: 2.0, &#39;BK&#39;: 2.0, &#39;BR&#39;: 1.85, &#39;C&#39;: 1.66, &#39;CA&#39;: 2.0, &#39;CD&#39;: 1.58, &#39;CE&#39;: 2.0, &#39;CF&#39;: 2.0, &#39;CL&#39;: 1.75, &#39;CM&#39;: 2.0, &#39;CO&#39;: 2.0, &#39;CR&#39;: 2.0, &#39;CS&#39;: 2.0, &#39;CU&#39;: 1.4, &#39;DB&#39;: 2.0, &#39;DS&#39;: 2.0, &#39;DY&#39;: 2.0, &#39;ER&#39;: 2.0, &#39;ES&#39;: 2.0, &#39;EU&#39;: 2.0, &#39;F&#39;: 1.47, &#39;FE&#39;: 2.0, &#39;FM&#39;: 2.0, &#39;FR&#39;: 2.0, &#39;GA&#39;: 1.87, &#39;GD&#39;: 2.0, &#39;GE&#39;: 2.0, &#39;H&#39;: 0.91, &#39;HE&#39;: 1.4, &#39;HF&#39;: 2.0, &#39;HG&#39;: 1.55, &#39;HO&#39;: 2.0, &#39;HS&#39;: 2.0, &#39;I&#39;: 1.98, &#39;IN&#39;: 1.93, &#39;IR&#39;: 2.0, &#39;K&#39;: 2.75, &#39;KR&#39;: 2.02, &#39;LA&#39;: 2.0, &#39;LI&#39;: 1.82, &#39;LR&#39;: 2.0, &#39;LU&#39;: 2.0, &#39;MD&#39;: 2.0, &#39;MG&#39;: 1.73, &#39;MN&#39;: 2.0, &#39;MO&#39;: 2.0, &#39;MT&#39;: 2.0, &#39;N&#39;: 1.97, &#39;NA&#39;: 2.27, &#39;NB&#39;: 2.0, &#39;ND&#39;: 2.0, &#39;NE&#39;: 1.54, &#39;NI&#39;: 1.63, &#39;NO&#39;: 2.0, &#39;NP&#39;: 2.0, &#39;O&#39;: 1.69, &#39;OS&#39;: 2.0, &#39;P&#39;: 2.1, &#39;PA&#39;: 2.0, &#39;PB&#39;: 2.02, &#39;PD&#39;: 1.63, &#39;PM&#39;: 2.0, &#39;PO&#39;: 2.0, &#39;PR&#39;: 2.0, &#39;PT&#39;: 1.72, &#39;PU&#39;: 2.0, &#39;RA&#39;: 2.0, &#39;RB&#39;: 2.0, &#39;RE&#39;: 2.0, &#39;RF&#39;: 2.0, &#39;RH&#39;: 2.0, &#39;RN&#39;: 2.0, &#39;RU&#39;: 2.0, &#39;S&#39;: 2.09, &#39;SB&#39;: 2.0, &#39;SC&#39;: 2.0, &#39;SE&#39;: 1.9, &#39;SG&#39;: 2.0, &#39;SI&#39;: 2.1, &#39;SM&#39;: 2.0, &#39;SN&#39;: 2.17, &#39;SR&#39;: 2.0, &#39;TA&#39;: 2.0, &#39;TB&#39;: 2.0, &#39;TC&#39;: 2.0, &#39;TE&#39;: 2.06, &#39;TH&#39;: 2.0, &#39;TI&#39;: 2.0, &#39;TL&#39;: 1.96, &#39;TM&#39;: 2.0, &#39;U&#39;: 1.86, &#39;V&#39;: 2.0, &#39;W&#39;: 2.0, &#39;XE&#39;: 2.16, &#39;Y&#39;: 2.0, &#39;YB&#39;: 2.0, &#39;ZN&#39;: 1.39, &#39;ZR&#39;: 2.0}}</span>
+</pre></div>
+</div>
+<p>The van der Waals radii can be define by:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>creating a Python dictionary:</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;GEN&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">1.66</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="mf">1.97</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mf">1.69</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mf">0.91</span><span class="p">}}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>specifying a <em>.dat</em> file following template of <cite>van der Waals radii file</cite>.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&gt;GEN</span><span class="se">\n</span><span class="s1">C</span><span class="se">\t\t</span><span class="s1">1.66</span><span class="se">\n</span><span class="s1">CA</span><span class="se">\t\t</span><span class="s1">2.00</span><span class="se">\n</span><span class="s1">N</span><span class="se">\t\t</span><span class="s1">1.97</span><span class="se">\n</span><span class="s1">O</span><span class="se">\t\t</span><span class="s1">1.69</span><span class="se">\n</span><span class="s1">H</span><span class="se">\t\t</span><span class="s1">0.91</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span>
+<span class="go">{&#39;GEN&#39;: {&#39;C&#39;: 1.66, &#39;CA&#39;: 2.0, &#39;N&#39;: 1.97, &#39;O&#39;: 1.69, &#39;H&#39;: 0.91}}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="run_workflow.html" class="btn btn-neutral float-left" title="pyKVFinder.run_workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="read_pdb.html" class="btn btn-neutral float-right" title="pyKVFinder.read_pdb" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LBC-LNBio.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

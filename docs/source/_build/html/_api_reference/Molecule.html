@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyKVFinder.Molecule &mdash; pyKVFinder 0.5.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyKVFinder.pyKVFinderResults" href="pyKVFinderResults.html" />
+    <link rel="prev" title="pyKVFinder.write_results" href="write_results.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Functions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html#classes">Classes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.Molecule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#funding">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Functions</a> &raquo;</li>
+      <li>pyKVFinder.Molecule</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api_reference/Molecule.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pykvfinder-molecule">
+<h1>pyKVFinder.Molecule<a class="headerlink" href="#pykvfinder-molecule" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">Molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyKVFinder/main.html#Molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.Molecule" title="Permalink to this definition"></a></dt>
+<dd><p>A class for representing molecular structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>]</em>) – A file path to the molecule in either PDB or XYZ format</p></li>
+<li><p><strong>radii</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A file path to a van der Waals radii file or a dictionary of VDW radii, by default None. If None, apply the built-in van der Waals radii file: <cite>vdw.dat</cite>.</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The model number of a multi-model PDB file, by default None. If None, keep atoms from all models.</p></li>
+<li><p><strong>nthreads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of threads, by default None. If None, the number of threads is <cite>os.cpu_count() - 1</cite>.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Print extra information to standard output, by default False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._atomic">
+<span class="sig-name descname"><span class="pre">_atomic</span></span><a class="headerlink" href="#pyKVFinder.Molecule._atomic" title="Permalink to this definition"></a></dt>
+<dd><p>A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates and radius) for each atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._dim">
+<span class="sig-name descname"><span class="pre">_dim</span></span><a class="headerlink" href="#pyKVFinder.Molecule._dim" title="Permalink to this definition"></a></dt>
+<dd><p>Grid dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._grid">
+<span class="sig-name descname"><span class="pre">_grid</span></span><a class="headerlink" href="#pyKVFinder.Molecule._grid" title="Permalink to this definition"></a></dt>
+<dd><p>Molecule points in the 3D grid (grid[nx][ny][nz]).
+Grid array has integer labels in each position, that are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0: molecule points;</p></li>
+<li><p>1: solvent points.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._molecule">
+<span class="sig-name descname"><span class="pre">_molecule</span></span><a class="headerlink" href="#pyKVFinder.Molecule._molecule" title="Permalink to this definition"></a></dt>
+<dd><p>A file path to the molecule in either PDB or XYZ format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)">pathlib.Path</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._padding">
+<span class="sig-name descname"><span class="pre">_padding</span></span><a class="headerlink" href="#pyKVFinder.Molecule._padding" title="Permalink to this definition"></a></dt>
+<dd><p>The length to add to each direction of the 3D grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._probe">
+<span class="sig-name descname"><span class="pre">_probe</span></span><a class="headerlink" href="#pyKVFinder.Molecule._probe" title="Permalink to this definition"></a></dt>
+<dd><p>Spherical probe size to define the molecular surface based on a molecular representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._radii">
+<span class="sig-name descname"><span class="pre">_radii</span></span><a class="headerlink" href="#pyKVFinder.Molecule._radii" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary containing radii values, by default None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._representation">
+<span class="sig-name descname"><span class="pre">_representation</span></span><a class="headerlink" href="#pyKVFinder.Molecule._representation" title="Permalink to this definition"></a></dt>
+<dd><p>Molecular surface representation. Keywords options are vdW (van der Waals surface), SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface), by default SES.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._rotation">
+<span class="sig-name descname"><span class="pre">_rotation</span></span><a class="headerlink" href="#pyKVFinder.Molecule._rotation" title="Permalink to this definition"></a></dt>
+<dd><p>A numpy.ndarray with sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._step">
+<span class="sig-name descname"><span class="pre">_step</span></span><a class="headerlink" href="#pyKVFinder.Molecule._step" title="Permalink to this definition"></a></dt>
+<dd><p>Grid spacing (A).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule._vertices">
+<span class="sig-name descname"><span class="pre">_vertices</span></span><a class="headerlink" href="#pyKVFinder.Molecule._vertices" title="Permalink to this definition"></a></dt>
+<dd><p>A numpy.ndarray or a list with xyz vertices coordinates (origin, X-axis, Y-axis, Z-axis).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.nthreads">
+<span class="sig-name descname"><span class="pre">nthreads</span></span><a class="headerlink" href="#pyKVFinder.Molecule.nthreads" title="Permalink to this definition"></a></dt>
+<dd><p>Number of threads for parallel processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#pyKVFinder.Molecule.verbose" title="Permalink to this definition"></a></dt>
+<dd><p>Whether to print extra information to standard output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The van der Waals radii file defines the radius values for each atom by residue and when not defined, it uses a generic value based on the atom type. The function by default loads the built-in van der Waals radii file: <code class="docutils literal notranslate"><span class="pre">vdw.dat</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="read_vdw.html#pyKVFinder.read_vdw" title="pyKVFinder.read_vdw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_vdw</span></code></a></p>
+</div>
+<p class="rubric">Example</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> class loads the target molecular structure (ClO4) into pyKVFinder. class.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">Molecule</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;ClO4.pdb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Molecule</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f5ddacf2230</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The van der Waals radii can be define by:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>creating a Python dictionary:</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># PyMOL (v2.5.0) vdW radii values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;GEN&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;CL&#39;</span><span class="p">:</span> <span class="mf">1.75</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mf">1.52</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="n">vdw</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">radii</span>
+<span class="go">{&#39;GEN&#39;: {&#39;CL&#39;: 1.75, &#39;O&#39;: 1.52}}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>specifying a <em>.dat</em> file following template of <cite>van der Waals radii file</cite>.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">read_vdw</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ChimeraX vdW radii values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&gt;GEN</span><span class="se">\n</span><span class="s1">CL</span><span class="se">\t\t</span><span class="s1">1.98</span><span class="se">\n</span><span class="s1">O</span><span class="se">\t\t</span><span class="s1">1.46</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vdw</span> <span class="o">=</span> <span class="n">read_vdw</span><span class="p">(</span><span class="s1">&#39;vdw.dat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">pdb</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="n">vdw</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">radii</span>
+<span class="go">{&#39;GEN&#39;: {&#39;CL&#39;: 1.98, &#39;O&#39;: 1.46}}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.atomic">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atomic</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.atomic" title="Permalink to this definition"></a></dt>
+<dd><p>Get _atomic attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.dim">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyKVFinder.Molecule.dim" title="Permalink to this definition"></a></dt>
+<dd><p>Get _dim attribute</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'molecule.pdb'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/pyKVFinder/main.html#Molecule.export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.Molecule.export" title="Permalink to this definition"></a></dt>
+<dd><p>Export molecule points (H) to a PDB-formatted file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – A file path to the molecular volume in the grid-based rerpesentation in PDB format, by default “molecule.pdb”.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – <cite>fn</cite> must be a string or a pathlib.Path.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>With the molecular surface modelled by <code class="docutils literal notranslate"><span class="pre">Molecule.vdw()</span></code> or <code class="docutils literal notranslate"><span class="pre">Molecule.surface()</span></code>, the modelled molecule in the 3D grid can be exported to a PDB-formatted file by running:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;model.pdb&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.grid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.grid" title="Permalink to this definition"></a></dt>
+<dd><p>Get _grid attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.molecule">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">molecule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyKVFinder.Molecule.molecule" title="Permalink to this definition"></a></dt>
+<dd><p>Get _molecule attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.nx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.nx" title="Permalink to this definition"></a></dt>
+<dd><p>Get grid units in X-axis.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.ny">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ny</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.ny" title="Permalink to this definition"></a></dt>
+<dd><p>Get grid units in Y-axis.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.nz">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nz</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.nz" title="Permalink to this definition"></a></dt>
+<dd><p>Get grid units in Z-axis.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.p1">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.p1" title="Permalink to this definition"></a></dt>
+<dd><p>Get origin of the 3D grid.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.p2">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.p2" title="Permalink to this definition"></a></dt>
+<dd><p>Get X-axis max of the 3D grid.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.p3">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p3</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.p3" title="Permalink to this definition"></a></dt>
+<dd><p>Get Y-axis max of the 3D grid.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.p4">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p4</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.p4" title="Permalink to this definition"></a></dt>
+<dd><p>Get Z-axis max of the 3D grid.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.padding">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">padding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.padding" title="Permalink to this definition"></a></dt>
+<dd><p>Get _padding attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.preview">
+<span class="sig-name descname"><span class="pre">preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/pyKVFinder/main.html#Molecule.preview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.Molecule.preview" title="Permalink to this definition"></a></dt>
+<dd><p>Preview the molecular surface in the 3D grid.</p>
+<p class="rubric">Example</p>
+<p>With the molecular surface modelled by <code class="docutils literal notranslate"><span class="pre">Molecule.vdw()</span></code> or <code class="docutils literal notranslate"><span class="pre">Molecule.surface()</span></code>, the modelled molecule in the 3D grid can be previewed by running:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.probe">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">probe</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.probe" title="Permalink to this definition"></a></dt>
+<dd><p>Get _probe attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.radii">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radii</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyKVFinder.Molecule.radii" title="Permalink to this definition"></a></dt>
+<dd><p>Get _radii attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.representation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">representation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.representation" title="Permalink to this definition"></a></dt>
+<dd><p>Get _representation attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.rotation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.rotation" title="Permalink to this definition"></a></dt>
+<dd><p>Get _rotation attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.step">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyKVFinder.Molecule.step" title="Permalink to this definition"></a></dt>
+<dd><p>Get _step attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'SES'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/pyKVFinder/main.html#Molecule.surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.Molecule.surface" title="Permalink to this definition"></a></dt>
+<dd><p>Fill the 3D grid with the molecule as the van der Waals surface representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+<li><p><strong>probe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Spherical probe size to define the molecular surface based on a molecular representation, by default 1.4.</p></li>
+<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Molecular surface representation. Keywords options are vdW (van der Waals surface), SES (Solvent Excluded Surface) or SAS (Solvent Accessible Surface), by default “SES”.</p></li>
+<li><p><strong>padding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – The length to add to each direction of the 3D grid, by default None. If None, automatically define the length based on molecule coordinates, probe size, grid spacing and atom radii.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – <cite>probe_out</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – <cite>probe_out</cite> must be a positive real number.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Molecule.surface()</span></code> method takes the grid spacing, the spherical probe size to model the surface, the surface representation and returns a NumPy array with the molecule points representing the SES in the 3D grid.</p>
+<p>The molecular surface can be modelled as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Solvent Excluded Surface (SES):</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Surface Representation: SES</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span> <span class="o">=</span> <span class="s1">&#39;SES&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grid Spacing (step): 0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Spherical Probe (probe): 1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probe</span> <span class="o">=</span> <span class="mf">1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">surface</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe</span><span class="o">=</span><span class="n">probe</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">grid</span>
+<span class="go">array([[[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1]],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The molecular surface can be modelled as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Solvent Accessible Surface (SAS):</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Surface Representation: SAS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span> <span class="o">=</span> <span class="s1">&#39;SAS&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grid Spacing (step): 0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Spherical Probe (probe): 1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probe</span> <span class="o">=</span> <span class="mf">1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">surface</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">probe</span><span class="o">=</span><span class="n">probe</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">grid</span>
+<span class="go">array([[[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1]],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.vdw">
+<span class="sig-name descname"><span class="pre">vdw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/pyKVFinder/main.html#Molecule.vdw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.Molecule.vdw" title="Permalink to this definition"></a></dt>
+<dd><p>Fill the 3D grid with the molecule as the van der Waals surface representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Grid spacing (A), by default 0.6.</p></li>
+<li><p><strong>padding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – The length to add to each direction of the 3D grid, by default None. If None, automatically define the length based on molecule coordinates, probe size, grid spacing and atom radii.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – <cite>step</cite> must be a positive real number.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Molecule.vdw()</span></code> method takes a grid spacing and returns a NumPy array with the molecule points representing the vdW surface in the 3D grid.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grid Spacing (step): 0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">vdw</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">grid</span>
+<span class="go">array([[[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1]],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        ...,</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1],</span>
+<span class="go">        [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.vertices">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.vertices" title="Permalink to this definition"></a></dt>
+<dd><p>Get _vertices attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/pyKVFinder/main.html#Molecule.volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.Molecule.volume" title="Permalink to this definition"></a></dt>
+<dd><p>Estimate the volume of the molecule based on the molecular surface representation, ie, vdW, SES or SAS representations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> – Molecular volume (A³).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>With the molecular surface modelled by <code class="docutils literal notranslate"><span class="pre">Molecule.vdw()</span></code> or <code class="docutils literal notranslate"><span class="pre">Molecule.surface()</span></code>, the volume can be estimated by running:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">volume</span><span class="p">()</span>
+<span class="go">90.8</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyKVFinder.Molecule.xyzr">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xyzr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyKVFinder.Molecule.xyzr" title="Permalink to this definition"></a></dt>
+<dd><p>Get xyz coordinates and radius of molecule atoms.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="write_results.html" class="btn btn-neutral float-left" title="pyKVFinder.write_results" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyKVFinderResults.html" class="btn btn-neutral float-right" title="pyKVFinder.pyKVFinderResults" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LBC-LNBio.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

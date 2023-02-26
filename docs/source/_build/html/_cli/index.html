@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Positional arguments &mdash; pyKVFinder 0.5.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Van der Waals radii file template" href="../_cfg_files/vdw_file_template.html" />
+    <link rel="prev" title="pyKVFinder.pyKVFinderResults" href="../_api_reference/pyKVFinderResults.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_api_reference/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_api_reference/index.html#classes">Classes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#optional-arguments">Optional arguments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#detection-and-characterization">Detection and characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extra-characterization">Extra characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#box-adjusment">Box adjusment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ligand-adjustment">Ligand adjustment</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#funding">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Positional arguments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_cli/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Command-line interface</h1><p>In addition to pyKVFinder package, a command-line interface (CLI) is available to ease cavity detection and characterization with the full set of customizable parameters.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder
+Usage: pyKVFinder <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-b &lt;str&gt;<span class="o">]</span> <span class="o">[</span>-O &lt;str&gt;<span class="o">]</span>
+                  <span class="o">[</span>--nthreads &lt;int&gt;<span class="o">]</span> <span class="o">[</span>-d &lt;str&gt;<span class="o">]</span> <span class="o">[</span>-s &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-i &lt;float&gt;<span class="o">]</span>
+                  <span class="o">[</span>-o &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-V &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-R &lt;float&gt;<span class="o">]</span> <span class="o">[</span>-S &lt;str&gt;<span class="o">]</span>
+                  <span class="o">[</span>--ignore_backbone<span class="o">]</span> <span class="o">[</span>-D<span class="o">]</span> <span class="o">[</span>--plot_frequencies<span class="o">]</span>
+                  <span class="o">[</span>--hydropathy <span class="o">[{</span>EisenbergWeiss, HessaHeijne, KyteDoolittle,
+                  MoonFleming, WimleyWhite, ZhaoLondon, &lt;.toml&gt;<span class="o">}]]</span>
+                  <span class="o">[</span>-B &lt;.toml&gt;<span class="o">]</span> <span class="o">[</span>-L <span class="o">(</span>&lt;.pdb&gt; <span class="p">|</span> &lt;.xyz&gt;<span class="o">)]</span> <span class="o">[</span>--ligand_cutoff &lt;float&gt;<span class="o">]</span>
+                  <span class="o">(</span>&lt;.pdb&gt; <span class="p">|</span> &lt;.xyz&gt;<span class="o">)</span>
+</pre></div>
+</div>
+<section id="positional-arguments">
+<h1>Positional arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this heading"></a></h1>
+<p>The positional arguments are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">(&lt;.pdb&gt;</span> <span class="pre">|</span> <span class="pre">&lt;.xyz&gt;)</span></code>: A path to a target PDB or XYZ file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="optional-arguments">
+<h1>Optional arguments<a class="headerlink" href="#optional-arguments" title="Permalink to this heading"></a></h1>
+<p>The optional arguments are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-h</span></code> or <code class="docutils literal notranslate"><span class="pre">--help</span></code>: Show help message.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder -h
+$ pyKVFinder --help
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--version</span></code>: Display pyKVFinder version.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder --version
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v</span></code> or <code class="docutils literal notranslate"><span class="pre">--verbose</span></code>: Print extra information to standard output.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --verbose
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-b</span> <span class="pre">&lt;str&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--base_name</span> <span class="pre">&lt;str&gt;</span></code>: A prefix for output files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -b &lt;str&gt;
+$ pyKVFinder &lt;.pdb&gt; --base_name &lt;str&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Prefix of target PDB file (&lt;.pdb&gt;)</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-O</span> <span class="pre">&lt;str&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--output_directory</span> <span class="pre">&lt;str&gt;</span></code>: A path to a directory for output files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -O &lt;str&gt;
+$ pyKVFinder &lt;.pdb&gt; --output_directory &lt;str&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current working directory</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--nthreads</span> <span class="pre">&lt;int&gt;</span></code>: Number of threads to apply in parallel routines.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --nthreads &lt;int&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">os.cpu_count()</span> <span class="pre">-</span> <span class="pre">1</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<section id="detection-and-characterization">
+<h2>Detection and characterization<a class="headerlink" href="#detection-and-characterization" title="Permalink to this heading"></a></h2>
+<p>The arguments for adjusting biomolecular detection are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">&lt;str&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--dictionary</span> <span class="pre">&lt;str&gt;</span></code>: A path to a van der Waals radii file (see template).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -d &lt;str&gt;
+$ pyKVFinder &lt;.pdb&gt; --dictionary &lt;str&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">vdw.dat</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">&lt;float&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--step</span> <span class="pre">&lt;float&gt;</span></code>: Grid spacing (A).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -s &lt;float&gt;
+$ pyKVFinder &lt;.pdb&gt; --step &lt;float&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.6</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-i</span> <span class="pre">&lt;float&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--probe_in</span> <span class="pre">&lt;float&gt;</span></code>: Probe In size (A).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -i &lt;float&gt;
+$ pyKVFinder &lt;.pdb&gt; --probe_in &lt;float&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1.4</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">&lt;float&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--probe_out</span> <span class="pre">&lt;float&gt;</span></code>: Probe Out size (A).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -o &lt;float&gt;
+$ pyKVFinder &lt;.pdb&gt; --probe_out &lt;float&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">4.0</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-V</span> <span class="pre">&lt;float&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--volume_cutoff</span> <span class="pre">&lt;float&gt;</span></code>: Cavities volume filter (A3).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -V &lt;float&gt;
+$ pyKVFinder &lt;.pdb&gt; --volume_cutoff &lt;float&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-R</span> <span class="pre">&lt;float&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--removal_distance</span> <span class="pre">&lt;float&gt;</span></code>: Length to be removed from the cavity-bulk frontier (A).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -R &lt;float&gt;
+$ pyKVFinder &lt;.pdb&gt; --removal_distance &lt;float&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2.4</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">&lt;str&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--surface</span> <span class="pre">&lt;str&gt;</span></code>: A surface representation. Options are: <code class="docutils literal notranslate"><span class="pre">SES</span></code> and <code class="docutils literal notranslate"><span class="pre">SAS</span></code>. SES specifies solvent excluded surface and SAS specifies solvent accessible surface.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -S &lt;str&gt;
+$ pyKVFinder &lt;.pdb&gt; --surface &lt;str&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">SES</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ignore_backbone</span></code>: Ignore backbone contacts to cavity when defining interface residues.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --ignore_backbone
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="extra-characterization">
+<h2>Extra characterization<a class="headerlink" href="#extra-characterization" title="Permalink to this heading"></a></h2>
+<p>The parameters for additional characterization are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--D</span> <span class="pre">or</span> <span class="pre">--depth</span></code>: Characterize the depth of the detected cavities. This mode includes depth of each cavity point as the B-factor in the cavity PDB file and maximum and average depth of the detected cavities in the results file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -D
+$ pyKVFinder &lt;.pdb&gt; --depth
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--plot_frequencies</span></code>: Plot bar charts of calculated frequencies (residues and classes of residues) of the detected cavities in a PDF file. The classes of residues are aliphatic apolar (R1), aromatic (R2), polar uncharged (R3), negatively charged (R4), positively charged (R5) and non-standard (RX) residues.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --plot_frequencies
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hydropathy</span> <span class="pre">[{EisenbergWeiss,</span> <span class="pre">HessaHeijne,</span> <span class="pre">KyteDoolittle,</span> <span class="pre">MoonFleming,</span> <span class="pre">WimleyWhite,</span> <span class="pre">ZhaoLondon,</span> <span class="pre">&lt;.toml&gt;}]</span></code>: Characterize the hydropathy of the detected cavities. This mode maps a target hydrophobicity scale as B-factor at surface points of the detected cavities. Also, it calculates the average hydropathy of each detected cavity. The constant hydrophobicity scale is EisenbergWeiss.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --hydropathy
+</pre></div>
+</div>
+<p>In addition, the user can define one of the built-in hydrophobicity scale. The built-in hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite and ZhaoLondon.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --hydropathy EisenbergWeiss
+$ pyKVFinder &lt;.pdb&gt; --hydropathy HessaHeijne
+$ pyKVFinder &lt;.pdb&gt; --hydropathy KyteDoolittle
+$ pyKVFinder &lt;.pdb&gt; --hydropathy MoonFleming
+$ pyKVFinder &lt;.pdb&gt; --hydropathy WimleyWhite
+$ pyKVFinder &lt;.pdb&gt; --hydropathy ZhaoLondon
+</pre></div>
+</div>
+<p>Further, the user can also define a custom hydrophobicity scale file via a TOML-formatted file (see template).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; --hydropathy &lt;.toml&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Constant<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">EisenbergWeiss</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="box-adjusment">
+<h2>Box adjusment<a class="headerlink" href="#box-adjusment" title="Permalink to this heading"></a></h2>
+<p>The box adjustment argument is:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-B</span> <span class="pre">&lt;.toml&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">--box</span> <span class="pre">&lt;.toml&gt;</span></code>: A path to TOML-formatted file with box parameters (see template). Adjust the 3D grid based on a list of residues ([“resnum”, “chain”]) and a padding or a set of four vertices (p1: origin, p2: X-axis max, p3: Y-axis max, p4: Z-axis max) with xyz coordinates ([x, y, z]).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -B &lt;.toml&gt;
+$ pyKVFinder &lt;.pdb&gt; --box &lt;.toml&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="ligand-adjustment">
+<h2>Ligand adjustment<a class="headerlink" href="#ligand-adjustment" title="Permalink to this heading"></a></h2>
+<p>The ligand adjustment arguments are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">(&lt;.pdb&gt;</span> <span class="pre">|</span> <span class="pre">&lt;.xyz&gt;)</span></code> or <code class="docutils literal notranslate"><span class="pre">--ligand</span> <span class="pre">(&lt;.pdb&gt;</span> <span class="pre">|</span> <span class="pre">&lt;.xyz&gt;)</span></code>: A path to a ligand PDB or XYZ file to limit the cavities within a radius (ligand_cutoff) around it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -L &lt;.pdb&gt;
+$ pyKVFinder &lt;.pdb&gt; --ligand &lt;.pdb&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ligand_cutoff</span> <span class="pre">&lt;float&gt;</span></code>: A radius value to limit a space around the defined ligand.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pyKVFinder &lt;.pdb&gt; -L &lt;.pdb&gt; --ligand_cutoff &lt;float&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../_api_reference/pyKVFinderResults.html" class="btn btn-neutral float-left" title="pyKVFinder.pyKVFinderResults" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../_cfg_files/vdw_file_template.html" class="btn btn-neutral float-right" title="Van der Waals radii file template" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LBC-LNBio.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

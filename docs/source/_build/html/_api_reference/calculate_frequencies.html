@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyKVFinder.calculate_frequencies &mdash; pyKVFinder 0.5.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyKVFinder.plot_frequencies" href="plot_frequencies.html" />
+    <link rel="prev" title="pyKVFinder.constitutional" href="constitutional.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="run_workflow.html">pyKVFinder.run_workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openings.html">pyKVFinder.openings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constitutional.html">pyKVFinder.constitutional</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyKVFinder.calculate_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">pyKVFinder.export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export_openings.html">pyKVFinder.export_openings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#classes">Classes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#funding">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Functions</a> &raquo;</li>
+      <li>pyKVFinder.calculate_frequencies</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api_reference/calculate_frequencies.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pykvfinder-calculate-frequencies">
+<h1>pyKVFinder.calculate_frequencies<a class="headerlink" href="#pykvfinder-calculate-frequencies" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyKVFinder.calculate_frequencies">
+<span class="sig-prename descclassname"><span class="pre">pyKVFinder.</span></span><span class="sig-name descname"><span class="pre">calculate_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residues</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyKVFinder/utils.html#calculate_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyKVFinder.calculate_frequencies" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate frequencies of residues and class of residues
+(R1, R2, R3, R4 and R5) for detected cavities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>residues</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – A dictionary with a list of interface residues for each detected
+cavity.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>frequencies</strong> – A dictionary with frequencies of residues and class for
+residues of each detected cavity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>]]]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The cavity nomenclature is based on the integer label. The cavity
+marked with 2, the first integer corresponding to a cavity, is KAA, the
+cavity marked with 3 is KAB, the cavity marked with 4 is KAC and so on.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The classes of residues are:</p>
+<ul class="simple">
+<li><p>Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.</p></li>
+<li><p>Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.</p></li>
+<li><p>Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.</p></li>
+<li><p>Negatively charged (R4): Aspartate, Glutamate.</p></li>
+<li><p>Positively charged (R5): Arginine, Histidine, Lysine.</p></li>
+<li><p>Non-standard (RX): Non-standard residues.</p></li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="constitutional.html#pyKVFinder.constitutional" title="pyKVFinder.constitutional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constitutional</span></code></a>, <a class="reference internal" href="plot_frequencies.html#pyKVFinder.plot_frequencies" title="pyKVFinder.plot_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_frequencies</span></code></a>, <a class="reference internal" href="write_results.html#pyKVFinder.write_results" title="pyKVFinder.write_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_results</span></code></a></p>
+</div>
+<p class="rubric">Example</p>
+<p>With the interface residues identified with <code class="docutils literal notranslate"><span class="pre">constitutional</span></code>, we can calculate residues and classes of residues frequencies:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyKVFinder</span> <span class="kn">import</span> <span class="n">calculate_frequencies</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">residues</span>
+<span class="go">{&#39;KAA&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;50&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;52&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;55&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;121&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;186&#39;, &#39;E&#39;, &#39;GLY&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_frequencies</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span>
+<span class="go">{&#39;KAA&#39;: {&#39;RESIDUES&#39;: {&#39;ALA&#39;: 1, &#39;ARG&#39;: 1, &#39;ASN&#39;: 1, &#39;ASP&#39;: 2, &#39;GLN&#39;: 1, &#39;GLU&#39;: 4, &#39;GLY&#39;: 4, &#39;HIS&#39;: 1, &#39;LEU&#39;: 3, &#39;LYS&#39;: 2, &#39;MET&#39;: 1, &#39;PHE&#39;: 3, &#39;SER&#39;: 1, &#39;THR&#39;: 4, &#39;TYR&#39;: 1, &#39;VAL&#39;: 3}, &#39;CLASS&#39;: {&#39;R1&#39;: 11, &#39;R2&#39;: 4, &#39;R3&#39;: 8, &#39;R4&#39;: 6, &#39;R5&#39;: 4, &#39;RX&#39;: 0}}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="constitutional.html" class="btn btn-neutral float-left" title="pyKVFinder.constitutional" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_frequencies.html" class="btn btn-neutral float-right" title="pyKVFinder.plot_frequencies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LBC-LNBio.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

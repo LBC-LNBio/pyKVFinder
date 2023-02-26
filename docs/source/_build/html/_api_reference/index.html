@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Functions &mdash; pyKVFinder 0.5.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/icon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyKVFinder.run_workflow" href="run_workflow.html" />
+    <link rel="prev" title="Cavity detection and characterization" href="../_tutorial/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyKVFinder
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_installation/index.html#installation">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html">Cavity detection and characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial/index.html#examples">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="run_workflow.html">pyKVFinder.run_workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openings.html">pyKVFinder.openings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constitutional.html">pyKVFinder.constitutional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">pyKVFinder.export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export_openings.html">pyKVFinder.export_openings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Molecule.html">pyKVFinder.Molecule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html">Positional arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/index.html#optional-arguments">Optional arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/vdw_file_template.html">vdW radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/box_file_template.html">Custom grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#funding">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_about/index.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyKVFinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Functions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api_reference/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>API Reference</h1><p>The API of all pyKVFinder functions and classes with expected types and all parameters available.</p>
+<section id="functions">
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">pyKVFinder.run_workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_vdw.html">pyKVFinder.read_vdw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_pdb.html">pyKVFinder.read_pdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_xyz.html">pyKVFinder.read_xyz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_cavity.html">pyKVFinder.read_cavity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_vertices.html">pyKVFinder.get_vertices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_vertices_from_file.html">pyKVFinder.get_vertices_from_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detect.html">pyKVFinder.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spatial.html">pyKVFinder.spatial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="depth.html">pyKVFinder.depth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openings.html">pyKVFinder.openings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hydropathy.html">pyKVFinder.hydropathy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constitutional.html">pyKVFinder.constitutional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculate_frequencies.html">pyKVFinder.calculate_frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_frequencies.html">pyKVFinder.plot_frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export.html">pyKVFinder.export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export_openings.html">pyKVFinder.export_openings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="write_results.html">pyKVFinder.write_results</a></li>
+</ul>
+</div>
+</section>
+<section id="classes">
+<h1>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Molecule.html">pyKVFinder.Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyKVFinderResults.html">pyKVFinder.pyKVFinderResults</a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../_tutorial/index.html" class="btn btn-neutral float-left" title="Cavity detection and characterization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="run_workflow.html" class="btn btn-neutral float-right" title="pyKVFinder.run_workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LBC-LNBio.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
