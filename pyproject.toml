@@ -43,7 +43,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3 :: Only",
 ]
-dependencies = ["toml==0.10.2", "numpy==1.24.2", "matplotlib==3.7.0", "plotly==5.13.1"]
+dependencies = ["toml==0.10.2", "numpy==1.24.2", "matplotlib==3.7.1", "plotly==5.13.1"]
 dynamic = ["version"]
 
 [project.optional-dependencies]
