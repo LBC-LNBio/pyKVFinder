@@ -268,7 +268,7 @@ class TestMolecule(unittest.TestCase):
 
     def test_export(self):
         self.molecule.vdw(0.1)
-        self.molecule.export("molecule.pdb")
+        self.molecule.export(os.path.join(DATADIR, "tests", "output", "molecule.pdb"))
 
 
 class TestPackageWorkflow(unittest.TestCase):
