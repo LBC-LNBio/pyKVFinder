@@ -786,7 +786,7 @@ def detect(
     p3 = [3.11, 10.74, 1.59]
     p4 = [3.11, 7.34, 6.19]
 
-    With this box adjustment mode, we must defined the 3D grid with ``get_vertices_from_file``. 
+    With this box adjustment mode, we must defined the 3D grid with ``get_vertices_from_file``.
 
     >>> from pyKVFinder import get_vertices_from_file
     >>> vertices, atomic = get_vertices_from_file(fn, atomic)
@@ -1660,7 +1660,7 @@ def constitutional(
     --------
     read_pdb
     read_xyz
-    detect 
+    detect
     calculate_frequencies
     write_results
 
@@ -1772,12 +1772,8 @@ def constitutional(
             & (atominfo[:, 1] != "N")
             & (atominfo[:, 1] != "O")
         )
-        atominfo = atominfo[
-            mask[0],
-        ]
-        xyzr = xyzr[
-            mask[0],
-        ]
+        atominfo = atominfo[mask[0],]
+        xyzr = xyzr[mask[0],]
 
     # Prepare atominfo
     atominfo = atominfo[:, 0].tolist()
@@ -1880,7 +1876,7 @@ def hydropathy(
             * EisenbergWeiss [1]_;
             * HessaHeijne [2]_;
             * KyteDoolittle [3]_;
-            * MoonFleming [4]_; 
+            * MoonFleming [4]_;
             * WimleyWhite [5]_;
             * ZhaoLondon [6]_.
 
@@ -2146,12 +2142,8 @@ def hydropathy(
             & (atominfo[:, 1] != "N")
             & (atominfo[:, 1] != "O")
         )
-        atominfo = atominfo[
-            mask[0],
-        ]
-        xyzr = xyzr[
-            mask[0],
-        ]
+        atominfo = atominfo[mask[0],]
+        xyzr = xyzr[mask[0],]
 
     # Get residue name from atominfo
     resname = list(map(lambda x: x.split("_")[2], atominfo[:, 0]))
@@ -2351,7 +2343,7 @@ def openings(
         `nthreads` must be a positive integer.
     TypeError
         `verbose` must be a boolean
-    
+
     Example
     -------
     With the cavity points identified with ``detect``, we can characterize their openings, that includes number and area of openings and defining opening points:
@@ -2375,7 +2367,7 @@ def openings(
             ...,
             [-1, -1, -1, ..., -1, -1, -1],
             [-1, -1, -1, ..., -1, -1, -1],
-            [-1, -1, -1, ..., -1, -1, -1]]])   
+            [-1, -1, -1, ..., -1, -1, -1]]])
     >>> aopenings
     {'KAA': {'OAA': 47.41, 'OAG': 3.6}, 'KAB': {'OAB': 25.84}, 'KAC': {'OAC': 53.62}, 'KAD': {'OAD': 12.59}, 'KAE': {'OAE': 26.3}, 'KAF': {'OAF': 18.46}, 'KAG': {'OAH': 12.83}, 'KAH': {'OAK': 59.96}, 'KAJ': {'OAI': 16.11}, 'KAL': {'OAJ': 17.3}, 'KAM': {'OAL': 35.27}, 'KAO': {'OAM': 8.49}, 'KAP': {'OAN': 13.71}, 'KAQ': {'OAO': 13.16}, 'KAR': {'OAP': 15.36}}
 
@@ -2387,9 +2379,9 @@ def openings(
     >>> export("cavities_with_openings.pdb", cavities, None, vertices, B=openings)
 
     * Export opening points with same nomenclature from ``aopenings``:
-    
+
     >>> from pyKVFinder import export_openings
-    >>> export_openings("openings.pdb", openings, vertices)    
+    >>> export_openings("openings.pdb", openings, vertices)
 
     See Also
     --------
@@ -2602,7 +2594,7 @@ def export(
     The cavity nomenclature is based on the integer label. The cavity marked
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
     marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
-    
+
     See Also
     --------
     detect
@@ -2740,9 +2732,10 @@ def export(
             cavities = _select_cavities(cavities, selection)
 
     if cavities is None:
-
         if surface is None:
-            raise RuntimeError(f"User must define `surface` when not defining `cavities`.")
+            raise RuntimeError(
+                f"User must define `surface` when not defining `cavities`."
+            )
         else:
             # Get number of cavities
             ncav = int(surface.max() - 1)

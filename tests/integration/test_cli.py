@@ -263,36 +263,36 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
     @mock.patch(
-            "argparse.ArgumentParser.parse_args",
-            return_value=argparse.Namespace(
-                input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
-                verbose=False,
-                base_name=None,
-                output_directory=os.path.join(DATADIR, "tests", "output"),
-                model=None,
-                nthreads=11,
-                dictionary=os.path.join(DATADIR, "vdw.dat"),
-                step=0.6,
-                probe_in=1.4,
-                probe_out=4.0,
-                volume_cutoff=1000000,  # Force ncav = 0
-                removal_distance=2.4,
-                surface="SES",
-                ignore_backbone=False,
-                depth=True,
-                plot_frequencies=True,
-                hydropathy=False,
-                box=None,
-                ligand=None,
-                ligand_cutoff=5.0,
-            ),
-        )
+        "argparse.ArgumentParser.parse_args",
+        return_value=argparse.Namespace(
+            input=os.path.join(DATADIR, "tests", "1FMO.pdb"),
+            verbose=False,
+            base_name=None,
+            output_directory=os.path.join(DATADIR, "tests", "output"),
+            model=None,
+            nthreads=11,
+            dictionary=os.path.join(DATADIR, "vdw.dat"),
+            step=0.6,
+            probe_in=1.4,
+            probe_out=4.0,
+            volume_cutoff=1000000,  # Force ncav = 0
+            removal_distance=2.4,
+            surface="SES",
+            ignore_backbone=False,
+            depth=True,
+            plot_frequencies=True,
+            hydropathy=False,
+            box=None,
+            ligand=None,
+            ligand_cutoff=5.0,
+        ),
+    )
     def test_no_cavities_detected(self, _):
         # Run pyKVFinder CLI with depth mode
         # $ pyKVFinder <.pdb> --depth
         with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
             self.assertEqual(pyKVFinder.main.cli(), 0)
-        self.assertEqual(stdout.getvalue().split('\n')[1], "> No cavities detected!")
+        self.assertEqual(stdout.getvalue().split("\n")[1], "> No cavities detected!")
 
     @mock.patch(
         "argparse.ArgumentParser.parse_args",

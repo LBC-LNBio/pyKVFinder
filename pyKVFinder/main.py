@@ -1820,7 +1820,7 @@ class Molecule(object):
         Example
         -------
         With the molecular surface modelled by ``Molecule.vdw()`` or ``Molecule.surface()``, the modelled molecule in the 3D grid can be exported to a PDB-formatted file by running:
-        
+
         >>> molecule.export('model.pdb')
         """
         # Filename (fn)

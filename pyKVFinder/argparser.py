@@ -160,6 +160,7 @@ def argparser() -> argparse.ArgumentParser:
     parser : argparse.ArgumentParser
         pyKVFinder argument parser
     """
+
     # Overrides method in HelpFormatter
     class CapitalisedHelpFormatter(argparse.HelpFormatter):
         def add_usage(self, usage, actions, groups, prefix=None):

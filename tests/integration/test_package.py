@@ -240,9 +240,7 @@ class TestPackage(unittest.TestCase):
 
 class TestMolecule(unittest.TestCase):
     def setUp(self):
-        self.molecule = pyKVFinder.Molecule(
-            os.path.join(DATADIR, "tests", "ClO4.pdb")
-        )
+        self.molecule = pyKVFinder.Molecule(os.path.join(DATADIR, "tests", "ClO4.pdb"))
 
     def test_vdw(self):
         self.molecule.vdw(0.1)
