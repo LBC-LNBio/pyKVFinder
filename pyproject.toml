@@ -47,7 +47,7 @@ dependencies = ["toml==0.10.2", "numpy==1.24.2", "matplotlib==3.7.1", "plotly==5
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest==7.2.2", "pytest-cov==4.0.0", "black==23.1.0", "flake8==6.0.0"]
+dev = ["pytest==7.2.2", "pytest-cov==4.0.0", "black==23.3.0", "flake8==6.0.0"]
 
 [project.urls]
 homepage = "https://github.com/LBC-LNBio/pyKVFinder/"
