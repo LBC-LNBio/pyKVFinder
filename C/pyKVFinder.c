@@ -2238,6 +2238,10 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy,
                                  int nthreads) {
   int i, j, k, *pts;
 
+  // Set number of threads in OpenMP
+  omp_set_num_threads(nthreads);
+  omp_set_nested(1);
+
   // Initialize array to get number of points in each cavity
   pts = (int *)calloc(ncav, sizeof(int));
   for (i = 0; i < ncav; i++)
@@ -2246,10 +2250,6 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy,
   // Initialize average hydropathy array
   dgrid(avgh, ncav);
 
-  // Set number of threads in OpenMP
-  omp_set_num_threads(nthreads);
-  omp_set_nested(1);
-
 #pragma omp parallel default(none),                                            \
     shared(avgh, hydropathy, surface, pts, nx, ny, nz), private(i, j, k)
   {
@@ -2257,6 +2257,7 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy,
     for (i = 0; i < nx; i++)
       for (j = 0; j < ny; j++)
         for (k = 0; k < nz; k++)
+#pragma omp critical
           if (surface[k + nz * (j + (ny * i))] > 1) {
             pts[surface[k + nz * (j + (ny * i))] - 2]++;
             avgh[surface[k + nz * (j + (ny * i))] - 2] +=
