@@ -55,13 +55,15 @@ def _check_hydropathy_options(x: Any) -> str:
         file with hydrophobicity values for standard residues).
     argparse.ArgumentTypeError
         Invalid choice: '{x}' (choose from 'EisenbergWeiss', 'HessaHeijne',
-        'KyteDoolittle', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon' or define a
-        TOML-formatted file with hydrophobicity values for standard residues).
+        'KyteDoolittle', 'MoonFleming', 'RadzickaWolfenden', 'WimleyWhite',
+        'ZhaoLondon' or define a TOML-formatted file with hydrophobicity
+        values for standard residues).
     """
     if x in [
         "EisenbergWeiss",
         "HessaHeijne",
         "KyteDoolittle",
+        "RadzickaWolfenden",
         "MoonFleming",
         "WimleyWhite",
         "ZhaoLondon",
@@ -79,7 +81,7 @@ file with hydrophobicity values for standard residues)."
         return x
     else:
         msg = f"Invalid choice: '{x}' (choose from 'EisenbergWeiss', 'HessaHeijne', \
-'KyteDoolittle', 'MoonFleming', 'WimleyWhite', 'ZhaoLondon' or define a \
+'KyteDoolittle', 'MoonFleming', 'RadzickaWolfenden', 'WimleyWhite', 'ZhaoLondon' or define a \
 TOML-formatted file with hydrophobicity values for standard residues)."
         raise (argparse.ArgumentTypeError(msg))
 
@@ -331,7 +333,7 @@ cavities in a PDF file. (default: %(default)s)",
         "--hydropathy",
         type=_check_hydropathy_options,
         metavar="{EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, \
-WimleyWhite, ZhaoLondon, <.toml>}",
+RadzickaWolfenden, WimleyWhite, ZhaoLondon, <.toml>}",
         nargs="?",
         const="EisenbergWeiss",
         default=False,

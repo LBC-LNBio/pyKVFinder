@@ -724,9 +724,9 @@ def run_workflow(
         default False.
     hydrophobicity_scale : Union[str, pathlib.Path], optional
         Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
-        KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a
-        TOML-formatted file with a custom hydrophobicity scale, by default
-        `EisenbergWeiss`.
+        KyteDoolitte, MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon) 
+        or a path to a TOML-formatted file with a custom hydrophobicity scale,
+        by default `EisenbergWeiss`.
     surface : str, optional
         Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
         Accessible Surface), by default SES.
