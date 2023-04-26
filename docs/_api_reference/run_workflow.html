@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.5.2 documentation</title>
+  <title>pyKVFinder.run_workflow &mdash; pyKVFinder 0.5.5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -156,9 +156,9 @@ default False.</p></li>
 <li><p><strong>include_hydropathy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to characterize the hydropathy of the detected cavities, by
 default False.</p></li>
 <li><p><strong>hydrophobicity_scale</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a><em>]</em><em>, </em><em>optional</em>) – Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
-KyteDoolitte, MoonFleming, WimleyWhite, ZhaoLondon) or a path to a
-TOML-formatted file with a custom hydrophobicity scale, by default
-<cite>EisenbergWeiss</cite>.</p></li>
+KyteDoolitte, MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon)
+or a path to a TOML-formatted file with a custom hydrophobicity scale,
+by default <cite>EisenbergWeiss</cite>.</p></li>
 <li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Keywords options are SES (Solvent Excluded Surface) or SAS (Solvent
 Accessible Surface), by default SES.</p></li>
 <li><p><strong>ignore_backbone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore backbone atoms (C, CA, N, O) when defining interface

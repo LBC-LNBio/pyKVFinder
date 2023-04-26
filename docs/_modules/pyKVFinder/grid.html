@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.5.2 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.5.5 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -1977,14 +1977,15 @@
 <span class="sd">        The hydrophobicity scale file defines the name of the scale and the</span>
 <span class="sd">        hydrophobicity value for each residue and when not defined, it assigns</span>
 <span class="sd">        zero to the missing residues (see `Hydrophobicity scale file</span>
-<span class="sd">        template`). The package contains six built-in hydrophobicity scales:</span>
+<span class="sd">        template`). The package contains seven built-in hydrophobicity scales:</span>
 
 <span class="sd">            * EisenbergWeiss [1]_;</span>
 <span class="sd">            * HessaHeijne [2]_;</span>
 <span class="sd">            * KyteDoolittle [3]_;</span>
 <span class="sd">            * MoonFleming [4]_;</span>
-<span class="sd">            * WimleyWhite [5]_;</span>
-<span class="sd">            * ZhaoLondon [6]_.</span>
+<span class="sd">            * RadzickaWolfenden [5]_;</span>
+<span class="sd">            * WimleyWhite [6]_;</span>
+<span class="sd">            * ZhaoLondon [7]_.</span>
 
 <span class="sd">    ignore_backbone : bool, optional</span>
 <span class="sd">        Whether to ignore backbone atoms (C, CA, N, O) when defining interface</span>
@@ -2122,11 +2123,15 @@
 <span class="sd">       transmembrane protein folding into lipid bilayers. Proceedings of the</span>
 <span class="sd">       National Academy of Sciences. 2011;108.</span>
 
-<span class="sd">    .. [5] Wimley WC, White SH. Experimentally determined hydrophobicity scale</span>
+<span class="sd">    .. [5] Radzicka A, Wolfenden R. Comparing the polarities of the amino acids:</span>
+<span class="sd">        Side-chain distribution coefficients between the vapor phase, cyclohexane,</span>
+<span class="sd">        1-octanol, and neutral aqueous solution. Biochemistry. 1988;27.</span>
+
+<span class="sd">    .. [6] Wimley WC, White SH. Experimentally determined hydrophobicity scale</span>
 <span class="sd">       for proteins at membrane interfaces. Nature Structural &amp; Molecular</span>
 <span class="sd">       Biology. 1996;3.</span>
 
-<span class="sd">    .. [6] Zhao G, London E. An amino acid “transmembrane tendency” scale that</span>
+<span class="sd">    .. [7] Zhao G, London E. An amino acid “transmembrane tendency” scale that</span>
 <span class="sd">       approaches the theoretical limit to accuracy for prediction of</span>
 <span class="sd">       transmembrane helices: Relationship to biological hydrophobicity.</span>
 <span class="sd">       Protein Science. 2006;15.</span>
@@ -2226,6 +2231,7 @@
         <span class="s2">&quot;HessaHeijne&quot;</span><span class="p">,</span>
         <span class="s2">&quot;KyteDoolittle&quot;</span><span class="p">,</span>
         <span class="s2">&quot;MoonFleming&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;RadzickaWolfenden&quot;</span><span class="p">,</span>
         <span class="s2">&quot;WimleyWhite&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ZhaoLondon&quot;</span><span class="p">,</span>
     <span class="p">]:</span>

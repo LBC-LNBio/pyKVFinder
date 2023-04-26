@@ -1,7 +1,7 @@
 Hydrophobicity scale file template
 ##################################
 
-The hydrophobicity scale file defines the name of the scale and the hydrophobicity value for each residue and when not defined, it assigns zero to the missing residues. The package contains six built-in hydrophobicity scales: `Eisenberg & Weiss <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml>`_ [1], `Hessa & Heijne <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml>`_ [2], `Kyte & Doolittle <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolittle.toml>`_ [3], `Moon & Fleming <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml>`_ [4], `Wimley & White <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml>`_ [5] and `Zhao & London <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml>`_ [6]. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
+The hydrophobicity scale file defines the name of the scale and the hydrophobicity value for each residue and when not defined, it assigns zero to the missing residues. The package contains six built-in hydrophobicity scales: `Eisenberg & Weiss <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml>`_ [1], `Hessa & Heijne <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml>`_ [2], `Kyte & Doolittle <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolittle.toml>`_ [3], `Moon & Fleming <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml>`_ [4], `Radzicka & Wolfenden <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/RadzickaWolfenden.toml>`_ [5], `Wimley & White <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml>`_ [6] and `Zhao & London <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml>`_ [7]. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:
 
 .. code-block:: TOML
 
@@ -39,6 +39,8 @@ The hydrophobicity scale file defines the name of the scale and the hydrophobici
 
 4. Moon CP, Fleming KG. Side-chain hydrophobicity scale derived from transmembrane protein folding into lipid bilayers. Proceedings of the National Academy of Sciences. 2011;108. 
 
-5. Wimley WC, White SH. Experimentally determined hydrophobicity scale for proteins at membrane interfaces. Nature Structural & Molecular Biology. 1996;3. 
+5. Radzicka A, Wolfenden R. Comparing the polarities of the amino acids: Side-chain distribution coefficients between the vapor phase, cyclohexane, 1-octanol, and neutral aqueous solution. Biochemistry. 1988;27.
 
-6. Zhao G, London E. An amino acid “transmembrane tendency” scale that approaches the theoretical limit to accuracy for prediction of transmembrane helices: Relationship to biological hydrophobicity. Protein Science. 2006;15. 
+6. Wimley WC, White SH. Experimentally determined hydrophobicity scale for proteins at membrane interfaces. Nature Structural & Molecular Biology. 1996;3. 
+
+7. Zhao G, London E. An amino acid “transmembrane tendency” scale that approaches the theoretical limit to accuracy for prediction of transmembrane helices: Relationship to biological hydrophobicity. Protein Science. 2006;15. 
