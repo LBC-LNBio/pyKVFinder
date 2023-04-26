@@ -1,5 +1,6 @@
 [KyteDoolitte]
 # A simple method for displaying the hydropathic character of a protein. Kyte J, Doolittle RF. J Mol Biol. 1982 May 5;157(1):105-32.
+# Hydrophilic -> Hydrophobic
 ALA = 1.8
 ARG = -4.5
 ASN = -3.5

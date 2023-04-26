@@ -1,5 +1,6 @@
 [EisenbergWeiss]
 # The hydrophobic moment detects periodicity in protein hydrophobicity. Eisenberg D, Weiss RM, Terwilliger TC. Proc Natl Acad Sci USA. 1984 Jan;81(1):140-4.
+# Hydrophobic -> Hydrophilic
 ALA = -0.64
 ARG = 2.6
 ASN = 0.8

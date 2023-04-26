@@ -1,5 +1,6 @@
 [HessaHeijne]
 # Recognition of transmembrane helices by the endoplasmic reticulum translocon. Hessa T, Kim H, Bihlmaier K, Lundin C, Boekel J, Andersson H, Nilsson I, White SH, von Heijne G. Nature. 2005 Jan 27;433(7024):377-81, supplementary data.
+# Hydrophobic -> Hydrophilic
 ALA = 0.11
 ARG = 2.58
 ASN = 2.05
