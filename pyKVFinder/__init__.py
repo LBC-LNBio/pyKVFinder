@@ -19,7 +19,7 @@ Command Line Interface
                     [-i <float>] [-o <float>] [-V <float>] [-R <float>]\
                     [-S <str>] [--ignore_backbone] [-D] [--plot_frequencies]\
                     [--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle,\
-                    MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]]\
+                    MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon, <.toml>}]]\
                     [-B <.toml>] [-L (<.pdb> | <.xyz>)] [--ligand_cutoff <float>]\
                     (<.pdb> | <.xyz>)
 
@@ -31,7 +31,7 @@ See also
 """
 
 __name__ = "pyKVFinder"
-__version__ = "0.5.4"
+__version__ = "0.5.5"
 license = "GNU GPL-3.0 License"
 
 from .utils import *

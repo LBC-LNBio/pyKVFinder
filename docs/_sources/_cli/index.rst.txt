@@ -12,7 +12,7 @@ In addition to pyKVFinder package, a command-line interface (CLI) is available t
                     [-o <float>] [-V <float>] [-R <float>] [-S <str>]
                     [--ignore_backbone] [-D] [--plot_frequencies]
                     [--hydropathy [{EisenbergWeiss, HessaHeijne, KyteDoolittle, 
-                    MoonFleming, WimleyWhite, ZhaoLondon, <.toml>}]]
+                    MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon, <.toml>}]]
                     [-B <.toml>] [-L (<.pdb> | <.xyz>)] [--ligand_cutoff <float>]
                     (<.pdb> | <.xyz>)
 
@@ -183,7 +183,7 @@ The parameters for additional characterization are:
 
     $ pyKVFinder <.pdb> --hydropathy
 
-  In addition, the user can define one of the built-in hydrophobicity scale. The built-in hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, WimleyWhite and ZhaoLondon.
+  In addition, the user can define one of the built-in hydrophobicity scale. The built-in hydrophobicity scales are: EisenbergWeiss, HessaHeijne, KyteDoolittle, MoonFleming, RadzickaWolfenden, WimleyWhite and ZhaoLondon.
 
   .. code-block:: bash
 
@@ -191,6 +191,7 @@ The parameters for additional characterization are:
     $ pyKVFinder <.pdb> --hydropathy HessaHeijne
     $ pyKVFinder <.pdb> --hydropathy KyteDoolittle
     $ pyKVFinder <.pdb> --hydropathy MoonFleming
+    $ pyKVFinder <.pdb> --hydropathy RadzickaWolfenden
     $ pyKVFinder <.pdb> --hydropathy WimleyWhite
     $ pyKVFinder <.pdb> --hydropathy ZhaoLondon
 

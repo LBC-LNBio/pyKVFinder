@@ -1,5 +1,6 @@
 [WimleyWhite]
 # Experimentally determined hydrophobicity scale for proteins at membrane interfaces. Wimley WC, White SH. Nat Struct Biol. 1996 Oct;3(10):842-8.
+# Hydrophilic -> Hydrophobic
 ALA = -0.17
 ARG = -0.81
 ASN = -0.42

@@ -1,5 +1,6 @@
 [ZhaoLondon]
 # An amino acid "transmembrane tendency" scale that approaches the theoretical limit to accuracy for prediction of transmembrane helices: relationship to biological hydrophobicity. Zhao G, London E. Protein Sci. 2006 Aug;15(8):1987-2001.
+# Hydrophilic -> Hydrophobic
 ALA = 0.38
 ARG = -2.57
 ASN = -1.62

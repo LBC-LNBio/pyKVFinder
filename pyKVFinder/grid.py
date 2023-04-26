@@ -1871,14 +1871,15 @@ def hydropathy(
         The hydrophobicity scale file defines the name of the scale and the
         hydrophobicity value for each residue and when not defined, it assigns
         zero to the missing residues (see `Hydrophobicity scale file
-        template`). The package contains six built-in hydrophobicity scales:
+        template`). The package contains seven built-in hydrophobicity scales:
 
             * EisenbergWeiss [1]_;
             * HessaHeijne [2]_;
             * KyteDoolittle [3]_;
             * MoonFleming [4]_;
-            * WimleyWhite [5]_;
-            * ZhaoLondon [6]_.
+            * RadzickaWolfenden [5]_;
+            * WimleyWhite [6]_;
+            * ZhaoLondon [7]_.
 
     ignore_backbone : bool, optional
         Whether to ignore backbone atoms (C, CA, N, O) when defining interface
@@ -2016,11 +2017,15 @@ def hydropathy(
        transmembrane protein folding into lipid bilayers. Proceedings of the
        National Academy of Sciences. 2011;108.
 
-    .. [5] Wimley WC, White SH. Experimentally determined hydrophobicity scale
+    .. [5] Radzicka A, Wolfenden R. Comparing the polarities of the amino acids:
+        Side-chain distribution coefficients between the vapor phase, cyclohexane,
+        1-octanol, and neutral aqueous solution. Biochemistry. 1988;27.
+
+    .. [6] Wimley WC, White SH. Experimentally determined hydrophobicity scale
        for proteins at membrane interfaces. Nature Structural & Molecular
        Biology. 1996;3.
 
-    .. [6] Zhao G, London E. An amino acid “transmembrane tendency” scale that
+    .. [7] Zhao G, London E. An amino acid “transmembrane tendency” scale that
        approaches the theoretical limit to accuracy for prediction of
        transmembrane helices: Relationship to biological hydrophobicity.
        Protein Science. 2006;15.
@@ -2120,6 +2125,7 @@ def hydropathy(
         "HessaHeijne",
         "KyteDoolittle",
         "MoonFleming",
+        "RadzickaWolfenden",
         "WimleyWhite",
         "ZhaoLondon",
     ]:

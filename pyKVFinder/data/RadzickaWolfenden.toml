@@ -1,0 +1,23 @@
+[RadzickaWolfenden]
+# Comparing the polarities of the amino acids: side-chain distribution coefficients between the vapor phase, cyclohexane, 1-octano1, and neutral aqueous solution.Radzicka A, Wolfenden R. Biochemistry 1988; 27(5):1664-1670.
+# Hydrophilic -> Hydrophobic
+ALA = 1.81
+ARG = -14.92
+ASN = -6.64
+ASP = -8.72
+CYS = 1.28
+GLN = -5.54
+GLU = -6.81
+GLY = 0.94
+HIS = -4.66
+ILE = 4.92
+LEU = 4.92
+LYS = -5.55
+MET = 2.35
+PHE = 2.98
+PRO = 4.04
+SER = -3.40
+THR = -2.57
+TRP = 2.33
+TYR = -0.14
+VAL = 4.04

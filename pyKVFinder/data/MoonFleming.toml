@@ -1,5 +1,6 @@
 [MoonFleming]
 # Side-chain hydrophobicity scale derived from transmembrane protein folding into lipid bilayers. Moon CP, Fleming KG. Proc Natl Acad Sci USA. 2011 Jun 21;108(25):10174-7, supplementary data.
+# Hydrophobic -> Hydrophilic
 ALA = 0.0
 ARG = 3.71
 ASN = 3.47
