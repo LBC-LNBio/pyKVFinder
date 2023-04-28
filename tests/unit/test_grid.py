@@ -1814,6 +1814,8 @@ class TestExport(unittest.TestCase):
             None,
             self.vertices,
             step=1.0,
+            B=None,
+            Q=None,
         )
         with open("tests/cavities_wo_surface.pdb", "r") as f:
             self.assertEqual(
@@ -1825,7 +1827,13 @@ class TestExport(unittest.TestCase):
     def test_cavity_w_surface(self):
         # Cavity with surface
         export(
-            "tests/cavities.pdb", self.cavities, self.surface, self.vertices, step=1.0
+            "tests/cavities.pdb",
+            self.cavities,
+            self.surface,
+            self.vertices,
+            step=1.0,
+            B=None,
+            Q=None,
         )
         with open("tests/cavities.pdb", "r") as f:
             self.assertEqual(
@@ -1843,11 +1851,12 @@ class TestExport(unittest.TestCase):
             self.vertices,
             step=1.0,
             B=self.depths,
+            Q=None,
         )
         with open("tests/cavities_with_depth.pdb", "r") as f:
             self.assertEqual(
                 f.read(),
-                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  {self.depths.item():0.2f}\n",
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00{self.depths.item():6.2f}\n",
             )
         os.remove("tests/cavities_with_depth.pdb")
 
@@ -1860,40 +1869,31 @@ class TestExport(unittest.TestCase):
             self.vertices,
             step=1.0,
             B=self.depths,
-            output_hydropathy="tests/hydropathy.pdb",
-            scales=self.scales,
+            Q=self.scales
         )
         # Assert cavity
         with open("tests/cavities.pdb", "r") as f:
             self.assertEqual(
                 f.read(),
-                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  {self.depths.item():.2f}\n",
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000{self.scales.item():6.2f}{self.depths.item():6.2f}\n",
             )
         os.remove("tests/cavities.pdb")
-        # Assert hydropathy
-        with open("tests/hydropathy.pdb", "r") as f:
-            self.assertEqual(
-                f.read(),
-                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00 {' ' if self.scales.item() > 0 else '-'}{abs(self.scales.item()):.2f}\n",
-            )
-        os.remove("tests/hydropathy.pdb")
 
     def test_hydropathy(self):
         # Hydropathy
         export(
-            None,
-            None,
+            "tests/hydropathy.pdb",
+            self.surface,
             self.surface,
             self.vertices,
             step=1.0,
-            output_hydropathy="tests/hydropathy.pdb",
-            scales=self.scales,
+            Q=self.scales,
         )
         # Assert hydropathy
         with open("tests/hydropathy.pdb", "r") as f:
             self.assertEqual(
                 f.read(),
-                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00 {' ' if self.scales.item() > 0 else '-'}{abs(self.scales.item()):.2f}\n",
+                f"ATOM      1  HA  KAA   259       0.000   0.000   0.000{self.scales.item():6.2f}  0.00\n",
             )
         os.remove("tests/hydropathy.pdb")
 
@@ -2087,7 +2087,7 @@ class TestExport(unittest.TestCase):
                 B=B,
             )
 
-    def test_wrong_scales_format(self):
+    def test_wrong_Q_format(self):
         for scales in [1, 1.0, "1.0", [1.0], {"cavities": [1.0]}]:
             self.assertRaises(
                 TypeError,
@@ -2096,7 +2096,7 @@ class TestExport(unittest.TestCase):
                 self.cavities,
                 self.surface,
                 self.vertices,
-                scales=scales,
+                Q=scales,
             )
 
     def test_invalid_scales(self):
@@ -2112,7 +2112,7 @@ class TestExport(unittest.TestCase):
                 self.cavities,
                 self.surface,
                 self.vertices,
-                scales=scales,
+                Q=scales,
             )
 
     def test_wrong_selection_format(self):
@@ -2205,7 +2205,7 @@ class TestExport(unittest.TestCase):
 
     def test_cavity_and_surface_not_defined(self):
         self.assertRaises(
-            RuntimeError,
+            TypeError,
             export,
             "any",
             None,

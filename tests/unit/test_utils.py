@@ -465,19 +465,6 @@ class TestWriteResults(unittest.TestCase):
             self.assertEqual(f.read(), expected)
         os.remove("tests/results.toml")
 
-    def test_hydropathy_pdb(self):
-        write_results(
-            "tests/output_hydropathy.toml",
-            "input.pdb",
-            None,
-            None,
-            output_hydropathy="hydropathy.pdb",
-        )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nHYDROPATHY = "{os.path.abspath("hydropathy.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n'
-        with open("tests/output_hydropathy.toml", "r") as f:
-            self.assertEqual(f.read(), expected)
-        os.remove("tests/output_hydropathy.toml")
-
     def test_volume(self):
         write_results("tests/volume.toml", "input.pdb", None, None, volume={"KAA": 100})
         expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.VOLUME]\nKAA = 100\n'
