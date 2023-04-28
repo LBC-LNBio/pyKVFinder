@@ -102,6 +102,5 @@ void estimate_average_hydropathy(double *avgh, int ncav, double *hydropathy,
 void _hydropathy(double *hydropathy, int size, double *avgh, int ncav, int *surface, int nxx, int nyy, int nzz, double *atoms, int natoms, int xyzr, double *reference, int ndims, double *sincos, int nvalues, char **resname, char **resn, double *scales, int nscales, double step, double probe_in, int nthreads, int verbose);
 
 /* Export cavity PDB */
-void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
-void _export_b(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int nxxx, int nyyy, int nzzz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
+void _export(char *fn, int *cavities, int nx, int ny, int nz, int *surface, int nxx, int nyy, int nzz, double *B, int bx, int by, int bz, double *Q, int qx, int qy, int qz, double *reference, int ndims, double *sincos, int nvalues, double step, int ncav, int nthreads, int append, int model);
 void _export_openings(char *fn, int *openings, int nxx, int nyy, int nzz, double *reference, int ndims, double *sincos, int nvalues, double step, int nopenings, int nthreads, int append, int model);

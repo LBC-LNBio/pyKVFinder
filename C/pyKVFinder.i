@@ -33,6 +33,7 @@
 
 /* Hydropathy grid */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* hydropathy, int size)}
+%apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* Q, int qx, int qy, int qz)}
 
 /* Openings grid */
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* openings, int size)}
@@ -40,7 +41,7 @@
 %apply (int* ARGOUT_ARRAY1, int DIM1) {(int* o2c, int nopenings)}
 
 /* Bfactor grid */
-%apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int nxxx, int nyyy, int nzzz)}
+%apply (double* INPLACE_ARRAY3, int DIM1, int DIM2, int DIM3) {(double* B, int bx, int by, int bz)}
 
 /* Volume array */
 %apply (double* ARGOUT_ARRAY1, int DIM1) {(double* volumes, int nvol)}

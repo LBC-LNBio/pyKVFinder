@@ -228,12 +228,8 @@ def cli() -> None:
                 args.nthreads,
                 args.verbose,
             )
-            output_hydropathy = os.path.join(
-                args.output_directory,
-                f"{args.base_name}.{list(avg_hydropathy.keys())[-1]}.pdb",
-            )
         else:
-            scales, avg_hydropathy, output_hydropathy = None, None, None
+            scales, avg_hydropathy = None, None
 
         # Export cavities
         output_cavity = os.path.join(
@@ -246,7 +242,6 @@ def cli() -> None:
             args.vertices,
             args.step,
             depths,
-            output_hydropathy,
             scales,
             None,
             args.nthreads,
@@ -261,7 +256,6 @@ def cli() -> None:
             args.input,
             args.ligand,
             output_cavity,
-            output_hydropathy,
             volume,
             area,
             max_depth,
@@ -452,7 +446,6 @@ class pyKVFinderResults(object):
     def export(
         self,
         output: Union[str, pathlib.Path] = "cavity.pdb",
-        output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
         nthreads: Optional[int] = None,
     ) -> None:
         """Exports cavitiy (H) and surface (HA) points to PDB-formatted file
@@ -463,9 +456,6 @@ class pyKVFinderResults(object):
         ----------
         output : Union[str, pathlib.Path]), optional
             A path to PDB file for writing cavities, by default `cavity.pdb`.
-        output_hydropathy : Union[str, pathlib.Path], optional
-            A path to PDB file for writing hydropathy at surface points, by
-            default `hydropathy.pdb`.
         nthreads : int, optional
             Number of threads, by default None. If None, the number of threads is
             `os.cpu_count() - 1`.
@@ -492,7 +482,6 @@ class pyKVFinderResults(object):
             self._vertices,
             self._step,
             self.depths,
-            output_hydropathy,
             self.scales,
             None,
             nthreads,
@@ -501,8 +490,7 @@ class pyKVFinderResults(object):
     def write(
         self,
         fn: Union[str, pathlib.Path] = "results.toml",
-        output: Optional[Union[str, pathlib.Path]] = None,
-        output_hydropathy: Optional[Union[str, pathlib.Path]] = None,
+        output: Optional[Union[str, pathlib.Path]] = None
     ) -> None:
         """
         Writes file paths and cavity characterization to TOML-formatted file
@@ -515,9 +503,6 @@ class pyKVFinderResults(object):
             per cavity detected, by default `results.toml`.
         output : Union[str, pathlib.Path], optional
             A path to a cavity PDB file, by default None.
-        output_hydropathy : Union[str, pathlib.Path], optional
-            A path to PDB file for writing hydropathy at surface points, by
-            default None.
 
         Note
         ----
@@ -539,7 +524,6 @@ class pyKVFinderResults(object):
             self._input,
             self._ligand,
             output,
-            output_hydropathy,
             self.volume,
             self.area,
             self.max_depth,
@@ -596,7 +580,6 @@ class pyKVFinderResults(object):
         self,
         fn: Union[str, pathlib.Path] = "results.toml",
         output: Union[str, pathlib.Path] = "cavity.pdb",
-        output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
         include_frequencies_pdf: bool = False,
         pdf: Union[str, pathlib.Path] = "barplots.pdf",
         nthreads: Optional[int] = None,
@@ -614,9 +597,6 @@ class pyKVFinderResults(object):
             per cavity detected, by default `results.toml`.
         output : Union[str, pathlib.Path], optional
             A path to PDB file for writing cavities, by default `cavity.pdb`.
-        output_hydropathy : Union[str, pathlib.Path], optional
-            A path to PDB file for writing hydropathy at surface points,
-            by default `hydropathy.pdb`.
         include_frequencies_pdf : bool, optional
             Whether to plot frequencies (residues and classes of residues)
             to PDF file, by default False.
@@ -662,9 +642,9 @@ class pyKVFinderResults(object):
         >>> results.export_all(include_frequencies_pdf=True)
         """
         # Export cavity PDB file
-        self.export(output, output_hydropathy, nthreads)
+        self.export(output, nthreads)
         # Write KVFinder results TOML
-        self.write(fn, output, output_hydropathy)
+        self.write(fn, output)
         # Plot bar charts of frequencies
         if include_frequencies_pdf:
             self.plot_frequencies(pdf)
@@ -724,7 +704,7 @@ def run_workflow(
         default False.
     hydrophobicity_scale : Union[str, pathlib.Path], optional
         Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,
-        KyteDoolitte, MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon) 
+        KyteDoolitte, MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon)
         or a path to a TOML-formatted file with a custom hydrophobicity scale,
         by default `EisenbergWeiss`.
     surface : str, optional
