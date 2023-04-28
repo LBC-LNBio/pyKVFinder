@@ -21,6 +21,10 @@ examples/conservation-analysis/box.toml
 # Visualization 
 examples/visualization/data/
 
+# Supramolecular cage analysis
+examples/smc-analysis/data/
+examples/smc-analysis/results/
+
 # Benchmarking 
 tests/performance/data/
 tests/performance/results/
