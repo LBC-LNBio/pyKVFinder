@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.utils &mdash; pyKVFinder 0.5.5 documentation</title>
+  <title>pyKVFinder.utils &mdash; pyKVFinder 0.6.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -33,7 +33,7 @@
               <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.5
+                0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -1204,7 +1204,6 @@
     <span class="nb">input</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
-    <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">volume</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">area</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_depth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1228,9 +1227,6 @@
 <span class="sd">        A path to ligand PDB or XYZ file.</span>
 <span class="sd">    output : Union[str, pathlib.Path], optional</span>
 <span class="sd">        A path to cavity PDB file.</span>
-<span class="sd">    output_hydropathy : Union[str, pathlib.Path], optional</span>
-<span class="sd">        A path to hydropathy PDB file (surface points mapped with a</span>
-<span class="sd">        hydrophobicity scale), by default None.</span>
 <span class="sd">    volume : Dict[str, float], optional</span>
 <span class="sd">        A dictionary with volume of each detected cavity, by default None.</span>
 <span class="sd">    area : Dict[str, float], optional</span>
@@ -1263,8 +1259,6 @@
 <span class="sd">        `ligand` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `output` must be a string or a pathlib.Path.</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `output_hydropathy` must be a string or a pathlib.Path.</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `volume` must be a dictionary.</span>
 <span class="sd">    TypeError</span>
@@ -1338,11 +1332,11 @@
 
 <span class="sd">    &gt;&gt;&gt; avg_hydropathy</span>
 <span class="sd">    {&#39;KAA&#39;: -0.73, &#39;KAB&#39;: -0.06, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.16, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.35, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
-<span class="sd">    &gt;&gt;&gt; write_results(&#39;results.toml&#39;, input=pdb, ligand=None, output=None, output_hydropathy=&#39;hydropathy.pdb&#39;, avg_hydropathy=avg_hydropathy)</span>
+<span class="sd">    &gt;&gt;&gt; write_results(&#39;results.toml&#39;, input=pdb, ligand=None, output=None, avg_hydropathy=avg_hydropathy)</span>
 
 <span class="sd">    * Write all</span>
 
-<span class="sd">    &gt;&gt;&gt; write_results(&#39;results.toml&#39;, input=pdb, ligand=None, output=&#39;cavities.pdb&#39;, output_hydropathy=&#39;hydropathy.pdb&#39;, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)</span>
+<span class="sd">    &gt;&gt;&gt; write_results(&#39;results.toml&#39;, input=pdb, ligand=None, output=&#39;cavities.pdb&#39;, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">toml</span>
@@ -1359,9 +1353,6 @@
     <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`output` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">output_hydropathy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output_hydropathy</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`output_hydropathy` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">volume</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`volume` must be a dictionary.&quot;</span><span class="p">)</span>
@@ -1401,15 +1392,12 @@
         <span class="n">ligand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">ligand</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">output_hydropathy</span><span class="p">:</span>
-        <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output_hydropathy</span><span class="p">)</span>
 
     <span class="c1"># Create output dictionary for results file</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="p">,</span>
         <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">ligand</span><span class="p">,</span>
         <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
-        <span class="s2">&quot;HYDROPATHY&quot;</span><span class="p">:</span> <span class="n">output_hydropathy</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;STEP&quot;</span><span class="p">:</span> <span class="n">step</span><span class="p">,</span>

@@ -199,15 +199,15 @@ Inside the *pyKVFinderResults object*, in addition to cavity and surface points,
 
   * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_
 
-With these attributes, we can write the detected cavities with depth annotated on B-factor column, the surface cavity points with hydrophobicity scale annotated on B-factor column, and the characterization to files. Below, we illustrate the usage:
+With these attributes, we can write the detected cavities with depth annotated on B-factor column (temperature factor) and hydropathy annotated on Q-factor (occupancy) column, and the characterization to files. Below, we illustrate the usage:
 
 .. code-block:: python
 
-  >>> results.export_all(fn='results.toml', output='cavity.pdb', output_hydropathy='hydropathy.pdb', include_frequencies_pdf=False)
+  >>> results.export_all(fn='results.toml', output='cavity.pdb', include_frequencies_pdf=False)
 
 .. note::
 
-  The ``pyKVFinder.pyKVFinderResults.export_all`` methods uses default parameter specifications, and therefore parameters can be adjusted to users’ needs.
+  The ``pyKVFinder.pyKVFinderResults.export_all`` methods uses default parameter specifications, and therefore parameters can be adjusted to users' needs.
 
 .. seealso::
 
@@ -704,14 +704,13 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> output_cavity = 'cavity_with_depth.pdb'
   >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step, B=depths)
 
-9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor
--------------------------------------------------------------------------------------------------------------------------------------
+9.4 Exporting cavity and surface points with depth mapped on B-factor and hydrophobicity scale mapped on Q-factor
+-----------------------------------------------------------------------------------------------------------------
 
 .. code-block:: python
 
   >>> output_cavity = 'cavity_with_depth.pdb'
-  >>> output_hydropathy = 'hydropathy.pdb'
-  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step, B=depths, output_hydropathy=output_hydropathy, scales=scales)
+  >>> pyKVFinder.export(output_cavity, cavities, surface, vertices, step=step, B=depths, Q=scales)
 
 .. note::
 
@@ -719,7 +718,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 
 .. note::
 
-  If the ``step``, ``B``, ``scales`` and ``output_hydropathy`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.export(output_cavity, cavities, surface, vertices)``.
+  If the ``step``, ``B`` and ``scales`` are not defined, the function automatically sets them to the default values. So, you can call the function by ``pyKVFinder.export(output_cavity, cavities, surface, vertices)``.
 
 .. seealso::
 
@@ -768,7 +767,7 @@ The function call depends on the characterizations performed on the detected cav
 .. code-block:: python
 
   >>> output_results = 'results.toml'
-  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, output_hydropathy=output_hydropathy, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies, step=step)
+  >>> pyKVFinder.write_results(output_results, input=pdb, ligand=None, output=output_cavity, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies, step=step)
 
 .. note::
 

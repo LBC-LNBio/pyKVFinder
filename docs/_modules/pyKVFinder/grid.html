@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.5.5 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.6.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -33,7 +33,7 @@
               <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.5
+                0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2584,13 +2584,12 @@
 
 <div class="viewcode-block" id="export"><a class="viewcode-back" href="../../_api_reference/export.html#pyKVFinder.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">cavities</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">B</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
-    <span class="n">scales</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">Q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">append</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2604,7 +2603,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fn : Union[str, pathlib.Path]</span>
 <span class="sd">        A path to PDB file for writing cavities.</span>
-<span class="sd">    cavities : numpy.ndarray, optional</span>
+<span class="sd">    cavities : numpy.ndarray</span>
 <span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
 <span class="sd">        Cavities array has integer labels in each position, that are:</span>
 
@@ -2639,12 +2638,9 @@
 <span class="sd">    B : numpy.ndarray, optional</span>
 <span class="sd">        A numpy.ndarray with values to be mapped on B-factor column in cavity</span>
 <span class="sd">        points (B[nx][ny][nz]), by default None.</span>
-<span class="sd">    output_hydropathy : Union[str, pathlib.Path], optional</span>
-<span class="sd">        A path to hydropathy PDB file (surface points mapped with a</span>
-<span class="sd">        hydrophobicity scale), by default `hydropathy.pdb`.</span>
-<span class="sd">    scales : numpy.ndarray, optional</span>
+<span class="sd">    Q : numpy.ndarray, optional</span>
 <span class="sd">        A numpy.ndarray with hydrophobicity scale values to be mapped on</span>
-<span class="sd">        B-factor column in surface points (scales[nx][ny][nz]), by default</span>
+<span class="sd">        B-factor column in surface points (Q[nx][ny][nz]), by default</span>
 <span class="sd">        None.</span>
 <span class="sd">    selection : Union[List[int], List[str]], optional</span>
 <span class="sd">        A list of integer labels or a list of cavity names to be selected, by default None.</span>
@@ -2681,11 +2677,9 @@
 <span class="sd">    ValueError</span>
 <span class="sd">        `B` has the incorrect shape. It must be (nx, ny, nz).</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `output_hydropathy` must be a string.</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        `scales` must be a numpy.ndarray.</span>
+<span class="sd">        `Q` must be a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        `scales` has the incorrect shape. It must be (nx, ny, nz).</span>
+<span class="sd">        `Q` has the incorrect shape. It must be (nx, ny, nz).</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `selection` must be a list of strings (cavity names) or integers (cavity labels).</span>
 <span class="sd">    ValueError</span>
@@ -2734,27 +2728,24 @@
 
 <span class="sd">    * Export surface points with hydrophobicity_scale mapped on them</span>
 
-<span class="sd">    &gt;&gt;&gt; export(None, None, surface, vertices, output_hydropathy=&#39;hydropathy.pdb&#39;, scales=scales)</span>
+<span class="sd">    &gt;&gt;&gt; export(&#39;cavities_with_hydropathy.pdb&#39;, cavities, surface, vertices, Q=scales)</span>
 
 <span class="sd">    * Export all</span>
 
-<span class="sd">    &gt;&gt;&gt; export(&#39;cavities.pdb&#39;, cavities, surface, vertices, B=depths, output_hydropathy=&#39;hydropathy.pdb&#39;, scales=scales)</span>
+<span class="sd">    &gt;&gt;&gt; export(&#39;cavities.pdb&#39;, cavities, surface, vertices, B=depths, Q=scales)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_export</span><span class="p">,</span> <span class="n">_export_b</span>
+    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_export</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cavities</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavities` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;`cavities` has the incorrect shape. It must be (nx, ny, nz).&quot;</span>
-            <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavities` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`cavities` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">surface</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`surface` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
@@ -2775,17 +2766,11 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`B` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`B` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">output_hydropathy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output_hydropathy</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`output_hydropathy` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_hydropathy</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">scales</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">scales</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`scales` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">scales</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;`scales` has the incorrect shape. It must be (nx, ny, nz).&quot;</span>
-            <span class="p">)</span>
+    <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`Q` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`Q` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
@@ -2821,95 +2806,39 @@
     <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
     <span class="k">if</span> <span class="n">B</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">B</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">B</span>
-    <span class="k">if</span> <span class="n">scales</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">scales</span> <span class="o">=</span> <span class="n">scales</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">scales</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">scales</span>
+    <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">Q</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">Q</span>
 
-    <span class="c1"># Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)</span>
+    <span class="c1"># Get sincos: sine and cosine of the grid rotation angles (sina, cosa, sinb, cosb)</span>
     <span class="n">sincos</span> <span class="o">=</span> <span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
     <span class="c1"># Unpack vertices</span>
-    <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span> <span class="o">=</span> <span class="n">vertices</span>
+    <span class="n">P1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">vertices</span>
 
-    <span class="c1"># If surface is None, create an empty grid</span>
-    <span class="k">if</span> <span class="n">cavities</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">surface</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">surface</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">surface</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">surface</span>
+    <span class="c1"># If surface is None, create a zeros grid</span>
+    <span class="k">if</span> <span class="n">surface</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">surface</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+
+    <span class="c1"># If B is None, create a zeros grid</span>
+    <span class="k">if</span> <span class="n">B</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+
+    <span class="c1"># If Q is None, create an ones grid</span>
+    <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
 
     <span class="c1"># Select cavities</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cavities</span> <span class="o">=</span> <span class="n">_select_cavities</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
         <span class="n">surface</span> <span class="o">=</span> <span class="n">_select_cavities</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cavities</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cavities</span> <span class="o">=</span> <span class="n">_select_cavities</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">cavities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">surface</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;User must define `surface` when not defining `cavities`.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Get number of cavities</span>
-            <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Get number of cavities</span>
+    <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
-            <span class="c1"># Export hydropathy</span>
-            <span class="n">_export_b</span><span class="p">(</span>
-                <span class="n">output_hydropathy</span><span class="p">,</span>
-                <span class="n">surface</span><span class="p">,</span>
-                <span class="n">surface</span><span class="p">,</span>
-                <span class="n">scales</span><span class="p">,</span>
-                <span class="n">P1</span><span class="p">,</span>
-                <span class="n">sincos</span><span class="p">,</span>
-                <span class="n">step</span><span class="p">,</span>
-                <span class="n">ncav</span><span class="p">,</span>
-                <span class="n">nthreads</span><span class="p">,</span>
-                <span class="n">append</span><span class="p">,</span>
-                <span class="n">model</span><span class="p">,</span>
-            <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Check and convert cavities dtype</span>
-        <span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cavities</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">cavities</span>
-
-        <span class="c1"># Get number of cavities</span>
-        <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># Export cavities</span>
-        <span class="k">if</span> <span class="n">B</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">_export</span><span class="p">(</span>
-                <span class="n">fn</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">append</span><span class="p">,</span> <span class="n">model</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">_export_b</span><span class="p">(</span>
-                <span class="n">fn</span><span class="p">,</span>
-                <span class="n">cavities</span><span class="p">,</span>
-                <span class="n">surface</span><span class="p">,</span>
-                <span class="n">B</span><span class="p">,</span>
-                <span class="n">P1</span><span class="p">,</span>
-                <span class="n">sincos</span><span class="p">,</span>
-                <span class="n">step</span><span class="p">,</span>
-                <span class="n">ncav</span><span class="p">,</span>
-                <span class="n">nthreads</span><span class="p">,</span>
-                <span class="n">append</span><span class="p">,</span>
-                <span class="n">model</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Export hydropathy surface points</span>
-        <span class="k">if</span> <span class="n">scales</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">_export_b</span><span class="p">(</span>
-                <span class="n">output_hydropathy</span><span class="p">,</span>
-                <span class="n">surface</span><span class="p">,</span>
-                <span class="n">surface</span><span class="p">,</span>
-                <span class="n">scales</span><span class="p">,</span>
-                <span class="n">P1</span><span class="p">,</span>
-                <span class="n">sincos</span><span class="p">,</span>
-                <span class="n">step</span><span class="p">,</span>
-                <span class="n">ncav</span><span class="p">,</span>
-                <span class="n">nthreads</span><span class="p">,</span>
-                <span class="n">append</span><span class="p">,</span>
-                <span class="n">model</span><span class="p">,</span>
-            <span class="p">)</span></div>
+    <span class="c1"># Export cavities</span>
+    <span class="n">_export</span><span class="p">(</span>
+        <span class="n">fn</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">append</span><span class="p">,</span> <span class="n">model</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="export_openings"><a class="viewcode-back" href="../../_api_reference/export_openings.html#pyKVFinder.export_openings">[docs]</a><span class="k">def</span> <span class="nf">export_openings</span><span class="p">(</span>

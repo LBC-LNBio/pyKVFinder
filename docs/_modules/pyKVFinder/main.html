@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.main &mdash; pyKVFinder 0.5.5 documentation</title>
+  <title>pyKVFinder.main &mdash; pyKVFinder 0.6.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -33,7 +33,7 @@
               <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.5
+                0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -334,12 +334,8 @@
                 <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">avg_hydropathy</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.pdb&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">output_hydropathy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="c1"># Export cavities</span>
         <span class="n">output_cavity</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
@@ -352,7 +348,6 @@
             <span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
             <span class="n">depths</span><span class="p">,</span>
-            <span class="n">output_hydropathy</span><span class="p">,</span>
             <span class="n">scales</span><span class="p">,</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">nthreads</span><span class="p">,</span>
@@ -367,7 +362,6 @@
             <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span>
             <span class="n">output_cavity</span><span class="p">,</span>
-            <span class="n">output_hydropathy</span><span class="p">,</span>
             <span class="n">volume</span><span class="p">,</span>
             <span class="n">area</span><span class="p">,</span>
             <span class="n">max_depth</span><span class="p">,</span>
@@ -558,7 +552,6 @@
 <div class="viewcode-block" id="pyKVFinderResults.export"><a class="viewcode-back" href="../../_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cavity.pdb&quot;</span><span class="p">,</span>
-        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
         <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Exports cavitiy (H) and surface (HA) points to PDB-formatted file</span>
@@ -569,9 +562,6 @@
 <span class="sd">        ----------</span>
 <span class="sd">        output : Union[str, pathlib.Path]), optional</span>
 <span class="sd">            A path to PDB file for writing cavities, by default `cavity.pdb`.</span>
-<span class="sd">        output_hydropathy : Union[str, pathlib.Path], optional</span>
-<span class="sd">            A path to PDB file for writing hydropathy at surface points, by</span>
-<span class="sd">            default `hydropathy.pdb`.</span>
 <span class="sd">        nthreads : int, optional</span>
 <span class="sd">            Number of threads, by default None. If None, the number of threads is</span>
 <span class="sd">            `os.cpu_count() - 1`.</span>
@@ -598,7 +588,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">depths</span><span class="p">,</span>
-            <span class="n">output_hydropathy</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">,</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="n">nthreads</span><span class="p">,</span>
@@ -607,8 +596,7 @@
 <div class="viewcode-block" id="pyKVFinderResults.write"><a class="viewcode-back" href="../../_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;results.toml&quot;</span><span class="p">,</span>
-        <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Writes file paths and cavity characterization to TOML-formatted file</span>
@@ -621,9 +609,6 @@
 <span class="sd">            per cavity detected, by default `results.toml`.</span>
 <span class="sd">        output : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to a cavity PDB file, by default None.</span>
-<span class="sd">        output_hydropathy : Union[str, pathlib.Path], optional</span>
-<span class="sd">            A path to PDB file for writing hydropathy at surface points, by</span>
-<span class="sd">            default None.</span>
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
@@ -645,7 +630,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_input</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ligand</span><span class="p">,</span>
             <span class="n">output</span><span class="p">,</span>
-            <span class="n">output_hydropathy</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
@@ -702,7 +686,6 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;results.toml&quot;</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cavity.pdb&quot;</span><span class="p">,</span>
-        <span class="n">output_hydropathy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hydropathy.pdb&quot;</span><span class="p">,</span>
         <span class="n">include_frequencies_pdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">pdf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;barplots.pdf&quot;</span><span class="p">,</span>
         <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -720,9 +703,6 @@
 <span class="sd">            per cavity detected, by default `results.toml`.</span>
 <span class="sd">        output : Union[str, pathlib.Path], optional</span>
 <span class="sd">            A path to PDB file for writing cavities, by default `cavity.pdb`.</span>
-<span class="sd">        output_hydropathy : Union[str, pathlib.Path], optional</span>
-<span class="sd">            A path to PDB file for writing hydropathy at surface points,</span>
-<span class="sd">            by default `hydropathy.pdb`.</span>
 <span class="sd">        include_frequencies_pdf : bool, optional</span>
 <span class="sd">            Whether to plot frequencies (residues and classes of residues)</span>
 <span class="sd">            to PDF file, by default False.</span>
@@ -768,9 +748,9 @@
 <span class="sd">        &gt;&gt;&gt; results.export_all(include_frequencies_pdf=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Export cavity PDB file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
         <span class="c1"># Write KVFinder results TOML</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
         <span class="c1"># Plot bar charts of frequencies</span>
         <span class="k">if</span> <span class="n">include_frequencies_pdf</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plot_frequencies</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span></div></div>
@@ -830,7 +810,7 @@
 <span class="sd">        default False.</span>
 <span class="sd">    hydrophobicity_scale : Union[str, pathlib.Path], optional</span>
 <span class="sd">        Name of a built-in hydrophobicity scale (EisenbergWeiss, HessaHeijne,</span>
-<span class="sd">        KyteDoolitte, MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon) </span>
+<span class="sd">        KyteDoolitte, MoonFleming, RadzickaWolfenden, WimleyWhite, ZhaoLondon)</span>
 <span class="sd">        or a path to a TOML-formatted file with a custom hydrophobicity scale,</span>
 <span class="sd">        by default `EisenbergWeiss`.</span>
 <span class="sd">    surface : str, optional</span>
