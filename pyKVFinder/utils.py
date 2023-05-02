@@ -1098,7 +1098,6 @@ def write_results(
     input: Optional[Union[str, pathlib.Path]],
     ligand: Optional[Union[str, pathlib.Path]],
     output: Optional[Union[str, pathlib.Path]],
-    output_hydropathy: Optional[Union[str, pathlib.Path]] = None,
     volume: Optional[Dict[str, float]] = None,
     area: Optional[Dict[str, float]] = None,
     max_depth: Optional[Dict[str, float]] = None,
@@ -1122,9 +1121,6 @@ def write_results(
         A path to ligand PDB or XYZ file.
     output : Union[str, pathlib.Path], optional
         A path to cavity PDB file.
-    output_hydropathy : Union[str, pathlib.Path], optional
-        A path to hydropathy PDB file (surface points mapped with a
-        hydrophobicity scale), by default None.
     volume : Dict[str, float], optional
         A dictionary with volume of each detected cavity, by default None.
     area : Dict[str, float], optional
@@ -1157,8 +1153,6 @@ def write_results(
         `ligand` must be a string or a pathlib.Path.
     TypeError
         `output` must be a string or a pathlib.Path.
-    TypeError
-        `output_hydropathy` must be a string or a pathlib.Path.
     TypeError
         `volume` must be a dictionary.
     TypeError
@@ -1232,11 +1226,11 @@ def write_results(
 
     >>> avg_hydropathy
     {'KAA': -0.73, 'KAB': -0.06, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.16, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.35, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]}
-    >>> write_results('results.toml', input=pdb, ligand=None, output=None, output_hydropathy='hydropathy.pdb', avg_hydropathy=avg_hydropathy)
+    >>> write_results('results.toml', input=pdb, ligand=None, output=None, avg_hydropathy=avg_hydropathy)
 
     * Write all
 
-    >>> write_results('results.toml', input=pdb, ligand=None, output='cavities.pdb', output_hydropathy='hydropathy.pdb', volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)
+    >>> write_results('results.toml', input=pdb, ligand=None, output='cavities.pdb', volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)
 
     """
     import toml
@@ -1253,9 +1247,6 @@ def write_results(
     if output is not None:
         if type(output) not in [str, pathlib.Path]:
             raise TypeError("`output` must be a string or a pathlib.Path.")
-    if output_hydropathy is not None:
-        if type(output_hydropathy) not in [str, pathlib.Path]:
-            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
     if volume is not None:
         if type(volume) not in [dict]:
             raise TypeError("`volume` must be a dictionary.")
@@ -1295,15 +1286,12 @@ def write_results(
         ligand = os.path.abspath(ligand)
     if output:
         output = os.path.abspath(output)
-    if output_hydropathy:
-        output_hydropathy = os.path.abspath(output_hydropathy)
 
     # Create output dictionary for results file
     files = {
         "INPUT": input,
         "LIGAND": ligand,
         "OUTPUT": output,
-        "HYDROPATHY": output_hydropathy,
     }
     parameters = {
         "STEP": step,

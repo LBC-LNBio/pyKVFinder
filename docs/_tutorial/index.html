@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cavity detection and characterization &mdash; pyKVFinder 0.5.5 documentation</title>
+  <title>Cavity detection and characterization &mdash; pyKVFinder 0.6.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -36,7 +36,7 @@
               <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.5
+                0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -75,7 +75,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#exporting-only-cavity-points">9.1 Exporting only cavity points</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#exporting-cavity-and-surface-points">9.2 Exporting cavity and surface points</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor">9.3 Exporting cavity and surface points with depth mapped on B-factor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-surface-points-with-hydrophobicity-scale-mapped-on-b-factor">9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-hydrophobicity-scale-mapped-on-q-factor">9.4 Exporting cavity and surface points with depth mapped on B-factor and hydrophobicity scale mapped on Q-factor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#writing-results">10.  Writing results</a><ul>
@@ -348,8 +348,8 @@
 <li><p><a class="reference external" href="../_api_reference/run_workflow">pyKVFinder.run_workflow</a></p></li>
 </ul>
 </div>
-<p>With these attributes, we can write the detected cavities with depth annotated on B-factor column, the surface cavity points with hydrophobicity scale annotated on B-factor column, and the characterization to files. Below, we illustrate the usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">export_all</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavity.pdb&#39;</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="s1">&#39;hydropathy.pdb&#39;</span><span class="p">,</span> <span class="n">include_frequencies_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<p>With these attributes, we can write the detected cavities with depth annotated on B-factor column (temperature factor) and hydropathy annotated on Q-factor (occupancy) column, and the characterization to files. Below, we illustrate the usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">export_all</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="s1">&#39;results.toml&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;cavity.pdb&#39;</span><span class="p">,</span> <span class="n">include_frequencies_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -853,11 +853,10 @@
 </pre></div>
 </div>
 </section>
-<section id="exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-surface-points-with-hydrophobicity-scale-mapped-on-b-factor">
-<h4>9.4 Exporting cavity and surface points with depth mapped on B-factor and surface points with hydrophobicity scale mapped on B-factor<a class="headerlink" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-surface-points-with-hydrophobicity-scale-mapped-on-b-factor" title="Permalink to this heading"></a></h4>
+<section id="exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-hydrophobicity-scale-mapped-on-q-factor">
+<h4>9.4 Exporting cavity and surface points with depth mapped on B-factor and hydrophobicity scale mapped on Q-factor<a class="headerlink" href="#exporting-cavity-and-surface-points-with-depth-mapped-on-b-factor-and-hydrophobicity-scale-mapped-on-q-factor" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_cavity</span> <span class="o">=</span> <span class="s1">&#39;cavity_with_depth.pdb&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_hydropathy</span> <span class="o">=</span> <span class="s1">&#39;hydropathy.pdb&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="n">output_hydropathy</span><span class="p">,</span> <span class="n">scales</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">depths</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">scales</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -866,7 +865,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">scales</span></code> and <code class="docutils literal notranslate"><span class="pre">output_hydropathy</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.export(output_cavity,</span> <span class="pre">cavities,</span> <span class="pre">surface,</span> <span class="pre">vertices)</span></code>.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">scales</span></code> are not defined, the function automatically sets them to the default values. So, you can call the function by <code class="docutils literal notranslate"><span class="pre">pyKVFinder.export(output_cavity,</span> <span class="pre">cavities,</span> <span class="pre">surface,</span> <span class="pre">vertices)</span></code>.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -910,7 +909,7 @@
 <section id="spatial-constitutional-depth-and-hydropathy-characterization">
 <h4>10.5 Spatial, constitutional, depth and hydropathy characterization<a class="headerlink" href="#spatial-constitutional-depth-and-hydropathy-characterization" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">output_results</span> <span class="o">=</span> <span class="s1">&#39;results.toml&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">output_hydropathy</span><span class="o">=</span><span class="n">output_hydropathy</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span><span class="o">=</span><span class="n">avg_depth</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="o">=</span><span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="n">residues</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">=</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyKVFinder</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">output_results</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">pdb</span><span class="p">,</span> <span class="n">ligand</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output_cavity</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span><span class="o">=</span><span class="n">avg_depth</span><span class="p">,</span> <span class="n">avg_hydropathy</span><span class="o">=</span><span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">residues</span><span class="o">=</span><span class="n">residues</span><span class="p">,</span> <span class="n">frequencies</span><span class="o">=</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">

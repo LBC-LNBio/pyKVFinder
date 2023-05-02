@@ -227,7 +227,6 @@ class TestPackage(unittest.TestCase):
                 "output",
                 "cavities-test.pdb",
             ),
-            output_hydropathy=None,
             volume=None,
             area=None,
             max_depth=None,
@@ -378,21 +377,10 @@ class TestPyKVFinderResults(unittest.TestCase):
             "output",
             "cavities.pdb",
         )
-        output_hydropathy = os.path.join(
-            DATADIR,
-            "tests",
-            "output",
-            "hydropathy.pdb",
-        )
         # export
-        self.results.export(
-            output=output,
-            output_hydropathy=output_hydropathy,
-        )
+        self.results.export(output=output)
         self.assertEqual(os.path.exists(output), True)
         os.remove(output)
-        self.assertEqual(os.path.exists(output_hydropathy), True)
-        os.remove(output_hydropathy)
 
     def test_write(self):
         results = os.path.join(
@@ -407,18 +395,8 @@ class TestPyKVFinderResults(unittest.TestCase):
             "output",
             "cavities.pdb",
         )
-        output_hydropathy = os.path.join(
-            DATADIR,
-            "tests",
-            "output",
-            "hydropathy.pdb",
-        )
         # write
-        self.results.write(
-            fn=results,
-            output=output,
-            output_hydropathy=output_hydropathy,
-        )
+        self.results.write(fn=results, output=output)
         self.assertEqual(os.path.exists(results), True)
         os.remove(results)
 
@@ -447,12 +425,6 @@ class TestPyKVFinderResults(unittest.TestCase):
             "output",
             "cavities.pdb",
         )
-        output_hydropathy = os.path.join(
-            DATADIR,
-            "tests",
-            "output",
-            "hydropathy.pdb",
-        )
         pdf = os.path.join(
             DATADIR,
             "tests",
@@ -463,7 +435,6 @@ class TestPyKVFinderResults(unittest.TestCase):
         self.results.export_all(
             fn=results,
             output=output,
-            output_hydropathy=output_hydropathy,
             include_frequencies_pdf=True,
             pdf=pdf,
         )
@@ -471,7 +442,5 @@ class TestPyKVFinderResults(unittest.TestCase):
         os.remove(results)
         self.assertEqual(os.path.exists(output), True)
         os.remove(output)
-        self.assertEqual(os.path.exists(output_hydropathy), True)
-        os.remove(output_hydropathy)
         self.assertEqual(os.path.exists(pdf), True)
         os.remove(pdf)

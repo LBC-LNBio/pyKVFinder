@@ -2478,13 +2478,12 @@ def openings(
 
 def export(
     fn: Union[str, pathlib.Path],
-    cavities: Optional[numpy.ndarray],
+    cavities: numpy.ndarray,
     surface: Optional[numpy.ndarray],
     vertices: Union[numpy.ndarray, List[List[float]]],
     step: Union[float, int] = 0.6,
     B: Optional[numpy.ndarray] = None,
-    output_hydropathy: Union[str, pathlib.Path] = "hydropathy.pdb",
-    scales: Optional[numpy.ndarray] = None,
+    Q: Optional[numpy.ndarray] = None,
     selection: Optional[Union[List[int], List[str]]] = None,
     nthreads: Optional[int] = None,
     append: bool = False,
@@ -2498,7 +2497,7 @@ def export(
     ----------
     fn : Union[str, pathlib.Path]
         A path to PDB file for writing cavities.
-    cavities : numpy.ndarray, optional
+    cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
 
@@ -2533,12 +2532,9 @@ def export(
     B : numpy.ndarray, optional
         A numpy.ndarray with values to be mapped on B-factor column in cavity
         points (B[nx][ny][nz]), by default None.
-    output_hydropathy : Union[str, pathlib.Path], optional
-        A path to hydropathy PDB file (surface points mapped with a
-        hydrophobicity scale), by default `hydropathy.pdb`.
-    scales : numpy.ndarray, optional
+    Q : numpy.ndarray, optional
         A numpy.ndarray with hydrophobicity scale values to be mapped on
-        B-factor column in surface points (scales[nx][ny][nz]), by default
+        B-factor column in surface points (Q[nx][ny][nz]), by default
         None.
     selection : Union[List[int], List[str]], optional
         A list of integer labels or a list of cavity names to be selected, by default None.
@@ -2575,11 +2571,9 @@ def export(
     ValueError
         `B` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
-        `output_hydropathy` must be a string.
-    TypeError
-        `scales` must be a numpy.ndarray.
+        `Q` must be a numpy.ndarray.
     ValueError
-        `scales` has the incorrect shape. It must be (nx, ny, nz).
+        `Q` has the incorrect shape. It must be (nx, ny, nz).
     TypeError
         `selection` must be a list of strings (cavity names) or integers (cavity labels).
     ValueError
@@ -2628,27 +2622,24 @@ def export(
 
     * Export surface points with hydrophobicity_scale mapped on them
 
-    >>> export(None, None, surface, vertices, output_hydropathy='hydropathy.pdb', scales=scales)
+    >>> export('cavities_with_hydropathy.pdb', cavities, surface, vertices, Q=scales)
 
     * Export all
 
-    >>> export('cavities.pdb', cavities, surface, vertices, B=depths, output_hydropathy='hydropathy.pdb', scales=scales)
+    >>> export('cavities.pdb', cavities, surface, vertices, B=depths, Q=scales)
 
     """
-    from _pyKVFinder import _export, _export_b
+    from _pyKVFinder import _export
 
     # Check arguments
     if fn is not None:
         if type(fn) not in [str, pathlib.Path]:
             raise TypeError("`fn` must be a string or a pathlib.Path.")
         os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
-    if cavities is not None:
-        if type(cavities) not in [numpy.ndarray]:
-            raise TypeError("`cavities` must be a numpy.ndarray.")
-        elif len(cavities.shape) != 3:
-            raise ValueError(
-                "`cavities` has the incorrect shape. It must be (nx, ny, nz)."
-            )
+    if type(cavities) not in [numpy.ndarray]:
+        raise TypeError("`cavities` must be a numpy.ndarray.")
+    elif len(cavities.shape) != 3:
+        raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if surface is not None:
         if type(surface) not in [numpy.ndarray]:
             raise TypeError("`surface` must be a numpy.ndarray.")
@@ -2669,17 +2660,11 @@ def export(
             raise TypeError("`B` must be a numpy.ndarray.")
         elif len(B.shape) != 3:
             raise ValueError("`B` has the incorrect shape. It must be (nx, ny, nz).")
-    if output_hydropathy is not None:
-        if type(output_hydropathy) not in [str, pathlib.Path]:
-            raise TypeError("`output_hydropathy` must be a string or a pathlib.Path.")
-        os.makedirs(os.path.abspath(os.path.dirname(output_hydropathy)), exist_ok=True)
-    if scales is not None:
-        if type(scales) not in [numpy.ndarray]:
-            raise TypeError("`scales` must be a numpy.ndarray.")
-        elif len(scales.shape) != 3:
-            raise ValueError(
-                "`scales` has the incorrect shape. It must be (nx, ny, nz)."
-            )
+    if Q is not None:
+        if type(Q) not in [numpy.ndarray]:
+            raise TypeError("`Q` must be a numpy.ndarray.")
+        elif len(Q.shape) != 3:
+            raise ValueError("`Q` has the incorrect shape. It must be (nx, ny, nz).")
     if selection is not None:
         # Check selection types
         if all(isinstance(x, int) for x in selection):
@@ -2715,95 +2700,39 @@ def export(
     vertices = vertices.astype("float64") if vertices.dtype != "float64" else vertices
     if B is not None:
         B = B.astype("float64") if B.dtype != "float64" else B
-    if scales is not None:
-        scales = scales.astype("float64") if scales.dtype != "float64" else scales
+    if Q is not None:
+        Q = Q.astype("float64") if Q.dtype != "float64" else Q
 
-    # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
+    # Get sincos: sine and cosine of the grid rotation angles (sina, cosa, sinb, cosb)
     sincos = _get_sincos(vertices)
 
     # Unpack vertices
-    P1, P2, P3, P4 = vertices
+    P1, _, _, _ = vertices
 
-    # If surface is None, create an empty grid
-    if cavities is not None:
-        if surface is None:
-            surface = numpy.zeros(cavities.shape, dtype="int32")
-        else:
-            surface = surface.astype("int32") if surface.dtype != "int32" else surface
+    # If surface is None, create a zeros grid
+    if surface is None:
+        surface = numpy.zeros(cavities.shape, dtype="int32")
+
+    # If B is None, create a zeros grid
+    if B is None:
+        B = numpy.zeros(cavities.shape, dtype="float64")
+
+    # If Q is None, create an ones grid
+    if Q is None:
+        Q = numpy.ones(cavities.shape, dtype="float64")
 
     # Select cavities
     if selection is not None:
+        cavities = _select_cavities(cavities, selection)
         surface = _select_cavities(surface, selection)
-        if cavities is not None:
-            cavities = _select_cavities(cavities, selection)
 
-    if cavities is None:
-        if surface is None:
-            raise RuntimeError(
-                f"User must define `surface` when not defining `cavities`."
-            )
-        else:
-            # Get number of cavities
-            ncav = int(surface.max() - 1)
+    # Get number of cavities
+    ncav = int(cavities.max() - 1)
 
-            # Export hydropathy
-            _export_b(
-                output_hydropathy,
-                surface,
-                surface,
-                scales,
-                P1,
-                sincos,
-                step,
-                ncav,
-                nthreads,
-                append,
-                model,
-            )
-    else:
-        # Check and convert cavities dtype
-        cavities = cavities.astype("int32") if cavities.dtype != "int32" else cavities
-
-        # Get number of cavities
-        ncav = int(cavities.max() - 1)
-
-        # Export cavities
-        if B is None:
-            _export(
-                fn, cavities, surface, P1, sincos, step, ncav, nthreads, append, model
-            )
-        else:
-            _export_b(
-                fn,
-                cavities,
-                surface,
-                B,
-                P1,
-                sincos,
-                step,
-                ncav,
-                nthreads,
-                append,
-                model,
-            )
-
-        # Export hydropathy surface points
-        if scales is None:
-            pass
-        else:
-            _export_b(
-                output_hydropathy,
-                surface,
-                surface,
-                scales,
-                P1,
-                sincos,
-                step,
-                ncav,
-                nthreads,
-                append,
-                model,
-            )
+    # Export cavities
+    _export(
+        fn, cavities, surface, B, Q, P1, sincos, step, ncav, nthreads, append, model
+    )
 
 
 def export_openings(
