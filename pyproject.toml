@@ -24,7 +24,7 @@ maintainers = [
 ]
 license = { file = "LICENSE.txt" }
 readme = { file = "README.rst", content-type = "text/x-rst" }
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 keywords = [
     "structural biology",
     "proteins",
