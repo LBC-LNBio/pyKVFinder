@@ -1758,7 +1758,7 @@ class Molecule(object):
             volume = _volume(
                 (self.grid == 0).astype(numpy.int32) * 2, self.step, 1, self.nthreads
             )
-            return float(volume.round(decimals=2))
+            return volume.round(decimals=2).item()
 
     def preview(self, **kwargs) -> None:
         """Preview the molecular surface in the 3D grid.
