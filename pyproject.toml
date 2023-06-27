@@ -14,7 +14,9 @@ authors = [
     { name = "João Victor da Silva Guerra", email = "jvsguerra@gmail.com" },
     { name = "Helder Veras Ribeiro Filho" },
     { name = "Luiz Fernando Giolo Alves" },
-    { name = "Gabriel Ernesto Jara" },
+    { name = "Gabriel Ernesto Jara" },    
+    { name = "Leandro Oliveira Bortot" },
+    { name = "José Geraldo de Carvalho Pereira" },
     { name = "Paulo Sergio Lopes-de-Oliveira" },
 ]
 maintainers = [
