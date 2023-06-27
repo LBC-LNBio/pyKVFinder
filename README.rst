@@ -56,7 +56,7 @@ If you use pyKVFinder package, please cite:
 
 Guerra, J. V. S., Ribeiro-Filho, H. V., Jara, G. E., Bortot, L. O., Pereira, J. G. C., & Lopes-de-Oliveira, P. S. (2021). pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science. BMC bioinformatics, 22(1), 607. https://doi.org/10.1186/s12859-021-04519-4.
 
-If you use `pyKVFinder.Molecule`, please also cite:
+If you use *pyKVFinder.Molecule*, please also cite:
 
 Guerra, J. V. S., Alves, L. F. G., Bourissou, D., Lopes-de-Oliveira, P. S., & Szalóki, G. (2023). Cavity Characterization in Supramolecular Cages. Journal of chemical information and modeling, 63(12), 3772-3785. https://doi.org/10.1021/acs.jcim.3c00328.
 
