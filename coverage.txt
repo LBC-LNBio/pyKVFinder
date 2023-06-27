@@ -15,6 +15,18 @@ tests/unit/test_grid.py ................................................ [ 32%]
 tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
+=============================== warnings summary ===============================
+tests/integration/test_package.py::TestMolecule::test_sas_volume
+tests/integration/test_package.py::TestMolecule::test_ses_volume
+tests/integration/test_package.py::TestMolecule::test_vdw_volume
+tests/unit/test_grid.py::TestMolecule::test_sas_volume
+tests/unit/test_grid.py::TestMolecule::test_ses_volume
+tests/unit/test_grid.py::TestMolecule::test_vdw_volume
+  /home/runner/work/pyKVFinder/pyKVFinder/pyKVFinder/main.py:1761: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    return float(volume.round(decimals=2))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
 ---------- coverage: platform linux, python 3.11.4-final-0 -----------
 Name                  Stmts   Miss  Cover   Missing
 ---------------------------------------------------
@@ -24,5 +36,4 @@ pyKVFinder/utils.py     312      6    98%   571, 603, 606-608, 630
 ---------------------------------------------------
 TOTAL                  1391    180    87%
 
-
-======================= 313 passed in 178.19s (0:02:58) ========================
+================= 313 passed, 6 warnings in 156.93s (0:02:36) ==================
