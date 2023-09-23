@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Box configuration file template &mdash; pyKVFinder 0.6.0 documentation</title>
+  <title>Box configuration file template &mdash; pyKVFinder 0.6.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -110,19 +110,19 @@
 <h1>Box configuration file template<a class="headerlink" href="#box-configuration-file-template" title="Permalink to this heading"></a></h1>
 <p>There are three methods for defining a custom 3D grid in pyKVFinder.</p>
 <p>The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown below:</p>
-<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span><span class="w"></span>
-<span class="c1"># px = [x, y, z]</span><span class="w"></span>
-<span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
-<span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
-<span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
-<span class="n">p4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]</span><span class="w"></span>
+<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span>
+<span class="c1"># px = [x, y, z]</span>
+<span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">p4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Example: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/custom-box.toml">custom-box.toml</a>.</p>
 <p>The second defines a list of residues and a padding, the template is shown below:</p>
-<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span><span class="w"></span>
-<span class="n">residues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">3.5</span><span class="w"></span>
+<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span>
+<span class="n">residues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">]</span>
+<span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">3.5</span>
 </pre></div>
 </div>
 <p>Example: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/residues-box.toml">residues-box.toml</a>.</p>

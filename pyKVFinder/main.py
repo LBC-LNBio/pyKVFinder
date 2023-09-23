@@ -469,10 +469,10 @@ class pyKVFinderResults(object):
 
         Example
         -------
-        >>> from pyKVFinder import pyKVFinder
         >>> import os
+        >>> import pyKVFinder
         >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-        >>> results = pyKVFinder(pdb)
+        >>> results = pyKVFinder.run_workflow(pdb)
         >>> results.export()
         """
         export(
@@ -513,10 +513,10 @@ class pyKVFinderResults(object):
 
         Example
         -------
-        >>> from pyKVFinder import pyKVFinder
         >>> import os
+        >>> import pyKVFinder
         >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-        >>> results = pyKVFinder(pdb)
+        >>> results = pyKVFinder.run_workflow(pdb)
         >>> results.write()
         """
         write_results(
@@ -568,10 +568,10 @@ class pyKVFinderResults(object):
 
         Example
         -------
-        >>> from pyKVFinder import pyKVFinder
         >>> import os
+        >>> import pyKVFinder
         >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-        >>> results = pyKVFinder(pdb)
+        >>> results = pyKVFinder.run_workflow(pdb)
         >>> results.plot_frequencies()
         """
         plot_frequencies(self.frequencies, pdf)
@@ -631,10 +631,10 @@ class pyKVFinderResults(object):
 
         Example
         -------
-        >>> from pyKVFinder import pyKVFinder
         >>> import os
+        >>> import pyKVFinder
         >>> pdb = os.path.join(os.path.dirname(pyKVFinder.__file__), 'data', 'tests', '1FMO.pdb')
-        >>> results = pyKVFinder(pdb)
+        >>> results = pyKVFinder.run_workflow(pdb)
         >>> results.export_all()
 
         Yet, we can set a ``include_frequencies_pdf`` flag to True to plot the bar charts of the frequencies in a PDF file.
