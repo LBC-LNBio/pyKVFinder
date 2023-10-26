@@ -1,5 +1,5 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.5, pytest-7.4.2, pluggy-1.3.0
+platform linux -- Python 3.11.6, pytest-7.4.3, pluggy-1.3.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests
@@ -15,7 +15,7 @@ tests/unit/test_grid.py ................................................ [ 32%]
 tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
----------- coverage: platform linux, python 3.11.5-final-0 -----------
+---------- coverage: platform linux, python 3.11.6-final-0 -----------
 Name                  Stmts   Miss  Cover   Missing
 ---------------------------------------------------
 pyKVFinder/grid.py      722    107    85%   917, 921, 2242-2262, 2399-2476, 2832-2901
@@ -25,4 +25,4 @@ pyKVFinder/utils.py     312      6    98%   571, 603, 606-608, 630
 TOTAL                  1391    180    87%
 
 
-======================= 313 passed in 151.92s (0:02:31) ========================
+======================= 313 passed in 205.78s (0:03:25) ========================
