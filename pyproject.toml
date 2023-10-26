@@ -46,7 +46,7 @@ classifiers = [
 ]
 dependencies = [
     "toml==0.10.2",
-    "numpy==1.26.0",
+    "numpy==1.26.1",
     "matplotlib==3.7.3",
     "plotly==5.17.0",
 ]
