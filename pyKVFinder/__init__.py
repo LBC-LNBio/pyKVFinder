@@ -5,7 +5,7 @@ pyKVFinder detects and characterizes cavities in biomolecular structures.
 The characterization includes shape, volume, area, depth, hydropathy and
 interface residues and their frequencies.
 
-In addition to the set of function that can be imported on Python scritps,
+In addition to the set of functions that can be imported into Python scripts,
 it contains a command line interface (CLI).
 
 Python package
@@ -31,7 +31,7 @@ See also
 """
 
 __name__ = "pyKVFinder"
-__version__ = "0.6.8"
+__version__ = "0.6.9"
 license = "GNU GPL-3.0 License"
 
 from .utils import *
