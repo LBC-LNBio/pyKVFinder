@@ -2091,7 +2091,8 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
   char **residues;
 
   // Allocate memory for reslist structure
-  res *reslist[ncav], *new, *old;
+  res **reslist = malloc(ncav * sizeof(res *));
+  res *new, *old;
 
   // Initialize linked list
   for (i = 0; i < ncav; i++)
@@ -2155,6 +2156,7 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
     residues[j++] = "-1";
   }
   residues[j] = NULL;
+  free(reslist);
   return residues;
 }
 
