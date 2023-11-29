@@ -96,3 +96,6 @@ before-build = ["brew install gcc@9"]
 archs = ["native"]
 repair-wheel-command = ""
 test-skip = "*-macosx_arm64"
+
+[tool.cibuildwheel.windows]
+archs = ["native"]
