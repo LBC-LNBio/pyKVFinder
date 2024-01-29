@@ -62,7 +62,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest==7.4.4", "pytest-cov==4.1.0", "black==23.12.1", "flake8==7.0.0"]
+dev = ["pytest==7.4.4", "pytest-cov==4.1.0", "black==24.1.1", "flake8==7.0.0"]
 
 [project.urls]
 homepage = "https://github.com/LBC-LNBio/pyKVFinder/"
