@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Requirements &mdash; pyKVFinder 0.6.7 documentation</title>
+  <title>Requirements &mdash; pyKVFinder 0.6.12 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -117,11 +117,11 @@
 <section id="package-managers">
 <h2>Package managers<a class="headerlink" href="#package-managers" title="Permalink to this heading"></a></h2>
 <p>On Linux:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3<span class="w"> </span>swig
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install python3 swig
 </pre></div>
 </div>
 <p>On macOS:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>python3<span class="w"> </span>swig
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install python3 swig
 </pre></div>
 </div>
 <div class="admonition note">
@@ -133,10 +133,10 @@
 <h2>Conda<a class="headerlink" href="#conda" title="Permalink to this heading"></a></h2>
 <p>If you use conda, you can install Python v3 and SWIG from the defaults channel:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use an environment rather than install in base environement (recommended)</span>
-conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>myenv<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>
-conda<span class="w"> </span>activate<span class="w"> </span>myenv
+conda create -n myenv <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
+conda activate myenv
 <span class="c1"># The SWIG install command</span>
-conda<span class="w"> </span>install<span class="w"> </span>swig
+conda install swig
 </pre></div>
 </div>
 </section>
@@ -146,12 +146,12 @@ conda<span class="w"> </span>install<span class="w"> </span>swig
 <p>The prerequisites for installing pyKVFinder is Python v3 and SWIG. If you don’t have Python and/or SWIG yet, please refer to this <a class="reference external" href="index.html#requirements">section</a>.</p>
 <p>To install the latest release on <a class="reference external" href="https://pypi.org/project/pyKVFinder">PyPI</a>,
 run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pyKVFinder
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pyKVFinder
 </pre></div>
 </div>
 <p>Or to install the latest developmental version, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/LBC-LNBio/pyKVFinder.git
-pip<span class="w"> </span>install<span class="w"> </span>pyKVFinder
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/LBC-LNBio/pyKVFinder.git
+pip install pyKVFinder
 </pre></div>
 </div>
 </section>

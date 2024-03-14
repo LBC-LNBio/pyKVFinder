@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hydrophobicity scale file template &mdash; pyKVFinder 0.6.7 documentation</title>
+  <title>Hydrophobicity scale file template &mdash; pyKVFinder 0.6.12 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon.ico"/>
@@ -109,27 +109,27 @@
   <section id="hydrophobicity-scale-file-template">
 <h1>Hydrophobicity scale file template<a class="headerlink" href="#hydrophobicity-scale-file-template" title="Permalink to this heading"></a></h1>
 <p>The hydrophobicity scale file defines the name of the scale and the hydrophobicity value for each residue and when not defined, it assigns zero to the missing residues. The package contains six built-in hydrophobicity scales: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/EisenbergWeiss.toml">Eisenberg &amp; Weiss</a> [1], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/HessaHeijne.toml">Hessa &amp; Heijne</a> [2], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/KyteDoolittle.toml">Kyte &amp; Doolittle</a> [3], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/MoonFleming.toml">Moon &amp; Fleming</a> [4], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/RadzickaWolfenden.toml">Radzicka &amp; Wolfenden</a> [5], <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml">Wimley &amp; White</a> [6] and <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml">Zhao &amp; London</a> [7]. However, the user can define its own file with a mandatory format and pass it to pyKVFinder. The format is shown below:</p>
-<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[EisenbergWeiss]</span>
-<span class="n">ALA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.64</span>
-<span class="n">ARG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.6</span>
-<span class="n">ASN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.8</span>
-<span class="n">ASP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.92</span>
-<span class="n">CYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.3</span>
-<span class="n">GLN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.87</span>
-<span class="n">GLU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.76</span>
-<span class="n">GLY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.49</span>
-<span class="n">HIS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.41</span>
-<span class="n">ILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.42</span>
-<span class="n">LEU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.09</span>
-<span class="n">LYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.54</span>
-<span class="n">MET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.66</span>
-<span class="n">PHE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.22</span>
-<span class="n">PRO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.12</span>
-<span class="n">SER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.18</span>
-<span class="n">THR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.05</span>
-<span class="n">TRP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.83</span>
-<span class="n">TYR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.27</span>
-<span class="n">VAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.11</span>
+<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[EisenbergWeiss]</span><span class="w"></span>
+<span class="n">ALA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.64</span><span class="w"></span>
+<span class="n">ARG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.6</span><span class="w"></span>
+<span class="n">ASN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.8</span><span class="w"></span>
+<span class="n">ASP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.92</span><span class="w"></span>
+<span class="n">CYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.3</span><span class="w"></span>
+<span class="n">GLN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.87</span><span class="w"></span>
+<span class="n">GLU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.76</span><span class="w"></span>
+<span class="n">GLY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.49</span><span class="w"></span>
+<span class="n">HIS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.41</span><span class="w"></span>
+<span class="n">ILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.42</span><span class="w"></span>
+<span class="n">LEU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.09</span><span class="w"></span>
+<span class="n">LYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.54</span><span class="w"></span>
+<span class="n">MET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.66</span><span class="w"></span>
+<span class="n">PHE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.22</span><span class="w"></span>
+<span class="n">PRO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.12</span><span class="w"></span>
+<span class="n">SER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.18</span><span class="w"></span>
+<span class="n">THR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.05</span><span class="w"></span>
+<span class="n">TRP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.83</span><span class="w"></span>
+<span class="n">TYR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-0</span><span class="mf">.27</span><span class="w"></span>
+<span class="n">VAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="mf">.11</span><span class="w"></span>
 </pre></div>
 </div>
 <h4><u>References</u></h4><ol class="arabic simple">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.main &mdash; pyKVFinder 0.6.7 documentation</title>
+  <title>pyKVFinder.main &mdash; pyKVFinder 0.6.12 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
@@ -142,7 +142,7 @@
 
 
 <span class="k">def</span> <span class="nf">cli</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;pyKVFinder Command Line Interface (CLI).</span>
+    <span class="sd">&quot;&quot;&quot;pyKVFinder Command Line Interface (CLI).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -184,7 +184,7 @@
 
     <span class="c1"># Start logging</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;KVFinder.log&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="s1">&#39;KVFinder.log&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
         <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -257,7 +257,7 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Step: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Probe In: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Probe Out: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Voxel volume: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5\u00b3</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Voxel volume: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">step</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5\u00b3</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p1: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p2: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; p3: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -386,7 +386,7 @@
 
 
 <div class="viewcode-block" id="pyKVFinderResults"><a class="viewcode-back" href="../../_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults">[docs]</a><span class="k">class</span> <span class="nc">pyKVFinderResults</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class containing pyKVFinder detection and characterization results.</span>
+    <span class="sd">&quot;&quot;&quot;A class containing pyKVFinder detection and characterization results.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -554,7 +554,7 @@
         <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cavity.pdb&quot;</span><span class="p">,</span>
         <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exports cavitiy (H) and surface (HA) points to PDB-formatted file</span>
+        <span class="sd">&quot;&quot;&quot;Exports cavitiy (H) and surface (HA) points to PDB-formatted file</span>
 <span class="sd">        with a variable (B; optional) in B-factor column, and hydropathy to</span>
 <span class="sd">        PDB-formatted file in B-factor column at surface points (HA).</span>
 
@@ -598,7 +598,7 @@
         <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;results.toml&quot;</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Writes file paths and cavity characterization to TOML-formatted file</span>
 
 <span class="sd">        Parameters</span>
@@ -641,7 +641,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="pyKVFinderResults.plot_frequencies"><a class="viewcode-back" href="../../_api_reference/pyKVFinderResults.html#pyKVFinder.pyKVFinderResults.plot_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">plot_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;barplots.pdf&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot bar charts of frequencies (residues and classes of residues) in</span>
+        <span class="sd">&quot;&quot;&quot;Plot bar charts of frequencies (residues and classes of residues) in</span>
 <span class="sd">        a PDF file.</span>
 
 <span class="sd">        Parameters</span>
@@ -690,7 +690,7 @@
         <span class="n">pdf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;barplots.pdf&quot;</span><span class="p">,</span>
         <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exports cavities and characterization to PDB-formatted files,</span>
+        <span class="sd">&quot;&quot;&quot;Exports cavities and characterization to PDB-formatted files,</span>
 <span class="sd">        writes file paths and characterization to a TOML-formatted file, and</span>
 <span class="sd">        optionally plot bar charts of frequencies (residues and classes of</span>
 <span class="sd">        residues) in a PDF file.</span>
@@ -776,7 +776,7 @@
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyKVFinderResults</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detects and characterizes cavities (volume, area, depth [optional],</span>
+    <span class="sd">&quot;&quot;&quot;Detects and characterizes cavities (volume, area, depth [optional],</span>
 <span class="sd">    hydropathy [optional] and interface residues).</span>
 
 <span class="sd">    Parameters</span>
@@ -1295,7 +1295,7 @@
 
 
 <div class="viewcode-block" id="Molecule"><a class="viewcode-back" href="../../_api_reference/Molecule.html#pyKVFinder.Molecule">[docs]</a><span class="k">class</span> <span class="nc">Molecule</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for representing molecular structures.</span>
+    <span class="sd">&quot;&quot;&quot;A class for representing molecular structures.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1393,7 +1393,7 @@
         <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Molecule object with molecule, radii, model, nthreads and verbose.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the Molecule object with molecule, radii, model, nthreads and verbose.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1472,109 +1472,109 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">atomic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _atomic attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _atomic attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atomic</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _dim attribute&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _dim attribute&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _grid attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _grid attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _molecule attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _molecule attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">nx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get grid units in X-axis.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get grid units in X-axis.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ny</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get grid units in Y-axis.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get grid units in Y-axis.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">nz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get grid units in Z-axis.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get grid units in Z-axis.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">p1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get origin of the 3D grid.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get origin of the 3D grid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">p2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get X-axis max of the 3D grid.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get X-axis max of the 3D grid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">p3</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Y-axis max of the 3D grid.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get Y-axis max of the 3D grid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">p4</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Z-axis max of the 3D grid.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get Z-axis max of the 3D grid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">padding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _padding attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _padding attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_padding</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">probe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _probe attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _probe attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probe</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">radii</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _radii attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _radii attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_radii</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _representation attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _representation attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_representation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _rotation attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _rotation attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _step attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _step attribute.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get _vertices attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get _vertices attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">xyzr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get xyz coordinates and radius of molecule atoms.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get xyz coordinates and radius of molecule atoms.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the 3D grid for the target molecule.</span>
+        <span class="sd">&quot;&quot;&quot;Define the 3D grid for the target molecule.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1614,7 +1614,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sina: </span><span class="si">{}</span><span class="s2">, sinb: </span><span class="si">{}</span><span class="s2">, cosa: </span><span class="si">{}</span><span class="s2">, cosb: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_get_padding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Automatically define the padding based on molecule coordinates, probe size, grid spacing and atom radii.</span>
+        <span class="sd">&quot;&quot;&quot;Automatically define the padding based on molecule coordinates, probe size, grid spacing and atom radii.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1627,7 +1627,7 @@
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">padding</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Molecule.vdw"><a class="viewcode-back" href="../../_api_reference/Molecule.html#pyKVFinder.Molecule.vdw">[docs]</a>    <span class="k">def</span> <span class="nf">vdw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill the 3D grid with the molecule as the van der Waals surface representation.</span>
+        <span class="sd">&quot;&quot;&quot;Fill the 3D grid with the molecule as the van der Waals surface representation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1709,7 +1709,7 @@
         <span class="n">surface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SES&quot;</span><span class="p">,</span>
         <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill the 3D grid with the molecule as the van der Waals surface representation.</span>
+        <span class="sd">&quot;&quot;&quot;Fill the 3D grid with the molecule as the van der Waals surface representation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1844,7 +1844,7 @@
         <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Molecule.volume"><a class="viewcode-back" href="../../_api_reference/Molecule.html#pyKVFinder.Molecule.volume">[docs]</a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Estimate the volume of the molecule based on the molecular surface representation, ie, vdW, SES or SAS representations.</span>
+        <span class="sd">&quot;&quot;&quot;Estimate the volume of the molecule based on the molecular surface representation, ie, vdW, SES or SAS representations.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1867,7 +1867,7 @@
             <span class="k">return</span> <span class="n">volume</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Molecule.preview"><a class="viewcode-back" href="../../_api_reference/Molecule.html#pyKVFinder.Molecule.preview">[docs]</a>    <span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Preview the molecular surface in the 3D grid.</span>
+        <span class="sd">&quot;&quot;&quot;Preview the molecular surface in the 3D grid.</span>
 
 <span class="sd">        Example</span>
 <span class="sd">        -------</span>
@@ -1891,7 +1891,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;molecule.pdb&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Export molecule points (H) to a PDB-formatted file.</span>
+        <span class="sd">&quot;&quot;&quot;Export molecule points (H) to a PDB-formatted file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

@@ -782,7 +782,7 @@ Steered detection
 
 All these steps showed so far were performed the detection on the whole target biomolecule; however, we can perform them on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a *.toml* file.
 
-There are three methods to define a custom 3D grid as shown in `Box configuration file template <box_file_template.html>`_.
+There are three methods to define a custom 3D grid as shown in `Box configuration file template <../_cfg_files/box_file_template.html>`_.
 
 First, we will create a box *.toml* file with: 
 
