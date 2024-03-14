@@ -58,7 +58,7 @@ dependencies = [
     "toml==0.10.2",
     "numpy==1.26.4",
     "matplotlib==3.8.3",
-    "plotly==5.19.0",
+    "plotly==5.20.0",
 ]
 dynamic = ["version"]
 
