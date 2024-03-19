@@ -223,6 +223,9 @@ class KVFinder(ToolInstance):
         self.ui.button_delete_box.clicked.connect(self.delete_box)
         self.ui.button_redraw_box.clicked.connect(self.redraw_box)
         
+        # Grid
+        self.ui.button_grid.clicked.connect(self.show_grid)
+        
         # Ligand Adjustment
         self.ui.refresh_ligand.clicked.connect(lambda: self.refresh(self.ui.ligand))
 
@@ -263,7 +266,7 @@ class KVFinder(ToolInstance):
 
                 # Clean results
                 self.clean_results()
-                self.results_file_entry.clear()
+                self.ui.results_file_entry.clear()
 
         # Restore PDB and ligand input
         self.refresh(self.ui.input)
@@ -295,7 +298,7 @@ class KVFinder(ToolInstance):
         # Box Adjustment
         self.ui.box_adjustment.setChecked(self._default.box_adjustment)
         self.ui.padding.setValue(self._default.padding)
-        #self.ui.delete_box()
+        self.delete_box()
         # Ligand Adjustment
         self.ui.ligand_adjustment.setChecked(self._default.ligand_adjustment)
         self.ui.ligand.clear()
@@ -351,7 +354,6 @@ class KVFinder(ToolInstance):
             ncavs, cavities = pyKVFinder.detect(atomic, vertices, step=step, latomic=ligand, ligand_cutoff = ligand_cutoff, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, surface=surface)
         else:
             fn = os.path.join(self.ui.output_dir_path.text(), 'KV_Files', self.ui.base_name.text(), "parameters.toml")
-            print(fn)
             vertices, atomic = pyKVFinder.get_vertices_from_file(fn, atomic, step=step, probe_in=probe_in, probe_out=probe_out)
             ncavs, cavities = pyKVFinder.detect(atomic, vertices, step=step, latomic=ligand, ligand_cutoff = ligand_cutoff, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
         elapsed_time = time.time() - start
@@ -792,7 +794,7 @@ class KVFinder(ToolInstance):
             if model.name == "box":
                 model.delete()
 
-        sel_atoms = selected_atoms(self.session)
+        sel_atoms = selected_atoms(self.session)           
         
         if len(sel_atoms) > 0 :
             minCoords = sel_atoms.coords.min(axis=0)
@@ -805,10 +807,12 @@ class KVFinder(ToolInstance):
 
             if model:
                 run(self.session, f"sel protein & {model.atomspec}")
+                sel_atoms = selected_atoms(self.session)
             else:
                 run(self.session, f"sel protein")
+                sel_atoms = selected_atoms(self.session)
 
-        print(f"Min coords: {min_x, min_y, min_z}\nMax coords: {max_x, max_y, max_z}")
+        print(f"Min coords (Box): {min_x, min_y, min_z}\nMax coords (Box): {max_x, max_y, max_z}")
 
         # Get center of each dimension (x, y, z)
         self.x = (min_x + max_x) / 2
@@ -1055,7 +1059,7 @@ class KVFinder(ToolInstance):
         # llb = v0 -|---v1 |
         #         \ |     \|
         #          v4 ---- v5
-
+        
         vertices = np.array([
 
             # -x, v0-v4-v2-v6
@@ -1125,7 +1129,306 @@ class KVFinder(ToolInstance):
         ], dtype=np.int32)
         
         return vertices, normals, triangles
+    
+    def show_grid(self) -> None:
+        """
+        Callback for the "Show Grid" button
+        - Get minimum and maximum coordinates of the KVFinder-web 3D-grid, dependent on selected parameters.
+        :return: Call draw_grid function with minimum and maximum coordinates or return Error.
+        """
 
+        global xg, yg, zg
+
+        if self.ui.input.count() > 0:
+            # Get minimum and maximum dimensions of target PDB
+            pdb = self.ui.input.currentText()
+            
+            model = self._get_model(pdb)
+            
+            run(self.session, f"sel {model.atomspec}")
+            sel_atoms = selected_atoms(self.session) 
+            run(self.session, "sel clear")          
+            
+            if len(sel_atoms) > 0 :
+                minCoords = sel_atoms.coords.min(axis=0)
+                maxCoords = sel_atoms.coords.max(axis=0)
+                
+                min_x, min_y, min_z = minCoords[0], minCoords[1], minCoords[2]
+                max_x, max_y, max_z = maxCoords[0], maxCoords[1], maxCoords[2]
+            else:
+                print(f"I can't find the model {self.input}. Check if the model is open")
+                
+
+            print(f"Min coords (Grid): {min_x, min_y, min_z}\nMax coords (Grid): {max_x, max_y, max_z}")
+
+            # Get Probe Out value
+            probe_out = self.ui.probe_out.value()
+            probe_out = round(probe_out - round(probe_out, 4) % round(0.6, 4), 1)
+
+            # Prepare dimensions
+            min_x = round(min_x - (min_x % 0.6), 1) - probe_out
+            min_y = round(min_y - (min_y % 0.6), 1) - probe_out
+            min_z = round(min_z - (min_z % 0.6), 1) - probe_out
+            max_x = round(max_x - (max_x % 0.6) + 0.6, 1) + probe_out
+            max_y = round(max_y - (max_y % 0.6) + 0.6, 1) + probe_out
+            max_z = round(max_z - (max_z % 0.6) + 0.6, 1) + probe_out
+
+            # Get center of each dimension (x, y, z)
+            xg = (min_x + max_x) / 2
+            yg = (min_y + max_y) / 2
+            zg = (min_z + max_z) / 2
+
+            # Draw Grid
+            self.draw_grid(min_x, max_x, min_y, max_y, min_z, max_z)
+        else:
+            from PyQt5.QtWidgets import QMessageBox
+
+            QMessageBox.critical(self.tool_window, "Error", "Select an input PDB!")
+            return
+
+    def draw_grid(self, min_x, max_x, min_y, max_y, min_z, max_z) -> None:
+        """
+        Draw Grid in ChimeraX.
+        :param min_x: minimum X coordinate.
+        :param max_x: maximum X coordinate.
+        :param min_y: minimum Y coordinate.
+        :param max_y: maximum Y coordinate.
+        :param min_z: minimum Z coordinate.
+        :param max_z: maximum Z coordinate.
+        :return: grid object in PyMOL.
+        """
+
+        from math import sin, cos
+        
+        models = all_objects(self.session).models
+
+        for model in models:
+            if model.name == "grid":
+                model.delete()   
+
+        # Prepare dimensions
+        angle1 = 0.0
+        angle2 = 0.0
+        min_x = xg - min_x
+        max_x = max_x - xg
+        min_y = yg - min_y
+        max_y = max_y - yg
+        min_z = zg - min_z
+        max_z = max_z - zg
+
+        # Get positions of grid vertices
+        # P1
+        x1 = (
+            -min_x * cos(angle2)
+            - (-min_y) * sin(angle1) * sin(angle2)
+            + (-min_z) * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y1 = -min_y * cos(angle1) + (-min_z) * sin(angle1) + yg
+
+        z1 = (
+            min_x * sin(angle2)
+            + min_y * sin(angle1) * cos(angle2)
+            - min_z * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P2
+        x2 = (
+            max_x * cos(angle2)
+            - (-min_y) * sin(angle1) * sin(angle2)
+            + (-min_z) * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y2 = (-min_y) * cos(angle1) + (-min_z) * sin(angle1) + yg
+
+        z2 = (
+            (-max_x) * sin(angle2)
+            - (-min_y) * sin(angle1) * cos(angle2)
+            + (-min_z) * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P3
+        x3 = (
+            (-min_x) * cos(angle2)
+            - max_y * sin(angle1) * sin(angle2)
+            + (-min_z) * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y3 = max_y * cos(angle1) + (-min_z) * sin(angle1) + yg
+
+        z3 = (
+            -(-min_x) * sin(angle2)
+            - max_y * sin(angle1) * cos(angle2)
+            + (-min_z) * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P4
+        x4 = (
+            (-min_x) * cos(angle2)
+            - (-min_y) * sin(angle1) * sin(angle2)
+            + max_z * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y4 = (-min_y) * cos(angle1) + max_z * sin(angle1) + yg
+
+        z4 = (
+            -(-min_x) * sin(angle2)
+            - (-min_y) * sin(angle1) * cos(angle2)
+            + max_z * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P5
+        x5 = (
+            max_x * cos(angle2)
+            - max_y * sin(angle1) * sin(angle2)
+            + (-min_z) * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y5 = max_y * cos(angle1) + (-min_z) * sin(angle1) + yg
+
+        z5 = (
+            (-max_x) * sin(angle2)
+            - max_y * sin(angle1) * cos(angle2)
+            + (-min_z) * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P6
+        x6 = (
+            max_x * cos(angle2)
+            - (-min_y) * sin(angle1) * sin(angle2)
+            + max_z * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y6 = (-min_y) * cos(angle1) + max_z * sin(angle1) + yg
+
+        z6 = (
+            (-max_x) * sin(angle2)
+            - (-min_y) * sin(angle1) * cos(angle2)
+            + max_z * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P7
+        x7 = (
+            (-min_x) * cos(angle2)
+            - max_y * sin(angle1) * sin(angle2)
+            + max_z * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y7 = max_y * cos(angle1) + max_z * sin(angle1) + yg
+
+        z7 = (
+            -(-min_x) * sin(angle2)
+            - max_y * sin(angle1) * cos(angle2)
+            + max_z * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        # P8
+        x8 = (
+            max_x * cos(angle2)
+            - max_y * sin(angle1) * sin(angle2)
+            + max_z * cos(angle1) * sin(angle2)
+            + xg
+        )
+
+        y8 = max_y * cos(angle1) + max_z * sin(angle1) + yg
+
+        z8 = (
+            (-max_x) * sin(angle2)
+            - max_y * sin(angle1) * cos(angle2)
+            + max_z * cos(angle1) * cos(angle2)
+            + zg
+        )
+
+        P1 = (x1, y1, z1)
+        P2 = (x2, y2, z2)
+        P3 = (x3, y3, z3)
+        P4 = (x4, y4, z4)
+        P5 = (x5, y5, z5)
+        P6 = (x6, y6, z6)
+        P7 = (x7, y7, z7)
+        P8 = (x8, y8, z8)
+        
+        from chimerax.shape.shape import _show_surface
+        
+        points = [P1, P2, P3, P4, P5, P6, P7, P8]
+        
+        from chimerax.markers.markers import MarkerSet, create_link
+        
+        markers = MarkerSet(self.session, name="grid")
+        
+
+        links = [(1, 2), (1, 3), (1, 4), (3, 5), (3, 7), (5, 2), (5, 8),
+ (2, 6), (4, 7), (7, 8), (8, 6), (6, 4)]
+        
+        #       v2 ---- v3
+        #        |\      |\
+        #        | v6 ---- v7 = urf
+        #        |  |    | |
+        #        |  |    | |
+        # llb = v0 -|---v1 |
+        #         \ |     \|
+        #          v4 ---- v5
+        
+        # p1: v0
+        # p3: v4
+        # p4: v2
+        # p7: v6
+        # p2: v1
+        # p6: v3
+        # p7: v6
+        # p8: v7
+        # p5: v5
+        
+        """
+        links = {
+            1:  [2, 3, 4],
+            8: [5, 6, 7],
+            4: [6, 7],
+            5: [2, 3],
+            2: [6],
+            3: [7]
+        }
+        """
+        
+        i = 1
+        for point in points:
+            markers.create_marker(xyz= point, rgba=(255, 200, 0, 40), radius=1.5, id= i )
+            i += 1
+            
+        self.session.models.add([markers])
+        
+        model = self._get_model("grid")
+        
+        if model:
+            atoms = model.atoms
+            
+            for link in links:
+                a, b = link[0], link[1]
+                create_link(atoms[a-1], atoms[b-1])
+              
+        
+        
+        # varray, normals, tarray = self.box_geometry(P1, P2, P3, P4, P5, P6, P7, P8)
+
+        # # Create box object
+        # self.s = _show_surface(self.session, varray=varray, tarray=tarray, color = (255, 255, 220, 30), mesh=False,
+        #             center=None, rotation=None, qrotation=None, coordinate_system=None, 
+        #             slab=None, model_id= None, shape_name="grid")
+        
     def draw_box(self) -> None:
         """
         Callback for the "Draw box" button.
@@ -1506,7 +1809,11 @@ class KVFinder(ToolInstance):
 
 
         atomNP = np.zeros(shape=(len(sel_atoms), 8), dtype='<U32')
-        vdw = pyKVFinder.read_vdw()
+        if self.ui.dictionary.text() != "":            
+            path = self.ui.dictionary.text()
+            vdw = pyKVFinder.read_vdw(path)
+        else:  
+            vdw = pyKVFinder.read_vdw()
         for i in range(0, len(sel_atoms)):
             atom = sel_atoms[i]
             residue_name, atom_name, atom_element = str(atom.residue.name).upper(), str(atom.name).upper(), str(atom.element).upper()
@@ -1749,7 +2056,7 @@ class KVFinder(ToolInstance):
             run(self.session, command)
             self._reset_areas()
         else:
-            print(f"Didn't find the model {self.cavity_pdb}")
+            print(f"WARNING: Didn't find the model {self.cavity_pdb}")
 
     def show_depth_view(self) -> None:
         """
@@ -1771,7 +2078,7 @@ class KVFinder(ToolInstance):
             run(self.session, command)
             self._reset_areas()
         else:
-            print(f"Didn't find the model {self.cavity_pdb}")
+            print(f"WARNING: I Didn't find the model {self.cavity_pdb}")
 
     def show_hydropathy_view(self) -> None:
         """
@@ -3465,6 +3772,8 @@ class Ui_pyKVFinder(object):
         self.avg_hydropathy_label.setText(_translate("pyKVFinder", "Average Hydropathy"))
         self.residues_label.setText(_translate("pyKVFinder", "Interface Residues"))
         self.tabs.setTabText(self.tabs.indexOf(self.results), _translate("pyKVFinder", "Results"))
+        
+        # TODO: Change the about text
         self.about_text.setHtml(_translate("pyKVFinder", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
