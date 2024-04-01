@@ -1,11 +1,11 @@
 # pyKVFinder
 
-![PyPI](https://img.shields.io/pypi/v/pyKVFinder)
-![Python](https://img.shields.io/pypi/pyversions/pyKVFinder)
-![PyPI Downloads](https://img.shields.io/pypi/dm/pyKVFinder)
-![Unit testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-testing)
-![Integration testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-testing)
-![Build](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/deploy.yml?label=build)
+![PyPI - Version](https://img.shields.io/pypi/v/pyKVFinder?link=https%3A%2F%2Fpypi.org%2Fproject%2FpyKVFinder%2F)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyKVFinder?link=https%3A%2F%2Fpypi.org%2Fproject%2FpyKVFinder%2F)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/pyKVFinder)
+![Unit testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-testing&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%unit-testing.yml)
+![Integration testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-testing&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%integration-testing.yml)
+![Build](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/deploy.yml?label=build&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%2Fdeploy.yml)
 ![Coverage](https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg)
 
 A Python package for detecting and characterizing biomolecular cavities.
