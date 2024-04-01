@@ -1,27 +1,12 @@
 # pyKVFinder
 
 [![PyPI - Version](https://img.shields.io/pypi/v/pyKVFinder)](https://pypi.org/project/pyKVFinder/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyKVFinder?link=https%3A%2F%2Fpypi.org%2Fproject%2FpyKVFinder%2F)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/pyKVFinder)
-![Unit testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-testing&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%unit-testing.yml)
-![Integration testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-testing&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%integration-testing.yml)
-![Build](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/deploy.yml?label=build&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%2Fdeploy.yml)
-![Coverage](https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg)
-
-<!-- https://github.com/LBC-LNBio/pyKVFinder/blob/coverage/coverage.txt -->
-
-
-
-
-
-
-<!-- ![PyPI - Version](https://img.shields.io/pypi/v/pyKVFinder?link=https%3A%2F%2Fpypi.org%2Fproject%2FpyKVFinder%2F)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyKVFinder?link=https%3A%2F%2Fpypi.org%2Fproject%2FpyKVFinder%2F)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/pyKVFinder)
-![Unit testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-testing&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%unit-testing.yml)
-![Integration testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-testing&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%integration-testing.yml)
-![Build](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/deploy.yml?label=build&link=https%3A%2F%2Fgithub.com%2FLBC-LNBio%2FpyKVFinder%2Factions%2Fworkflows%2Fdeploy.yml)
-![Coverage](https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg) -->
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyKVFinder)](https://pypi.org/project/pyKVFinder/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyKVFinder)](https://pypi.org/project/pyKVFinder/)
+[![Unit testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-testing)](https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/unit-testing.yml)
+[![Integration testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-testing)](https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/integration-testing.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/deploy.yml?label=build)](https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/deploy.yml)
+[![Coverage](https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg)](https://github.com/LBC-LNBio/pyKVFinder/blob/coverage/coverage.txt)
 
 A Python package for detecting and characterizing biomolecular cavities.
 
