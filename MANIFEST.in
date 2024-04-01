@@ -10,10 +10,10 @@ include pyKVFinder/data/tests/*.pdb
 include pyKVFinder/data/tests/*.xyz
 
 # Include the license file
-include LICENSE.txt
+include LICENSE
 
 # Include README
-include README.rst
+include README.md
 
 # Include Python requirements
 include requirements.txt
