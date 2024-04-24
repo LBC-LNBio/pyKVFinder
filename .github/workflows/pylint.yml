@@ -24,4 +24,10 @@ jobs:
 
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files 'pyKVFinder/*.py')
+        pylint $(git ls-files 'pyKVFinder/*.py') --output=pylint.txt || true
+    
+    - name: Upload pylint report
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: ./pylint.txt
