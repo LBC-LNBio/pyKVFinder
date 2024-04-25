@@ -26,20 +26,24 @@ jobs:
 
       - name: Build coverage file
         run: |
-          mkdir coverage
-          pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage/coverage.txt
+          pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: coverage/coverage.txt
+          pytest-coverage-path: coverage.txt
           default-branch: master
           remove-link-from-badge: true
 
-      # - name: Coverage Bagdge
-      #   uses: tj-actions/coverage-badge-py@v2
-      #   with:
-      #     output: coverage/coverage.svg
+      - name: Coverage Bagdge
+        uses: tj-actions/coverage-badge-py@v2
+        with:
+          output: coverage.svg
+
+      - name: Move report to coverage directory
+        run: |
+          mkdir coverage
+          mv coverage.txt coverage.svg coverage/
 
       - name: Publish coverage report to coverage branch
         uses: JamesIves/github-pages-deploy-action@v4
