@@ -11,19 +11,18 @@ build-backend = "setuptools.build_meta"
 name = "pyKVFinder"
 description = "Python package to detect and characterize cavities in biomolecular structures"
 authors = [
-    { name = "João Victor da Silva Guerra", email = "jvsguerra@gmail.com" },
-    { name = "Helder Veras Ribeiro Filho" },
-    { name = "Luiz Fernando Giolo Alves" },
-    { name = "Gabriel Ernesto Jara" },    
-    { name = "Leandro Oliveira Bortot" },
-    { name = "José Geraldo de Carvalho Pereira" },
-    { name = "Paulo Sergio Lopes-de-Oliveira" },
+    { name = "João V. S. Guerra", email = "jvsguerra@gmail.com" },
+    { name = "Helder V. Ribeiro-Filho" },
+    { name = "Luiz F. G. Alves" },
+    { name = "Pablo W. A. Silva" },
+    { name = "Gabriel E. Jara" },
+    { name = "Leandro O. Bortot" },
+    { name = "José G. C. Pereira" },
+    { name = "Paulo S. Lopes-de-Oliveira" },
 ]
-maintainers = [
-    { name = "João Victor da Silva Guerra", email = "jvsguerra@gmail.com" },
-]
-license = { file = "LICENSE.txt" }
-readme = { file = "README.rst", content-type = "text/x-rst" }
+maintainers = [{ name = "João V. S. Guerra", email = "jvsguerra@gmail.com" }]
+license = { file = "LICENSE" }
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
 keywords = [
     "structural biology",
@@ -31,6 +30,7 @@ keywords = [
     "biomolecules",
     "cavity detection",
     "cavity characterization",
+    "binding sites",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
