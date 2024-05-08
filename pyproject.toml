@@ -101,11 +101,9 @@ build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
 archs = ["native"]
 
 [tool.cibuildwheel.macos]
-environment = { CC = "/usr/local/bin/gcc-9", MACOS_DEVELOPMENT_TARGET = "10.9" }
-before-build = ["brew install gcc@9"]
+environment = { CC = "gcc-13" }
+before-build = ["brew install swig"]
 archs = ["native"]
-repair-wheel-command = ""
-test-skip = "*-macosx_arm64"
 
 [tool.cibuildwheel.windows]
 archs = ["native"]
