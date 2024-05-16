@@ -57,7 +57,7 @@ classifiers = [
 dependencies = [
     "toml==0.10.2",
     "numpy==1.26.4",
-    "matplotlib==3.8.4",
+    "matplotlib==3.9.0",
     "plotly==5.22.0",
 ]
 dynamic = ["version"]
