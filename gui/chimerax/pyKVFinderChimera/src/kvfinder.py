@@ -342,7 +342,6 @@ class KVFinder(ToolInstance):
             
             ligand = self.extract_pdb_session(list_models=ligand_model, selected=False)
             ligand_cutoff = self.ui.ligand_cutoff.value()
-            print("Gerei o ligante")
         else:
             ligand = None
             ligand_cutoff = 5
@@ -350,10 +349,7 @@ class KVFinder(ToolInstance):
             vertices = pyKVFinder.get_vertices(atomic, probe_out=probe_out, step=step)
             ncavs, cavities = pyKVFinder.detect(atomic, vertices, step=step, latomic=ligand, ligand_cutoff = ligand_cutoff, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, surface=surface)
         else:
-            fn = os.path.join(self.ui.output_dir_path.text(), 'KV_Files', self.ui.base_name.text(), "parameters.toml")
-            
-            print(f"fn: {fn}")
-            print(f"atomic: {atomic}")
+            fn = os.path.join(self.ui.output_dir_path.text(), 'KV_Files', self.ui.base_name.text(), "parameters.toml")   
             vertices, atomic = pyKVFinder.get_vertices_from_file(fn, atomic, step=step, probe_in=probe_in, probe_out=probe_out)
             ncavs, cavities = pyKVFinder.detect(atomic, vertices, step=step, latomic=ligand, ligand_cutoff = ligand_cutoff, probe_in=probe_in, probe_out=probe_out, removal_distance=removal_distance, volume_cutoff=volume_cutoff, box_adjustment=True, surface=surface)
         elapsed_time = time.time() - start
@@ -495,13 +491,6 @@ class KVFinder(ToolInstance):
         # # Set default view in results
         self.ui.default_view.setChecked(True)
 
-
-        # # Load files as PyMOL objects
-        # cmd.delete("cavities")
-        # cmd.delete("residues")
-        # cmd.frame(1)
-
-        # Load input
         models_loaded = [model.name for model in self.session.models]
         if "INPUT" in results["FILES_PATH"].keys():
             input_fn = results["FILES_PATH"]["INPUT"]
@@ -561,7 +550,6 @@ class KVFinder(ToolInstance):
         # Save input pdb
         if len(self.ui.input.currentData()) > 0:
             model = self._get_model(self.ui.input.currentData())
-            print(f"model: {model}")
             pdb = os.path.join(
                 os.path.join(basedir, f"{self.ui.base_name.text()}.KVFinder.output.pdb")
             )
@@ -2029,14 +2017,10 @@ class KVFinder(ToolInstance):
             objects = all_objects(self.session)
             models_obj = objects.models
             
-            models = []
-            print(f"name: {name}")
-            print(f"models_obj: {models_obj}")
-        
+            models = []        
             
             for model in models_obj:
                 model_name = model.name + " " + model.id_string
-                print(f"model_name: {model_name}")
                 
                 if model_name in name:
                     models.append(model)
