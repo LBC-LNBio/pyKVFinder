@@ -436,47 +436,6 @@ class KVFinder(ToolInstance):
                 "An error occurred while creating the parameters file! Check the parKVFinder parameters!",
             )
 
-    
-    def run_old(self):
-        """This function calls extract_pdb_session to obtain the desired atomic structure, 
-        and then invokes _run_pyKVFinder to identify the cavities.
-
-        """
-        if self.save_parameters():
-            model = self._get_model(self.ui.input.currentData())
-            spec = model.atomspec
-            if self.ui.box_adjustment.isChecked():
-                atomic = self.extract_pdb_session(selected=False, name=self.ui.input.currentText())
-                self._run_pyKVFinder(atomic, box_adjustment = True)
-            elif self.region_option == "Default":
-                atomic = self.extract_pdb_session(selected=False, name=self.ui.input.currentText())
-                self._run_pyKVFinder(atomic)
-            elif self.region_option == "Selected":
-                atomic = self.extract_pdb_session(selected=True, name=self.ui.input.currentText())
-                self._run_pyKVFinder(atomic)              
-            elif self.region_option == "Protein":
-                run(self.session, f"sel {spec} & protein")
-                atomic = self.extract_pdb_session(selected=True, name=self.ui.input.currentText())
-                self._run_pyKVFinder(atomic)    
-            elif self.region_option == "All ligands without solvent":
-                run(self.session, f"sel {spec} & ~solvent")
-                atomic = self.extract_pdb_session(selected=True, name=self.ui.input.currentText())
-                self._run_pyKVFinder(atomic)    
-            else:
-
-                QtWidgets.QMessageBox.critical(
-                    self.tool_window, "Error!", "An error occurred during cavity detection!"
-                )             
-
-        else:
-            from PyQt5.QtWidgets import QMessageBox
-
-            QMessageBox.critical(
-                self.tool_window,
-                "Error",
-                "An error occurred while creating the parameters file! Check the parKVFinder parameters!",
-            )
-
     def load_results(self) -> None:
 
         # Get results file
