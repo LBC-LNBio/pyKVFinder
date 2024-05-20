@@ -1,5 +1,5 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.9, pytest-8.2.0, pluggy-1.5.0
+platform linux -- Python 3.11.9, pytest-8.2.1, pluggy-1.5.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests
@@ -25,4 +25,4 @@ pyKVFinder/utils.py     312      6    98%   571, 603, 606-608, 630
 TOTAL                  1391    180    87%
 
 
-======================== 313 passed in 96.76s (0:01:36) ========================
+======================== 313 passed in 96.25s (0:01:36) ========================
