@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.6.13 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.6.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ad970d1"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -106,6 +109,7 @@
   <h1>Source code for pyKVFinder.grid</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -124,12 +128,14 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="get_vertices"><a class="viewcode-back" href="../../_api_reference/get_vertices.html#pyKVFinder.get_vertices">[docs]</a><span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span>
+<div class="viewcode-block" id="get_vertices">
+<a class="viewcode-back" href="../../_api_reference/get_vertices.html#pyKVFinder.get_vertices">[docs]</a>
+<span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Gets 3D grid vertices.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -219,7 +225,10 @@
     <span class="k">return</span> <span class="n">vertices</span></div>
 
 
-<div class="viewcode-block" id="get_vertices_from_file"><a class="viewcode-back" href="../../_api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a><span class="k">def</span> <span class="nf">get_vertices_from_file</span><span class="p">(</span>
+
+<div class="viewcode-block" id="get_vertices_from_file">
+<a class="viewcode-back" href="../../_api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a>
+<span class="k">def</span> <span class="nf">get_vertices_from_file</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
@@ -227,7 +236,7 @@
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box configuration file or parKVFinder</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box configuration file or parKVFinder</span>
 <span class="sd">    parameters file, selects atoms inside custom 3D grid, define sine</span>
 <span class="sd">    and cosine of 3D grid angles and define xyz grid units.</span>
 
@@ -413,10 +422,11 @@
     <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">atomic</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_get_vertices_from_box</span><span class="p">(</span>
     <span class="n">box</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">probe_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box coordinates.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box coordinates.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -514,7 +524,7 @@
     <span class="n">xyzr</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Gets 3D grid vertices based on a list of residues (name and chain)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices based on a list of residues (name and chain)</span>
 <span class="sd">    and a padding value.</span>
 
 <span class="sd">    Parameters</span>
@@ -564,7 +574,7 @@
 <span class="k">def</span> <span class="nf">_get_dimensions</span><span class="p">(</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span> <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Gets dimensions of 3D grid from vertices.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets dimensions of 3D grid from vertices.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -627,7 +637,7 @@
 
 
 <span class="k">def</span> <span class="nf">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Gets sine and cossine of the grid rotation angles from a list of vertices</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets sine and cossine of the grid rotation angles from a list of vertices</span>
 <span class="sd">    coordinates.</span>
 
 <span class="sd">    Parameters</span>
@@ -680,7 +690,9 @@
     <span class="k">return</span> <span class="n">sincos</span>
 
 
-<div class="viewcode-block" id="detect"><a class="viewcode-back" href="../../_api_reference/detect.html#pyKVFinder.detect">[docs]</a><span class="k">def</span> <span class="nf">detect</span><span class="p">(</span>
+<div class="viewcode-block" id="detect">
+<a class="viewcode-back" href="../../_api_reference/detect.html#pyKVFinder.detect">[docs]</a>
+<span class="k">def</span> <span class="nf">detect</span><span class="p">(</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
@@ -695,7 +707,7 @@
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Detects biomolecular cavities.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detects biomolecular cavities.</span>
 
 <span class="sd">    Cavity points that belongs to the same cavity are assigned with an integer</span>
 <span class="sd">    in the grid.</span>
@@ -1086,8 +1098,9 @@
     <span class="k">return</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_select_cavities</span><span class="p">(</span><span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Select cavities in the 3D grid by cavity labels.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select cavities in the 3D grid by cavity labels.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1131,7 +1144,7 @@
 
 
 <span class="k">def</span> <span class="nf">_get_cavity_name</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get cavity name, eg KAA, KAB, and so on, based on the index.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get cavity name, eg KAA, KAB, and so on, based on the index.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1143,12 +1156,12 @@
 <span class="sd">    cavity_name : str</span>
 <span class="sd">        Cavity name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cavity_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;K</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="mi">26</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="p">(</span><span class="n">index</span> <span class="o">%</span> <span class="mi">26</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">cavity_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;K</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">cavity_name</span>
 
 
 <span class="k">def</span> <span class="nf">_get_cavity_label</span><span class="p">(</span><span class="n">cavity_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get cavity label, eg 2, 3, and so on, based on the cavity name.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get cavity label, eg 2, 3, and so on, based on the cavity name.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1181,7 +1194,7 @@
     <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Processes arrays of volumes and areas.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes arrays of volumes and areas.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1221,14 +1234,16 @@
     <span class="k">return</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span>
 
 
-<div class="viewcode-block" id="spatial"><a class="viewcode-back" href="../../_api_reference/spatial.html#pyKVFinder.spatial">[docs]</a><span class="k">def</span> <span class="nf">spatial</span><span class="p">(</span>
+<div class="viewcode-block" id="spatial">
+<a class="viewcode-back" href="../../_api_reference/spatial.html#pyKVFinder.spatial">[docs]</a>
+<span class="k">def</span> <span class="nf">spatial</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Spatial characterization (volume and area) of the detected cavities.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spatial characterization (volume and area) of the detected cavities.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1395,13 +1410,14 @@
     <span class="k">return</span> <span class="n">surface</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">volume</span><span class="p">,</span> <span class="n">area</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_process_depth</span><span class="p">(</span>
     <span class="n">raw_max_depth</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">raw_avg_depth</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Processes arrays of maximum and average depths.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes arrays of maximum and average depths.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1441,14 +1457,16 @@
     <span class="k">return</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span>
 
 
-<div class="viewcode-block" id="depth"><a class="viewcode-back" href="../../_api_reference/depth.html#pyKVFinder.depth">[docs]</a><span class="k">def</span> <span class="nf">depth</span><span class="p">(</span>
+<div class="viewcode-block" id="depth">
+<a class="viewcode-back" href="../../_api_reference/depth.html#pyKVFinder.depth">[docs]</a>
+<span class="k">def</span> <span class="nf">depth</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Characterization of the depth of the detected cavities, including depth</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Characterization of the depth of the detected cavities, including depth</span>
 <span class="sd">    per cavity point and maximum and average depths of detected cavities.</span>
 
 <span class="sd">    Parameters</span>
@@ -1606,10 +1624,11 @@
     <span class="k">return</span> <span class="n">depths</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_process_residues</span><span class="p">(</span>
     <span class="n">raw</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
-    <span class="sd">&quot;&quot;&quot;Processes raw list of residues from _constitutional to a list of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes raw list of residues from _constitutional to a list of</span>
 <span class="sd">    residue information per cavity name.</span>
 
 <span class="sd">    Parameters</span>
@@ -1648,7 +1667,9 @@
     <span class="k">return</span> <span class="n">residues</span>
 
 
-<div class="viewcode-block" id="constitutional"><a class="viewcode-back" href="../../_api_reference/constitutional.html#pyKVFinder.constitutional">[docs]</a><span class="k">def</span> <span class="nf">constitutional</span><span class="p">(</span>
+<div class="viewcode-block" id="constitutional">
+<a class="viewcode-back" href="../../_api_reference/constitutional.html#pyKVFinder.constitutional">[docs]</a>
+<span class="k">def</span> <span class="nf">constitutional</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
@@ -1659,7 +1680,7 @@
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
-    <span class="sd">&quot;&quot;&quot;Constitutional characterization (interface residues) of the detected</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Constitutional characterization (interface residues) of the detected</span>
 <span class="sd">    cavities.</span>
 
 <span class="sd">    Parameters</span>
@@ -1894,10 +1915,11 @@
     <span class="k">return</span> <span class="n">residues</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_process_hydropathy</span><span class="p">(</span>
     <span class="n">raw_avg_hydropathy</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Processes array of average hydropathy.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes array of average hydropathy.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1930,7 +1952,9 @@
     <span class="k">return</span> <span class="n">avg_hydropathy</span>
 
 
-<div class="viewcode-block" id="hydropathy"><a class="viewcode-back" href="../../_api_reference/hydropathy.html#pyKVFinder.hydropathy">[docs]</a><span class="k">def</span> <span class="nf">hydropathy</span><span class="p">(</span>
+<div class="viewcode-block" id="hydropathy">
+<a class="viewcode-back" href="../../_api_reference/hydropathy.html#pyKVFinder.hydropathy">[docs]</a>
+<span class="k">def</span> <span class="nf">hydropathy</span><span class="p">(</span>
     <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
@@ -1942,7 +1966,7 @@
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Hydropathy characterization of the detected cavities.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hydropathy characterization of the detected cavities.</span>
 
 <span class="sd">    Map a target hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.</span>
 
@@ -2282,8 +2306,9 @@
     <span class="k">return</span> <span class="n">scales</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">avg_hydropathy</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_get_opening_name</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get opening name, eg OAA, OAB, and so on, based on the index.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get opening name, eg OAA, OAB, and so on, based on the index.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2295,12 +2320,12 @@
 <span class="sd">    opening_name : str</span>
 <span class="sd">        Opening name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">opening_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;O</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="mi">26</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="p">(</span><span class="n">index</span> <span class="o">%</span> <span class="mi">26</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">opening_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;O</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">opening_name</span>
 
 
 <span class="k">def</span> <span class="nf">_get_opening_label</span><span class="p">(</span><span class="n">opening_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get opening label, eg 2, 3, and so on, based on the opening name.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get opening label, eg 2, 3, and so on, based on the opening name.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2331,7 +2356,7 @@
     <span class="n">raw_openings</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">opening2cavity</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Processes arrays of openings&#39; areas.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes arrays of openings&#39; areas.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2368,7 +2393,9 @@
     <span class="k">return</span> <span class="n">area</span>
 
 
-<div class="viewcode-block" id="openings"><a class="viewcode-back" href="../../_api_reference/openings.html#pyKVFinder.openings">[docs]</a><span class="k">def</span> <span class="nf">openings</span><span class="p">(</span>
+<div class="viewcode-block" id="openings">
+<a class="viewcode-back" href="../../_api_reference/openings.html#pyKVFinder.openings">[docs]</a>
+<span class="k">def</span> <span class="nf">openings</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">depths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
@@ -2377,7 +2404,7 @@
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
-    <span class="sd">&quot;&quot;&quot;[WIP] Identify openings of the detected cavities and calculate their areas.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;[WIP] Identify openings of the detected cavities and calculate their areas.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2582,8 +2609,11 @@
     <span class="k">return</span> <span class="n">nopenings</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">aopenings</span></div>
 
 
-<div class="viewcode-block" id="export"><a class="viewcode-back" href="../../_api_reference/export.html#pyKVFinder.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
-    <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+
+<div class="viewcode-block" id="export">
+<a class="viewcode-back" href="../../_api_reference/export.html#pyKVFinder.export">[docs]</a>
+<span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">surface</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
@@ -2594,15 +2624,15 @@
     <span class="n">nthreads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">append</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">model</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Export cavitiy (H) and surface (HA) points to PDB-formatted file with</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export cavitiy (H) and surface (HA) points to PDB-formatted file with</span>
 <span class="sd">    a variable (B; optional) in B-factor column, and hydropathy to</span>
 <span class="sd">    PDB-formatted file in B-factor column at surface points (HA).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    fn : Union[str, pathlib.Path]</span>
-<span class="sd">        A path to PDB file for writing cavities.</span>
+<span class="sd">    fn : Union[str, pathlib.Path], optional</span>
+<span class="sd">        A path to PDB file for writing cavities. If None, return a raw string with the PDB-formatted file.</span>
 <span class="sd">    cavities : numpy.ndarray</span>
 <span class="sd">        Cavity points in the 3D grid (cavities[nx][ny][nz]).</span>
 <span class="sd">        Cavities array has integer labels in each position, that are:</span>
@@ -2652,10 +2682,15 @@
 <span class="sd">    model : int, optional</span>
 <span class="sd">        Model number, by default 0.</span>
 
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Optional[str]</span>
+<span class="sd">        A raw string with the PDB-formatted file.</span>
+
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        `fn` must be a string or pathlib.Path.</span>
+<span class="sd">        &quot;`fn` must be a string, a pathlib.Path or None. If None, return a raw string with the PDB-formatted file.&quot;</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        `cavities` must be a numpy.ndarray.</span>
 <span class="sd">    ValueError</span>
@@ -2734,13 +2769,22 @@
 
 <span class="sd">    &gt;&gt;&gt; export(&#39;cavities.pdb&#39;, cavities, surface, vertices, B=depths, Q=scales)</span>
 
+<span class="sd">    * Export to a raw string</span>
+
+<span class="sd">    &gt;&gt;&gt; string = export(None, cavities, surface, vertices, B=depths, Q=scales)</span>
+<span class="sd">    &gt;&gt;&gt; print(string)</span>
+<span class="sd">    ATOM     1  H   KAA     0       0.000   0.000   0.000  1.00  0.00</span>
+<span class="sd">    ...</span>
+<span class="sd">    ATOM  1000  H   KAA     0       0.000   0.000   0.000  1.00  0.00</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_export</span>
 
     <span class="c1"># Check arguments</span>
-    <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;`fn` must be a string, a pathlib.Path or None. If None, return a raw string with the PDB-formatted file.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavities` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
@@ -2836,12 +2880,35 @@
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Export cavities</span>
-    <span class="n">_export</span><span class="p">(</span>
-        <span class="n">fn</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">append</span><span class="p">,</span> <span class="n">model</span>
-    <span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)):</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp</span><span class="p">:</span>
+            <span class="n">_export</span><span class="p">(</span>
+                <span class="n">temp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">cavities</span><span class="p">,</span>
+                <span class="n">surface</span><span class="p">,</span>
+                <span class="n">B</span><span class="p">,</span>
+                <span class="n">Q</span><span class="p">,</span>
+                <span class="n">P1</span><span class="p">,</span>
+                <span class="n">sincos</span><span class="p">,</span>
+                <span class="n">step</span><span class="p">,</span>
+                <span class="n">ncav</span><span class="p">,</span>
+                <span class="n">nthreads</span><span class="p">,</span>
+                <span class="n">append</span><span class="p">,</span>
+                <span class="n">model</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># move the file pointer to the beginning of the file</span>
+            <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>  <span class="c1"># delete the temporary file</span>
+            <span class="k">return</span> <span class="n">temp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_export</span><span class="p">(</span>
+            <span class="n">fn</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">append</span><span class="p">,</span> <span class="n">model</span>
+        <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="export_openings"><a class="viewcode-back" href="../../_api_reference/export_openings.html#pyKVFinder.export_openings">[docs]</a><span class="k">def</span> <span class="nf">export_openings</span><span class="p">(</span>
+
+<div class="viewcode-block" id="export_openings">
+<a class="viewcode-back" href="../../_api_reference/export_openings.html#pyKVFinder.export_openings">[docs]</a>
+<span class="k">def</span> <span class="nf">export_openings</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">openings</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
@@ -2851,7 +2918,7 @@
     <span class="n">append</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">model</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Export opening points (H) to a PDB-formatted file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export opening points (H) to a PDB-formatted file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3005,6 +3072,7 @@
 
     <span class="c1"># Export openings</span>
     <span class="n">_export_openings</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">openings</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">nopenings</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">append</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>

@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Box configuration file template &mdash; pyKVFinder 0.6.13 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Box configuration file template &mdash; pyKVFinder 0.6.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
     <link rel="shortcut icon" href="../_static/icon.ico"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ad970d1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -107,22 +110,22 @@
            <div itemprop="articleBody">
              
   <section id="box-configuration-file-template">
-<h1>Box configuration file template<a class="headerlink" href="#box-configuration-file-template" title="Permalink to this heading"></a></h1>
+<h1>Box configuration file template<a class="headerlink" href="#box-configuration-file-template" title="Link to this heading"></a></h1>
 <p>There are three methods for defining a custom 3D grid in pyKVFinder.</p>
 <p>The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), an example is shown below:</p>
-<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span><span class="w"></span>
-<span class="c1"># px = [x, y, z]</span><span class="w"></span>
-<span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
-<span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
-<span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span><span class="w"></span>
-<span class="n">p4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]</span><span class="w"></span>
+<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span>
+<span class="c1"># px = [x, y, z]</span>
+<span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">p4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Example: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/custom-box.toml">custom-box.toml</a>.</p>
 <p>The second defines a list of residues and a padding, the template is shown below:</p>
-<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span><span class="w"></span>
-<span class="n">residues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">3.5</span><span class="w"></span>
+<div class="highlight-TOML notranslate"><div class="highlight"><pre><span></span><span class="k">[box]</span>
+<span class="n">residues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;resnum&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;chain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;resname&quot;</span><span class="p">,],</span><span class="w"> </span><span class="p">]</span>
+<span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">3.5</span>
 </pre></div>
 </div>
 <p>Example: <a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/residues-box.toml">residues-box.toml</a>.</p>
