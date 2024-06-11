@@ -447,7 +447,7 @@ class pyKVFinderResults(object):
         self,
         output: Union[str, pathlib.Path] = "cavity.pdb",
         nthreads: Optional[int] = None,
-    ) -> None:
+    ) -> Optional[str]:
         """Exports cavitiy (H) and surface (HA) points to PDB-formatted file
         with a variable (B; optional) in B-factor column, and hydropathy to
         PDB-formatted file in B-factor column at surface points (HA).
@@ -459,6 +459,11 @@ class pyKVFinderResults(object):
         nthreads : int, optional
             Number of threads, by default None. If None, the number of threads is
             `os.cpu_count() - 1`.
+
+        Returns
+        -------
+        Optional[str]
+            A raw string with the PDB-formatted file.
 
         Note
         ----
@@ -475,7 +480,7 @@ class pyKVFinderResults(object):
         >>> results = pyKVFinder.run_workflow(pdb)
         >>> results.export()
         """
-        export(
+        string = export(
             output,
             self.cavities,
             self.surface,
@@ -486,11 +491,13 @@ class pyKVFinderResults(object):
             None,
             nthreads,
         )
+        if output is None:
+            return string
 
     def write(
         self,
         fn: Union[str, pathlib.Path] = "results.toml",
-        output: Optional[Union[str, pathlib.Path]] = None
+        output: Optional[Union[str, pathlib.Path]] = None,
     ) -> None:
         """
         Writes file paths and cavity characterization to TOML-formatted file
@@ -642,12 +649,15 @@ class pyKVFinderResults(object):
         >>> results.export_all(include_frequencies_pdf=True)
         """
         # Export cavity PDB file
-        self.export(output, nthreads)
+        string = self.export(output, nthreads)
         # Write KVFinder results TOML
         self.write(fn, output)
         # Plot bar charts of frequencies
         if include_frequencies_pdf:
             self.plot_frequencies(pdf)
+        # Return PDB-formatted file as a string
+        if output is None:
+            return string
 
 
 def run_workflow(

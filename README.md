@@ -20,12 +20,16 @@ See also:
 To install the latest release on
 [PyPI](https://pypi.org/project/pyKVFinder), run:
 
-    pip install pyKVFinder
+```bash
+pip install pyKVFinder
+```
 
 Or to install the latest developmental version, run:
 
-    git clone https://github.com/LBC-LNBio/pyKVFinder.git
-    pip install pyKVFinder
+```bash
+git clone https://github.com/LBC-LNBio/pyKVFinder.git
+pip install -e pyKVFinder
+```
 
 ## Citation
 

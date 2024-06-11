@@ -1,5 +1,6 @@
 import os
 import pathlib
+import tempfile
 from typing import Dict, List, Optional, Tuple, Union
 
 import numpy
@@ -2477,7 +2478,7 @@ def openings(
 
 
 def export(
-    fn: Union[str, pathlib.Path],
+    fn: Optional[Union[str, pathlib.Path]],
     cavities: numpy.ndarray,
     surface: Optional[numpy.ndarray],
     vertices: Union[numpy.ndarray, List[List[float]]],
@@ -2488,15 +2489,15 @@ def export(
     nthreads: Optional[int] = None,
     append: bool = False,
     model: int = 0,
-) -> None:
+) -> Optional[str]:
     """Export cavitiy (H) and surface (HA) points to PDB-formatted file with
     a variable (B; optional) in B-factor column, and hydropathy to
     PDB-formatted file in B-factor column at surface points (HA).
 
     Parameters
     ----------
-    fn : Union[str, pathlib.Path]
-        A path to PDB file for writing cavities.
+    fn : Union[str, pathlib.Path], optional
+        A path to PDB file for writing cavities. If None, return a raw string with the PDB-formatted file.
     cavities : numpy.ndarray
         Cavity points in the 3D grid (cavities[nx][ny][nz]).
         Cavities array has integer labels in each position, that are:
@@ -2546,10 +2547,15 @@ def export(
     model : int, optional
         Model number, by default 0.
 
+    Returns
+    -------
+    Optional[str]
+        A raw string with the PDB-formatted file.
+
     Raises
     ------
     TypeError
-        `fn` must be a string or pathlib.Path.
+        "`fn` must be a string, a pathlib.Path or None. If None, return a raw string with the PDB-formatted file."
     TypeError
         `cavities` must be a numpy.ndarray.
     ValueError
@@ -2628,13 +2634,22 @@ def export(
 
     >>> export('cavities.pdb', cavities, surface, vertices, B=depths, Q=scales)
 
+    * Export to a raw string
+
+    >>> string = export(None, cavities, surface, vertices, B=depths, Q=scales)
+    >>> print(string)
+    ATOM     1  H   KAA     0       0.000   0.000   0.000  1.00  0.00
+    ...
+    ATOM  1000  H   KAA     0       0.000   0.000   0.000  1.00  0.00
     """
     from _pyKVFinder import _export
 
     # Check arguments
-    if fn is not None:
-        if type(fn) not in [str, pathlib.Path]:
-            raise TypeError("`fn` must be a string or a pathlib.Path.")
+    if not isinstance(fn, (str, pathlib.Path, type(None))):
+        raise TypeError(
+            "`fn` must be a string, a pathlib.Path or None. If None, return a raw string with the PDB-formatted file."
+        )
+    if isinstance(fn, (str, pathlib.Path)):
         os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
     if type(cavities) not in [numpy.ndarray]:
         raise TypeError("`cavities` must be a numpy.ndarray.")
@@ -2730,9 +2745,29 @@ def export(
     ncav = int(cavities.max() - 1)
 
     # Export cavities
-    _export(
-        fn, cavities, surface, B, Q, P1, sincos, step, ncav, nthreads, append, model
-    )
+    if isinstance(fn, type(None)):
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            _export(
+                temp.name,
+                cavities,
+                surface,
+                B,
+                Q,
+                P1,
+                sincos,
+                step,
+                ncav,
+                nthreads,
+                append,
+                model,
+            )
+            temp.seek(0)  # move the file pointer to the beginning of the file
+            pathlib.Path(temp.name).unlink()  # delete the temporary file
+            return temp.read().decode("utf-8")
+    else:
+        _export(
+            fn, cavities, surface, B, Q, P1, sincos, step, ncav, nthreads, append, model
+        )
 
 
 def export_openings(
