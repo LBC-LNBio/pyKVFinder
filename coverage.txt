@@ -15,6 +15,18 @@ tests/unit/test_grid.py ................................................ [ 32%]
 tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
+=============================== warnings summary ===============================
+tests/integration/test_cli.py::TestCLI::test_residues_box_mode
+tests/integration/test_package.py::TestPackage::test_get_grid_from_file
+tests/integration/test_package.py::TestPackageWorkflow::test_residues_box
+tests/unit/test_grid.py::TestGetVerticesFromResidues::test_residues_box
+tests/unit/test_grid.py::TestGetVerticesFromFile::test_missing_padding
+tests/unit/test_grid.py::TestGetVerticesFromFile::test_residues_box
+  /home/runner/work/pyKVFinder/pyKVFinder/pyKVFinder/grid.py:444: DeprecationWarning: `in1d` is deprecated. Use `np.isin` instead.
+    indexes = numpy.in1d(atominfo[:, 0], box["residues"])
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
 ---------- coverage: platform linux, python 3.11.9-final-0 -----------
 Name                  Stmts   Miss  Cover   Missing
 ---------------------------------------------------
@@ -24,5 +36,4 @@ pyKVFinder/utils.py     312      6    98%   571, 603, 606-608, 630
 ---------------------------------------------------
 TOTAL                  1402    187    87%
 
-
-======================== 313 passed in 98.24s (0:01:38) ========================
+================== 313 passed, 6 warnings in 90.54s (0:01:30) ==================
