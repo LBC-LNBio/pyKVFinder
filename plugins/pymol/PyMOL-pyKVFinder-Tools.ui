@@ -86,7 +86,7 @@
       <property name="text">
        <string notr="true">Python-C parallel KVFinder (pyKVFinder) package identifies and describes cavities in a target biomolecular structure using a dual probe system.
 
-The description includes spatial, depth, constitutional and hydropathy characterization. The spatial description includes shape, volume, and area. The depth description defines depths for each cavity point, shown in the B-factor, and calculates the average and maximum depth per cavity. The constitutional description includes amino acids that form the identified cavities. The hydropathy description maps Eisenberg &amp; Weiss hydrophobicity scale at surface points, shown in the Q-factor, and estimates average hydropathy per cavity.</string>
+The description includes spatial, depth, constitutional and hydropathy characterization. The spatial description includes shape, volume, and area. The depth description defines depths for each cavity point, shown in the B-factor, and calculates the average and maximum depth per cavity. The constitutional description includes amino acids that form the identified cavities. The hydropathy description maps hydrophobicity scales at surface points, shown in the Q-factor, and estimates average hydropathy per cavity.</string>
       </property>
       <property name="textFormat">
        <enum>Qt::PlainText</enum>
@@ -127,32 +127,6 @@ The description includes spatial, depth, constitutional and hydropathy character
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="button_grid">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Show Grid</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_save_parameters">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string notr="true">Save Parameters</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="button_restore">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -161,7 +135,7 @@ The description includes spatial, depth, constitutional and hydropathy character
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Restore Default Values</string>
+         <string>Restore Defaults</string>
         </property>
        </widget>
       </item>
@@ -776,6 +750,107 @@ The description includes spatial, depth, constitutional and hydropathy character
             </layout>
            </item>
            <item>
+            <widget class="QFrame" name="hscale_frame">
+             <layout class="QHBoxLayout" name="hframe_8">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetNoConstraint</enum>
+              </property>
+              <property name="leftMargin">
+               <number>9</number>
+              </property>
+              <property name="topMargin">
+               <number>9</number>
+              </property>
+              <property name="rightMargin">
+               <number>9</number>
+              </property>
+              <property name="bottomMargin">
+               <number>9</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Hydropathy scale:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="hscale">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Eisenberg &amp; Weiss</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Hessa &amp; Heijne</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Kyte &amp; Doolittle</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Radzicka &amp; Wolfenden</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Moon &amp; Fleming</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Wimley &amp; White</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Zhao &amp; London</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
             <widget class="QFrame" name="hframe6_2">
              <layout class="QHBoxLayout" name="horizontalLayout_15">
               <property name="sizeConstraint">
@@ -813,7 +888,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="base_name">
+               <widget class="QLineEdit" name="basename">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -857,7 +932,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                <enum>QLayout::SetNoConstraint</enum>
               </property>
               <item>
-               <widget class="QLabel" name="output_dir_label">
+               <widget class="QLabel" name="basedir_label">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -888,7 +963,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="output_dir_path">
+               <widget class="QLineEdit" name="basedir">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -938,7 +1013,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                <enum>QLayout::SetNoConstraint</enum>
               </property>
               <item>
-               <widget class="QLabel" name="dictionary_label">
+               <widget class="QLabel" name="vdw_label">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -969,7 +1044,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="dictionary">
+               <widget class="QLineEdit" name="vdw">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -2291,7 +2366,6 @@ p, li { white-space: pre-wrap; }
  <tabstops>
   <tabstop>tabs</tabstop>
   <tabstop>button_run</tabstop>
-  <tabstop>button_grid</tabstop>
   <tabstop>button_restore</tabstop>
   <tabstop>button_exit</tabstop>
   <tabstop>input</tabstop>
@@ -2300,8 +2374,8 @@ p, li { white-space: pre-wrap; }
   <tabstop>probe_in</tabstop>
   <tabstop>volume_cutoff</tabstop>
   <tabstop>removal_distance</tabstop>
-  <tabstop>base_name</tabstop>
-  <tabstop>output_dir_path</tabstop>
+  <tabstop>basename</tabstop>
+  <tabstop>basedir</tabstop>
   <tabstop>button_browse</tabstop>
   <tabstop>box_adjustment</tabstop>
   <tabstop>button_draw_box</tabstop>

@@ -11,7 +11,6 @@ pyKVFinder.
 """
 
 from .gui import PyMOLpyKVFinderTools
-from .io import *
 
 # global reference to avoid garbage collection of our dialog
 dialog = None
