@@ -42,6 +42,7 @@ from .actions import (
     _select_directory,
     _select_file,
 )
+from .visualization import _show_residues
 
 
 class PyMOLpyKVFinderTools(QMainWindow):
@@ -100,6 +101,13 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Refresh the list of objects in the input and ligand widgets
         self.refresh_input.clicked.connect(lambda: _refresh_list(self.input))
         self.refresh_ligand.clicked.connect(lambda: _refresh_list(self.ligand))
+
+        # Visualization in results tab
+        self.residues_list.itemSelectionChanged.connect(
+            lambda: _show_residues(
+                results, self.residues_list, self.input_pdb, self.cavity_pdb
+            )
+        )
 
     def _restore_results(self) -> None:
         # TODO: Implement this method
@@ -307,20 +315,20 @@ class PyMOLpyKVFinderTools(QMainWindow):
 
         # Load input file
         if "INPUT" in results["FILES"].keys():
-            self.input_pdb = os.path.basename(results["FILES"]["INPUT"])
+            self.input_pdb = os.path.basename(results["FILES"]["INPUT"]).replace(".pdb", "")
             _load_molecule_file(results["FILES"]["INPUT"], self.input_pdb)
         else:
             self.input_pdb = None
 
         # Load ligand file
         if "LIGAND" in results["FILES"].keys():
-            self.ligand_pdb = os.path.basename(results["FILES"]["LIGAND"])
+            self.ligand_pdb = os.path.basename(results["FILES"]["LIGAND"]).replace(".pdb", "")
             _load_molecule_file(results["FILES"]["LIGAND"], self.ligand_pdb)
         else:
             self.ligand_pdb = None
 
         # Load cavities file
-        self.cavity_pdb = os.path.basename(results["FILES"]["OUTPUT"])
+        self.cavity_pdb = os.path.basename(results["FILES"]["OUTPUT"]).replace(".pdb", "")
         _load_cavity_file(results["FILES"]["OUTPUT"], self.cavity_pdb)
 
     def _load_file_information(self) -> None:

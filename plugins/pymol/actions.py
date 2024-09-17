@@ -4,7 +4,7 @@
 
 """
 This is the source code for the actions performed by PyMOL pyKVFinder Tools.
-Changes in this file are not advised, as it controls all interactions with
+Changes in this file are not advised, as it controls interactions with
 pyKVFinder and PyQt5.
 """
 
@@ -159,8 +159,7 @@ def _load_residues(results: dict, widget: QListWidget) -> None:
     indexes = sorted(results["RESULTS"]["RESIDUES"].keys())
     # Include Residues
     for index in indexes:
-        item = f"{index}: {results['RESULTS']['RESIDUES'][index]}"
-        widget.addItem(item)
+        widget.addItem(index)
 
 
 def _load_volume(results: dict, widget: QListWidget) -> None:
