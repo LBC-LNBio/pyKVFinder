@@ -116,6 +116,23 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.residues_list.itemSelectionChanged.connect(
             lambda: _show_residues(results, self.residues_list, self.input_pdb)
         )
+        # FIXME: Placeholder for depth and hydropathy visualization
+        # self.avg_depth_list.itemSelectionChanged.connect(
+        #     lambda: _show_depth(
+        #         results, self.avg_depth_list, self.max_depth_list, self.cavity_pdb
+        #     )
+        # )
+        # self.max_depth_list.itemSelectionChanged.connect(
+        #     lambda: _show_depth(
+        #         results, self.max_depth_list, self.avg_depth_list, self.cavity_pdb
+        #     )
+        # )
+        # self.avg_hydropathy_list.itemSelectionChanged.connect(
+        #     lambda: _show_hydropathy(results, self.avg_hydropathy_list, self.cavity_pdb)
+        # )
+        # self.default_view.toggled.connect(lambda: _show_default_view(results, self.cavity_pdb))
+        # self.depth_view.toggled.connect(lambda: _show_depth_view(results, self.cavity_pdb))
+        # self.hydropathy_view.toggled.connect(lambda: _show_hydropathy_view(results, self.cavity_pdb))
 
     def _restore_results(self) -> None:
         # TODO: Implement this method
