@@ -277,6 +277,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
             "ligand_adjustment": self.ligand_adjustment.isChecked(),
             "ligand_cutoff": self.ligand_cutoff.value(),
             "hydrophobicity_scale": self.hscale.currentText().replace(" & ", ""),
+            "ignore_backbone": self.ignore_backbone.isChecked(),
         }
 
         return parameters
@@ -379,7 +380,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
 
         # Remove previous objects from PyMOL
         objects = cmd.get_names("all")
-        for obj in ["cavities", "residues"]:
+        for obj in ["cavities", "residues", "depth", "hydropathy"]:
             if obj in objects:
                 cmd.delete(obj)
         cmd.frame(1)
@@ -506,7 +507,7 @@ parameters.",
             include_hydropathy=True,
             hydrophobicity_scale=parameters["hydrophobicity_scale"],
             surface=parameters["surface"],
-            ignore_backbone=False,  # TODO: Add this parameter to the GUI
+            ignore_backbone=parameters["ignore_backbone"],
         )
 
         # Export results and cavities to file

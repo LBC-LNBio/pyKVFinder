@@ -851,7 +851,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox">
+               <widget class="QCheckBox" name="ignore_backbone">
                 <property name="text">
                  <string>Ignore backbone</string>
                 </property>
