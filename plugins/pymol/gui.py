@@ -89,9 +89,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Dialog buttons binds
         self.button_run.clicked.connect(self.run)
         self.button_exit.clicked.connect(self.close)
-        self.button_surface.clicked.connect(
-            lambda: None
-        )  # FIXME: Implement this method
+        self.button_surface.clicked.connect(self.model_surface)
         self.button_restore.clicked.connect(self.restore)
 
         # ScrollBars binded to QListWidgets in Descriptors
@@ -116,6 +114,9 @@ class PyMOLpyKVFinderTools(QMainWindow):
                 self.results_file_entry,
             )
         )
+
+        # Comboxbox bindings
+        self.surface.currentIndexChanged.connect(self._surface_selection)
 
         # Refresh the list of objects in the input and ligand widgets
         self.refresh_input.clicked.connect(lambda: _refresh_list(self.input))
@@ -154,6 +155,23 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.hydropathy_view.toggled.connect(
             lambda: _show_descriptors(self.cavity_pdb, "hydropathy", results)
         )
+
+    def _surface_selection(self) -> None:
+        """
+        Get the surface selection from the GUI. This method is called when the
+        user selects a surface type in the GUI.
+        """
+        # Get the surface type
+        surface = self.surface.currentText()[:-1][-3:]
+        if surface == "vdW":
+            self.probe_in.setValue(0.0)
+            self.probe_in.setEnabled(False)
+        elif surface == "SES":
+            self.probe_in.setValue(1.4)
+            self.probe_in.setEnabled(True)
+        elif surface == "SAS":
+            self.probe_in.setValue(1.4)
+            self.probe_in.setEnabled(True)
 
     def _restore_results(self, remove_inputs: bool) -> None:
         """
@@ -266,7 +284,11 @@ class PyMOLpyKVFinderTools(QMainWindow):
             "probe_out": self.probe_out.value(),
             "removal_distance": self.removal_distance.value(),
             "volume_cutoff": self.volume_cutoff.value(),
-            "surface": self.surface.currentText()[:-1][-3:],
+            "surface": (
+                "SES"
+                if self.surface.currentText()[:-1][-3:] == "vdW"
+                else self.surface.currentText()[:-1][-3:]
+            ),
             "basename": self.basename.text(),
             "basedir": os.path.join(self.basedir.text(), self.basename.text()),
             "vdw": self.vdw.text(),
@@ -466,6 +488,66 @@ class PyMOLpyKVFinderTools(QMainWindow):
 
         # Residues
         self.residues_list.clear()
+
+    def model_surface(self) -> None:
+        """
+        Model the surface of the input. This method is called when the user
+        clicks the 'Model Surface' button in the GUI. It will model the surface
+        of the input structure in PyMOL.
+        """
+        # Get parameters from the GUI
+        parameters = self._get_parameters()
+
+        # Save input pdb file
+        if self.input.currentText() != "":
+            for obj in cmd.get_names("all"):
+                if obj == self.input.currentText():
+                    cmd.save(parameters["input"], self.input.currentText(), 0, "pdb")
+        else:
+            QMessageBox.critical(
+                self, "Error", "Please select an input.", QMessageBox.Ok
+            )
+            return False
+
+        # Load molecule
+        surface = pyKVFinder.Molecule(
+            molecule=parameters["input"], radii=parameters["vdw"]
+        )
+
+        # Model the surface
+        if parameters["surface"] == "vdW":
+            surface.vdw(step=parameters["step"])
+        elif parameters["surface"] == "SES":
+            surface.surface(
+                step=parameters["step"],
+                probe=parameters["probe_in"],
+                surface=parameters["surface"],
+            )
+        elif parameters["surface"] == "SAS":
+            surface.surface(
+                step=parameters["step"],
+                probe=parameters["probe_in"],
+                surface=parameters["surface"],
+            )
+
+        # Save surface file
+        pymolname = f"{parameters['basename']}.KVFinder.surface"
+        filename = os.path.join(parameters["basedir"], f"{pymolname}.pdb")
+        surface.export(filename)
+
+        # Remove previous results in objects with same cavity name
+        for obj in cmd.get_names("all"):
+            if pymolname == obj:
+                cmd.delete(obj)
+
+        # Load the cavity file
+        cmd.load(filename, pymolname, zoom=0)
+
+        # Hide and show to update the display
+        cmd.hide("everything", pymolname)
+        cmd.show("sphere", pymolname)
+        cmd.alter(pymolname, f"vdw={parameters['step'] / 2}")
+        cmd.rebuild()
 
     def run(self) -> bool:
         """
