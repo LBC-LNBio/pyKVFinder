@@ -198,7 +198,6 @@ def _refresh_list(widget: QComboBox) -> None:
     for obj in objects:
         if (
             (cmd.get_type(obj) == "object:molecule")  # molecules
-            and (cmd.count_atoms(obj) > 0)  # empty objects
             and (obj != "box")  # custom grid
             and (obj != "cavities")  # cavities highlight
             and (obj != "residues")  # residues highlight

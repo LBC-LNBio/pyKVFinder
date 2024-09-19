@@ -16,11 +16,7 @@ import toml
 from pymol import cmd
 
 # from PyQt5.QtCore import QDir
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
-    QCheckBox,
-    QComboBox,
-    QFileDialog,
     QMainWindow,
     QMessageBox,
     QScrollBar,
@@ -42,7 +38,13 @@ from .actions import (
     _select_directory,
     _select_file,
 )
-from .visualization import _show_residues, _show_cavities
+from .visualization import (
+    _show_residues,
+    _show_cavities,
+    _show_depth,
+    _show_hydropathy,
+    _show_descriptors,
+)
 
 
 class PyMOLpyKVFinderTools(QMainWindow):
@@ -67,6 +69,8 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # self.box = Box() #TODO: Implement this class
 
         # Results
+        global results
+        results = None
         self.results = None
         self.input_pdb = None
         self.ligand_pdb = None
@@ -104,35 +108,37 @@ class PyMOLpyKVFinderTools(QMainWindow):
 
         # Visualization in results tab
         self.volume_list.itemSelectionChanged.connect(
-            lambda: _show_cavities(
-                results, self.volume_list, self.area_list, self.cavity_pdb
-            )
+            lambda: _show_cavities(self.volume_list, self.area_list, self.cavity_pdb)
         )
         self.area_list.itemSelectionChanged.connect(
-            lambda: _show_cavities(
-                results, self.area_list, self.volume_list, self.cavity_pdb
-            )
+            lambda: _show_cavities(self.area_list, self.volume_list, self.cavity_pdb)
         )
         self.residues_list.itemSelectionChanged.connect(
             lambda: _show_residues(results, self.residues_list, self.input_pdb)
         )
         # FIXME: Placeholder for depth and hydropathy visualization
-        # self.avg_depth_list.itemSelectionChanged.connect(
-        #     lambda: _show_depth(
-        #         results, self.avg_depth_list, self.max_depth_list, self.cavity_pdb
-        #     )
-        # )
-        # self.max_depth_list.itemSelectionChanged.connect(
-        #     lambda: _show_depth(
-        #         results, self.max_depth_list, self.avg_depth_list, self.cavity_pdb
-        #     )
-        # )
-        # self.avg_hydropathy_list.itemSelectionChanged.connect(
-        #     lambda: _show_hydropathy(results, self.avg_hydropathy_list, self.cavity_pdb)
-        # )
-        # self.default_view.toggled.connect(lambda: _show_default_view(results, self.cavity_pdb))
-        # self.depth_view.toggled.connect(lambda: _show_depth_view(results, self.cavity_pdb))
-        # self.hydropathy_view.toggled.connect(lambda: _show_hydropathy_view(results, self.cavity_pdb))
+        self.avg_depth_list.itemSelectionChanged.connect(
+            lambda: _show_depth(
+                self.avg_depth_list, self.max_depth_list, self.cavity_pdb
+            )
+        )
+        self.max_depth_list.itemSelectionChanged.connect(
+            lambda: _show_depth(
+                self.max_depth_list, self.avg_depth_list, self.cavity_pdb
+            )
+        )
+        self.avg_hydropathy_list.itemSelectionChanged.connect(
+            lambda: _show_hydropathy(results, self.avg_hydropathy_list, self.cavity_pdb)
+        )
+        self.default_view.toggled.connect(
+            lambda: _show_descriptors(self.cavity_pdb, "default")
+        )
+        self.depth_view.toggled.connect(
+            lambda: _show_descriptors(self.cavity_pdb, "depth")
+        )
+        self.hydropathy_view.toggled.connect(
+            lambda: _show_descriptors(self.cavity_pdb, "hydropathy", results)
+        )
 
     def _restore_results(self) -> None:
         # TODO: Implement this method
@@ -150,7 +156,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.probe_out.setValue(4.0)
         self.removal_distance.setValue(2.4)
         self.volume_cutoff.setValue(5.0)
-        self.surface.setCurrentIndex(0)
+        self.surface.setCurrentIndex(1)  # 0: vdW, 1: SES, 2: SAS
         self.basename.setText("output")
         self.basedir.setText(os.getcwd())
         self.vdw.setText(
