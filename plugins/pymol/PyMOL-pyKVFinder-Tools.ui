@@ -1011,7 +1011,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="button_browse">
+               <widget class="QPushButton" name="button_browse_basedir">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -1092,7 +1092,7 @@ The description includes spatial, depth, constitutional and hydropathy character
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="button_browse3">
+               <widget class="QPushButton" name="button_browse_vdw">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -1879,7 +1879,7 @@ The description includes spatial, depth, constitutional and hydropathy character
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="button_browse4">
+              <widget class="QPushButton" name="button_browse_results">
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
@@ -2399,7 +2399,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>removal_distance</tabstop>
   <tabstop>basename</tabstop>
   <tabstop>basedir</tabstop>
-  <tabstop>button_browse</tabstop>
+  <tabstop>button_browse_basedir</tabstop>
   <tabstop>box_adjustment</tabstop>
   <tabstop>button_draw_box</tabstop>
   <tabstop>button_delete_box</tabstop>
@@ -2418,7 +2418,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>refresh_ligand</tabstop>
   <tabstop>ligand_cutoff</tabstop>
   <tabstop>results_file_entry</tabstop>
-  <tabstop>button_browse4</tabstop>
+  <tabstop>button_browse_results</tabstop>
   <tabstop>button_load_results</tabstop>
   <tabstop>volume_list</tabstop>
   <tabstop>area_list</tabstop>

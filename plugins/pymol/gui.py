@@ -92,6 +92,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Dialog buttons binds
         self.button_run.clicked.connect(self.run)
         self.button_exit.clicked.connect(self.close)
+        self.button_surface.clicked.connect(lambda: None)
         self.button_restore.clicked.connect(self.restore)
 
         # ScrollBars binded to QListWidgets in Descriptors
@@ -101,6 +102,22 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.area_list.setVerticalScrollBar(scroll_bar_area)
         scroll_bar_residues = QScrollBar(self)
         self.residues_list.setVerticalScrollBar(scroll_bar_residues)
+
+        # Browse buttons
+        self.button_browse_basedir.clicked.connect(
+            lambda: _select_directory(self.basedir)
+        )
+        self.button_browse_vdw.clicked.connect(
+            lambda: _select_file("Choose van der Waals radii dictionary", "*", self.vdw)
+        )
+        self.button_browse_results.clicked.connect(
+            lambda: _select_file(
+                "Choose KVFinder Results File",
+                
+                "KVFinder Results File (*.toml);;All files (*)",
+                self.results_file_entry,
+            )
+        )
 
         # Refresh the list of objects in the input and ligand widgets
         self.refresh_input.clicked.connect(lambda: _refresh_list(self.input))
