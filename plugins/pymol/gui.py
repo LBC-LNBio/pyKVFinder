@@ -16,11 +16,8 @@ import toml
 from pymol import cmd
 
 # from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import (
-    QMainWindow,
-    QMessageBox,
-    QScrollBar,
-)
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QScrollBar, QCheckBox
+
 from PyQt5.uic import loadUi
 
 import pyKVFinder
@@ -71,7 +68,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Results
         global results
         results = None
-        self.results = None
+        self.pyKVFindeResults = None
         self.input_pdb = None
         self.ligand_pdb = None
         self.cavity_pdb = None
@@ -92,7 +89,9 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Dialog buttons binds
         self.button_run.clicked.connect(self.run)
         self.button_exit.clicked.connect(self.close)
-        self.button_surface.clicked.connect(lambda: None)
+        self.button_surface.clicked.connect(
+            lambda: None
+        )  # FIXME: Implement this method
         self.button_restore.clicked.connect(self.restore)
 
         # ScrollBars binded to QListWidgets in Descriptors
@@ -113,7 +112,6 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.button_browse_results.clicked.connect(
             lambda: _select_file(
                 "Choose KVFinder Results File",
-                
                 "KVFinder Results File (*.toml);;All files (*)",
                 self.results_file_entry,
             )
@@ -124,6 +122,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.refresh_ligand.clicked.connect(lambda: _refresh_list(self.ligand))
 
         # Visualization in results tab
+        self.button_load_results.clicked.connect(self._load_run)
         self.volume_list.itemSelectionChanged.connect(
             lambda: _show_cavities(self.volume_list, self.area_list, self.cavity_pdb)
         )
@@ -133,7 +132,6 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.residues_list.itemSelectionChanged.connect(
             lambda: _show_residues(results, self.residues_list, self.input_pdb)
         )
-        # FIXME: Placeholder for depth and hydropathy visualization
         self.avg_depth_list.itemSelectionChanged.connect(
             lambda: _show_depth(
                 self.avg_depth_list, self.max_depth_list, self.cavity_pdb
@@ -157,9 +155,26 @@ class PyMOLpyKVFinderTools(QMainWindow):
             lambda: _show_descriptors(self.cavity_pdb, "hydropathy", results)
         )
 
-    def _restore_results(self) -> None:
-        # TODO: Implement this method
-        pass
+    def _restore_results(self, remove_inputs: bool) -> None:
+        """
+        Restore the results tab to the default values. This method is called
+        when the user clicks the 'Restore Defaults' button in the GUI.
+        """
+        # Remove cavities, residues and pdbs (input, ligand, cavity)
+        cmd.delete("cavities")
+        cmd.delete("residues")
+        if self.input_pdb and remove_inputs:
+            cmd.delete(self.input_pdb)
+        if self.ligand_pdb and remove_inputs:
+            cmd.delete(self.ligand_pdb)
+        if self.cavity_pdb:
+            cmd.delete(self.cavity_pdb)
+        results = self.input_pdb = self.ligand_pdb = self.cavity_pdb = None
+        cmd.frame(1)
+
+        # Clean results
+        self._clean_results_tab()
+        self.results_file_entry.clear()
 
     def _startup(self) -> None:
         """
@@ -207,8 +222,16 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self._startup()
 
         # Restore results tab
-        # TODO: Implement this method
-        self._restore_results()
+        reply = QMessageBox(self)
+        reply.setText("Also restore Results Visualization tab?")
+        reply.setWindowTitle("Restore Values")
+        reply.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        reply.setIcon(QMessageBox.Information)
+        reply.checkbox = QCheckBox("Also remove input and ligand PDBs?")
+        reply.layout = reply.layout()
+        reply.layout.addWidget(reply.checkbox, 1, 2)
+        if reply.exec_() == QMessageBox.Yes:
+            self._restore_results(reply.checkbox.isChecked())
 
     def _get_parameters(self) -> dict:
         """
@@ -468,7 +491,7 @@ parameters.",
         start_time = time.time()
 
         # Run pyKVFinder
-        self.results = pyKVFinder.run_workflow(
+        self.pyKVFindeResults = pyKVFinder.run_workflow(
             input=parameters["input"],
             ligand=parameters["ligand"],
             vdw=parameters["vdw"],
@@ -495,7 +518,7 @@ parameters.",
             parameters["basedir"],
             f"{parameters['basename']}.KVFinder.output.pdb",
         )
-        self.results.export_all(
+        self.pyKVFindeResults.export_all(
             fn=results_file,
             output=cavity_file,
             include_frequencies_pdf=False,
@@ -503,7 +526,7 @@ parameters.",
 
         # Elapsed time
         elapsed_time = time.time() - start_time
-        print(f"> Cavities detected: {self.results.ncav}")
+        print(f"> Cavities detected: {self.pyKVFindeResults.ncav}")
         print(f"> Elapsed time: {elapsed_time:.2f} seconds")
 
         # Set the results filename in the GUI
@@ -511,10 +534,10 @@ parameters.",
         self.tabs.setCurrentIndex(2)
 
         # Sucessful run
-        if self.results.ncav > 0:
+        if self.pyKVFindeResults.ncav > 0:
             self._load_run()
         # Unsucessful run
-        elif self.results.ncav == 0:
+        elif self.pyKVFindeResults.ncav == 0:
             QMessageBox.warning(
                 self,
                 "Warning",
