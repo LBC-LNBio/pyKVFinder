@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>KVFinderWeb</class>
- <widget class="QMainWindow" name="KVFinderWeb">
+ <class>pyKVFinderGUI</class>
+ <widget class="QMainWindow" name="pyKVFinderGUI">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1030</width>
+    <width>1026</width>
     <height>774</height>
    </rect>
   </property>
@@ -21,7 +24,11 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>PyMOL2 parKVFinder Tools</string>
+   <string>PyMOL pyKVFinder Tools</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>pyKVFinder.ico</normaloff>pyKVFinder.ico</iconset>
   </property>
   <widget class="QWidget" name="gui">
    <layout class="QGridLayout" name="gridLayout">
@@ -40,10 +47,58 @@
     <property name="verticalSpacing">
      <number>10</number>
     </property>
-    <item row="2" column="0">
-     <widget class="Line" name="dialog_separator">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+    <item row="0" column="0">
+     <widget class="QLabel" name="main_description">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #d3d3d3;color:black; padding: 10px</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="text">
+       <string notr="true">Python-C parallel KVFinder (pyKVFinder) package identifies and describes cavities in a target biomolecular structure using a dual probe system.
+
+The description includes spatial, depth, constitutional and hydropathy characterization. The spatial description includes shape, volume, and area. The depth description defines depths for each cavity point, shown in the B-factor, and calculates the average and maximum depth per cavity. The constitutional description includes amino acids that form the identified cavities. The hydropathy description maps hydrophobicity scales at surface points, shown in the Q-factor, and estimates average hydropathy per cavity.</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::PlainText</enum>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -67,12 +122,18 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string notr="true">Run parKVFinder</string>
+         <string notr="true">Run pyKVFinder</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="button_grid">
+       <widget class="QPushButton" name="button_surface">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -80,20 +141,13 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Show Grid</string>
+         <string>Model Surface</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_save_parameters">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+        <property name="default">
+         <bool>false</bool>
         </property>
-        <property name="text">
-         <string notr="true">Save Parameters</string>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -106,7 +160,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Restore Default Values</string>
+         <string>Restore Defaults</string>
         </property>
        </widget>
       </item>
@@ -124,6 +178,13 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="2" column="0">
+     <widget class="Line" name="dialog_separator">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabs">
@@ -260,50 +321,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="hframe2">
-             <item>
-              <widget class="QFrame" name="resolution_frame">
-               <layout class="QHBoxLayout" name="horizontalLayout_21">
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetNoConstraint</enum>
-                </property>
-                <item>
-                 <widget class="QCheckBox" name="resolution_label">
-                  <property name="text">
-                   <string>Resolution:</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="resolution">
-                  <item>
-                   <property name="text">
-                    <string>Low</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Medium</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>High</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Off</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
+            <layout class="QHBoxLayout" name="hframe3">
              <item>
               <widget class="QFrame" name="step_size_frame">
                <layout class="QHBoxLayout" name="horizontalLayout_20">
@@ -311,7 +329,16 @@
                  <enum>QLayout::SetNoConstraint</enum>
                 </property>
                 <item>
-                 <widget class="QCheckBox" name="step_size_label">
+                 <widget class="QLabel" name="step_size_label">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="statusTip">
+                   <string/>
+                  </property>
+                  <property name="whatsThis">
+                   <string/>
+                  </property>
                   <property name="text">
                    <string>Step Size (Å):</string>
                   </property>
@@ -340,37 +367,23 @@
                   <property name="decimals">
                    <number>1</number>
                   </property>
+                  <property name="minimum">
+                   <double>0.100000000000000</double>
+                  </property>
                   <property name="maximum">
-                   <double>20.000000000000000</double>
+                   <double>2.000000000000000</double>
                   </property>
                   <property name="singleStep">
                    <double>0.100000000000000</double>
                   </property>
                   <property name="value">
-                   <double>0.000000000000000</double>
+                   <double>0.600000000000000</double>
                   </property>
                  </widget>
                 </item>
                </layout>
               </widget>
              </item>
-             <item>
-              <spacer name="hspacer2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="hframe3">
              <item>
               <widget class="QFrame" name="probe_in_frame">
                <layout class="QHBoxLayout" name="horizontalLayout_13">
@@ -513,23 +526,6 @@
                </layout>
               </widget>
              </item>
-             <item>
-              <spacer name="hspacer3_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="hframe4_2">
              <item>
               <widget class="QFrame" name="removal_distance_frame">
                <layout class="QHBoxLayout" name="horizontalLayout_16">
@@ -676,7 +672,7 @@
               </widget>
              </item>
              <item>
-              <spacer name="hspacer3">
+              <spacer name="hspacer3_2">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -731,68 +727,22 @@
                 </item>
                 <item>
                  <widget class="QComboBox" name="surface">
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
                   <item>
                    <property name="text">
-                    <string>Molecular Surface (VdW)</string>
+                    <string>van der Waals (vdW)</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Solvent Excluded Surface (SES)</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
                     <string>Solvent Accesible Surface (SAS)</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="cavity_representation_frame">
-               <layout class="QHBoxLayout" name="horizontalLayout_11">
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetNoConstraint</enum>
-                </property>
-                <item>
-                 <widget class="QLabel" name="cavity_representation_label">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <weight>50</weight>
-                    <italic>false</italic>
-                    <bold>false</bold>
-                    <kerning>true</kerning>
-                   </font>
-                  </property>
-                  <property name="mouseTracking">
-                   <bool>true</bool>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::NoFrame</enum>
-                  </property>
-                  <property name="text">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cavity Representation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="textFormat">
-                   <enum>Qt::RichText</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="cavity_representation">
-                  <item>
-                   <property name="text">
-                    <string>Filtered</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Full</string>
                    </property>
                   </item>
                  </widget>
@@ -814,6 +764,114 @@
               </spacer>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QFrame" name="hscale_frame">
+             <layout class="QHBoxLayout" name="hframe_8">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetNoConstraint</enum>
+              </property>
+              <property name="leftMargin">
+               <number>9</number>
+              </property>
+              <property name="topMargin">
+               <number>9</number>
+              </property>
+              <property name="rightMargin">
+               <number>9</number>
+              </property>
+              <property name="bottomMargin">
+               <number>9</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Hydropathy scale:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="hscale">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Eisenberg &amp; Weiss</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Hessa &amp; Heijne</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Kyte &amp; Doolittle</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Radzicka &amp; Wolfenden</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Moon &amp; Fleming</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Wimley &amp; White</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Zhao &amp; London</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="ignore_backbone">
+                <property name="text">
+                 <string>Ignore backbone</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
             <widget class="QFrame" name="hframe6_2">
@@ -853,7 +911,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="base_name">
+               <widget class="QLineEdit" name="basename">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -897,7 +955,7 @@
                <enum>QLayout::SetNoConstraint</enum>
               </property>
               <item>
-               <widget class="QLabel" name="output_dir_label">
+               <widget class="QLabel" name="basedir_label">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -928,7 +986,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="output_dir_path">
+               <widget class="QLineEdit" name="basedir">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -953,100 +1011,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="button_browse">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>50</weight>
-                  <italic>false</italic>
-                  <bold>false</bold>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="text">
-                 <string notr="true">Browse...</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="file_locations">
-          <property name="title">
-           <string>File Locations</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <item>
-            <widget class="QFrame" name="hframe5_2">
-             <layout class="QHBoxLayout" name="horizontalLayout_24">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetNoConstraint</enum>
-              </property>
-              <item>
-               <widget class="QLabel" name="parKVFinder_label">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>50</weight>
-                  <italic>false</italic>
-                  <bold>false</bold>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="mouseTracking">
-                 <bool>false</bool>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="text">
-                 <string>parKVFinder:</string>
-                </property>
-                <property name="textFormat">
-                 <enum>Qt::PlainText</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="parKVFinder">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>50</weight>
-                  <italic>false</italic>
-                  <bold>false</bold>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="text">
-                 <string notr="true"/>
-                </property>
-                <property name="echoMode">
-                 <enum>QLineEdit::Normal</enum>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="button_browse2">
+               <widget class="QPushButton" name="button_browse_basedir">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -1071,7 +1036,7 @@
                <enum>QLayout::SetNoConstraint</enum>
               </property>
               <item>
-               <widget class="QLabel" name="dictionary_label">
+               <widget class="QLabel" name="vdw_label">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1102,7 +1067,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="dictionary">
+               <widget class="QLineEdit" name="vdw">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -1127,7 +1092,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="button_browse3">
+               <widget class="QPushButton" name="button_browse_vdw">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -1914,7 +1879,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="button_browse4">
+              <widget class="QPushButton" name="button_browse_results">
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
@@ -2289,6 +2254,64 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="help">
+       <attribute name="title">
+        <string>Help</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QTextBrowser" name="help_text">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="cursor" stdset="0">
+           <cursorShape>IBeamCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #d3d3d3;color:black; padding: 20px; font: 10pt &quot;Sans Serif&quot;;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustIgnored</enum>
+          </property>
+          <property name="autoFormatting">
+           <set>QTextEdit::AutoBulletList</set>
+          </property>
+          <property name="lineWrapMode">
+           <enum>QTextEdit::WidgetWidth</enum>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;How to run pyKVFinder&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;To use PyMOL pyKVFinder Tools, follow these simple steps:&lt;/p&gt;
+&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Load a biomolecular structure&lt;/span&gt; into PyMOL.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Start the PyMOL2 parKVFinder Tools plugin.&lt;/span&gt;&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Select an input PDB file&lt;/span&gt; from the 'Main' tab.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Click the &lt;span style=&quot; font-weight:600;&quot;&gt;&amp;quot;Run pyKVFinder&amp;quot;&lt;/span&gt; button to begin the analysis.&lt;/li&gt;&lt;/ol&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once the run is complete, results can be found in the 'Results' tab. Here, users can review detailed information about the run, including the input file, ligand file, output directory, and step size, as well as cavity properties such as volume, area, depth, hydropathy and interface residues.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Additionally, users can load results from a previously generated file (.KVFinder.results.toml) by selecting the &lt;span style=&quot; font-weight:600;&quot;&gt;'Results File'&lt;/span&gt; using the &lt;span style=&quot; font-weight:600;&quot;&gt;'Browse...'&lt;/span&gt; button and clicking &lt;span style=&quot; font-weight:600;&quot;&gt;'Load'&lt;/span&gt;.&lt;/p&gt;
+&lt;h3 style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:600;&quot;&gt;Search Space Adjustments&lt;/span&gt;&lt;/h3&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;pyKVFinder offers two modes for adjusting the search space:&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Box Adjustment:&lt;/span&gt; This mode allows users to create a custom search box around a selection of interest. Click the &lt;span style=&quot; font-weight:600;&quot;&gt;'Draw Box'&lt;/span&gt; button to generate the box, which can be further refined by modifying one parameter (minimum and maximum XYZ, padding, or angles) at a time and clicking &lt;span style=&quot; font-weight:600;&quot;&gt;'Redraw Box'&lt;/span&gt;. For additional information, click the help button in the 'Box Adjustment' section.&lt;/li&gt;
+&lt;li style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ligand Adjustment:&lt;/span&gt; This mode focuses on cavity points surrounding a specific ligand. Users can define the radius around the ligand using the &lt;span style=&quot; font-weight:600;&quot;&gt;'Ligand Cutoff'&lt;/span&gt; parameter.&lt;/li&gt;&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;For more detailed information, please refer to the &lt;a href=&quot;https://lbc-lnbio.github.io/pyKVFinder/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pyKVFinder Documentation&lt;/span&gt;&lt;/a&gt; and the &lt;a href=&quot;https://lbc-lnbio.github.io/pyKVFinder/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Tutorial&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="acceptRichText">
+           <bool>true</bool>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="about">
        <attribute name="title">
         <string>About</string>
@@ -2322,43 +2345,33 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;PyMOL2 parKVFinder Tools integrates PyMOL v2.x (http://PyMOL.org/) with parKVFinder (https://github.com/LBC-LNBio/parKVFinder).&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;PyMOL pyKVFinder Tools integrates PyMOL (http://PyMOL.org/) with pyKVFinder (https://github.com/LBC-LNBio/pyKVFinder).&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;In the simplest case to run parKVFinder:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; font-weight:600; text-decoration: underline; color:#000000;&quot;&gt;Scientific team&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;1) Load a target biomolecular structure into PyMOL v2.x.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;2) Start PyMOL2 parKVFinder Tools plugin.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;3) Select an input PDB on 'Main' tab.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;4) Ensure that parKVFinder executable path is correct on the &amp;quot;Program Locations&amp;quot; tab.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;5) Click the &amp;quot;Run parKVFinder&amp;quot; button.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;pyKVFinder and PyMOL pyKVFinder Tools was developed by:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- João V. S. Guerra&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Helder V. Ribeiro-Filho&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Luiz F. G. Alves&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Pablo W. A. Silva&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Leandro O. Bortot&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Rodrigo V. Honorato&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- José G. C. Pereira&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Paulo S. Lopes-de-Oliveira (paulo.oliveira@lnbio.cnpem.br)&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;Completed runs are available on 'Results' tab, where users can check run information (i.e., input file, ligand file, output directory, step size) and spatial properties (i.e., volume, surface area and interface residues). In addition, the results can be loaded directly from a results file (.KVFinder.results.toml) by selecting a 'Results File' by clicking on 'Browse ...' and then clicking on 'Load'. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;In addition to whole structure cavity detection, there are two search space adjustments: Box and Ligand adjustments.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- The 'Box adjustment' mode creates a custom search box around a selection of interest by clicking on 'Draw Box' button, which can be adapted by changing one box parameter (minimum and maximum XYZ, padding and angles) at a time by clicking on 'Redraw Box'. For more information, there is a help button in 'Box adjustment' group.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- The 'Ligand adjustment' keeps cavity points around a target ligand PDB within a radius defined by the 'Ligand Cutoff' parameter.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;parKVFinder and PyMOL2 parKVFinder Tools was developed by:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- João Victor da Silva Guerra&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Helder Veras Filho&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Leandro Oliveira Bortot&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Rodrigo Vargas Honorato&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- José Geraldo de Carvalho Pereira&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;- Paulo Sergio Lopes de Oliveira (paulo.oliveira@lnbio.cnpem.br)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;Brazilian Center for Research in Energy and Materials - CNPEM&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;Brazilian Biosciences National Laboratory - LNBio&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;Brazilian Center for Research in Energy and Materials - CNPEM&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;Please refer and cite our papers if you use it in a publication.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; font-weight:600; text-decoration: underline; color:#000000;&quot;&gt;Citations&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; font-weight:600; text-decoration: underline; color:#000000;&quot;&gt;Citing pyKVFinder&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Droid Sans Mono','monospace','monospace','Droid Sans Fallback'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If you use &lt;span style=&quot; text-decoration: underline;&quot;&gt;parKVFinder&lt;/span&gt; or &lt;span style=&quot; text-decoration: underline;&quot;&gt;PyMOL2 parKVFinder Tools&lt;/span&gt;, please cite:&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;João Victor da Silva Guerra, Helder Veras Ribeiro Filho, Leandro Oliveira Bortot, Rodrigo Vargas Honorato, José Geraldo de Carvalho Pereira, Paulo Sergio Lopes de Oliveira. ParKVFinder: A thread-level parallel approach in biomolecular cavity detection. SoftwareX (2020). &lt;a href=&quot;https://doi.org/10.1016/j.softx.2020.100606&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://doi.org/10.1016/j.softx.2020.100606&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If you use &lt;span style=&quot; text-decoration: underline;&quot;&gt;depth and hydropathy characterization&lt;/span&gt;, please also cite:&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Guerra, J.V.d., Ribeiro-Filho, H.V., Jara, G.E. et al. pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science. BMC Bioinformatics 22, 607 (2021). &lt;a href=&quot;https://doi.org/10.1186/s12859-021-04519-4&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://doi.org/10.1186/s12859-021-04519-4&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;PyMOL citation may be found here:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://pymol.sourceforge.net/faq.html#CITE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://pymol.org/2/support.html?&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If you use &lt;span style=&quot; text-decoration: underline;&quot;&gt;pyKVFinder&lt;/span&gt; package, please cite:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Guerra, J. V. S., Ribeiro-Filho, H. V., Jara, G. E., Bortot, L. O., Pereira, J. G. C., &amp;amp; Lopes-de-Oliveira, P. S. (2021). pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science. BMC bioinformatics, 22(1), 607. &lt;a href=&quot;https://doi.org/10.1186/s12859-021-04519-4&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://doi.org/10.1186/s12859-021-04519-4&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If you use &lt;span style=&quot; text-decoration: underline;&quot;&gt;pyKVFinder.Molecule&lt;/span&gt;, please also cite:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Guerra, J. V. S., Alves, L. F. G., Bourissou, D., Lopes-de-Oliveira, P. S., &amp;amp; Szalóki, G. (2023). Cavity Characterization in Supramolecular Cages. Journal of chemical information and modeling, 63(12), 3772-3785. &lt;a href=&quot;https://doi.org/10.1021/acs.jcim.3c00328&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://doi.org/10.1021/acs.jcim.3c00328&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If you use &lt;span style=&quot; text-decoration: underline;&quot;&gt;PyMOL pyKVFinder Tools&lt;/span&gt;, please also cite:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Guerra, J. V. da S., Ribeiro Filho, H. V., Bortot, L. O., Honorato, R. V., Pereira, J. G. de C., &amp;amp; Lopes-de-Oliveira, P. S. (2020). ParKVFinder: A thread-level parallel approach in biomolecular cavity detection. In SoftwareX (Vol. 12, p. 100606). Elsevier BV. &lt;a href=&quot;https://doi.org/10.1016/j.softx.2020.100606&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://doi.org/10.1016/j.softx.2020.100606&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="acceptRichText">
            <bool>true</bool>
@@ -2372,68 +2385,12 @@ p, li { white-space: pre-wrap; }
       </widget>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="main_description">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>9</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: #d3d3d3;color:black; padding: 10px</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
-      <property name="text">
-       <string notr="true">parKVFinder software identifies and describes cavities in a target biomolecular structure using a dual probe system.
-
-The description includes spatial, depth, constitutional and hydropathy characterization. The spatial description includes shape, volume, and area. The depth description defines depths for each cavity point, shown in the B-factor, and calculates the average and maximum depth per cavity. The constitutional description includes amino acids that form the identified cavities. The hydropathy description maps Eisenberg &amp; Weiss hydrophobicity scale at surface points, shown in the Q-factor, and estimates average hydropathy per cavity.</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::PlainText</enum>
-      </property>
-      <property name="scaledContents">
-       <bool>false</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>
  <tabstops>
   <tabstop>tabs</tabstop>
   <tabstop>button_run</tabstop>
-  <tabstop>button_grid</tabstop>
   <tabstop>button_restore</tabstop>
   <tabstop>button_exit</tabstop>
   <tabstop>input</tabstop>
@@ -2442,9 +2399,9 @@ The description includes spatial, depth, constitutional and hydropathy character
   <tabstop>probe_in</tabstop>
   <tabstop>volume_cutoff</tabstop>
   <tabstop>removal_distance</tabstop>
-  <tabstop>base_name</tabstop>
-  <tabstop>output_dir_path</tabstop>
-  <tabstop>button_browse</tabstop>
+  <tabstop>basename</tabstop>
+  <tabstop>basedir</tabstop>
+  <tabstop>button_browse_basedir</tabstop>
   <tabstop>box_adjustment</tabstop>
   <tabstop>button_draw_box</tabstop>
   <tabstop>button_delete_box</tabstop>
@@ -2463,7 +2420,7 @@ The description includes spatial, depth, constitutional and hydropathy character
   <tabstop>refresh_ligand</tabstop>
   <tabstop>ligand_cutoff</tabstop>
   <tabstop>results_file_entry</tabstop>
-  <tabstop>button_browse4</tabstop>
+  <tabstop>button_browse_results</tabstop>
   <tabstop>button_load_results</tabstop>
   <tabstop>volume_list</tabstop>
   <tabstop>area_list</tabstop>
