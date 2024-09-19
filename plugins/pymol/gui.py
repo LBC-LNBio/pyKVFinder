@@ -14,10 +14,9 @@ import time
 
 import toml
 from pymol import cmd
+from math import pi, cos, sin
 
-# from PyQt5.QtCore import QDir
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QScrollBar, QCheckBox
-
 from PyQt5.uic import loadUi
 
 import pyKVFinder
@@ -35,6 +34,7 @@ from .actions import (
     _select_directory,
     _select_file,
 )
+from .box import Box
 from .visualization import (
     _show_residues,
     _show_cavities,
@@ -53,9 +53,6 @@ class PyMOLpyKVFinderTools(QMainWindow):
 
     def __init__(self) -> None:
         super().__init__()
-        # Define default values
-        # self._default = self._set_default()
-
         # Initialize GUI
         self._initialize_gui()
 
@@ -63,7 +60,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self._startup()
 
         # Startup custom grid
-        # self.box = Box() #TODO: Implement this class
+        self.box = Box()
 
         # Results
         global results
@@ -72,11 +69,6 @@ class PyMOLpyKVFinderTools(QMainWindow):
         self.input_pdb = None
         self.ligand_pdb = None
         self.cavity_pdb = None
-
-        # # Set grid center
-        # self.x = 0.0
-        # self.y = 0.0
-        # self.z = 0.0
 
     def _initialize_gui(self) -> None:
         """
@@ -115,8 +107,53 @@ class PyMOLpyKVFinderTools(QMainWindow):
             )
         )
 
-        # Comboxbox bindings
+        # Surface representation bindings in Main Tab
         self.surface.currentIndexChanged.connect(self._surface_selection)
+
+        # Box Adjustment
+        self.button_draw_box.clicked.connect(
+            lambda: self.box._set_box(
+                self.button_draw_box,
+                self.button_redraw_box,
+                self.min_x,
+                self.max_x,
+                self.min_y,
+                self.max_y,
+                self.min_z,
+                self.max_z,
+                self.angle1,
+                self.angle2,
+                self.padding,
+            )
+        )
+        self.button_delete_box.clicked.connect(
+            lambda: self.box._delete_box(
+                self.button_draw_box,
+                self.button_redraw_box,
+                self.min_x,
+                self.max_x,
+                self.min_y,
+                self.max_y,
+                self.min_z,
+                self.max_z,
+                self.angle1,
+                self.angle2,
+            )
+        )
+        self.button_redraw_box.clicked.connect(
+            lambda: self.box._redraw_box(
+                self.min_x,
+                self.max_x,
+                self.min_y,
+                self.max_y,
+                self.min_z,
+                self.max_z,
+                self.angle1,
+                self.angle2,
+                self.padding,
+            )
+        )
+        self.button_box_adjustment_help.clicked.connect(lambda: self.box._help(self))
 
         # Refresh the list of objects in the input and ligand widgets
         self.refresh_input.clicked.connect(lambda: _refresh_list(self.input))
@@ -293,8 +330,16 @@ class PyMOLpyKVFinderTools(QMainWindow):
             "basedir": os.path.join(self.basedir.text(), self.basename.text()),
             "vdw": self.vdw.text(),
             "box": (
-                "box.toml" if self.box_adjustment.isChecked() else None
-            ),  # TODO: Implement method to write box.toml
+                self.box._create_box_file(
+                    os.path.join(
+                        self.basedir.text(),
+                        self.basename.text(),
+                        f"box.{self.basename.text()}.toml",
+                    )
+                )
+                if self.box_adjustment.isChecked()
+                else None
+            ),
             "padding": self.padding.value(),
             "ligand_adjustment": self.ligand_adjustment.isChecked(),
             "ligand_cutoff": self.ligand_cutoff.value(),
