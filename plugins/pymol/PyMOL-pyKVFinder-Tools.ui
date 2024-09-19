@@ -124,6 +124,31 @@ The description includes spatial, depth, constitutional and hydropathy character
         <property name="text">
          <string notr="true">Run pyKVFinder</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_surface">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Model Surface</string>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -502,23 +527,6 @@ The description includes spatial, depth, constitutional and hydropathy character
               </widget>
              </item>
              <item>
-              <spacer name="hspacer3_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="hframe4_2">
-             <item>
               <widget class="QFrame" name="removal_distance_frame">
                <layout class="QHBoxLayout" name="horizontalLayout_16">
                 <property name="sizeConstraint">
@@ -664,7 +672,7 @@ The description includes spatial, depth, constitutional and hydropathy character
               </widget>
              </item>
              <item>
-              <spacer name="hspacer3">
+              <spacer name="hspacer3_2">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -719,6 +727,14 @@ The description includes spatial, depth, constitutional and hydropathy character
                 </item>
                 <item>
                  <widget class="QComboBox" name="surface">
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>van der Waals (vdW)</string>
+                   </property>
+                  </item>
                   <item>
                    <property name="text">
                     <string>Solvent Excluded Surface (SES)</string>
@@ -832,6 +848,13 @@ The description includes spatial, depth, constitutional and hydropathy character
                   <string>Zhao &amp; London</string>
                  </property>
                 </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox">
+                <property name="text">
+                 <string>Ignore backbone</string>
+                </property>
                </widget>
               </item>
               <item>
