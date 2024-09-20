@@ -14,9 +14,7 @@ import time
 
 import toml
 from pymol import cmd
-from math import pi, cos, sin
-
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QScrollBar, QCheckBox
+from PyQt5.QtWidgets import QCheckBox, QMainWindow, QMessageBox, QScrollBar
 from PyQt5.uic import loadUi
 
 import pyKVFinder
@@ -36,11 +34,11 @@ from .actions import (
 )
 from .box import Box
 from .visualization import (
-    _show_residues,
     _show_cavities,
     _show_depth,
-    _show_hydropathy,
     _show_descriptors,
+    _show_hydropathy,
+    _show_residues,
 )
 
 

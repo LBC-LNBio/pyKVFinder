@@ -8,13 +8,13 @@ Changes in this file are not advised, as it controls interactions with
 pyKVFinder and PyQt5.
 """
 
-import toml
-import pymol
-from math import pi, sin, cos
-from pymol import cmd
+from math import cos, pi, sin
 
+import pymol
+import toml
+from pymol import cmd
 from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtWidgets import QPushButton, QDoubleSpinBox, QMessageBox, QMainWindow
+from PyQt5.QtWidgets import QDoubleSpinBox, QMainWindow, QMessageBox, QPushButton
 
 
 class Box(object):
@@ -692,10 +692,10 @@ class Box(object):
         )
 
         # Create points
-        p1 = [x1,y1,z1]
-        p2 = [x2,y2,z2]
-        p3 = [x3,y3,z3]
-        p4 = [x4,y4,z4]
+        p1 = [x1, y1, z1]
+        p2 = [x2, y2, z2]
+        p3 = [x3, y3, z3]
+        p4 = [x4, y4, z4]
         box = {"p1": p1, "p2": p2, "p3": p3, "p4": p4}
 
         with open(filename, "w") as f:
