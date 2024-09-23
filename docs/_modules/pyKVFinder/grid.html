@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.6.14 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.6.16 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,8 +15,8 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=3ad970d1"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/documentation_options.js?v=a9597ea2"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -46,40 +46,12 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Python Package</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_installation/index.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_installation/index.html#installation">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html">Cavity detection and characterization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#molecular-volume">Molecular volume</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_tutorial/index.html#examples">Examples</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_api_reference/index.html">Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_api_reference/index.html#classes">Classes</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Command-line interface</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_cli/index.html">Positional arguments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_cli/index.html#optional-arguments">Optional arguments</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Configuration files</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/vdw_file_template.html">vdW radii</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/box_file_template.html">Custom grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_cfg_files/hydrophobicity_scale_file_template.html">Hydrophobicity scale</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">About</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html">Issues</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#scientific-team">Scientific team</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#funding">Funding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../_about/index.html#license">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/api_reference/index.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -129,7 +101,7 @@
 
 
 <div class="viewcode-block" id="get_vertices">
-<a class="viewcode-back" href="../../_api_reference/get_vertices.html#pyKVFinder.get_vertices">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/get_vertices.html#pyKVFinder.get_vertices">[docs]</a>
 <span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">probe_out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
@@ -227,7 +199,7 @@
 
 
 <div class="viewcode-block" id="get_vertices_from_file">
-<a class="viewcode-back" href="../../_api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a>
 <span class="k">def</span> <span class="nf">get_vertices_from_file</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
@@ -691,7 +663,7 @@
 
 
 <div class="viewcode-block" id="detect">
-<a class="viewcode-back" href="../../_api_reference/detect.html#pyKVFinder.detect">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/detect.html#pyKVFinder.detect">[docs]</a>
 <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
@@ -1235,7 +1207,7 @@
 
 
 <div class="viewcode-block" id="spatial">
-<a class="viewcode-back" href="../../_api_reference/spatial.html#pyKVFinder.spatial">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/spatial.html#pyKVFinder.spatial">[docs]</a>
 <span class="k">def</span> <span class="nf">spatial</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
@@ -1458,7 +1430,7 @@
 
 
 <div class="viewcode-block" id="depth">
-<a class="viewcode-back" href="../../_api_reference/depth.html#pyKVFinder.depth">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/depth.html#pyKVFinder.depth">[docs]</a>
 <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
@@ -1668,7 +1640,7 @@
 
 
 <div class="viewcode-block" id="constitutional">
-<a class="viewcode-back" href="../../_api_reference/constitutional.html#pyKVFinder.constitutional">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/constitutional.html#pyKVFinder.constitutional">[docs]</a>
 <span class="k">def</span> <span class="nf">constitutional</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
@@ -1953,7 +1925,7 @@
 
 
 <div class="viewcode-block" id="hydropathy">
-<a class="viewcode-back" href="../../_api_reference/hydropathy.html#pyKVFinder.hydropathy">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/hydropathy.html#pyKVFinder.hydropathy">[docs]</a>
 <span class="k">def</span> <span class="nf">hydropathy</span><span class="p">(</span>
     <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span>
@@ -2394,7 +2366,7 @@
 
 
 <div class="viewcode-block" id="openings">
-<a class="viewcode-back" href="../../_api_reference/openings.html#pyKVFinder.openings">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/openings.html#pyKVFinder.openings">[docs]</a>
 <span class="k">def</span> <span class="nf">openings</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">depths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2611,7 +2583,7 @@
 
 
 <div class="viewcode-block" id="export">
-<a class="viewcode-back" href="../../_api_reference/export.html#pyKVFinder.export">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/export.html#pyKVFinder.export">[docs]</a>
 <span class="k">def</span> <span class="nf">export</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -2907,7 +2879,7 @@
 
 
 <div class="viewcode-block" id="export_openings">
-<a class="viewcode-back" href="../../_api_reference/export_openings.html#pyKVFinder.export_openings">[docs]</a>
+<a class="viewcode-back" href="../../package/api_reference/export_openings.html#pyKVFinder.export_openings">[docs]</a>
 <span class="k">def</span> <span class="nf">export_openings</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">openings</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
