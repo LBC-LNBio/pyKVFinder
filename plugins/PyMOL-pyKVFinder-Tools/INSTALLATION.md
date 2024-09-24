@@ -2,7 +2,7 @@
 
 First, you need to install PyMOL v2.x or v3.x on your computer. If you do not have it installed, please refer to PyMOL [website](https://pymol.org/).
 
-_PyMOL2 pyKVFinder Tools_ is available to use with PyMOL and has been been developed using Qt interface and Python3.
+_PyMOL pyKVFinder Tools_ is available to use with PyMOL and has been been developed using Qt interface and Python3.
 
 After installing PyMOL, plug-in requires the installation of [pyKVFinder](https://pypi.org/project/pyKVFinder/), [toml](https://pypi.org/project/toml/), and [pyqt5](https://pypi.org/project/PyQt5/) modules and PyMOL's native Python does not have it installed. So you need to install it:
 
