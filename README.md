@@ -48,6 +48,10 @@ S., & Szalóki, G. (2023). Cavity Characterization in Supramolecular
 Cages. Journal of chemical information and modeling, 63(12), 3772-3785.
 <https://doi.org/10.1021/acs.jcim.3c00328>.
 
+If you use *PyMOL pyKVFinder Tools*, please also cite:
+
+Guerra, J. V. da S., Ribeiro Filho, H. V., Bortot, L. O., Honorato, R. V., Pereira, J. G. de C., & Lopes-de-Oliveira, P. S. (2020). ParKVFinder: A thread-level parallel approach in biomolecular cavity detection. In SoftwareX (Vol. 12, p. 100606). Elsevier BV. https://doi.org/10.1016/j.softx.2020.100606.
+
 ## License
 
 The software is licensed under the terms of the GNU General Public
