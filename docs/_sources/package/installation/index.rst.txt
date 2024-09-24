@@ -18,4 +18,3 @@ Or to install the latest developmental version from source, run:
 .. note:: 
 
   SWIG is required for installing pyKVFinder from source, the installation procedure differs depending on the operating system. SWIG can be installed with conda (``conda install swig``), or with a package manager on Linux (``sudo apt install swig``) and macOS (``brew install swig``).
-

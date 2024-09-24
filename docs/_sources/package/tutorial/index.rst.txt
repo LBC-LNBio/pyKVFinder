@@ -115,7 +115,7 @@ Inside the *pyKVFinderResults object*, cavity and surface points, number of cavi
 
 .. seealso::
 
-  * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_
+  * `pyKVFinder.run_workflow <../api_reference/run_workflow>`_
 
 With these attributes, we can write the detected cavities and the characterization to files. Further, we can set a flag to plot the bar charts of the frequencies in a PDF file. Below, we illustrate the usage:
 
@@ -129,7 +129,7 @@ With these attributes, we can write the detected cavities and the characterizati
 
 .. seealso::
 
-  * `pyKVFinder.pyKVFinderResults <../_api_reference/pyKVFinderResults.html>`_
+  * `pyKVFinder.pyKVFinderResults <../api_reference/pyKVFinderResults.html>`_
 
 Full workflow
 -------------
@@ -197,7 +197,7 @@ Inside the *pyKVFinderResults object*, in addition to cavity and surface points,
 
 .. seealso::
 
-  * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_
+  * `pyKVFinder.run_workflow <../api_reference/run_workflow>`_
 
 With these attributes, we can write the detected cavities with depth annotated on B-factor column (temperature factor) and hydropathy annotated on Q-factor (occupancy) column, and the characterization to files. Below, we illustrate the usage:
 
@@ -211,7 +211,7 @@ With these attributes, we can write the detected cavities with depth annotated o
 
 .. seealso::
 
-  * `pyKVFinder.pyKVFinderResults <../_api_reference/pyKVFinderResults.html>`_
+  * `pyKVFinder.pyKVFinderResults <../api_reference/pyKVFinderResults.html>`_
 
 Separated steps
 ---------------
@@ -237,7 +237,7 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
 
 .. seealso::
 
-  * `pyKVFinder.read_vdw <../_api_reference/read_vdw.html>`_
+  * `pyKVFinder.read_vdw <../api_reference/read_vdw.html>`_
 
 2. Loading data from target structure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -269,8 +269,8 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
 
 .. seealso::
 
-  * `pyKVFinder.read_pdb <../_api_reference/read_pdb.html>`_
-  * `pyKVFinder.read_xyz <../_api_reference/read_xyz.html>`_
+  * `pyKVFinder.read_pdb <../api_reference/read_pdb.html>`_
+  * `pyKVFinder.read_xyz <../api_reference/read_xyz.html>`_
 
 3. Dimensioning the 3D grid
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -298,7 +298,7 @@ The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* f
 
 .. seealso::
 
-  * `pyKVFinder.get_vertices <../_api_reference/get_vertices.html>`_
+  * `pyKVFinder.get_vertices <../api_reference/get_vertices.html>`_
 
 4. Detecting biomolecular cavities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -356,7 +356,7 @@ The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* f
 
 .. seealso::
 
-  * `pyKVFinder.detect <../_api_reference/detect.html>`_
+  * `pyKVFinder.detect <../api_reference/detect.html>`_
 
 4.1 Detecting biomolecular cavities with ligand adjustment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -432,9 +432,9 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``atomic`` an
 
 .. seealso::
 
-  * `pyKVFinder.read_pdb <../_api_reference/read_pdb.html>`_
-  * `pyKVFinder.read_xyz <../_api_reference/read_xyz.html>`_
-  * `pyKVFinder.detect <../_api_reference/detect.html>`_
+  * `pyKVFinder.read_pdb <../api_reference/read_pdb.html>`_
+  * `pyKVFinder.read_xyz <../api_reference/read_xyz.html>`_
+  * `pyKVFinder.detect <../api_reference/detect.html>`_
 
 5. Performing spatial characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -487,7 +487,7 @@ A spatial characterization, that includes volume, area and defining surface poin
 
 .. seealso::
 
-  * `pyKVFinder.spatial <../_api_reference/spatial.html>`_
+  * `pyKVFinder.spatial <../api_reference/spatial.html>`_
 
 6. Performing constitutional characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -522,7 +522,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
 
 .. seealso::
 
-  * `pyKVFinder.constitutional <../_api_reference/constitutional.html>`_  
+  * `pyKVFinder.constitutional <../api_reference/constitutional.html>`_  
 
 6.1 Calculating and plotting frequencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -561,12 +561,12 @@ Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the freque
 
 .. seealso::
 
-  * `pyKVFinder.calculate_frequencies <../_api_reference/calculate_frequencies.html>`_  
-  * `pyKVFinder.plot_frequencies <../_api_reference/plot_frequencies.html>`_  
+  * `pyKVFinder.calculate_frequencies <../api_reference/calculate_frequencies.html>`_  
+  * `pyKVFinder.plot_frequencies <../api_reference/plot_frequencies.html>`_  
 
 A sample barplot of ``pyKVFinder.plot_frequencies`` is shown below.
 
-.. image:: ../_images/plot-frequencies.png
+.. image:: images/plot-frequencies.png
     :width: 600
     :align: center
 
@@ -628,7 +628,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 
 .. seealso::
 
-  * `pyKVFinder.hydropathy <../_api_reference/hydropathy.html>`_    
+  * `pyKVFinder.hydropathy <../api_reference/hydropathy.html>`_    
 
 8. Performing depth characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -673,7 +673,7 @@ A depth characterization identifies the degree of burial of the binding site. Fi
 
 .. seealso::
 
-  * `pyKVFinder.depth <../_api_reference/depth.html>`_  
+  * `pyKVFinder.depth <../api_reference/depth.html>`_  
 
 9. Exporting cavities
 ^^^^^^^^^^^^^^^^^^^^^
@@ -689,7 +689,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
   >>> pyKVFinder.export(output_cavity, cavities, None, vertices, step=step)
 
 9.2 Exporting cavity and surface points
-""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
 
 .. code-block:: python
 
@@ -722,7 +722,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 
 .. seealso::
 
-  * `pyKVFinder.export <../_api_reference/export.html>`_  
+  * `pyKVFinder.export <../api_reference/export.html>`_  
 
 10.   Writing results
 ^^^^^^^^^^^^^^^^^^^^^
@@ -775,7 +775,7 @@ The function call depends on the characterizations performed on the detected cav
 
 .. seealso::
 
-  * `pyKVFinder.write_results <../_api_reference/write_results.html>`_ 
+  * `pyKVFinder.write_results <../api_reference/write_results.html>`_ 
 
 Steered detection
 -----------------
@@ -859,7 +859,7 @@ For instance, with *custom-box.toml*:
 
 .. seealso::
 
-  * `pyKVFinder.run_workflow <../_api_reference/run_workflow>`_ 
+  * `pyKVFinder.run_workflow <../api_reference/run_workflow>`_ 
 
 Separated steps
 ^^^^^^^^^^^^^^^
@@ -916,8 +916,8 @@ Users can define the ``box`` parameter as the filepath of one box configuration 
 
 .. seealso::
 
-  * `pyKVFinder.get_vertices_from_file <../_api_reference/get_vertices_from_file.html>`_
-  * `pyKVFinder.detect <../_api_reference/detect.html>`_ 
+  * `pyKVFinder.get_vertices_from_file <../api_reference/get_vertices_from_file.html>`_
+  * `pyKVFinder.detect <../api_reference/detect.html>`_ 
 
 Molecular volume
 ================
@@ -929,7 +929,7 @@ All files used on this tutorial can be found in our package and in our `GitHub r
 In this tutorial, we will use pyKVFinder on perchlorate (ClO\ :sub:`4` \) to estimate the molecular volume, using van der Waals (vdW) surface, solvent excluded surface (SES) and solvent accessible surface (SAS) to represent the molecular surface (see Figure below).
 
 +-------------------------------+--------------------------------+--------------------------------+
-| .. image:: ../_images/vdw.png | .. image:: ../_images/ses.png  | .. image:: ../_images/sas.png  |
+| .. image:: images/vdw.png     | .. image:: images/ses.png      | .. image:: images/sas.png      |
 |                               |                                |                                |
 | .. centered:: (a) vdW         | .. centered:: (b) SES          | .. centered:: (c) SAS          |
 +-------------------------------+--------------------------------+--------------------------------+
@@ -986,7 +986,7 @@ We can preview our modelled molecule in the 3D grid by running:
   
   >>> molecule.export("vdw-model.pdb")
 
-.. image:: ../_images/vdw-grid.png
+.. image:: images/vdw-grid.png
   :width: 500
   :align: center
 
@@ -1046,7 +1046,7 @@ We can preview our modelled molecule in the 3D grid by running:
   
   >>> molecule.preview()
 
-.. image:: ../_images/ses-grid.png
+.. image:: images/ses-grid.png
   :width: 500
   :align: center
 
@@ -1100,7 +1100,7 @@ We can preview our modelled molecule in the 3D grid by running:
   
   >>> molecule.preview()
 
-.. image:: ../_images/sas-grid.png
+.. image:: images/sas-grid.png
   :width: 500
   :align: center
 

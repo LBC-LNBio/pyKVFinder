@@ -2,7 +2,7 @@
 API Reference
 *************
 
-The API of all pyKVFinder functions and classes with expected types and all parameters available.
+The API of all pyKVFinder functions, classes and configuration files with expected types and all parameters available.
 
 Functions
 =========
@@ -37,4 +37,13 @@ Classes
 
     Molecule
     pyKVFinderResults
-    
+
+Configuration Files
+===================
+
+.. toctree::
+    :maxdepth: 1
+
+    vdw_file_template
+    box_file_template
+    hydrophobicity_scale_file_template
