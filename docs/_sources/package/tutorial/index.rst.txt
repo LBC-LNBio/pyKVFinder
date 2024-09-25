@@ -221,7 +221,7 @@ If users prefer, instead of running ``pyKVFinder.run_workflow`` function, you ca
 1. Loading van der Waals radii dictionary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define the radius values for each residue and when not defined, it uses a generic value based on the atom type. ``pyKVFinder.read_vdw`` takes a vdW radii file (*.dat*) and returns a dictionary contaning radii values for each atom of each residue.
+The `van der Waals radii file <../api_reference/vdw_file_template.html>`_ define the radius values for each residue and when not defined, it uses a generic value based on the atom type. ``pyKVFinder.read_vdw`` takes a vdW radii file (*.dat*) and returns a dictionary containing radii values for each atom of each residue.
 
 .. code-block:: python
 
@@ -231,7 +231,7 @@ The `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_ define th
 
 .. note::
 
-  The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when a *.dat* file is not specified. Otherwise, user must specify a *.dat* file following template of `van der Waals radii file <../_cfg_files/vdw_file_template.html>`_.
+  The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when a *.dat* file is not specified. Otherwise, user must specify a *.dat* file following template of `van der Waals radii file <../api_reference/vdw_file_template.html>`_.
 
   This step is only necessary if you are reading a custom van der Waals radii file to use in ``pyKVFinder.read_pdb``.
 
@@ -363,7 +363,7 @@ The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* f
 
 The cavity detection can be limited around the target ligand(s), which will be passed to pyKVFinder through a *.pdb* or *.xyz* file. Thus, the detected cavities are limited within a radius (``ligand_cutoff``) of the target ligand(s).
 
-First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio/pyKVFinder/blob/master/tests/data/ADN.pdb>`_ as the target ligand and returns the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom of the ligand.
+First, ``pyKVFinder.read_pdb`` takes an `adenosine <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/tests/data/ADN.pdb>`_ as the target ligand and returns the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom of the ligand.
 
 .. code-block:: python
 
@@ -441,7 +441,7 @@ Afterwards, ``parKVFinder.detect`` takes the mandatory parameters (``atomic`` an
 
 A spatial characterization, that includes volume, area and defining surface points, is performed on the detected cavities. 
 
-``pyKVFinder.spatial`` takes the detected cavities and the grid spacing (``step``) and and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.
+``pyKVFinder.spatial`` takes the detected cavities and the grid spacing (``step``) and returns a tuple with a NumPy array with the surface points in the 3D grid, a dictionary with the volume of the detected cavities and a dictionary with the area of the detected cavities.
 
 .. code-block:: python
 
@@ -489,7 +489,7 @@ A spatial characterization, that includes volume, area and defining surface poin
 
   * `pyKVFinder.spatial <../api_reference/spatial.html>`_
 
-6. Performing constitutional characterization
+1. Performing constitutional characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.
@@ -522,7 +522,7 @@ If you wish to ignore backbones contacts (C, CA, N, O) with the cavity when defi
 
 .. seealso::
 
-  * `pyKVFinder.constitutional <../api_reference/constitutional.html>`_  
+  * `pyKVFinder.constitutional <../api_reference/constitutional.html>`_
 
 6.1 Calculating and plotting frequencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -561,8 +561,8 @@ Afterwards, ``pyKVFinder.plot_frequencies`` takes the dictionary with the freque
 
 .. seealso::
 
-  * `pyKVFinder.calculate_frequencies <../api_reference/calculate_frequencies.html>`_  
-  * `pyKVFinder.plot_frequencies <../api_reference/plot_frequencies.html>`_  
+  * `pyKVFinder.calculate_frequencies <../api_reference/calculate_frequencies.html>`_
+  * `pyKVFinder.plot_frequencies <../api_reference/plot_frequencies.html>`_
 
 A sample barplot of ``pyKVFinder.plot_frequencies`` is shown below.
 
@@ -577,7 +577,7 @@ A sample barplot of ``pyKVFinder.plot_frequencies`` is shown below.
 
 A hydropathy characterization, that maps a target hydrophobicity scale on surface points and calculate the average hydropathy, is performed on the surface points of the detected cavities.
 
-``pyKVFinder.hydropathy`` takes the surface points of the detected cavities, the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom, the NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a collection of detection parameters (``step``, ``probe_in``) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydropobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.
+``pyKVFinder.hydropathy`` takes the surface points of the detected cavities, the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom, the NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis), a collection of detection parameters (``step``, ``probe_in``) and a target hydrophobicity scale to be mapped on the surface points, and returns a tuple with a NumPy array with the hydrophobicity scale mapped to the surface points in the 3D grid and a dictionary with the average hydrophobicity scale of the detected cavities and the range of the chosen hydrophobicity scale.
 
 .. code-block:: python
   
@@ -620,7 +620,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
     * `WimleyWhite <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/WimleyWhite.toml>`_;
     * `ZhaoLondon <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/ZhaoLondon.toml>`_.
 
-  Otherwise, user must specify a *.toml* file following `Hydrophobicity Scale File Template <https://github.com/LBC-LNBio/pyKVFinder#hydrophobicity-scale-file-template>`_.
+  Otherwise, user must specify a *.toml* file following `Hydrophobicity Scale File Template <../api_reference/hydrophobicity_scale_file_template.html>`_.
 
 .. note::
 
@@ -628,9 +628,9 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 
 .. seealso::
 
-  * `pyKVFinder.hydropathy <../api_reference/hydropathy.html>`_    
+  * `pyKVFinder.hydropathy <../api_reference/hydropathy.html>`_
 
-8. Performing depth characterization
+1. Performing depth characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A depth characterization identifies the degree of burial of the binding site. First, it identifies the cavity volume boundary. Subsequently, the depth of each cavity point is heuristically estimated by the shortest Euclidean distance between the cavity point and its respective boundary points. With this, the maximum and average depths for the detected cavities are calculated.
@@ -673,7 +673,7 @@ A depth characterization identifies the degree of burial of the binding site. Fi
 
 .. seealso::
 
-  * `pyKVFinder.depth <../api_reference/depth.html>`_  
+  * `pyKVFinder.depth <../api_reference/depth.html>`_
 
 9. Exporting cavities
 ^^^^^^^^^^^^^^^^^^^^^
@@ -722,7 +722,7 @@ There are four different ways to export the detected cavities to PDB-formatted f
 
 .. seealso::
 
-  * `pyKVFinder.export <../api_reference/export.html>`_  
+  * `pyKVFinder.export <../api_reference/export.html>`_
 
 10.   Writing results
 ^^^^^^^^^^^^^^^^^^^^^
@@ -782,7 +782,7 @@ Steered detection
 
 All these steps showed so far were performed the detection on the whole target biomolecule; however, we can perform them on a custom 3D grid, where we can explore closed regions with a custom box, which can be defined by a *.toml* file.
 
-There are three methods to define a custom 3D grid as shown in `Box configuration file template <../_cfg_files/box_file_template.html>`_.
+There are three methods to define a custom 3D grid as shown in `Box configuration file template <../api_reference/box_file_template.html>`_.
 
 First, we will create a box *.toml* file with: 
 
