@@ -667,6 +667,7 @@ parameters.",
             self._load_run()
         # Unsucessful run
         else:
+            self._restore_results(remove_inputs=False)
             QMessageBox.warning(
                 self,
                 "Warning",
