@@ -8,3 +8,4 @@ To create pyKVFinder documentation as a GitHub page, run:
 .. code-block:: bash
 
     make html
+

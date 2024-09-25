@@ -23,7 +23,7 @@ authors = [
 maintainers = [{ name = "João V. S. Guerra", email = "jvsguerra@gmail.com" }]
 license = { file = "LICENSE" }
 readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = [
     "structural biology",
     "proteins",
@@ -40,7 +40,6 @@ classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -64,6 +63,8 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 dev = ["pytest==8.3.3", "pytest-cov==5.0.0", "black==24.8.0", "flake8==7.1.1"]
+docs = ["sphinx==7.4.7", "sphinx-rtd-theme==2.0.0"]
+plugins = ["pyqt5~=5.15", "toml==0.10.2"]
 
 [project.urls]
 homepage = "https://github.com/LBC-LNBio/pyKVFinder/"
@@ -95,7 +96,7 @@ before-build = [
     "pip3 install certifi",
     "git clean -fxd build",
 ]
-build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
+build = ["cp310-*", "cp311-*", "cp312-*"]
 
 [tool.cibuildwheel.linux]
 archs = ["native"]

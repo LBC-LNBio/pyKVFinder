@@ -1,0 +1,20 @@
+Installation
+============
+
+To install the latest release from `PyPI <https://pypi.org/project/pyKVFinder>`_, 
+run:
+
+.. code-block:: bash
+
+  pip install pyKVFinder
+
+Or to install the latest developmental version from source, run:
+
+.. code-block:: bash
+
+  git clone https://github.com/LBC-LNBio/pyKVFinder.git
+  pip install -e pyKVFinder
+
+.. note:: 
+
+  SWIG is required for installing pyKVFinder from source, the installation procedure differs depending on the operating system. SWIG can be installed with conda (``conda install swig``), or with a package manager on Linux (``sudo apt install swig``) and macOS (``brew install swig``).
