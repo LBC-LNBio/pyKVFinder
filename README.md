@@ -14,6 +14,7 @@ See also:
 
 - [GitHub repository](https://github.com/LBC-LNBio/pyKVFinder/)
 - [Documentation and tutorial](https://lbc-lnbio.github.io/pyKVFinder/)
+- [PyMOL plugin](https://lbc-lnbio.github.io/pyKVFinder/plugins/pymol/index.html)
 
 ## Installation
 
