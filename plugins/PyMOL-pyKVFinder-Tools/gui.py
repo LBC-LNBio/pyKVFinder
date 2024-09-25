@@ -63,7 +63,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Results
         global results
         results = None
-        self.pyKVFindeResults = None
+        self.pyKVFinderResults = None
         self.input_pdb = None
         self.ligand_pdb = None
         self.cavity_pdb = None
@@ -617,7 +617,7 @@ parameters.",
         start_time = time.time()
 
         # Run pyKVFinder
-        self.pyKVFindeResults = pyKVFinder.run_workflow(
+        self.pyKVFinderResults = pyKVFinder.run_workflow(
             input=parameters["input"],
             ligand=parameters["ligand"],
             vdw=parameters["vdw"],
@@ -644,31 +644,35 @@ parameters.",
             parameters["basedir"],
             f"{parameters['basename']}.KVFinder.output.pdb",
         )
-        self.pyKVFindeResults.export_all(
-            fn=results_file,
-            output=cavity_file,
-            include_frequencies_pdf=False,
-        )
+
+        # If pyKVFinder found cavities, export results
+        if self.pyKVFinderResults is not None:
+            self.pyKVFinderResults.export_all(
+                fn=results_file,
+                output=cavity_file,
+                include_frequencies_pdf=False,
+            )
 
         # Elapsed time
         elapsed_time = time.time() - start_time
-        print(f"> Cavities detected: {self.pyKVFindeResults.ncav}")
+        print(
+            f"> Cavities detected: {self.pyKVFinderResults.ncav if self.pyKVFinderResults else 0}"
+        )
         print(f"> Elapsed time: {elapsed_time:.2f} seconds")
 
-        # Set the results filename in the GUI
-        self.results_file_entry.setText(results_file)
-        self.tabs.setCurrentIndex(2)
-
         # Sucessful run
-        if self.pyKVFindeResults.ncav > 0:
+        if self.pyKVFinderResults is not None:
+            self.results_file_entry.setText(results_file)
+            self.tabs.setCurrentIndex(2)
             self._load_run()
         # Unsucessful run
-        elif self.pyKVFindeResults.ncav == 0:
+        else:
             QMessageBox.warning(
                 self,
                 "Warning",
                 "No cavities were detected. Please check the parameters.",
                 QMessageBox.Ok,
             )
+            return False
 
         return True

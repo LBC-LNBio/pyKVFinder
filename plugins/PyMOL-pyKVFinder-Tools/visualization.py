@@ -56,6 +56,7 @@ def _show_residues(results: dict, widget: QListWidget, input_pdb: str) -> None:
     command = ""
     while len(residues) > 0:
         res, chain, _ = residues.pop(0)
+        chain = "''" if chain == " " else chain
         command = f"{command} (resid {res} and chain {chain}) or"
     command = f"obj {input_pdb} and ({command[:-3]})"
     cmd.select("res", command)
@@ -70,8 +71,8 @@ def _show_residues(results: dict, widget: QListWidget, input_pdb: str) -> None:
 
 def _show_cavities(widget1: QListWidget, widget2: QListWidget, cavity_pdb: str):
     """
-    Show the selected cavities in Volume and Area lists. Surface cavity points are
-    colored in red and remaining points are colored in blue.
+    Show the selected cavities in Volume and Area lists. Surface cavity points
+    are colored in red and remaining points are colored in blue.
 
     Parameters
     ----------
