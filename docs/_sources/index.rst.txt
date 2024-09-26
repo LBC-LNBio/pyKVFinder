@@ -20,6 +20,7 @@ Welcome to the **Python-C parallel KVFinder (pyKVFinder)** documentation, this p
    Tutorial <package/tutorial/index>
    API Reference <package/api_reference/index>
    Examples <package/examples/index>
+   GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>
 
 .. toctree::
    :maxdepth: 1
