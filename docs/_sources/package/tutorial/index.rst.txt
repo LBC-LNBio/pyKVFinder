@@ -990,6 +990,8 @@ We can preview our modelled molecule in the 3D grid by running:
   :width: 500
   :align: center
 
+|
+
 We can also export our modelled molecule int the 3D grid by running:
 
 .. code-block:: python
@@ -1050,6 +1052,8 @@ We can preview our modelled molecule in the 3D grid by running:
   :width: 500
   :align: center
 
+|
+
 Now, we can estimate the vdW volume by running:
 
 .. code-block:: python
@@ -1103,6 +1107,8 @@ We can preview our modelled molecule in the 3D grid by running:
 .. image:: images/sas-grid.png
   :width: 500
   :align: center
+
+|
 
 Now, we can estimate the vdW volume by running:
 
