@@ -19,7 +19,7 @@ Whole biomolecule detection
 
 The default parameters are designed to make a simple and fast whole biomolecule detection. 
 
-On PyMOL, open PyMOL pyKVFinder Tools under Plugin tab. The objects on the scene will be listed on the **Input PDB** combo box, on the **Main** tab. If not, press the **Refresh** button.
+On PyMOL, open `PyMOL pyKVFinder Tools` under `Plugin` tab. The objects on the scene will be listed on the **Input PDB** combo box, on the **Main** tab. If not, press the **Refresh** button.
 
 The **Input PDB** selection sets which object will be analyzed by pyKVFinder. Select **1FMO** on the list box.
 
