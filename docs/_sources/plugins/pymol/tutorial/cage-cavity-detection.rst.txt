@@ -28,7 +28,7 @@ In PyMOL, open `PyMOL pyKVFinder Tools` under `Plugin` tab. The plugin will open
 
 |
 
-**3. Select the object C1 to be analyzed with pyKVFinder.**
+**3. Select the object C1 to be analyzed with pyKVFinder**
 
 From the **Input PDB** drop-down menu, select the object `C1`. If it does not appear, press the **Refresh** button.
 
@@ -38,7 +38,7 @@ From the **Input PDB** drop-down menu, select the object `C1`. If it does not ap
 
 |
     
-**4. Set the parameters for the cavity detection.**
+**4. Set the parameters for the cavity detection**
 
 Adjust the detection parameters to suit the supramolecular cage.
 
