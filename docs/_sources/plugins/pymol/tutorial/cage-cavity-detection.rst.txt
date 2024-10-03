@@ -127,3 +127,14 @@ We can select cavities in the **Average Depth** or **Maximum Depth** lists to hi
     The cavity points are colored using a gradient from blue to red to represent the depth of each point. The blue points correspond to the shallowest points on the cavity-bulk boundary, while the red points correspond to the deepest points. The depth scale ranges from 0.0 to the maximum depth of all cavities
 
 These characterizations can also serve as a quality control for cavity detection. For instance, if the cavity is poorly detected, the depth points will not be well-distributed, and the surface points will not be well-defined. In such cases, you can adjust the parameters and run pyKVFinder again to improve the results.
+
+Video tutorial
+--------------
+
+A video tutorial is available to guide you step-by-step through the process of using pyKVFinder software to characterize cavities in supramolecular cages. 
+
+.. video:: pykvfinder_quick_video_tutorial.mp4
+    :width: 700
+    :poster: ../../../_static/pykvfinder_video_poster.png
+
+|
