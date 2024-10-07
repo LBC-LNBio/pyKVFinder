@@ -9,19 +9,32 @@ Installation
 
 First, it is required to install Anaconda or Miniconda (Python 3.10 or later). If you do not have it installed, please refer to `Anaconda <https://www.anaconda.com/products/distribution>`_ or `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ websites.
 
-In the `Anaconda Prompt`, create a new environment and install PyMOL:
+In the `Anaconda Prompt`, create a new environment and activate it:
 
 .. code-block:: bash
 
     conda create -n pymol python=3.10
     conda activate pymol
-    # PyMOL v3.0
-    conda install -c conda-forge -c schrodinger pymol-bundle
-    # PyMOL v2.6
-    conda install -c conda-forge -c schrodinger pymol-bundle=2.6 
-    # PyMOL Open-Source
-    conda install -c conda-forge pymol-open-source
 
+Then, install **one** of the following versions of PyMOL:
+
+* PyMOL v3.0 (Schrodinger)
+
+    .. code-block:: bash
+
+        conda install -c conda-forge -c schrodinger pymol-bundle
+
+* PyMOL v2.6 (Schrodinger):
+
+    .. code-block:: bash
+
+        conda install -c conda-forge -c schrodinger pymol-bundle=2.6 
+
+* PyMOL Open-Source
+
+    .. code-block:: bash
+
+        conda install -c conda-forge pymol-open-source
 
 After installing one of the PyMOL versions (v3.0, v2.6 or Open-Source), you need to install the `pyKVFinder <https://pypi.org/project/pyKVFinder/>`_ package, if you have not done it yet:
 

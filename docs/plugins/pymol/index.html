@@ -109,17 +109,35 @@
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <p>First, it is required to install Anaconda or Miniconda (Python 3.10 or later). If you do not have it installed, please refer to <a class="reference external" href="https://www.anaconda.com/products/distribution">Anaconda</a> or <a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> websites.</p>
-<p>In the <cite>Anaconda Prompt</cite>, create a new environment and install PyMOL:</p>
+<p>In the <cite>Anaconda Prompt</cite>, create a new environment and activate it:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>pymol<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
 conda<span class="w"> </span>activate<span class="w"> </span>pymol
-<span class="c1"># PyMOL v3.0</span>
-conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-c<span class="w"> </span>schrodinger<span class="w"> </span>pymol-bundle
-<span class="c1"># PyMOL v2.6</span>
-conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-c<span class="w"> </span>schrodinger<span class="w"> </span>pymol-bundle<span class="o">=</span><span class="m">2</span>.6
-<span class="c1"># PyMOL Open-Source</span>
-conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>pymol-open-source
 </pre></div>
 </div>
+<p>Then, install <strong>one</strong> of the following versions of PyMOL:</p>
+<ul>
+<li><p>PyMOL v3.0 (Schrodinger)</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-c<span class="w"> </span>schrodinger<span class="w"> </span>pymol-bundle
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>PyMOL v2.6 (Schrodinger):</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-c<span class="w"> </span>schrodinger<span class="w"> </span>pymol-bundle<span class="o">=</span><span class="m">2</span>.6
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>PyMOL Open-Source</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>pymol-open-source
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
 <p>After installing one of the PyMOL versions (v3.0, v2.6 or Open-Source), you need to install the <a class="reference external" href="https://pypi.org/project/pyKVFinder/">pyKVFinder</a> package, if you have not done it yet:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pyKVFinder
 </pre></div>
