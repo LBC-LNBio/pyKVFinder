@@ -18,7 +18,7 @@ In the `Anaconda Prompt`, create a new environment and activate it:
 
 Then, install **one** of the following versions of PyMOL:
 
-* PyMOL v3.0 (Schrodinger)
+* PyMOL v3.0 (Schrodinger):
 
     .. code-block:: bash
 
@@ -30,7 +30,7 @@ Then, install **one** of the following versions of PyMOL:
 
         conda install -c conda-forge -c schrodinger pymol-bundle=2.6 
 
-* PyMOL Open-Source
+* PyMOL Open-Source:
 
     .. code-block:: bash
 
