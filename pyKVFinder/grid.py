@@ -26,7 +26,7 @@ def get_vertices(
 ) -> numpy.ndarray:
     """Gets 3D grid vertices.
 
-    Parameters
+    Parameters 
     ----------
     atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
         A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
@@ -441,7 +441,7 @@ def _get_vertices_from_residues(
     box["residues"] = numpy.array(["_".join(item[0:3]) for item in box["residues"]])
 
     # Get coordinates of residues
-    indexes = numpy.in1d(atominfo[:, 0], box["residues"])
+    indexes = numpy.isin(atominfo[:, 0], box["residues"])
     xyzr = xyzr[indexes, 0:3]
 
     # Calculate vertices
