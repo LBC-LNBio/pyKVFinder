@@ -1,3 +1,13 @@
+**************
+KVFinder suite
+**************
+
+The **KVFinder suite** is a set of tools for cavity detection and characterization in biomolecular structures, including but not limited to proteins and nucleic acids. It is composed of the following components:
+
+* `pyKVFinder <https://github.com/LBC-LNBio/pyKVFinder/>`_: an open-source Python package for cavity detection and characterization in biomolecular structures, tailored for data science and automated pipelines.
+* `parKVFinder <https://github.com/LBC-LNBio/parKVFinder/>`_: an open-source software designed to detect and comprehensively characterize biomolecular cavities of any type, integrated with a PyMOL plugin.
+* `KVFinder-web <https://kvfinder-web.cnpem.br>`_: an open-source web-based application for cavity detection and characterization in biomolecular structures.
+
 ******
 Issues
 ******
