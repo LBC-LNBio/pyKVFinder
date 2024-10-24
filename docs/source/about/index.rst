@@ -8,26 +8,6 @@ The **KVFinder suite** is a set of tools for cavity detection and characterizati
 * `parKVFinder <https://github.com/LBC-LNBio/parKVFinder/>`_: an open-source software designed to detect and comprehensively characterize biomolecular cavities of any type, integrated with a PyMOL plugin.
 * `KVFinder-web <https://kvfinder-web.cnpem.br>`_: an open-source web-based application for cavity detection and characterization in biomolecular structures.
 
-******
-Issues
-******
-
-pyKVFinder package uses GitHub for project management. Please help us by reporting any problems or requests.
-
-On `Issues <https://github.com/LBC-LNBio/pyKVFinder/issues>`_ page, you can file a:
-
-.. toctree::
-    
-    Bug Report <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=&projects=&template=bug_report.yml&title=%5BBug%5D%3A+>
-    Documentation <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=documentation&projects=&template=documentation.yml&title=%5BDoc%5D%3A+>
-    Feature Request <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BENH%5D%3A+>
-    Maintenance <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=enhancement&projects=&template=maintenance.yml&title=%5BMNT%5D%3A+>
-
-
-Only make sure the bug or request has not already been reported. Click on “Search” and enter some keywords to search.
-
-Thank you for helping us improve pyKVFinder!
-
 ***************
 Scientific team
 ***************
@@ -62,6 +42,27 @@ Guerra, J. V. S., Alves, L. F. G., Bourissou, D., Lopes-de-Oliveira, P. S., & Sz
 If you use `PyMOL pyKVFinder Tools`, please also cite:
 
 Guerra, J. V. da S., Ribeiro Filho, H. V., Bortot, L. O., Honorato, R. V., Pereira, J. G. de C., & Lopes-de-Oliveira, P. S. (2020). ParKVFinder: A thread-level parallel approach in biomolecular cavity detection. In SoftwareX (Vol. 12, p. 100606). Elsevier BV. https://doi.org/10.1016/j.softx.2020.100606.
+
+
+******
+Issues
+******
+
+pyKVFinder package uses GitHub for project management. Please help us by reporting any problems or requests.
+
+On `Issues <https://github.com/LBC-LNBio/pyKVFinder/issues>`_ page, you can file a:
+
+.. toctree::
+    
+    Bug Report <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=&projects=&template=bug_report.yml&title=%5BBug%5D%3A+>
+    Documentation <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=documentation&projects=&template=documentation.yml&title=%5BDoc%5D%3A+>
+    Feature Request <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BENH%5D%3A+>
+    Maintenance <https://github.com/LBC-LNBio/pyKVFinder/issues/new?assignees=&labels=enhancement&projects=&template=maintenance.yml&title=%5BMNT%5D%3A+>
+
+
+Only make sure the bug or request has not already been reported. Click on “Search” and enter some keywords to search.
+
+Thank you for helping us improve pyKVFinder!
 
 *******
 Funding
