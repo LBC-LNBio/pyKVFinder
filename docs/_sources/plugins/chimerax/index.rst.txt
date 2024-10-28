@@ -2,12 +2,12 @@
 Find Cavities
 *************
 
-The **pyKVFinder** package is integrated into `UCSF ChimeraX <https://www.cgl.ucsf.edu/chimerax/>`_ through a bundle, called **Find Cavities**. This bundle allows the user to run pyKVFinder in ChimeraX and visualize the results directly on the ChimeraX viewer.
+The **pyKVFinder** package is integrated into `UCSF ChimeraX <https://www.cgl.ucsf.edu/chimerax/>`_ as the **Find Cavities** tool, available from version 1.9. This tool allows the user to run pyKVFinder in ChimeraX and visualize the results directly on the ChimeraX viewer.
 
 Tool
 ====
 
-The **Find Cavities** tool is available in ChimeraX starting from version 1.9. It can be accessed from:
+The **Find Cavities** tool can be accessed from:
 
 * ``Tools`` > ``Binding Analysis`` > ``Find Cavities`` 
   
