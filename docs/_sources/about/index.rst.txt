@@ -67,7 +67,7 @@ Thank you for helping us improve pyKVFinder!
 Funding
 *******
 
-This work was supported by the Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) [Grant Number 2018/00629-0], Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) [Grant Number 350244/2020-0], and Brazilian Center for Research in Energy and Materials (CNPEM).
+This work was supported by the Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) [Grant Number 2018/00629-0], Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) [Grant Number 350244/2020-0], Brazilian Federal Agency for Support and Evaluation of Graduate Education (CAPES) [Grant Number 88887.928702/2023-00], and Brazilian Center for Research in Energy and Materials (CNPEM).
 
 *******
 License

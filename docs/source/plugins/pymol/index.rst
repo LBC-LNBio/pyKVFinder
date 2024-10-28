@@ -2,7 +2,7 @@
 PyMOL pyKVFinder Tools
 **********************
 
-pyKVFinder package is integrated into PyMOL through a plugin, called PyMOL pyKVFinder Tools. This plugin allows the user to run pyKVFinder on PyMOL and visualize the results directly on the PyMOL viewer.
+The **pyKVFinder** package is integrated into `PyMOL <https://pymol.org/>`_ through a plugin, called **PyMOL pyKVFinder Tools**. This plugin allows the user to run pyKVFinder in PyMOL and visualize the results directly on the PyMOL viewer.
 
 Installation
 ============

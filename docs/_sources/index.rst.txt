@@ -30,6 +30,7 @@ Welcome to the **Python-C parallel KVFinder (pyKVFinder)** documentation, this p
 
    Command-line interface <plugins/cli/index>
    PyMOL pyKVFinder Tools <plugins/pymol/index>
+   ChimeraX <plugins/chimerax/index>
 
 .. toctree::
    :maxdepth: 1
