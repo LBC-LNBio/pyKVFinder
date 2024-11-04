@@ -49,8 +49,4 @@ Guerra, J. V. da S., Ribeiro Filho, H. V., Bortot, L. O., Honorato, R. V., Perei
 
 ## License
 
-The software is licensed under the terms of the GNU General Public
-License version 3 (GPL3) and is distributed in the hope that it will be
-useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-Public License for more details.
+The software is licensed under the terms of the GNU General Public License version 3 (GPL3) and is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
