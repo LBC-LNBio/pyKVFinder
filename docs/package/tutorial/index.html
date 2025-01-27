@@ -58,7 +58,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#detecting-biomolecular-cavities">4. Detecting biomolecular cavities</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#detecting-biomolecular-cavities-with-ligand-adjustment">4.1 Detecting biomolecular cavities with ligand adjustment</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#performing-spatial-characterization">5. Performing spatial characterization</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#performing-constitutional-characterization">1. Performing constitutional characterization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performing-constitutional-characterization">6. Performing constitutional characterization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#calculating-and-plotting-frequencies">6.1 Calculating and plotting frequencies</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#performing-hydropathy-characterization">7. Performing hydropathy characterization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#performing-depth-characterization">8. Performing depth characterization</a></li>
@@ -610,7 +610,7 @@
 </div>
 </section>
 <section id="performing-constitutional-characterization">
-<h4>1. Performing constitutional characterization<a class="headerlink" href="#performing-constitutional-characterization" title="Link to this heading"></a></h4>
+<h4>6. Performing constitutional characterization<a class="headerlink" href="#performing-constitutional-characterization" title="Link to this heading"></a></h4>
 <p>A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.</p>
 <p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.constitutional</span></code> takes the detected cavities, the NumPy array with residue number, chain identifier, residue name, atom name, xyz coordinates and radius for each atom, the NumPy array with vertice coordinates (origin, X-axis, Y-axis, Z-axis) and a collection of detection parameters (<code class="docutils literal notranslate"><span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">probe_in</span></code>, <code class="docutils literal notranslate"><span class="pre">ignore_backbone</span></code>), and returns a dictionary with interface residues of each cavity.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default ignore backbone contacts flag (ignore_backbone): False</span>

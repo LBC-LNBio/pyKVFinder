@@ -489,7 +489,7 @@ A spatial characterization, that includes volume, area and defining surface poin
 
   * `pyKVFinder.spatial <../api_reference/spatial.html>`_
 
-1. Performing constitutional characterization
+6. Performing constitutional characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A constitutional characterization, that identifies the interface residues, is performed on the detected cavities.
