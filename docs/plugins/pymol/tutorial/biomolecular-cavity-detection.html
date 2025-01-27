@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
@@ -6,19 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biomolecular cavity detection &mdash; pyKVFinder 0.7.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="shortcut icon" href="../../../_static/icon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=6dfdf7c3"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=6dfdf7c3"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -38,9 +36,6 @@
             pyKVFinder
               <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.7
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -118,7 +113,8 @@
 <li><p><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb">ADN.pdb</a></p></li>
 </ul>
 <p>First, load the <cite>1FMO.pdb</cite> and <cite>ADN.pdb</cite> file into PyMOL:</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_1.png"><img alt="../../../_images/pymol_viewer_1.png" class="align-center" src="../../../_images/pymol_viewer_1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_1.png"><img alt="../../../_images/pymol_viewer_1.png" class="align-center" src="../../../_images/pymol_viewer_1.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -127,22 +123,26 @@
 <p>The default parameters are designed to make a simple and fast whole biomolecule detection.</p>
 <p>On PyMOL, open <cite>PyMOL pyKVFinder Tools</cite> under <cite>Plugin</cite> tab. The objects on the scene will be listed on the <strong>Input PDB</strong> combo box, on the <strong>Main</strong> tab. If not, press the <strong>Refresh</strong> button.</p>
 <p>The <strong>Input PDB</strong> selection sets which object will be analyzed by pyKVFinder. Select <strong>1FMO</strong> on the list box.</p>
-<a class="reference internal image-reference" href="../../../_images/main_tab_1.png"><img alt="../../../_images/main_tab_1.png" class="align-center" src="../../../_images/main_tab_1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/main_tab_1.png"><img alt="../../../_images/main_tab_1.png" class="align-center" src="../../../_images/main_tab_1.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>To run pyKVFinder with the default parameters, just click <strong>Run pyKVFinder</strong> button.</p>
-<a class="reference internal image-reference" href="../../../_images/main_tab_2.png"><img alt="../../../_images/main_tab_2.png" class="align-center" src="../../../_images/main_tab_2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/main_tab_2.png"><img alt="../../../_images/main_tab_2.png" class="align-center" src="../../../_images/main_tab_2.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>After execution is complete, cavities PDB is loaded into PyMOL viewer as &lt;Output Base Name&gt;.KVFinder.output object and the results file is loaded on the <strong>Results</strong> tab. In addition, the focus automatically shifts to <strong>Results</strong> tab.</p>
-<a class="reference internal image-reference" href="../../../_images/results_tab_1.png"><img alt="../../../_images/results_tab_1.png" class="align-center" src="../../../_images/results_tab_1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/results_tab_1.png"><img alt="../../../_images/results_tab_1.png" class="align-center" src="../../../_images/results_tab_1.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>We can select cavities in the <strong>Volume</strong> or <strong>Surface Area</strong> lists to highlight them on a new object called <strong>cavities</strong>, identifying each cavity. Additionally, we can select cavity tags in the <strong>Interface Residues</strong> list to highlight residues around the cavities on a new object named <strong>residues</strong>.</p>
-<a class="reference internal image-reference" href="../../../_images/results_tab_2.png"><img alt="../../../_images/results_tab_2.png" src="../../../_images/results_tab_2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/results_tab_2.png"><img alt="../../../_images/results_tab_2.png" src="../../../_images/results_tab_2.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -151,7 +151,8 @@
 <p>The interface residues surrounding the cavity KAH are colored in green (sticks), the surface points are colored in red (nb_spheres) and the remaining cavity points are colored in blue (non_bounded).</p>
 </div>
 <p>We can visualize depth of the cavity points by clicking on <strong>Depth</strong> option on <strong>Show descriptors</strong>. We can select cavities in the <strong>Average Depth</strong> or <strong>Maximum Depth</strong> lists to highlight them on a new object called <strong>depths</strong>, identifying each cavity.</p>
-<a class="reference internal image-reference" href="../../../_images/results_tab_3.png"><img alt="../../../_images/results_tab_3.png" src="../../../_images/results_tab_3.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/results_tab_3.png"><img alt="../../../_images/results_tab_3.png" src="../../../_images/results_tab_3.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -160,7 +161,8 @@
 <p>The cavity points are colored using a gradient from blue to red to represent the depth of each point. The blue points correspond to the shallowest points on the cavity-bulk boundary, while the red points correspond to the deepest points. The depth scale ranges from 0.0 to the maximum depth of all cavities</p>
 </div>
 <p>We can visualize hydropathy of the surface points by clicking on <strong>Hydropathy</strong> options on <strong>Show descriptors</strong>. We can select cavities in the <strong>Average Hydropathy</strong> list to highlight them on a new object called <strong>hydropathy</strong>, identifying each cavity.</p>
-<a class="reference internal image-reference" href="../../../_images/results_tab_4.png"><img alt="../../../_images/results_tab_4.png" src="../../../_images/results_tab_4.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/results_tab_4.png"><img alt="../../../_images/results_tab_4.png" src="../../../_images/results_tab_4.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -185,7 +187,8 @@ color<span class="w"> </span>magenta,<span class="w"> </span>KAH
 <section id="adjusting-probe-out">
 <h4>Adjusting Probe Out<a class="headerlink" href="#adjusting-probe-out" title="Link to this heading"></a></h4>
 <p>As mentioned above, adjusting the Probe Out size changes the level of the cavity boundary. So let’s go back on the <strong>Main</strong> tab and change the <strong>Probe Out</strong> size to 8.0 Å. Run pyKVFinder again.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_2.png"><img alt="../../../_images/pymol_viewer_2.png" src="../../../_images/pymol_viewer_2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_2.png"><img alt="../../../_images/pymol_viewer_2.png" src="../../../_images/pymol_viewer_2.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -196,7 +199,8 @@ create<span class="w"> </span>KAF_PO,<span class="w"> </span>sele
 delete<span class="w"> </span>sele
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_3.png"><img alt="../../../_images/pymol_viewer_3.png" src="../../../_images/pymol_viewer_3.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_3.png"><img alt="../../../_images/pymol_viewer_3.png" src="../../../_images/pymol_viewer_3.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -205,7 +209,8 @@ delete<span class="w"> </span>sele
 <section id="adjusting-removal-distance">
 <h4>Adjusting Removal Distance<a class="headerlink" href="#adjusting-removal-distance" title="Link to this heading"></a></h4>
 <p>Besides adjusting the Probe Out size, we can also adjust the Removal Distance to change the cavity boundary. So let’s go back to the <strong>Main</strong> tab and change the <strong>Removal Distance</strong> to 1.2 Å and the size of Probe Out back to 4.0 Å. Run pyKVFinder again.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_4.png"><img alt="../../../_images/pymol_viewer_4.png" src="../../../_images/pymol_viewer_4.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_4.png"><img alt="../../../_images/pymol_viewer_4.png" src="../../../_images/pymol_viewer_4.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -216,7 +221,8 @@ create<span class="w"> </span>KAG_RD,<span class="w"> </span>sele
 delete<span class="w"> </span>sele
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_5.png"><img alt="../../../_images/pymol_viewer_5.png" src="../../../_images/pymol_viewer_5.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_5.png"><img alt="../../../_images/pymol_viewer_5.png" src="../../../_images/pymol_viewer_5.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -236,25 +242,29 @@ delete<span class="w"> </span>sele
 <h3>Box adjustment mode<a class="headerlink" href="#box-adjustment-mode" title="Link to this heading"></a></h3>
 <p>Box adjustment mode explores closed regions with a custom box, which can be drawn via the GUI.</p>
 <p>On the <strong>Search Space</strong> tab, select <strong>Box Adjustment</strong> check box. This will enable a <strong>Box Adjustment</strong> frame, which handles the custom box in PyMOL viewer</p>
-<a class="reference internal image-reference" href="../../../_images/search_space_tab_1.png"><img alt="../../../_images/search_space_tab_1.png" src="../../../_images/search_space_tab_1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/search_space_tab_1.png"><img alt="../../../_images/search_space_tab_1.png" src="../../../_images/search_space_tab_1.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Then, select the adenosine ligand on ADN object. This can be made on the PyMOL viewer by clicking on the ligand structure or using <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">resn</span> <span class="pre">ADN</span></code> PyMOL command.</p>
 <p>Click on <strong>Draw Box</strong> Button. This will create a custom box that limits the search space. It is fully customizable, but we will not change it for now.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_6.png"><img alt="../../../_images/pymol_viewer_6.png" src="../../../_images/pymol_viewer_6.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_6.png"><img alt="../../../_images/pymol_viewer_6.png" src="../../../_images/pymol_viewer_6.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>On the <strong>Main</strong> tab, change <strong>Removal Distance</strong> back to 2.4 Å. Run pyKVFinder again.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_7.png"><img alt="../../../_images/pymol_viewer_7.png" src="../../../_images/pymol_viewer_7.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_7.png"><img alt="../../../_images/pymol_viewer_7.png" src="../../../_images/pymol_viewer_7.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Now, let’s customize the box parameters to segment the binding site of our target protein.</p>
 <p>Each axis is associated with one color (red with X, green with Y and blue with Z). The adjustment is made by the arrows or directly setting the value in the entry on the <strong>Search Space</strong> tab in the <strong>Box Adjustment</strong> group. We can also adjust the box angles by the same procedure. After altering the values, just click on <strong>Redraw</strong> button to redraw the box object using the new values.</p>
 <p>Then, on the <strong>Search Space</strong> tab, reduce <strong>Maximum X</strong> to 1.0 Å and click <strong>Redraw Box</strong>. Run pyKVFinder again.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_8.png"><img alt="../../../_images/pymol_viewer_8.png" src="../../../_images/pymol_viewer_8.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_8.png"><img alt="../../../_images/pymol_viewer_8.png" src="../../../_images/pymol_viewer_8.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -265,17 +275,20 @@ delete<span class="w"> </span>sele
 <p>A last feature is to limit the search around a structure. In this last example, let’s do a whole protein prospection again, but limiting the search space around ligands.</p>
 <p>First, on the <strong>Search Space</strong> tab, deselect <strong>Box Adjustment</strong> check box, which will disable the previous enabled <strong>Box Adjustment</strong> frame.</p>
 <p>Still on the <strong>Search Space</strong> tab, click on the check button <strong>Ligand Adjustment</strong>, which will enable the <strong>Refresh</strong> button, the <strong>Ligand PDB</strong> combo box and the <strong>Ligand Cutoff</strong> entry.</p>
-<a class="reference internal image-reference" href="../../../_images/search_space_tab_2.png"><img alt="../../../_images/search_space_tab_2.png" src="../../../_images/search_space_tab_2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/search_space_tab_2.png"><img alt="../../../_images/search_space_tab_2.png" src="../../../_images/search_space_tab_2.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Click the <strong>Refresh</strong> button to display all objects in the scene in the Ligand PDB combo box. Select the <strong>ADN</strong> on the combo box and reduce Ligand Cutoff to 3.0 Å. Run pyKVFinder again.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_9.png"><img alt="../../../_images/pymol_viewer_9.png" src="../../../_images/pymol_viewer_9.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_9.png"><img alt="../../../_images/pymol_viewer_9.png" src="../../../_images/pymol_viewer_9.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>On the <strong>Search Space</strong> tab, increase <strong>Ligand Cutoff</strong> back to 5.0 Å. Back on the <strong>Main</strong> tab, increase <strong>Probe Out</strong> to 10.0 Å and reduce <strong>Removal Distance</strong> to 0.0 Å. Run pyKVFinder again.</p>
-<a class="reference internal image-reference" href="../../../_images/pymol_viewer_10.png"><img alt="../../../_images/pymol_viewer_10.png" src="../../../_images/pymol_viewer_10.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/pymol_viewer_10.png"><img alt="../../../_images/pymol_viewer_10.png" src="../../../_images/pymol_viewer_10.png" style="width: 800px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>

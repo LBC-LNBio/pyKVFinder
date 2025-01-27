@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -6,19 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorial &mdash; pyKVFinder 0.7.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=6dfdf7c3"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=6dfdf7c3"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -38,9 +36,6 @@
             pyKVFinder
               <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.7
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -66,7 +61,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#performing-constitutional-characterization">1. Performing constitutional characterization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#calculating-and-plotting-frequencies">6.1 Calculating and plotting frequencies</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#performing-hydropathy-characterization">7. Performing hydropathy characterization</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#performing-depth-characterization">1. Performing depth characterization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performing-depth-characterization">8. Performing depth characterization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#exporting-cavities">9. Exporting cavities</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#writing-results">10.   Writing results</a></li>
 </ul>
@@ -696,7 +691,8 @@
 </ul>
 </div>
 <p>A sample barplot of <code class="docutils literal notranslate"><span class="pre">pyKVFinder.plot_frequencies</span></code> is shown below.</p>
-<a class="reference internal image-reference" href="../../_images/plot-frequencies.png"><img alt="../../_images/plot-frequencies.png" class="align-center" src="../../_images/plot-frequencies.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/plot-frequencies.png"><img alt="../../_images/plot-frequencies.png" class="align-center" src="../../_images/plot-frequencies.png" style="width: 600px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -761,7 +757,7 @@
 </div>
 </section>
 <section id="performing-depth-characterization">
-<h4>1. Performing depth characterization<a class="headerlink" href="#performing-depth-characterization" title="Link to this heading"></a></h4>
+<h4>8. Performing depth characterization<a class="headerlink" href="#performing-depth-characterization" title="Link to this heading"></a></h4>
 <p>A depth characterization identifies the degree of burial of the binding site. First, it identifies the cavity volume boundary. Subsequently, the depth of each cavity point is heuristically estimated by the shortest Euclidean distance between the cavity point and its respective boundary points. With this, the maximum and average depths for the detected cavities are calculated.</p>
 <p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.depth</span></code> takes the detected cavities and the grid spacing (<code class="docutils literal notranslate"><span class="pre">step</span></code>) and returns a tuple with a NumPy array with the depth of the cavity points in the 3D grid, a dictionary with the maximum depth of the detected cavities and a dictionary with the average depth of the detected cavities.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">depths</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">depth</span><span class="p">(</span><span class="n">cavities</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
@@ -1101,7 +1097,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s2">&quot;vdw-model.pdb&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/vdw-grid.png"><img alt="../../_images/vdw-grid.png" class="align-center" src="../../_images/vdw-grid.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/vdw-grid.png"><img alt="../../_images/vdw-grid.png" class="align-center" src="../../_images/vdw-grid.png" style="width: 500px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -1153,7 +1150,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/ses-grid.png"><img alt="../../_images/ses-grid.png" class="align-center" src="../../_images/ses-grid.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/ses-grid.png"><img alt="../../_images/ses-grid.png" class="align-center" src="../../_images/ses-grid.png" style="width: 500px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -1201,7 +1199,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/sas-grid.png"><img alt="../../_images/sas-grid.png" class="align-center" src="../../_images/sas-grid.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/sas-grid.png"><img alt="../../_images/sas-grid.png" class="align-center" src="../../_images/sas-grid.png" style="width: 500px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>

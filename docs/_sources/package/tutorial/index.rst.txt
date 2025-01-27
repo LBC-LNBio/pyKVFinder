@@ -630,7 +630,7 @@ A hydropathy characterization, that maps a target hydrophobicity scale on surfac
 
   * `pyKVFinder.hydropathy <../api_reference/hydropathy.html>`_
 
-1. Performing depth characterization
+8. Performing depth characterization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A depth characterization identifies the degree of burial of the binding site. First, it identifies the cavity volume boundary. Subsequently, the depth of each cavity point is heuristically estimated by the shortest Euclidean distance between the cavity point and its respective boundary points. With this, the maximum and average depths for the detected cavities are calculated.
