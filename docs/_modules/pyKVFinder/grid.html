@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid &mdash; pyKVFinder 0.7.2 documentation</title>
+  <title>pyKVFinder.grid &mdash; pyKVFinder 0.7.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6dfdf7c3"></script>
+      <script src="../../_static/documentation_options.js?v=c98573da"></script>
       <script src="../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -2879,9 +2879,17 @@
                 <span class="n">append</span><span class="p">,</span>
                 <span class="n">model</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">temp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># move the file pointer to the beginning of the file</span>
-            <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>  <span class="c1"># delete the temporary file</span>
-            <span class="k">return</span> <span class="n">temp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="c1"># move the file pointer to the beginning of the file</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># get string from temp file</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="c1"># close file</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="c1"># delete file</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">string</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">_export</span><span class="p">(</span>
             <span class="n">fn</span><span class="p">,</span> <span class="n">cavities</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">append</span><span class="p">,</span> <span class="n">model</span>
