@@ -2761,9 +2761,17 @@ def export(
                 append,
                 model,
             )
-            temp.seek(0)  # move the file pointer to the beginning of the file
-            pathlib.Path(temp.name).unlink()  # delete the temporary file
-            return temp.read().decode("utf-8")
+            # move the file pointer to the beginning of the file
+            temp.seek(0)
+            # get string from temp file
+            string = temp.read().decode("utf-8")
+            # close file
+            temp.close()
+            # delete file
+            if os.path.exists(temp.name):
+                os.remove(temp.name)
+
+            return string
     else:
         _export(
             fn, cavities, surface, B, Q, P1, sincos, step, ncav, nthreads, append, model
