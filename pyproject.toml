@@ -64,7 +64,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest==8.3.4", "pytest-cov==6.0.0", "black==25.1.0", "flake8==7.1.1"]
+dev = ["pytest==8.3.4", "pytest-cov==6.0.0", "black==25.1.0", "flake8==7.1.2"]
 docs = ["sphinx==8.0.2", "sphinx-rtd-theme==3.0.2", "sphinxcontrib-video==0.3.2"]
 plugins = ["pyqt5~=5.15", "toml==0.10.2"]
 
