@@ -10,7 +10,7 @@ class GetNumpyInclude:
 
 def get_extra_link_args():
     if sys.platform == "darwin":
-        return ["-L/opt/homebrew/opt/libomp/lib", "-lomp", "-static"]
+        return ["-L/opt/homebrew/opt/libomp/lib", "-lomp"]
     elif sys.platform != "linux":
         return ["-lgomp", "-static"]
     return ["-lgomp"]
@@ -18,7 +18,7 @@ def get_extra_link_args():
 
 def get_extra_compile_args():
     if sys.platform == "darwin":
-        return ["-fopenmp=libomp", "-Ofast", "-lm"]
+        return ["-fopenmp=libomp", "-O3", "-lm"]
     return ["-fopenmp", "-Ofast", "-lm"]
 
 
