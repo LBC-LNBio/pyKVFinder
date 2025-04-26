@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
-        os: [macos-latest, macos-13, ubuntu-latest, windows-latest]
+        os: [macos-13, macos-latest, macos-15, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -49,6 +49,10 @@ jobs:
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.23.0
+
+      - name: Set environment variable for macos-15
+        if: matrix.os == 'macos-15'
+        run: echo "MACOSX_DEPLOYMENT_TARGET=15.0" >> $GITHUB_ENV
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
@@ -79,7 +83,7 @@ jobs:
           pattern: artifacts-*
           merge-multiple: true
 
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      # - name: Publish package distributions to PyPI
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     password: ${{ secrets.PYPI_API_TOKEN }}

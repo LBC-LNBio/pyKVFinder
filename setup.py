@@ -1,12 +1,25 @@
 import sys
 from setuptools import Extension, setup
+import numpy
 
 
-class get_numpy_include(object):
+class GetNumpyInclude:
     def __str__(self):
-        import numpy
-
         return numpy.get_include()
+
+
+def get_extra_link_args():
+    if sys.platform == "darwin":
+        return ["-L/opt/homebrew/opt/libomp/lib", "-lomp"]
+    elif sys.platform != "linux":
+        return ["-lgomp", "-static"]
+    return ["-lgomp"]
+
+
+def get_extra_compile_args():
+    if sys.platform == "darwin":
+        return ["-fopenmp=libomp", "-Ofast", "-lm"]
+    return ["-fopenmp", "-Ofast", "-lm"]
 
 
 setup(
@@ -14,11 +27,9 @@ setup(
         Extension(
             name="_pyKVFinder",
             sources=["C/pyKVFinder.i", "C/pyKVFinder.c"],
-            include_dirs=[get_numpy_include(), "C"],
-            extra_compile_args=["-fopenmp", "-Ofast", "-lm"],
-            extra_link_args=["-lgomp", "-static"]
-            if sys.platform != "linux"
-            else ["-lgomp"],
+            include_dirs=[str(GetNumpyInclude()), "C"],
+            extra_compile_args=get_extra_compile_args(),
+            extra_link_args=get_extra_link_args(),
         ),
     ]
 )
