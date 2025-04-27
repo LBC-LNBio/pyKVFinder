@@ -1,9 +1,9 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.11, pytest-8.3.5, pluggy-1.5.0
+platform linux -- Python 3.11.12, pytest-8.3.5, pluggy-1.5.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests
-plugins: cov-6.0.0
+plugins: cov-6.1.1
 collected 313 items
 
 tests/integration/test_cli.py ................                           [  5%]
@@ -23,14 +23,14 @@ tests/integration/test_cli.py::TestCLI::test_custom_box_mode
   <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.12-final-0 _______________
 
----------- coverage: platform linux, python 3.11.11-final-0 ----------
 Name                  Stmts   Miss  Cover   Missing
 ---------------------------------------------------
-pyKVFinder/grid.py      732    115    84%   918, 922, 2243-2263, 2400-2477, 2749-2774, 2875-2944
+pyKVFinder/grid.py      734    116    84%   289, 921, 925, 2247-2267, 2404-2481, 2753-2778, 2879-2948
 pyKVFinder/main.py      361     69    81%   93, 97, 105, 114, 142-148, 495, 660, 1061, 1068, 1078, 1089, 1108, 1113-1114, 1340, 1345, 1351, 1358, 1361-1364, 1368-1373, 1385, 1395, 1424-1425, 1430-1431, 1436-1437, 1497-1502, 1508, 1513-1518, 1578, 1580, 1593, 1704, 1706, 1712, 1714, 1720, 1725, 1729, 1782-1792, 1818
-pyKVFinder/utils.py     312      6    98%   571, 603, 606-608, 630
+pyKVFinder/utils.py     334      6    98%   571, 603, 606-608, 630
 ---------------------------------------------------
-TOTAL                  1405    190    86%
-
-================== 313 passed, 2 warnings in 91.28s (0:01:31) ==================
+TOTAL                  1429    191    87%
+================== 313 passed, 2 warnings in 93.54s (0:01:33) ==================
