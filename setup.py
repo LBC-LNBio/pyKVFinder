@@ -22,7 +22,7 @@ def get_extra_compile_args():
     if sys.platform == "darwin":
         extra_compile_args = ["-Xpreprocessor", "-fopenmp=libomp", "-O3", "-ffast-math"]
     elif sys.platform == "linux":
-        extra_compile_args = ["-fopenmp", "-Ofast", "-lm"]
+        extra_compile_args = ["-fopenmp", "-Ofast"]
     elif sys.platform == "win32":
         extra_compile_args = []
     return extra_compile_args
