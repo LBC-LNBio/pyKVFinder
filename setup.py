@@ -20,7 +20,7 @@ def get_extra_link_args():
 
 def get_extra_compile_args():
     if sys.platform == "darwin":
-        extra_compile_args = ["Xpreprocessor", "-fopenmp=libomp", "-O3", "-ffast-math"]
+        extra_compile_args = ["-Xpreprocessor", "-fopenmp=libomp", "-O3", "-ffast-math"]
     else:
         extra_compile_args = ["-fopenmp", "-O3", "-ffast-math"]
     return extra_compile_args
