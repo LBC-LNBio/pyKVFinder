@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.utils &mdash; pyKVFinder 0.7.3 documentation</title>
+  <title>pyKVFinder.utils &mdash; pyKVFinder 0.8.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=c98573da"></script>
+      <script src="../../_static/documentation_options.js?v=486e5634"></script>
       <script src="../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -114,7 +114,7 @@
 <div class="viewcode-block" id="read_vdw">
 <a class="viewcode-back" href="../../package/api_reference/read_vdw.html#pyKVFinder.read_vdw">[docs]</a>
 <span class="k">def</span> <span class="nf">read_vdw</span><span class="p">(</span>
-    <span class="n">fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads van der Waals radii from .dat file.</span>
 
@@ -840,7 +840,7 @@
 <span class="sd">    args : argparse.Namespace</span>
 <span class="sd">        Arguments passes by argparser CLI.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">toml</span>
+    <span class="kn">import</span> <span class="nn">tomlkit</span>
 
     <span class="c1"># Parameters filename</span>
     <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.parameters.toml&quot;</span><span class="p">)</span>
@@ -848,29 +848,45 @@
     <span class="c1"># Parameters dict</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;FILES&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
-            <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span>
-            <span class="s2">&quot;BASE_NAME&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="p">,</span>
-            <span class="s2">&quot;OUTPUT_DIRECTORY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
-            <span class="s2">&quot;DICTIONARY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">dictionary</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">{</span>
+                <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
+                <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span><span class="p">,</span>
+                <span class="s2">&quot;BASE_NAME&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="p">,</span>
+                <span class="s2">&quot;OUTPUT_DIRECTORY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
+                <span class="s2">&quot;DICTIONARY&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">dictionary</span><span class="p">,</span>
+            <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">},</span>
         <span class="s2">&quot;SETTINGS&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;MODES&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;BOX_ADJUSTMENT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
-                <span class="s2">&quot;LIGAND_ADJUSTMENT&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
-                <span class="s2">&quot;DEPTH&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
-                <span class="s2">&quot;SURFACE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
-                <span class="s2">&quot;IGNORE_BACKBONE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">{</span>
+                    <span class="s2">&quot;BOX_ADJUSTMENT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+                    <span class="s2">&quot;LIGAND_ADJUSTMENT&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;DEPTH&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+                    <span class="s2">&quot;SURFACE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span>
+                    <span class="s2">&quot;IGNORE_BACKBONE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ignore_backbone</span><span class="p">,</span>
+                <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">},</span>
-            <span class="s2">&quot;STEP&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+            <span class="s2">&quot;STEP&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;PROBES&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;PROBE_IN&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
-                <span class="s2">&quot;PROBE_OUT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">{</span>
+                    <span class="s2">&quot;PROBE_IN&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_in</span><span class="p">,</span>
+                    <span class="s2">&quot;PROBE_OUT&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">probe_out</span><span class="p">,</span>
+                <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">},</span>
             <span class="s2">&quot;CUTOFFS&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;VOLUME_CUTOFF&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">volume_cutoff</span><span class="p">,</span>
-                <span class="s2">&quot;LIGAND_CUTOFF&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand_cutoff</span><span class="p">,</span>
-                <span class="s2">&quot;REMOVAL_DISTANCE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">removal_distance</span><span class="p">,</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">{</span>
+                    <span class="s2">&quot;VOLUME_CUTOFF&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">volume_cutoff</span><span class="p">,</span>
+                    <span class="s2">&quot;LIGAND_CUTOFF&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">ligand_cutoff</span><span class="p">,</span>
+                    <span class="s2">&quot;REMOVAL_DISTANCE&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">removal_distance</span><span class="p">,</span>
+                <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">},</span>
             <span class="s2">&quot;BOX&quot;</span><span class="p">:</span> <span class="n">_process_box</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
         <span class="p">},</span>
@@ -878,13 +894,13 @@
 
     <span class="c1"># Write to TOML file</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">param</span><span class="p">:</span>
-        <span class="n">toml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+        <span class="n">tomlkit</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="calculate_frequencies">
 <a class="viewcode-back" href="../../package/api_reference/calculate_frequencies.html#pyKVFinder.calculate_frequencies">[docs]</a>
 <span class="k">def</span> <span class="nf">calculate_frequencies</span><span class="p">(</span>
-    <span class="n">residues</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span>
+    <span class="n">residues</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate frequencies of residues and class of residues</span>
 <span class="sd">    (R1, R2, R3, R4 and R5) for detected cavities.</span>
@@ -1345,7 +1361,7 @@
 <span class="sd">    &gt;&gt;&gt; write_results(&#39;results.toml&#39;, input=pdb, ligand=None, output=&#39;cavities.pdb&#39;, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">toml</span>
+    <span class="kn">import</span> <span class="nn">tomlkit</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
@@ -1400,33 +1416,33 @@
         <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 
     <span class="c1"># Create output dictionary for results file</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="p">,</span>
-        <span class="s2">&quot;LIGAND&quot;</span><span class="p">:</span> <span class="n">ligand</span><span class="p">,</span>
-        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;STEP&quot;</span><span class="p">:</span> <span class="n">step</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;VOLUME&quot;</span><span class="p">:</span> <span class="n">volume</span><span class="p">,</span>
-            <span class="s2">&quot;AREA&quot;</span><span class="p">:</span> <span class="n">area</span><span class="p">,</span>
-            <span class="s2">&quot;MAX_DEPTH&quot;</span><span class="p">:</span> <span class="n">max_depth</span><span class="p">,</span>
-            <span class="s2">&quot;AVG_DEPTH&quot;</span><span class="p">:</span> <span class="n">avg_depth</span><span class="p">,</span>
-            <span class="s2">&quot;AVG_HYDROPATHY&quot;</span><span class="p">:</span> <span class="n">avg_hydropathy</span><span class="p">,</span>
-            <span class="s2">&quot;RESIDUES&quot;</span><span class="p">:</span> <span class="n">residues</span><span class="p">,</span>
-            <span class="s2">&quot;FREQUENCY&quot;</span><span class="p">:</span> <span class="n">frequencies</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">volume</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">max_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">avg_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">avg_hydropathy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">residues</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">frequencies</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">else</span> <span class="kc">None</span>
-    <span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">files</span><span class="p">[</span><span class="s2">&quot;INPUT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">input</span>
+    <span class="k">if</span> <span class="n">ligand</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">files</span><span class="p">[</span><span class="s2">&quot;LIGAND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ligand</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">files</span><span class="p">[</span><span class="s2">&quot;OUTPUT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span>
+
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;STEP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">step</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">volume</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;VOLUME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">volume</span>
+    <span class="k">if</span> <span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;AREA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">area</span>
+    <span class="k">if</span> <span class="n">max_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;MAX_DEPTH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_depth</span>
+    <span class="k">if</span> <span class="n">avg_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;AVG_DEPTH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_depth</span>
+    <span class="k">if</span> <span class="n">avg_hydropathy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;AVG_HYDROPATHY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_hydropathy</span>
+    <span class="k">if</span> <span class="n">residues</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;RESIDUES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">residues</span>
+    <span class="k">if</span> <span class="n">frequencies</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;FREQUENCY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frequencies</span>
 
     <span class="c1"># Create base directories of results TOML file</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1434,7 +1450,7 @@
     <span class="c1"># Write results to TOML file</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# pyKVFinder results</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">toml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+        <span class="n">tomlkit</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;FILES&quot;</span><span class="p">:</span> <span class="n">files</span><span class="p">,</span>
                 <span class="s2">&quot;PARAMETERS&quot;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
