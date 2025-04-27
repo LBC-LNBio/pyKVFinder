@@ -13,16 +13,18 @@ def get_extra_link_args():
         extra_link_args = ["-L/opt/homebrew/opt/libomp/lib", "-lomp"]
     elif sys.platform == "linux":
         extra_link_args = ["-lgomp"]
-    else:
-        extra_link_args = ["/openmp", "/O3"]
+    elif sys.platform == "win32":
+        extra_link_args = ["/openmp", "/O2"]
     return extra_link_args
 
 
 def get_extra_compile_args():
     if sys.platform == "darwin":
         extra_compile_args = ["-Xpreprocessor", "-fopenmp=libomp", "-O3", "-ffast-math"]
-    else:
-        extra_compile_args = ["-fopenmp", "-O3", "-ffast-math"]
+    elif sys.platform == "linux":
+        extra_compile_args = ["-fopenmp", "-Ofast", "-lm"]
+    elif sys.platform == "win32":
+        extra_compile_args = ["-static"]
     return extra_compile_args
 
 
