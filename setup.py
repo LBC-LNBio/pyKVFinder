@@ -24,7 +24,7 @@ def get_extra_compile_args():
     elif sys.platform == "linux":
         extra_compile_args = ["-fopenmp", "-Ofast", "-lm"]
     elif sys.platform == "win32":
-        extra_compile_args = ["-static"]
+        extra_compile_args = []
     return extra_compile_args
 
 
