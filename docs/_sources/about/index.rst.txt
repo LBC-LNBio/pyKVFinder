@@ -25,7 +25,7 @@ pyKVFinder and PyMOL pyKVFinder Tools were developed by:
 
 Computational Biology Laboratory (`LBC <https://github.com/LBC-LNBio>`_), Brazilian Biosciences National Laboratory (`LNBio <https://lnbio.cnpem.br/>`_), Brazilian Center for Research in Energy and Materials (`CNPEM <https://cnpem.br>`_)
 
-If you have any further questions, inquires or if you wish to contribute to KVFinder project, please contact us at joao.guerra@lnbio.cnpem.br or paulo.oliveira@lnbio.cnpem.br.
+If you have any further questions, inquires or if you wish to contribute to KVFinder project, please contact us at joao.guerra@lnbio.cnpem.br.
 
 *****************
 Citing pyKVFinder
