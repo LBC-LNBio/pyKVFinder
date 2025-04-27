@@ -54,15 +54,15 @@ classifiers = [
     'Operating System :: MacOS',
 ]
 dependencies = [
-    "numpy~=2.2.1",
-    "matplotlib~=3.10.0",
-    "plotly~=6.0.0",
+    "numpy~=2.2.5",
+    "matplotlib~=3.10.1",
+    "plotly~=6.0.1",
     "tomlkit==0.13.2",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest==8.3.5", "pytest-cov==6.0.0", "black==25.1.0", "flake8==7.1.2"]
+dev = ["pytest==8.3.5", "pytest-cov==6.1.1", "black==25.1.0", "flake8==7.2.0"]
 docs = [
     "sphinx==8.0.2",
     "sphinx-rtd-theme==3.0.2",
