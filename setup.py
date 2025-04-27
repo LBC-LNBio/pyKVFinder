@@ -15,6 +15,8 @@ def get_extra_link_args():
         extra_link_args = ["-lgomp"]
     elif sys.platform == "win32":
         extra_link_args = ["/openmp", "/O2"]
+    else:
+        extra_link_args = []
     return extra_link_args
 
 
@@ -24,6 +26,8 @@ def get_extra_compile_args():
     elif sys.platform == "linux":
         extra_compile_args = ["-fopenmp", "-Ofast"]
     elif sys.platform == "win32":
+        extra_compile_args = []
+    else:
         extra_compile_args = []
     return extra_compile_args
 
