@@ -12,7 +12,7 @@ controls all interactions with pyKVFinder.
 import os
 import time
 
-import toml
+import tomlkit
 from pymol import cmd
 from PyQt5.QtWidgets import QCheckBox, QMainWindow, QMessageBox, QScrollBar
 from PyQt5.uic import loadUi
@@ -297,7 +297,6 @@ class PyMOLpyKVFinderTools(QMainWindow):
         dict
             The parameters to run pyKVFinder.
         """
-        # TODO: Add box parameters. Fix me.
         # Get the parameters from the GUI
         parameters = {
             "input": os.path.join(
@@ -392,6 +391,9 @@ class PyMOLpyKVFinderTools(QMainWindow):
                 QMessageBox.critical(self, "Error", "Draw a box in PyMOL!")
                 return False
 
+        # Remove None values from parameters
+        parameters = {k: v for k, v in parameters.items() if v is not None}
+
         # Save parameters file
         with open(
             os.path.join(
@@ -399,7 +401,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
             ),
             "w",
         ) as f:
-            toml.dump(parameters, f)
+            tomlkit.dump(parameters, f)
 
         return True
 
@@ -424,7 +426,8 @@ class PyMOLpyKVFinderTools(QMainWindow):
         global results
 
         # Read results (Ubuntu/macOS)
-        results = toml.load(results_file)
+        with open(results_file, "r") as f:
+            results = tomlkit.load(f)
 
         # Clean results tab
         self._clean_results_tab()
