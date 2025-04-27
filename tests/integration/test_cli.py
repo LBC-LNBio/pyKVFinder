@@ -5,7 +5,7 @@ import unittest
 from unittest import mock
 
 import numpy
-import toml
+import tomlkit
 
 import pyKVFinder
 
@@ -504,5 +504,5 @@ class TestCLI(unittest.TestCase):
         # bad surface
         # $ pyKVFinder --hydopathy <.pdb>
         self.assertRaises(
-            toml.decoder.TomlDecodeError, pyKVFinder.main.cli
-        )  # toml.decoder.TomlDecodeError
+            tomlkit.exceptions.ParseError, pyKVFinder.main.cli
+        )  # tomlkit.exceptions.ParseError
