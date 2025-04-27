@@ -100,7 +100,7 @@ before-build = [
     "pip3 install certifi",
     "git clean -fxd build",
 ]
-build = ["cp311-*"]
+build = ["cp311-*", "cp312-*", "cp313-*"]
 
 [tool.cibuildwheel.linux]
 archs = ["native"]
@@ -113,7 +113,7 @@ before-build = [
     "brew install llvm",
     "brew install libomp",
 ]
-environment = { CC = "/opt/homebrew/opt/llvm/bin/clang", MACOSX_DEPLOYMENT_TARGET = "15.0" }
+environment = { CC = "/opt/homebrew/opt/llvm/bin/clang"}
 archs = ["native"]
 
 [tool.cibuildwheel.windows]
