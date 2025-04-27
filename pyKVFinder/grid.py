@@ -26,7 +26,7 @@ def get_vertices(
 ) -> numpy.ndarray:
     """Gets 3D grid vertices.
 
-    Parameters 
+    Parameters
     ----------
     atomic : Union[numpy.ndarray, List[List[Union[str, float, int]]]]
         A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates
@@ -217,7 +217,7 @@ def get_vertices_from_file(
         Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.
     """
     from _pyKVFinder import _filter_pdb
-    from toml import load
+    import tomlkit
 
     # Check arguments types
     if type(fn) not in [str, pathlib.Path]:
@@ -263,7 +263,8 @@ def get_vertices_from_file(
     xyzr = atomic[:, 4:].astype(numpy.float64)
 
     # Read box file
-    tmp = load(fn)
+    with open(fn, "r") as file:
+        tmp = tomlkit.load(file)
     if "SETTINGS" in tmp.keys():
         if "visiblebox" in tmp["SETTINGS"].keys():
             box = tmp["SETTINGS"]["visiblebox"]
@@ -438,10 +439,12 @@ def _get_vertices_from_residues(
     >>> padding =  3.5
     """
     # Prepare residues list
-    box["residues"] = numpy.array(["_".join(item[0:3]) for item in box["residues"]])
+    residues_list = numpy.array(
+        ["_".join(map(str, item)) for item in box["residues"]]
+    )
 
     # Get coordinates of residues
-    indexes = numpy.isin(atominfo[:, 0], box["residues"])
+    indexes = numpy.isin(atominfo[:, 0], residues_list)
     xyzr = xyzr[indexes, 0:3]
 
     # Calculate vertices
@@ -2031,7 +2034,7 @@ def hydropathy(
        transmembrane helices: Relationship to biological hydrophobicity.
        Protein Science. 2006;15.
     """
-    import toml
+    import tomlkit
     from _pyKVFinder import _hydropathy
 
     # Check arguments
@@ -2134,7 +2137,8 @@ def hydropathy(
             os.path.abspath(os.path.dirname(__file__)),
             f"data/{hydrophobicity_scale}.toml",
         )
-    f = toml.load(hydrophobicity_scale)
+    with open(hydrophobicity_scale, "r") as file:
+        f = tomlkit.load(file)
     data, name = list(f.values())[0], list(f.keys())[0]
     resn, scale = list(data.keys()), numpy.asarray(list(data.values()))
 

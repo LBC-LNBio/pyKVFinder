@@ -1,0 +1,19 @@
+[SETTINGS.visiblebox.p1]
+x = 3.11
+y = 7.34
+z = 1.59
+
+[SETTINGS.visiblebox.p2]
+x = 11.51
+y = 7.34
+z = 1.59
+
+[SETTINGS.visiblebox.p3]
+x = 3.11
+y = 10.74
+z = 1.59
+
+[SETTINGS.visiblebox.p4]
+x = 3.11
+y = 7.34
+z = 6.19

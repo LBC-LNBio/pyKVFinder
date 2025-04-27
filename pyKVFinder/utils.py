@@ -20,7 +20,7 @@ VDW = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 
 def read_vdw(
-    fn: Optional[Union[str, pathlib.Path]] = None
+    fn: Optional[Union[str, pathlib.Path]] = None,
 ) -> Dict[str, Dict[str, float]]:
     """Reads van der Waals radii from .dat file.
 
@@ -736,7 +736,7 @@ def _write_parameters(args: argparse.Namespace) -> None:
     args : argparse.Namespace
         Arguments passes by argparser CLI.
     """
-    import toml
+    import tomlkit
 
     # Parameters filename
     fn = os.path.join(args.output_directory, f"{args.base_name}.parameters.toml")
@@ -744,29 +744,45 @@ def _write_parameters(args: argparse.Namespace) -> None:
     # Parameters dict
     parameters = {
         "FILES": {
-            "INPUT": args.input,
-            "LIGAND": args.ligand,
-            "BASE_NAME": args.base_name,
-            "OUTPUT_DIRECTORY": args.output_directory,
-            "DICTIONARY": args.dictionary,
+            key: value
+            for key, value in {
+                "INPUT": args.input,
+                "LIGAND": args.ligand,
+                "BASE_NAME": args.base_name,
+                "OUTPUT_DIRECTORY": args.output_directory,
+                "DICTIONARY": args.dictionary,
+            }.items()
+            if value is not None
         },
         "SETTINGS": {
             "MODES": {
-                "BOX_ADJUSTMENT": args.box,
-                "LIGAND_ADJUSTMENT": True if args.ligand else False,
-                "DEPTH": args.depth,
-                "SURFACE": args.surface,
-                "IGNORE_BACKBONE": args.ignore_backbone,
+                key: value
+                for key, value in {
+                    "BOX_ADJUSTMENT": args.box,
+                    "LIGAND_ADJUSTMENT": True if args.ligand else False,
+                    "DEPTH": args.depth,
+                    "SURFACE": args.surface,
+                    "IGNORE_BACKBONE": args.ignore_backbone,
+                }.items()
+                if value is not None
             },
-            "STEP": args.step,
+            "STEP": args.step if args.step is not None else None,
             "PROBES": {
-                "PROBE_IN": args.probe_in,
-                "PROBE_OUT": args.probe_out,
+                key: value
+                for key, value in {
+                    "PROBE_IN": args.probe_in,
+                    "PROBE_OUT": args.probe_out,
+                }.items()
+                if value is not None
             },
             "CUTOFFS": {
-                "VOLUME_CUTOFF": args.volume_cutoff,
-                "LIGAND_CUTOFF": args.ligand_cutoff,
-                "REMOVAL_DISTANCE": args.removal_distance,
+                key: value
+                for key, value in {
+                    "VOLUME_CUTOFF": args.volume_cutoff,
+                    "LIGAND_CUTOFF": args.ligand_cutoff,
+                    "REMOVAL_DISTANCE": args.removal_distance,
+                }.items()
+                if value is not None
             },
             "BOX": _process_box(args),
         },
@@ -774,11 +790,11 @@ def _write_parameters(args: argparse.Namespace) -> None:
 
     # Write to TOML file
     with open(fn, "w") as param:
-        toml.dump(parameters, param)
+        tomlkit.dump(parameters, param)
 
 
 def calculate_frequencies(
-    residues: Dict[str, List[List[str]]]
+    residues: Dict[str, List[List[str]]],
 ) -> Dict[str, Dict[str, Dict[str, int]]]:
     """Calculate frequencies of residues and class of residues
     (R1, R2, R3, R4 and R5) for detected cavities.
@@ -1233,7 +1249,7 @@ def write_results(
     >>> write_results('results.toml', input=pdb, ligand=None, output='cavities.pdb', volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)
 
     """
-    import toml
+    import tomlkit
 
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:
@@ -1288,33 +1304,33 @@ def write_results(
         output = os.path.abspath(output)
 
     # Create output dictionary for results file
-    files = {
-        "INPUT": input,
-        "LIGAND": ligand,
-        "OUTPUT": output,
-    }
-    parameters = {
-        "STEP": step,
-    }
-    results = (
-        {
-            "VOLUME": volume,
-            "AREA": area,
-            "MAX_DEPTH": max_depth,
-            "AVG_DEPTH": avg_depth,
-            "AVG_HYDROPATHY": avg_hydropathy,
-            "RESIDUES": residues,
-            "FREQUENCY": frequencies,
-        }
-        if (volume is not None)
-        or (area is not None)
-        or (max_depth is not None)
-        or (avg_depth is not None)
-        or (avg_hydropathy is not None)
-        or (residues is not None)
-        or (frequencies is not None)
-        else None
-    )
+    files = {}
+    if input is not None:
+        files["INPUT"] = input
+    if ligand is not None:
+        files["LIGAND"] = ligand
+    if output is not None:
+        files["OUTPUT"] = output
+
+    parameters = {}
+    if step is not None:
+        parameters["STEP"] = step
+
+    results = {}
+    if volume is not None:
+        results["VOLUME"] = volume
+    if area is not None:
+        results["AREA"] = area
+    if max_depth is not None:
+        results["MAX_DEPTH"] = max_depth
+    if avg_depth is not None:
+        results["AVG_DEPTH"] = avg_depth
+    if avg_hydropathy is not None:
+        results["AVG_HYDROPATHY"] = avg_hydropathy
+    if residues is not None:
+        results["RESIDUES"] = residues
+    if frequencies is not None:
+        results["FREQUENCY"] = frequencies
 
     # Create base directories of results TOML file
     os.makedirs(os.path.abspath(os.path.dirname(fn)), exist_ok=True)
@@ -1322,7 +1338,7 @@ def write_results(
     # Write results to TOML file
     with open(fn, "w") as f:
         f.write("# pyKVFinder results\n\n")
-        toml.dump(
+        tomlkit.dump(
             {
                 "FILES": files,
                 "PARAMETERS": parameters,

@@ -460,7 +460,7 @@ class TestWriteResults(unittest.TestCase):
         write_results(
             "tests/results.toml", "input.pdb", "ligand.pdb", "output.pdb", step=0.1
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nLIGAND = "{os.path.abspath("ligand.pdb")}"\nOUTPUT = "{os.path.abspath("output.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.1\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\nLIGAND = "{os.path.abspath("ligand.pdb")}"\nOUTPUT = "{os.path.abspath("output.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.1\n\n[RESULTS]\n'
         with open("tests/results.toml", "r") as f:
             self.assertEqual(f.read(), expected)
         os.remove("tests/results.toml")
@@ -518,7 +518,7 @@ class TestWriteResults(unittest.TestCase):
             None,
             residues={"KAA": [["49", "E", "LEU"]]},
         )
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.RESIDUES]\nKAA = [ [ "49", "E", "LEU",],]\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 0.6\n\n[RESULTS.RESIDUES]\nKAA = [["49", "E", "LEU"]]\n'
         with open("tests/residues.toml", "r") as f:
             self.assertEqual(f.read(), expected)
         os.remove("tests/residues.toml")
@@ -700,7 +700,7 @@ class TestWriteResults(unittest.TestCase):
     def test_step_as_integer(self):
         # Check step as integer
         write_results("tests/step.toml", "input.pdb", None, None, step=1)
-        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n'
+        expected = f'# pyKVFinder results\n\n[FILES]\nINPUT = "{os.path.abspath("input.pdb")}"\n\n[PARAMETERS]\nSTEP = 1.0\n\n[RESULTS]\n'
         with open("tests/step.toml", "r") as f:
             self.assertEqual(f.read(), expected)
         os.remove("tests/step.toml")

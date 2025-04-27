@@ -11,7 +11,7 @@ pyKVFinder and PyQt5.
 from math import cos, pi, sin
 
 import pymol
-import toml
+import tomlkit
 from pymol import cmd
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QDoubleSpinBox, QMainWindow, QMessageBox, QPushButton
@@ -699,7 +699,7 @@ class Box(object):
         box = {"p1": p1, "p2": p2, "p3": p3, "p4": p4}
 
         with open(filename, "w") as f:
-            toml.dump(box, f)
+            tomlkit.dump(box, f)
 
         return filename
 
