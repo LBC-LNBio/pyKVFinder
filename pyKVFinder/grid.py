@@ -444,7 +444,7 @@ def _get_vertices_from_residues(
     )
 
     # Get coordinates of residues
-    indexes = numpy.isin(atominfo[:, 0], box["residues"])
+    indexes = numpy.isin(atominfo[:, 0], residues_list)
     xyzr = xyzr[indexes, 0:3]
 
     # Calculate vertices
