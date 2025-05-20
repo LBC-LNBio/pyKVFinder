@@ -22,7 +22,10 @@ jobs:
 
       - name: Set environment variable for macos-latest
         if: matrix.os == 'macos-14'
-        run: echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
+        run: |
+          echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
+          export LDFLAGS="-L/usr/local/opt/libomp/lib"
+          export CPPFLAGS="-I/usr/local/opt/libomp/include"
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.23.3
