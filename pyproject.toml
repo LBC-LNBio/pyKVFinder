@@ -114,7 +114,7 @@ before-build = [
     "brew install llvm",
     "brew install libomp",
 ]
-environment = { CC = "/opt/homebrew/opt/llvm/bin/clang" }
+environment = { CC = "/opt/homebrew/opt/llvm/bin/clang", LDFLAGS = "-L/opt/homebrew/opt/libomp/lib", CFLAGS = "-I/opt/homebrew/opt/libomp/include", DYLD_LIBRARY_PATH = "/opt/homebrew/opt/libomp/lib:${DYLD_LIBRARY_PATH}" }
 archs = ["x86_64"]
 
 [tool.cibuildwheel.windows]
