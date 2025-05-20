@@ -114,8 +114,10 @@ before-build = [
     # "brew install llvm",
     # "brew install libomp",
 ]
-environment = { CC = "/opt/homebrew/opt/llvm/bin/clang"}
-archs = ["native"]
+environment = { CC = "/opt/homebrew/opt/llvm/bin/clang" }
+archs = ["x86_64"]
+repair-wheel-command = ""
+test-skip = "*-macosx_arm64"
 
 [tool.cibuildwheel.windows]
 archs = ["native"]
