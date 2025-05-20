@@ -111,11 +111,11 @@ before-build = [
     "python3 -m pip install --upgrade pip",
     "pip3 install certifi",
     "git clean -fxd build",
-    "brew install llvm",
-    "brew install libomp",
+    # "brew install llvm",
+    # "brew install libomp",
 ]
-environment = { CC = "/opt/homebrew/opt/llvm/bin/clang", LDFLAGS = "-L/opt/homebrew/opt/libomp/lib", CFLAGS = "-I/opt/homebrew/opt/libomp/include", DYLD_LIBRARY_PATH = "/opt/homebrew/opt/libomp/lib:${DYLD_LIBRARY_PATH}" }
-archs = ["x86_64"]
+environment = { CC = "/opt/homebrew/opt/llvm/bin/clang"}
+archs = ["native"]
 
 [tool.cibuildwheel.windows]
 archs = ["native"]
