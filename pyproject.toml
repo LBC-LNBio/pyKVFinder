@@ -117,7 +117,7 @@ before-build = [
 environment = { CC = "/opt/homebrew/opt/llvm/bin/clang" }
 archs = ["x86_64"]
 repair-wheel-command = ""
-test-skip = "*-macosx_arm64"
+test-skip = "*-macosx_x86_64"
 
 [tool.cibuildwheel.windows]
 archs = ["native"]
