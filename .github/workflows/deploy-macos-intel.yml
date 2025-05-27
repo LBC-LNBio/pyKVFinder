@@ -52,7 +52,10 @@ jobs:
         run: python -m pip install ./wheelhouse/*cp313-macosx_x86_64=.whl
 
       - name: Run pyKVFinder
-        run: python -c "import pyKVFinder; print(pyKVFinder.__version__)"
+        run: |
+          python -c "import pyKVFinder; print(pyKVFinder.__version__)"
+          pyKVFinder --help
+          pyKVFinder pyKVFinder/data/tests/1FMO.db --verbose
 
   pypi-publish:
     name: Save artifacts
