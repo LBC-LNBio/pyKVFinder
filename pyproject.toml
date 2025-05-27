@@ -114,7 +114,7 @@ before-build = [
     "brew install llvm",
     "brew install libomp",
 ]
-environment = { CC = "/usr/local/opt/bin/clang" }
+environment = { CC = "/usr/local/opt/llvm/bin/clang" }
 archs = ["x86_64"]
 
 [tool.cibuildwheel.windows]
