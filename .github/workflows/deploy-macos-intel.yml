@@ -60,7 +60,7 @@ jobs:
         run: |
           python -c "import pyKVFinder; print(pyKVFinder.__version__)"
           pyKVFinder --help
-          pyKVFinder pyKVFinder/data/tests/1FMO.db --verbose
+          pyKVFinder pyKVFinder/data/tests/1FMO.pdb --verbose
 
   pypi-publish:
     name: Save artifacts
