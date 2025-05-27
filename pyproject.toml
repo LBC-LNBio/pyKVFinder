@@ -110,9 +110,7 @@ archs = ["native"]
 before-build = [
     "python3 -m pip install --upgrade pip",
     "pip3 install certifi",
-    "git clean -fxd build",
-    "brew install llvm",
-    "brew install libomp",
+    "git clean -fxd build"
 ]
 environment = { CC = "/usr/local/opt/llvm/bin/clang" }
 archs = ["x86_64"]
