@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14]
+        os: [macos-13]
 
     steps:
       - uses: actions/checkout@v4
@@ -21,9 +21,9 @@ jobs:
           python-version: 3.x
 
       - name: Set environment variable for macos-latest
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-13'
         run: |
-          echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
+          echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> $GITHUB_ENV
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.23.3
@@ -35,6 +35,11 @@ jobs:
         with:
           name: artifacts-${{ matrix.os }}
           path: ./wheelhouse/*.whl
+      
+      - name: Install pyKVFinder
+        run: |
+          pip install wheelhouse/*${{ matrix.os }}.whl
+          pyKVFinder pyKVFinder/data/tests/1FMO.pdb --verbose
 
   pypi-publish:
     name: Save artifacts
