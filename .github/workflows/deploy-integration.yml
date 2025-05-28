@@ -51,17 +51,20 @@ jobs:
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=15.0" >> $GITHUB_ENV
           echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
+          python -c "import os; print(f'OS machine: {os.uname().machine}')"
 
       - name: Set environment variable for macos-latest
         if: matrix.os == 'macos-14'
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
           echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
+          python -c "import os; print(f'OS machine: {os.uname().machine}')"
 
       - name: Set environment variable for macos-latest
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
+          python -c "import os; print(f'OS machine: {os.uname().machine}')"
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.23.0
