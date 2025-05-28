@@ -1,3 +1,4 @@
+import os
 import sys
 from setuptools import Extension, setup
 import numpy
@@ -10,7 +11,11 @@ class GetNumpyInclude:
 
 def get_extra_link_args():
     if sys.platform == "darwin":
-        extra_link_args = ["-L/opt/homebrew/opt/libomp/lib", "-lomp"]
+        arch = os.uname().machine
+        if arch == "arm64":
+            extra_link_args = ["-L/opt/homebrew/opt/libomp/lib", "-lomp"]
+        else:
+            extra_link_args = ["-L/usr/local/opt/libomp/lib", "-lomp"]
     elif sys.platform == "linux":
         extra_link_args = ["-lgomp"]
     elif sys.platform == "win32":
