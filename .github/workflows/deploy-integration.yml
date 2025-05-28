@@ -61,7 +61,7 @@ jobs:
       - name: Set environment variable for macos-latest
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> $GITHUB_ENV
-          echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENVs
+          echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.23.0
