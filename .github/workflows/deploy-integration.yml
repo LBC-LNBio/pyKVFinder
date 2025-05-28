@@ -53,14 +53,15 @@ jobs:
           echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
           python -c "import os; print(f'OS machine: {os.uname().machine}')"
 
-      - name: Set environment variable for macos-latest
+      - name: Set environment variable for macos-14
         if: matrix.os == 'macos-14'
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
           echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
           python -c "import os; print(f'OS machine: {os.uname().machine}')"
 
-      - name: Set environment variable for macos-latest
+      - name: Set environment variable for macos-13
+        if: matrix.os == 'macos-13'
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> $GITHUB_ENV
           echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
