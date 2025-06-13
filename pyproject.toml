@@ -63,7 +63,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest==8.4.0", "pytest-cov==6.1.1", "black==25.1.0", "flake8==7.2.0"]
+dev = ["pytest==8.4.0", "pytest-cov==6.2.1", "black==25.1.0", "flake8==7.2.0"]
 docs = [
     "sphinx==8.0.2",
     "sphinx-rtd-theme==3.0.2",
