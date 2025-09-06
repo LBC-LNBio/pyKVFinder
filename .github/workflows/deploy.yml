@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         # macos-13: x86_64 (intel); macos-14: arm64; macos-15: arm64
-        os: [ubuntu-latest]
+        os: [macos-13, macos-14, macos-15, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4
