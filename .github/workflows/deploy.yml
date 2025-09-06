@@ -45,7 +45,7 @@ jobs:
       
       # Enable QEMU emulation for ARM
       - name: Set up QEMU
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'windows-latest'
+        if: matrix.os == 'ubuntu-latest'
         uses: docker/setup-qemu-action@v3
         with:
           platforms: all
