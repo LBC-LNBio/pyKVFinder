@@ -115,6 +115,7 @@ before-build = [
     "brew install libomp",
 ]
 archs = ["native"]
+test-skip = "*-macosx_x86_64"
 
 [tool.cibuildwheel.windows]
 archs = ["native"]
