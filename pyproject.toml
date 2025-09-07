@@ -104,7 +104,7 @@ before-build = [
 build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
 
 [tool.cibuildwheel.linux]
-archs = ["native"]
+archs = ["native", "aarch64"]
 
 [tool.cibuildwheel.macos]
 before-build = [
