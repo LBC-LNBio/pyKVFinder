@@ -3,7 +3,7 @@ platform linux -- Python 3.11.13, pytest-8.4.2, pluggy-1.6.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests
-plugins: cov-6.3.0
+plugins: cov-7.0.0
 collected 313 items
 
 tests/integration/test_cli.py ................                           [  5%]
@@ -33,4 +33,4 @@ pyKVFinder/main.py      361     69    81%   93, 97, 105, 114, 142-148, 495, 660,
 pyKVFinder/utils.py     334      6    98%   571, 603, 606-608, 630
 ---------------------------------------------------
 TOTAL                  1429    191    87%
-================== 313 passed, 2 warnings in 92.76s (0:01:32) ==================
+================== 313 passed, 2 warnings in 92.95s (0:01:32) ==================
