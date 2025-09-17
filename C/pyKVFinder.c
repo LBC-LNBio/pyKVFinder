@@ -2114,7 +2114,7 @@ char **interface(int *cavities, int nx, int ny, int nz, char **pdb,
     z = yaux * sincos[0] + zaux * sincos[1];
 
     // Create a radius (H) for space occupied by probe and atom
-    H = (probe_in + atoms[3 + (atom * 4)]) / step;
+    H = ceil((probe_in + atoms[3 + (atom * 4)]) / step);
 
     // Loop around radius from atom center
     for (i = floor(x - H); i <= ceil(x + H); i++)
