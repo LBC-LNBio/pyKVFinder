@@ -1280,7 +1280,9 @@ class TestConstitutional(unittest.TestCase):
         # Constitutional
         residues = constitutional(self.cavities, self.atomic, self.vertices, step=1)
         # Assert
-        self.assertDictEqual(residues, {"KAA": [["13", "E", "GLU"]]})
+        self.assertDictEqual(
+            residues, {"KAA": [["13", "E", "GLU"]], "KAB": [["13", "E", "GLU"]]}
+        )
 
     def test_probe_in_as_integer(self):
         # Constitutional
