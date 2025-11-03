@@ -1,5 +1,5 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.13, pytest-8.4.2, pluggy-1.6.0
+platform linux -- Python 3.11.14, pytest-8.4.2, pluggy-1.6.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests
@@ -15,16 +15,8 @@ tests/unit/test_grid.py ................................................ [ 32%]
 tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
-=============================== warnings summary ===============================
-tests/integration/test_cli.py::TestCLI::test_custom_box_mode
-  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
-
-tests/integration/test_cli.py::TestCLI::test_custom_box_mode
-  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 ================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.11.13-final-0 _______________
+_______________ coverage: platform linux, python 3.11.14-final-0 _______________
 
 Name                  Stmts   Miss  Cover   Missing
 ---------------------------------------------------
@@ -33,4 +25,4 @@ pyKVFinder/main.py      361     69    81%   93, 97, 105, 114, 142-148, 495, 660,
 pyKVFinder/utils.py     334      6    98%   571, 603, 606-608, 630
 ---------------------------------------------------
 TOTAL                  1429    191    87%
-================== 313 passed, 2 warnings in 93.72s (0:01:33) ==================
+======================== 313 passed in 94.92s (0:01:34) ========================
