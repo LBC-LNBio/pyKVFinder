@@ -44,6 +44,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3 :: Only",
     'Programming Language :: Python :: Implementation :: CPython',
     'Topic :: Software Development',
@@ -55,15 +56,15 @@ classifiers = [
     'Operating System :: MacOS',
 ]
 dependencies = [
-    "numpy>=2.2.0,<2.4.0",
+    "numpy>=2.0.0,<2.5.0",
     "matplotlib>=3.10.0,<3.11.0",
-    "plotly>=6.0.0,<6.4.0",
+    "plotly>=6.0.0,<6.6.0",
     "tomlkit==0.13.3",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest==8.4.2", "pytest-cov==7.0.0", "black==25.1.0", "flake8==7.3.0"]
+dev = ["pytest==9.0.1", "pytest-cov==7.0.0", "black==25.11.0", "flake8==7.3.0"]
 docs = [
     "sphinx==8.0.2",
     "sphinx-rtd-theme==3.0.2",
