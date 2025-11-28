@@ -12,6 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Cache pip
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
@@ -41,7 +47,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
+      # Cache pip
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+
+      # Cache Homebrew (macOS only)
+      - name: Cache Homebrew
+        if: startsWith(matrix.os, 'macos')
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/Homebrew
+            /opt/homebrew
+            ~/Library/Caches/Homebrew
+            /usr/local/Cellar
+            /opt/homebrew/Cellar
+          key: brew-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+
       # Enable QEMU emulation for ARM
       - name: Set up QEMU
         if: matrix.os == 'ubuntu-latest'
