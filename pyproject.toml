@@ -95,14 +95,15 @@ testpaths = ["tests"]
 omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
 [tool.cibuildwheel]
-test-requires = "pytest"
-test-command = "pytest {project}/tests/integration -v"
 before-build = [
     "python3 -m pip install --upgrade pip",
     "pip3 install certifi",
     "git clean -fxd build",
 ]
 build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
+before-test = ["pip3 install pytest-xdist"]
+test-requires = "pytest"
+test-command = "pytest {project}/tests/integration -n auto"
 
 [tool.cibuildwheel.linux]
 archs = ["native", "aarch64"]
