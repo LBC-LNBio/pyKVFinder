@@ -417,19 +417,19 @@ class TestPyKVFinderResults(unittest.TestCase):
             DATADIR,
             "tests",
             "output",
-            "results.toml",
+            "all.results.toml",
         )
         output = os.path.join(
             DATADIR,
             "tests",
             "output",
-            "cavities.pdb",
+            "all.cavities.pdb",
         )
         pdf = os.path.join(
             DATADIR,
             "tests",
             "output",
-            "barplots.pdf",
+            "all.barplots.pdf",
         )
         # export_all
         self.results.export_all(
