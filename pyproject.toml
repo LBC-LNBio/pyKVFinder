@@ -1,10 +1,16 @@
 [build-system]
 requires = [
-    "setuptools>=62.0",
+    "setuptools>=77.0.3",
     "wheel>=0.45",
-    "Cython>=3.0",
-    "numpy>=1.21.5",
+    "Cython>=3.0.8",
     "swig==4.3.0",
+    # numpy requirement for wheel builds for distribution on PyPI - building
+    # against 2.x yields wheels that are also compatible with numpy 1.x at
+    # runtime.
+    # Note that building against numpy 1.x works fine too - users and
+    # redistributors can do this by installing the numpy version they like and
+    # disabling build isolation.
+    "numpy>=2.0.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -95,17 +101,24 @@ testpaths = ["tests"]
 omit = ["pyKVFinder/argparser.py", "pyKVFinder/__init__.py"]
 
 [tool.cibuildwheel]
-test-requires = "pytest"
-test-command = "pytest {project}/tests/integration -v"
+test-requires = [
+    "pytest",
+    "pytest-xdist",
+    "threadpoolctl"
+]
+test-command = "pytest {project}/tests/integration -n auto"
 before-build = [
     "python3 -m pip install --upgrade pip",
     "pip3 install certifi",
-    "git clean -fxd build",
 ]
 build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 
 [tool.cibuildwheel.linux]
 archs = ["native", "aarch64"]
+test-skip = [
+    "*-manylinux*_aarch64.whl",
+    "*-musllinux*_aarch64.whl",
+]
 
 [tool.cibuildwheel.macos]
 before-build = [

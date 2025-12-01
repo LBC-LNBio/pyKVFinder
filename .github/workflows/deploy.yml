@@ -40,7 +40,7 @@ jobs:
         os: [macos-13, macos-14, macos-15, ubuntu-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       # Enable QEMU emulation for ARM
       - name: Set up QEMU
@@ -73,7 +73,7 @@ jobs:
           echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==3.1.4
+        run: python -m pip install cibuildwheel==3.3.0
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse

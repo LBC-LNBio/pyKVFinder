@@ -70,7 +70,7 @@ class TestCLI(unittest.TestCase):
     )
     def test_standard_mode_with_xyz(self, _):
         # Run pyKVFinder CLI with standard mode
-        # $ pyKVFinder <.pdb>
+        # $ pyKVFinder <.xyz>
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
     @mock.patch(
@@ -199,7 +199,7 @@ class TestCLI(unittest.TestCase):
     )
     def test_ligand_mode_with_xyz(self, _):
         # Run pyKVFinder CLI with ligand mode
-        # $ pyKVFinder <.pdb> -L <.pdb>
+        # $ pyKVFinder <.pdb> -L <.xyz>
         self.assertEqual(pyKVFinder.main.cli(), 0)
 
     @mock.patch(
