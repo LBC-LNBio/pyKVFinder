@@ -115,10 +115,7 @@ build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 
 [tool.cibuildwheel.linux]
 archs = ["native", "aarch64"]
-test-skip = [
-    "*-manylinux*_aarch64.whl",
-    "*-musllinux*_aarch64.whl",
-]
+test-skip = "*-*linux_{aarch64,ppc64le,s390x}"
 
 [tool.cibuildwheel.macos]
 before-build = [
