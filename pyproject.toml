@@ -3,7 +3,7 @@ requires = [
     "setuptools>=77.0.3",
     "wheel>=0.45",
     "Cython>=3.0.8",
-    "swig==4.3.0",
+    "swig==4.4.0",
     # numpy requirement for wheel builds for distribution on PyPI - building
     # against 2.x yields wheels that are also compatible with numpy 1.x at
     # runtime.
