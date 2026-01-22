@@ -1571,7 +1571,7 @@ class Molecule(object):
                 [1, 1, 1, ..., 1, 1, 1],
                 [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)
         """
-        from _pyKVFinder import _fill_receptor
+        from pyKVFinder._pyKVFinder import _fill_receptor
 
         # Check arguments
         if type(step) not in [int, float]:
@@ -1697,7 +1697,7 @@ class Molecule(object):
                     [1, 1, 1, ..., 1, 1, 1],
                     [1, 1, 1, ..., 1, 1, 1]]], dtype=int32)
         """
-        from _pyKVFinder import _fill_receptor
+        from pyKVFinder._pyKVFinder import _fill_receptor
 
         # Check arguments
         if type(step) not in [int, float]:
@@ -1762,7 +1762,7 @@ class Molecule(object):
         >>> molecule.volume()
         90.8
         """
-        from _pyKVFinder import _volume
+        from pyKVFinder._pyKVFinder import _volume
 
         if self.grid is not None:
             volume = _volume(

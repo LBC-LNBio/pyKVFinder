@@ -40,7 +40,7 @@ def get_extra_compile_args():
 setup(
     ext_modules=[
         Extension(
-            name="_pyKVFinder",
+            name="pyKVFinder._pyKVFinder",
             sources=["C/pyKVFinder.i", "C/pyKVFinder.c"],
             include_dirs=[str(GetNumpyInclude()), "C"],
             extra_compile_args=get_extra_compile_args(),

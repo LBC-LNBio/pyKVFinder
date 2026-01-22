@@ -521,7 +521,7 @@ def read_cavity(
         [-1, -1, -1, ..., -1, -1, -1],
         [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
     """
-    from _pyKVFinder import _fill_cavity, _fill_receptor
+    from pyKVFinder._pyKVFinder import _fill_cavity, _fill_receptor
 
     from .grid import _get_dimensions, _get_sincos, get_vertices
 

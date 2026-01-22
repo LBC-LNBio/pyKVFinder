@@ -30,10 +30,62 @@ See also
 * Documentation: https://lbc-lnbio.github.io/pyKVFinder
 """
 
-__name__ = "pyKVFinder"
-__version__ = "0.8.4"
-license = "GNU GPL-3.0 License"
+__version__ = "0.9.0"
+__license__ = "GPL-3.0-or-later"
 
-from .utils import *
-from .grid import *
-from .main import *
+from .utils import (
+    _write_parameters as _write_parameters,
+    calculate_frequencies as calculate_frequencies,
+    plot_frequencies as plot_frequencies,
+    read_cavity as read_cavity,
+    read_pdb as read_pdb,
+    read_vdw as read_vdw,
+    read_xyz as read_xyz,
+    write_results as write_results,
+)
+
+from .grid import (
+    _get_dimensions as _get_dimensions,
+    _get_sincos as _get_sincos,
+    constitutional as constitutional,
+    depth as depth,
+    detect as detect,
+    export as export,
+    get_vertices as get_vertices,
+    get_vertices_from_file as get_vertices_from_file,
+    hydropathy as hydropathy,
+    spatial as spatial,
+)
+
+from .main import (
+    run_workflow as run_workflow,
+    pyKVFinderResults as pyKVFinderResults,
+    Molecule as Molecule,
+)
+
+__all__ = [
+    # utils
+    "_write_parameters",
+    "calculate_frequencies",
+    "plot_frequencies",
+    "read_cavity",
+    "read_pdb",
+    "read_vdw",
+    "read_xyz",
+    "write_results",
+    # grid
+    "_get_dimensions",
+    "_get_sincos",
+    "constitutional",
+    "depth",
+    "detect",
+    "export",
+    "get_vertices",
+    "get_vertices_from_file",
+    "hydropathy",
+    "spatial",
+    # main
+    "run_workflow",
+    "pyKVFinderResults",
+    "Molecule",
+]

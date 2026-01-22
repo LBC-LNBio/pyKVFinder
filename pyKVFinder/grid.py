@@ -216,7 +216,7 @@ def get_vertices_from_file(
     .. warning::
         Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.
     """
-    from _pyKVFinder import _filter_pdb
+    from pyKVFinder._pyKVFinder import _filter_pdb
     import tomlkit
 
     # Check arguments types
@@ -820,7 +820,7 @@ def detect(
     .. warning::
         If you are using box adjusment mode, do not forget to set ``box_adjustment`` flag to ``True``.
     """
-    from _pyKVFinder import _detect, _detect_ladj
+    from pyKVFinder._pyKVFinder import _detect, _detect_ladj
 
     # Check arguments
     if type(atomic) not in [numpy.ndarray, list]:
@@ -1233,7 +1233,7 @@ def spatial(
     >>> area
     {'KAA': 126.41, 'KAB': 62.37, 'KAC': 74.57, 'KAD': 19.06, 'KAE': 57.08, 'KAF': 22.77, 'KAG': 15.38, 'KAH': 496.97, 'KAI': 30.58, 'KAJ': 45.64, 'KAK': 30.58, 'KAL': 45.58, 'KAM': 45.25, 'KAN': 129.77, 'KAO': 12.28, 'KAP': 25.04, 'KAQ': 13.46, 'KAR': 16.6}
     """
-    from _pyKVFinder import _spatial
+    from pyKVFinder._pyKVFinder import _spatial
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -1444,7 +1444,7 @@ def depth(
     >>> avg_depth
     {'KAA': 1.35, 'KAB': 0.91, 'KAC': 0.68, 'KAD': 0.32, 'KAE': 0.99, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.91, 'KAI': 0.0, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.07, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}
     """
-    from _pyKVFinder import _depth
+    from pyKVFinder._pyKVFinder import _depth
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -1683,7 +1683,7 @@ def constitutional(
     >>> residues
     {'KAA': [['15', 'E', 'VAL'], ['18', 'E', 'PHE'], ['19', 'E', 'LEU'], ['100', 'E', 'PHE'], ['152', 'E', 'LEU'], ['155', 'E', 'GLU'], ['156', 'E', 'TYR'], ['292', 'E', 'LYS'], ['302', 'E', 'TRP'], ['303', 'E', 'ILE'], ['306', 'E', 'TYR']], 'KAB': [['18', 'E', 'PHE'], ['22', 'E', 'ALA'], ['25', 'E', 'ASP'], ['26', 'E', 'PHE'], ['29', 'E', 'LYS'], ['99', 'E', 'ASN'], ['156', 'E', 'TYR']], 'KAC': [['144', 'E', 'ARG'], ['145', 'E', 'PHE'], ['148', 'E', 'ALA'], ['299', 'E', 'THR'], ['300', 'E', 'THR'], ['305', 'E', 'ILE'], ['310', 'E', 'VAL'], ['311', 'E', 'GLU'], ['313', 'E', 'PRO']], 'KAD': [['122', 'E', 'TYR'], ['124', 'E', 'ALA'], ['176', 'E', 'GLN'], ['318', 'E', 'PHE']], 'KAE': [['98', 'E', 'VAL'], ['99', 'E', 'ASN'], ['103', 'E', 'LEU'], ['105', 'E', 'LYS'], ['106', 'E', 'LEU']], 'KAF': [['123', 'E', 'VAL'], ['175', 'E', 'ASP'], ['181', 'E', 'GLN']], 'KAG': [['34', 'E', 'SER'], ['37', 'E', 'THR'], ['96', 'E', 'GLN'], ['106', 'E', 'LEU'], ['109', 'E', 'SER']], 'KAH': [['49', 'E', 'LEU'], ['53', 'E', 'SER'], ['54', 'E', 'PHE'], ['57', 'E', 'VAL'], ['70', 'E', 'ALA'], ['72', 'E', 'LYS'], ['74', 'E', 'LEU'], ['84', 'E', 'GLN'], ['87', 'E', 'HIS'], ['88', 'E', 'THR'], ['91', 'E', 'GLU'], ['104', 'E', 'VAL'], ['120', 'E', 'MET'], ['122', 'E', 'TYR'], ['123', 'E', 'VAL'], ['127', 'E', 'GLU'], ['166', 'E', 'ASP'], ['168', 'E', 'LYS'], ['170', 'E', 'GLU'], ['171', 'E', 'ASN'], ['173', 'E', 'LEU'], ['183', 'E', 'THR'], ['184', 'E', 'ASP'], ['187', 'E', 'PHE'], ['201', 'E', 'THR'], ['327', 'E', 'PHE']], 'KAI': [['131', 'E', 'HIS'], ['138', 'E', 'PHE'], ['142', 'E', 'HIS'], ['146', 'E', 'TYR'], ['174', 'E', 'ILE'], ['314', 'E', 'PHE']], 'KAJ': [['33', 'E', 'PRO'], ['89', 'E', 'LEU'], ['92', 'E', 'LYS'], ['93', 'E', 'ARG'], ['96', 'E', 'GLN'], ['349', 'E', 'GLU'], ['350', 'E', 'PHE']], 'KAK': [['157', 'E', 'LEU'], ['162', 'E', 'LEU'], ['164', 'E', 'TYR'], ['185', 'E', 'PHE'], ['188', 'E', 'ALA']], 'KAL': [['127', 'E', 'GLU'], ['129', 'E', 'PHE'], ['130', 'E', 'SER'], ['327', 'E', 'PHE'], ['328', 'E', 'ASP'], ['330', 'E', 'TYR']], 'KAM': [['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['73', 'E', 'ILE'], ['115', 'E', 'ASN'], ['335', 'E', 'ILE']], 'KAN': [['165', 'E', 'ARG'], ['166', 'E', 'ASP'], ['167', 'E', 'LEU'], ['201', 'E', 'THR'], ['204', 'E', 'TYR'], ['205', 'E', 'LEU'], ['206', 'E', 'ALA'], ['209', 'E', 'ILE'], ['219', 'E', 'VAL'], ['220', 'E', 'ASP'], ['223', 'E', 'ALA']], 'KAO': [['48', 'E', 'THR'], ['51', 'E', 'THR'], ['56', 'E', 'ARG'], ['330', 'E', 'TYR']], 'KAP': [['222', 'E', 'TRP'], ['238', 'E', 'PHE'], ['255', 'E', 'VAL'], ['273', 'E', 'LEU']], 'KAQ': [['207', 'E', 'PRO'], ['208', 'E', 'GLU'], ['211', 'E', 'LEU'], ['213', 'E', 'LYS'], ['277', 'E', 'LEU']], 'KAR': [['238', 'E', 'PHE'], ['249', 'E', 'LYS'], ['255', 'E', 'VAL'], ['256', 'E', 'ARG']]}
     """
-    from _pyKVFinder import _constitutional
+    from pyKVFinder._pyKVFinder import _constitutional
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2035,7 +2035,7 @@ def hydropathy(
        Protein Science. 2006;15.
     """
     import tomlkit
-    from _pyKVFinder import _hydropathy
+    from pyKVFinder._pyKVFinder import _hydropathy
 
     # Check arguments
     if type(surface) not in [numpy.ndarray]:
@@ -2401,7 +2401,7 @@ def openings(
     export
     export_openings
     """
-    from _pyKVFinder import _area, _openings, _openings2cavities
+    from pyKVFinder._pyKVFinder import _area, _openings, _openings2cavities
 
     # Check arguments
     if type(cavities) not in [numpy.ndarray]:
@@ -2646,7 +2646,7 @@ def export(
     ...
     ATOM  1000  H   KAA     0       0.000   0.000   0.000  1.00  0.00
     """
-    from _pyKVFinder import _export
+    from pyKVFinder._pyKVFinder import _export
 
     # Check arguments
     if not isinstance(fn, (str, pathlib.Path, type(None))):
@@ -2876,7 +2876,7 @@ def export_openings(
     >>> from pyKVFinder import export_openings
     >>> export_openings('openings.pdb', openings, vertices)
     """
-    from _pyKVFinder import _export_openings
+    from pyKVFinder._pyKVFinder import _export_openings
 
     # Check arguments
     if type(openings) not in [numpy.ndarray]:
