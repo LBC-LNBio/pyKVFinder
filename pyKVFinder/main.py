@@ -179,6 +179,10 @@ def cli() -> None:
 
     # Cavities were found
     if ncav > 0:
+        # Warn if number of cavities exceeds maximum supported number
+        if ncav > 1352:
+            print("Warning: Number of detected cavities exceeds the supported limit (1352).")
+
         # Spatial characterization
         surface, volume, area = spatial(
             cavities, args.step, None, args.nthreads, args.verbose
@@ -1131,6 +1135,10 @@ def run_workflow(
     )
 
     if ncav > 0:
+        # Warn if number of cavities exceeds maximum supported number
+        if ncav > 1352:
+            print("Warning: Number of detected cavities exceeds the supported limit (1352).")
+
         # Spatial characterization
         surface, volume, area = spatial(cavities, step, None, nthreads, verbose)
 

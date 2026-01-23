@@ -2530,6 +2530,20 @@ void _export(
             yaux = (y * sincos[1]) + (z * sincos[0]) + reference[1];
             zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) +
                    (z * sincos[1] * sincos[3]) + reference[2];
+            
+            // Get cavity index
+            char c1, c2;
+            int idx = (tag - 2) % (2 * 26 * 26);
+
+            // Convert cavity index to two letters (A-Z, a-z)
+            if (idx < 26 * 26) {
+              c1 = 'A' + (idx / 26);
+              c2 = 'A' + (idx % 26);
+            } else {
+              idx -= 26 * 26;
+              c1 = 'a' + (idx / 26);
+              c2 = 'a' + (idx % 26);
+            }
 
 // Write cavity point as a surface point or a cavity point in PDB format
 // depending on the value of the surface grid
@@ -2538,8 +2552,8 @@ void _export(
               fprintf(output,
                       "ATOM  %5.d  HA  K%c%c   259    %8.3lf%8.3lf%8.3lf%6.2lf%6.2lf\n",
                       count % 100000,
-                      65 + (((surface[k + nz * (j + (ny * i))] - 2) / 26) % 26),
-                      65 + ((surface[k + nz * (j + (ny * i))] - 2) % 26),
+                      c1,
+                      c2,
                       xaux,
                       yaux,
                       zaux,
@@ -2549,8 +2563,8 @@ void _export(
               fprintf(output,
                       "ATOM  %5.d  H   K%c%c   259    %8.3lf%8.3lf%8.3lf%6.2lf%6.2lf\n",
                       count % 100000,
-                      65 + (((cavities[k + nz * (j + (ny * i))] - 2) / 26) % 26),
-                      65 + ((cavities[k + nz * (j + (ny * i))] - 2) % 26),
+                      c1,
+                      c2,
                       xaux,
                       yaux,
                       zaux,
@@ -2638,16 +2652,32 @@ void _export_openings(char *fn, int *openings, int nxx, int nyy, int nzz,
             zaux = (x * sincos[2]) - (y * sincos[0] * sincos[3]) +
                    (z * sincos[1] * sincos[3]) + reference[2];
 
+            // Get opening index
+            char o1, o2;
+            int idx = (tag - 2) % (2 * 26 * 26);
+
+            // Convert cavity index to two letters (A-Z, a-z)
+            if (idx < 26 * 26) {
+              o1 = 'A' + (idx / 26);
+              o2 = 'A' + (idx % 26);
+            } else {
+              idx -= 26 * 26;
+              o1 = 'a' + (idx / 26);
+              o2 = 'a' + (idx % 26);
+            }
+
 // Write cavity point
 #pragma omp critical
             fprintf(output,
                     "ATOM  %5.d  H   O%c%c   259    %8.3lf%8.3lf%8.3lf  "
                     "1.00%6.2lf\n",
                     count % 100000,
-                    65 +
-                        (((openings[k + nzz * (j + (nyy * i))] - 2) / 26) % 26),
-                    65 + ((openings[k + nzz * (j + (nyy * i))] - 2) % 26), xaux,
-                    yaux, zaux, 0.0);
+                    o1,
+                    o2,
+                    xaux, 
+                    yaux,
+                    zaux,
+                    0.0);
             count++;
           }
         }

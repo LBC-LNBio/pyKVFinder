@@ -48,6 +48,10 @@ def _select_cavities(cavities: numpy.ndarray, selection: list[int]) -> numpy.nda
 def _get_cavity_name(index: int) -> str:
     """Get cavity name, eg KAA, KAB, and so on, based on the index.
 
+    Naming convention:
+    - 0-675   -> KAA ... KZZ
+    - 676-1351 -> Kaa ... Kzz
+
     Parameters
     ----------
     index : int
@@ -58,12 +62,29 @@ def _get_cavity_name(index: int) -> str:
     cavity_name : str
         Cavity name
     """
-    cavity_name = f"K{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+    # Get block and offset
+    block = index // (26 * 26)
+    offset = index % (26 * 26)
+
+    # Choose ASCII base: uppercase or lowercase
+    base = 65 if block == 0 else 97  # 'A' or 'a'
+
+    # Get first and second characters
+    first = chr(base + (offset // 26))
+    second = chr(base + (offset % 26))
+
+    # Build cavity name
+    cavity_name = f"K{first}{second}"
+
     return cavity_name
 
 
 def _get_cavity_label(cavity_name: str) -> int:
     """Get cavity label, eg 2, 3, and so on, based on the cavity name.
+
+    Naming convention:
+    - KAA-KZZ -> 2-677
+    - Kaa-Kzz -> 678-1353
 
     Parameters
     ----------
@@ -85,6 +106,23 @@ def _get_cavity_label(cavity_name: str) -> int:
         raise ValueError(f"Invalid cavity name: {cavity_name}.")
 
     # Get cavity label
-    cavity_label = (ord(cavity_name[1]) - 65) * 26 + (ord(cavity_name[2]) - 65) + 2
+    c1, c2 = cavity_name[1], cavity_name[2]
+
+    # Uppercase block: KAA–KZZ
+    if c1.isupper() and c2.isupper():
+        base = 65  # 'A'
+        block_offset = 0
+
+    # Lowercase block: Kaa–Kzz
+    elif c1.islower() and c2.islower():
+        base = 97  # 'a'
+        block_offset = 26 * 26
+
+    # +2 preserves the original labeling convention
+    cavity_label = (
+        block_offset
+        + (ord(c1) - base) * 26
+        + (ord(c2) - base)
+    ) + 2
 
     return cavity_label

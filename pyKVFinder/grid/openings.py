@@ -9,6 +9,10 @@ from .depth import depth
 def _get_opening_name(index: int) -> str:
     """Get opening name, eg OAA, OAB, and so on, based on the index.
 
+    Naming convention:
+    - 0-675   -> OAA ... OZZ
+    - 676-1351 -> Oaa ... Ozz
+
     Parameters
     ----------
     index : int
@@ -19,12 +23,29 @@ def _get_opening_name(index: int) -> str:
     opening_name : str
         Opening name
     """
-    opening_name = f"O{chr(65 + int(index / 26) % 26)}{chr(65 + (index % 26))}"
+    # Get block and offset
+    block = index // (26 * 26)
+    offset = index % (26 * 26)
+
+    # Choose ASCII base: uppercase or lowercase
+    base = 65 if block == 0 else 97  # 'A' or 'a'
+
+    # Get first and second characters
+    first = chr(base + (offset // 26))
+    second = chr(base + (offset % 26))
+
+    # Build opening name
+    opening_name = f"O{first}{second}"
+
     return opening_name
 
 
 def _get_opening_label(opening_name: str) -> int:
     """Get opening label, eg 2, 3, and so on, based on the opening name.
+
+    Naming convention:
+    - OAA-OZZ -> 2-677
+    - Oaa-Ozz -> 678-1353
 
     Parameters
     ----------
@@ -45,10 +66,23 @@ def _get_opening_label(opening_name: str) -> int:
     if opening_name[0] != "O":
         raise ValueError(f"Invalid opening name: {opening_name}.")
 
-    # Get cavity label
-    cavity_label = (ord(opening_name[1]) - 65) * 26 + (ord(opening_name[2]) - 65) + 2
+    # Get opening label
+    o1, o2 = opening_name[1], opening_name[2]
 
-    return cavity_label
+    # Uppercase block: KAA–KZZ
+    if o1.isupper() and o2.isupper():
+        base = 65  # 'A'
+        block_offset = 0
+
+    # Lowercase block: Kaa–Kzz
+    elif o1.islower() and o2.islower():
+        base = 97  # 'a'
+        block_offset = 26 * 26
+
+    # +2 preserves the original labeling convention
+    opening_label = (block_offset + (ord(o1) - base) * 26 + (ord(o2) - base)) + 2
+
+    return opening_label
 
 
 def _process_openings(
@@ -288,6 +322,8 @@ def openings(
     nopenings, openings = _openings(
         nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose
     )
+    if nopenings > 1352:
+        print("Warning: Number of openings exceeds the maximum supported (1352). ")
 
     # Reshape openings
     openings = openings.reshape(nx, ny, nz)
