@@ -36,9 +36,10 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        # macos-13: x86_64 (intel); macos-14: arm64; macos-15: arm64
-        os: [macos-13, macos-14, macos-15, ubuntu-latest, windows-latest]
+        # macos-15: arm64, macos-15-intel: x64, macos-26: arm64+intel
+        os: [macos-15, macos-15-intel, macos-26, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v5
@@ -55,23 +56,23 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Set environment variable for macos-15
+      - name: Set environment variable for macos-26 (arm64)
+        if: matrix.os == 'macos-26'
+        run: | 
+          echo "MACOSX_DEPLOYMENT_TARGET=26.0" >> $GITHUB_ENV
+          echo "CC=$(brew --prefix llvm)/bin/clang" >> $GITHUB_ENV
+
+      - name: Set environment variable for macos-15 (arm64)
         if: matrix.os == 'macos-15'
         run: | 
           echo "MACOSX_DEPLOYMENT_TARGET=15.0" >> $GITHUB_ENV
-          echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
+          echo "CC=$(brew --prefix llvm)/bin/clang" >> $GITHUB_ENV
 
-      - name: Set environment variable for macos-14
-        if: matrix.os == 'macos-14'
+      - name: Set environment variable for macos-15-intel (intel)
+        if: matrix.os == 'macos-15-intel'
         run: | 
-          echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
-          echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
-
-      - name: Set environment variable for macos-13
-        if: matrix.os == 'macos-13'
-        run: | 
-          echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
-          echo "CC=/usr/local/opt/llvm/bin/clang" >> $GITHUB_ENV
+          echo "MACOSX_DEPLOYMENT_TARGET=15.0" >> $GITHUB_ENV
+          echo "CC=$(brew --prefix llvm)/bin/clang" >> $GITHUB_ENV
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==3.3.0
