@@ -1,36 +1,37 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.14, pytest-9.0.1, pluggy-1.6.0
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
-testpaths: tests
+testpaths: tests/integration, tests/unit
 plugins: cov-7.0.0
-collected 313 items
+collected 317 items
 
 tests/integration/test_cli.py ................                           [  5%]
 tests/integration/test_package.py .....................................  [ 16%]
-tests/unit/test_grid.py ................................................ [ 32%]
-........................................................................ [ 55%]
-........................................................................ [ 78%]
-.......                                                                  [ 80%]
+tests/unit/test_grid.py ................................................ [ 31%]
+........................................................................ [ 54%]
+........................................................................ [ 77%]
+...........                                                              [ 80%]
 tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
-=============================== warnings summary ===============================
-tests/integration/test_cli.py::TestCLI::test_custom_box_mode
-  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
-
-tests/integration/test_cli.py::TestCLI::test_custom_box_mode
-  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 ================================ tests coverage ================================
 _______________ coverage: platform linux, python 3.11.14-final-0 _______________
 
-Name                  Stmts   Miss  Cover   Missing
----------------------------------------------------
-pyKVFinder/grid.py      734    116    84%   289, 921, 925, 2247-2267, 2404-2481, 2753-2778, 2879-2948
-pyKVFinder/main.py      361     69    81%   93, 97, 105, 114, 142-148, 495, 660, 1061, 1068, 1078, 1089, 1108, 1113-1114, 1340, 1345, 1351, 1358, 1361-1364, 1368-1373, 1385, 1395, 1424-1425, 1430-1431, 1436-1437, 1497-1502, 1508, 1513-1518, 1578, 1580, 1593, 1704, 1706, 1712, 1714, 1720, 1725, 1729, 1782-1792, 1818
-pyKVFinder/utils.py     334      6    98%   571, 603, 606-608, 630
----------------------------------------------------
-TOTAL                  1429    191    87%
-================== 313 passed, 2 warnings in 95.37s (0:01:35) ==================
+Name                                Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------
+pyKVFinder/grid/__init__.py            10     10     0%   1-16
+pyKVFinder/grid/cavity.py              27     27     0%   1-128
+pyKVFinder/grid/constitutional.py      84     84     0%   1-296
+pyKVFinder/grid/depth.py               51     51     0%   1-218
+pyKVFinder/grid/detect.py             102    102     0%   1-414
+pyKVFinder/grid/export.py             136    136     0%   1-478
+pyKVFinder/grid/geometry.py           157    157     0%   1-561
+pyKVFinder/grid/hydropathy.py          95     95     0%   1-398
+pyKVFinder/grid/openings.py            87     87     0%   1-342
+pyKVFinder/grid/spatial.py             51     51     0%   1-227
+pyKVFinder/main.py                    365    365     0%   1-1832
+pyKVFinder/utils.py                   334    334     0%   1-1341
+-----------------------------------------------------------------
+TOTAL                                1499   1499     0%
+======================== 317 passed in 93.53s (0:01:33) ========================
