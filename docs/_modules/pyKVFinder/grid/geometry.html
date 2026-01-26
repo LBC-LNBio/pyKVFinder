@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyKVFinder.grid.geometry &mdash; pyKVFinder 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/icon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pyKVFinder
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Python Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/api_reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/LBC-LNBio/pyKVFinder">GitHub repository</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/cli/index.html">Command-line interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/pymol/index.html">PyMOL pyKVFinder Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/chimerax/index.html">ChimeraX</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html">KVFinder suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html#scientific-team">Scientific team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html#citing-pykvfinder">Citing pyKVFinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html#issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html#funding">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyKVFinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyKVFinder.grid.geometry</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyKVFinder.grid.geometry</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="get_vertices">
+<a class="viewcode-back" href="../../../package/api_reference/get_vertices.html#pyKVFinder.get_vertices">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_vertices</span><span class="p">(</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]],</span>
+    <span class="n">probe_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    atomic : numpy.ndarray | list[list[str | float | int]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
+<span class="sd">    probe_out : float | int, optional</span>
+<span class="sd">        Probe Out size (A), by default 4.0.</span>
+<span class="sd">    step : float | int, optional</span>
+<span class="sd">        Grid spacing (A), by default 0.6.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vertices : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with xyz vertices coordinates</span>
+<span class="sd">        (origin, X-axis, Y-axis, Z-axis).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `probe_out` must be a non-negative real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `probe_out` must be a non-negative real number.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    detect</span>
+<span class="sd">    constitutional</span>
+<span class="sd">    hydropathy</span>
+<span class="sd">    export</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    With the atomic data read with ``read_pdb`` or ``read_xyz``, we can get the coordinates of 3D grid vertices (origin, X-axis, Y-axis, Z-axis):</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import get_vertices</span>
+<span class="sd">    &gt;&gt;&gt; vertices = get_vertices(atomic)</span>
+<span class="sd">    &gt;&gt;&gt; vertices</span>
+<span class="sd">    array([[-19.911, -32.125, -30.806],</span>
+<span class="sd">        [ 40.188, -32.125, -30.806],</span>
+<span class="sd">        [-19.911,  43.446, -30.806],</span>
+<span class="sd">        [-19.911, -32.125,  27.352]])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check arguments types</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_out</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">probe_out</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert atomic type</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Prepare vertices</span>
+    <span class="n">P1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">probe_out</span> <span class="o">-</span> <span class="n">step</span>
+    <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">zmax</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">probe_out</span> <span class="o">+</span> <span class="n">step</span>
+    <span class="n">P2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmax</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">P3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">P4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">zmax</span><span class="p">])</span>
+
+    <span class="c1"># Pack vertices</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">vertices</span></div>
+
+
+
+<div class="viewcode-block" id="get_vertices_from_file">
+<a class="viewcode-back" href="../../../package/api_reference/get_vertices_from_file.html#pyKVFinder.get_vertices_from_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_vertices_from_file</span><span class="p">(</span>
+    <span class="n">fn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">atomic</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]],</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">probe_in</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
+    <span class="n">probe_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box configuration file or parKVFinder</span>
+<span class="sd">    parameters file, selects atoms inside custom 3D grid, define sine</span>
+<span class="sd">    and cosine of 3D grid angles and define xyz grid units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : str | pathlib.Path</span>
+<span class="sd">        A path to box configuration file (TOML-formatted).</span>
+<span class="sd">    atomic : numpy.ndarray | list[list[str | float | int]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom.</span>
+<span class="sd">    step : float | int, optional</span>
+<span class="sd">        Grid spacing (A), by default 0.6.</span>
+<span class="sd">    probe_in : float | int, optional</span>
+<span class="sd">        Probe In size (A), by default 1.4.</span>
+<span class="sd">    probe_out : float | int, optional</span>
+<span class="sd">        Probe Out size (A), by default 4.0.</span>
+<span class="sd">    nthreads : int | None, optional</span>
+<span class="sd">        Number of threads, by default None. If None, the number of threads is</span>
+<span class="sd">        `os.cpu_count() - 1`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vertices : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with xyz vertices coordinates (origin, X-axis, Y-axis,</span>
+<span class="sd">        Z-axis) of the custom box.</span>
+<span class="sd">    atomic : numpy.ndarray | list[list[str | float | int]]</span>
+<span class="sd">        A numpy array with atomic data (residue number, chain, residue name, atom name, xyz coordinates</span>
+<span class="sd">        and radius) for each atom inside the custom box.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `fn` must be a string or a pathlib.Path.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `atomic` must be a list or a numpy.ndarray.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `atomic` has incorrect shape. It must be (n, 8).</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `probe_in` must be a non-negative real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `probe_in` must be a non-negative real number.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `probe_out` must be a non-negative real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `probe_out` must be a non-negative real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `probe_out` must be greater than `probe_in`.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `nthreads` must be a positive integer.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        You must define (p1, p2, p3, p4) or (residues, padding) keys in `fn`.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Box not properly defined in `fn`.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The box configuration scale file defines the vertices of the 3D grid used by pyKVFinder to detect and characterize cavities. There are three methods for defining a custom 3D grid in pyKVFinder. The first directly defines four vertices of the 3D grid (origin, X-axis, Y-axis and Z-axis), the second defines a list of residues and a padding, and the the third uses parKVFinder parameters file created by its PyMOL plugin. For more details, see `Box configuration file template`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    read_pdb</span>
+<span class="sd">    read_xyz</span>
+<span class="sd">    detect</span>
+<span class="sd">    constitutional</span>
+<span class="sd">    hydropathy</span>
+<span class="sd">    export</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    First, define a box configuration file (see ``Box configuration file template``).</span>
+
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; fn = os.path.join(os.path.dirname(pyKVFinder.__file__), &#39;data&#39;, &#39;tests&#39;, &#39;custom-box.toml&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; with open(fn, &#39;r&#39;) as f:</span>
+<span class="sd">    ...     print(f.read())</span>
+<span class="sd">    [box]</span>
+<span class="sd">    p1 = [3.11, 7.34, 1.59]</span>
+<span class="sd">    p2 = [11.51, 7.34, 1.59]</span>
+<span class="sd">    p3 = [3.11, 10.74, 1.59]</span>
+<span class="sd">    p4 = [3.11, 7.34, 6.19]</span>
+
+<span class="sd">    With the atomic information and coordinates read with ``pyKVFinder.read_pdb`` and a box configuration file, we can get the coordinates of grid vertices and select atoms inside custom 3D grid.</span>
+
+<span class="sd">    &gt;&gt;&gt; from pyKVFinder import get_vertices_from_file</span>
+<span class="sd">    &gt;&gt;&gt; vertices, atomic = pyKVFinder.get_vertices_from_file(fn, atomic)</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">tomlkit</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyKVFinder._pyKVFinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">_filter_pdb</span>
+
+    <span class="c1"># Check arguments types</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`fn` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_in</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`probe_in` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">probe_in</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`probe_in` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_out</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">probe_out</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be a non-negative real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">probe_out</span> <span class="o">&lt;</span> <span class="n">probe_in</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`probe_out` must be greater than `probe_in`.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nthreads</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert type</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">atomic</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span>
+
+    <span class="c1"># Extract atominfo from atomic</span>
+    <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="p">([[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]])</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Extract xyzr from atomic</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Read box file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;SETTINGS&quot;</span> <span class="ow">in</span> <span class="n">tmp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;visiblebox&quot;</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">[</span><span class="s2">&quot;SETTINGS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">box</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s2">&quot;SETTINGS&quot;</span><span class="p">][</span><span class="s2">&quot;visiblebox&quot;</span><span class="p">]</span>
+            <span class="n">box</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">_get_vertices_from_box</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s2">&quot;box&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;box&quot;</span> <span class="ow">in</span> <span class="n">tmp</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">tmp</span>
+
+        <span class="c1"># Check conditions</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="s2">&quot;p4&quot;</span><span class="p">]]):</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">,</span> <span class="s2">&quot;residues&quot;</span><span class="p">]]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;You must define (p1, p2, p3, p4) or (residues, padding) keys in </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">_get_vertices_from_box</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;residues&quot;</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="s2">&quot;p4&quot;</span><span class="p">]]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;You must define (p1, p2, p3, p4) or (residues, padding) keys in </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;padding&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">box</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.5</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">_get_vertices_from_residues</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">atominfo</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">probe_out</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Box not properly defined in </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get sincos</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># Get dimensions</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">_get_dimensions</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+    <span class="c1"># Get atoms inside box only</span>
+    <span class="n">_filter_pdb</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">xyzr</span><span class="p">,</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sincos</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">probe_in</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">)</span>
+
+    <span class="c1"># Get indexes of the atoms inside the box</span>
+    <span class="n">indexes</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
+
+    <span class="c1"># Slice atominfo and xyzr</span>
+    <span class="n">atomic</span> <span class="o">=</span> <span class="n">atomic</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">atomic</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_vertices_from_box</span><span class="p">(</span>
+    <span class="n">box</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">probe_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices from box coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    box : dict[str, list[float]]</span>
+<span class="sd">        A dictionary with xyz coordinates of p1, p2, p3 and p4.</span>
+<span class="sd">    probe_out : float, optional</span>
+<span class="sd">        Probe Out size (A), by default 4.0.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vertices : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray of vertices coordinates (origin, Xmax, Ymax, Zmax).</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; [box]</span>
+<span class="sd">    &gt;&gt;&gt; p1 = [x1, y1, z1]</span>
+<span class="sd">    &gt;&gt;&gt; p2 = [x2, y2, z2]</span>
+<span class="sd">    &gt;&gt;&gt; p3 = [x3, y3, z3]</span>
+<span class="sd">    &gt;&gt;&gt; p4 = [x4, y4, z4]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get vertices</span>
+    <span class="n">P1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">])</span>
+    <span class="n">P2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p2&quot;</span><span class="p">])</span>
+    <span class="n">P3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p3&quot;</span><span class="p">])</span>
+    <span class="n">P4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;p4&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Get sincos</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">_get_sincos</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">])),</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># Get probe out additions</span>
+    <span class="c1"># p1 = (x1, y1, z1)</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="c1"># p2 = (x2, y2, z2)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="c1"># p3 = (x3, y3, z3)</span>
+    <span class="n">x3</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">y3</span> <span class="o">=</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="c1"># p4 = (x4, y4, z4)</span>
+    <span class="n">x4</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">y4</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">z4</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">probe_out</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sincos</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Adjust vertices</span>
+    <span class="n">P1</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">])</span>
+    <span class="n">P2</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">])</span>
+    <span class="n">P3</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">z3</span><span class="p">])</span>
+    <span class="n">P4</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">x4</span><span class="p">,</span> <span class="n">y4</span><span class="p">,</span> <span class="n">z4</span><span class="p">])</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">([</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vertices</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_vertices_from_residues</span><span class="p">(</span>
+    <span class="n">box</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">atominfo</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">xyzr</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">probe_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets 3D grid vertices based on a list of residues (name and chain)</span>
+<span class="sd">    and a padding value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    box : dict[str, list[float]]</span>
+<span class="sd">        A dictionary with a list of residues (name and chain) and a</span>
+<span class="sd">        padding value.</span>
+<span class="sd">    atominfo : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with residue number, chain, residue name and</span>
+<span class="sd">        atom name.</span>
+<span class="sd">    xyzr : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with xyz coordinates and radius of input atoms.</span>
+<span class="sd">    probe_out : float, optional</span>
+<span class="sd">        Probe Out size (A), by default 4.0.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vertices : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray of vertices coordinates (origin, Xmax, Ymax, Zmax).</span>
+
+<span class="sd">    Box File</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; [box]</span>
+<span class="sd">    &gt;&gt;&gt; residues = [ [&quot;resnum&quot;, &quot;chain&quot;, &quot;resname&quot;,], [&quot;resnum&quot;, &quot;chain&quot;,</span>
+<span class="sd">    ... &quot;resname&quot;], ]</span>
+<span class="sd">    &gt;&gt;&gt; padding =  3.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Prepare residues list</span>
+    <span class="n">residues_list</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">box</span><span class="p">[</span><span class="s2">&quot;residues&quot;</span><span class="p">]])</span>
+
+    <span class="c1"># Get coordinates of residues</span>
+    <span class="n">indexes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">residues_list</span><span class="p">)</span>
+    <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="c1"># Calculate vertices</span>
+    <span class="n">P1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">probe_out</span> <span class="o">-</span> <span class="n">box</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">]</span>
+    <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">zmax</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xyzr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">probe_out</span> <span class="o">+</span> <span class="n">box</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">]</span>
+    <span class="n">P2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmax</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">P3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">P4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">zmax</span><span class="p">])</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">([</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vertices</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_dimensions</span><span class="p">(</span>
+    <span class="n">vertices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets dimensions of 3D grid from vertices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vertices : numpy.ndarray | list[list[float]]</span>
+<span class="sd">        A numpy.ndarray or a list with xyz vertices coordinates</span>
+<span class="sd">        (origin, X-axis, Y-axis, Z-axis).</span>
+<span class="sd">    step : float | int, optional</span>
+<span class="sd">        Grid spacing (A), by default 0.6.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx : int</span>
+<span class="sd">        x grid units.</span>
+<span class="sd">    ny : int</span>
+<span class="sd">        y grid units.</span>
+<span class="sd">    nz : int</span>
+<span class="sd">        z grid units.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `vertices` has incorrect shape.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `step` must be a positive real number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert type</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+
+    <span class="c1"># Unpack vertices</span>
+    <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span> <span class="o">=</span> <span class="n">vertices</span>
+
+    <span class="c1"># Calculate distance between points</span>
+    <span class="n">norm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">P2</span> <span class="o">-</span> <span class="n">P1</span><span class="p">)</span>
+    <span class="n">norm2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">P3</span> <span class="o">-</span> <span class="n">P1</span><span class="p">)</span>
+    <span class="n">norm3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">P4</span> <span class="o">-</span> <span class="n">P1</span><span class="p">)</span>
+
+    <span class="c1"># Calculate grid dimensions</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm1</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">norm1</span> <span class="o">%</span> <span class="n">step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm1</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm2</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">norm1</span> <span class="o">%</span> <span class="n">step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm1</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span>
+    <span class="n">nz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm3</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">norm1</span> <span class="o">%</span> <span class="n">step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">norm1</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_sincos</span><span class="p">(</span><span class="n">vertices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets sine and cossine of the grid rotation angles from a list of vertices</span>
+<span class="sd">    coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vertices : numpy.ndarray | list[list[float]]</span>
+<span class="sd">        A numpy.ndarray or a list of xyz vertices coordinates (origin, X-axis,</span>
+<span class="sd">        Y-axis, Z-axis).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sincos : numpy.ndarray</span>
+<span class="sd">        A numpy.ndarray with sine and cossine of the grid rotation</span>
+<span class="sd">        angles (sina, cosa, sinb, cosb).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        `vertices` must be a list or a numpy.ndarray.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        `vertices` has incorrect shape. It must be (4, 3).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check arguments</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert type</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+
+    <span class="c1"># Unpack vertices</span>
+    <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span> <span class="o">=</span> <span class="n">vertices</span>
+
+    <span class="c1"># Calculate distance between points</span>
+    <span class="n">norm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">P2</span> <span class="o">-</span> <span class="n">P1</span><span class="p">)</span>
+    <span class="n">norm2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">P3</span> <span class="o">-</span> <span class="n">P1</span><span class="p">)</span>
+    <span class="n">norm3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">P4</span> <span class="o">-</span> <span class="n">P1</span><span class="p">)</span>
+
+    <span class="c1"># Calculate sin and cos of angles a and b</span>
+    <span class="n">sincos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span><span class="n">P4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm3</span><span class="p">,</span>  <span class="c1"># sin a</span>
+            <span class="p">(</span><span class="n">P3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm2</span><span class="p">,</span>  <span class="c1"># cos a</span>
+            <span class="p">(</span><span class="n">P2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm1</span><span class="p">,</span>  <span class="c1"># sin b</span>
+            <span class="p">(</span><span class="n">P2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm1</span><span class="p">,</span>  <span class="c1"># cos b</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sincos</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LBC-LNBio.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

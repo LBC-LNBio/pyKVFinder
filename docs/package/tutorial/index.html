@@ -6,16 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial &mdash; pyKVFinder 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+  <title>Tutorial &mdash; pyKVFinder 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=486e5634"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -130,7 +130,7 @@
 <p>This section is an introductory overview of pyKVFinder features. For detailed reference documentation of the functions and classes contained in the package, see the <a class="reference external" href="../api_reference/index.html">API reference</a>.</p>
 <p>Before reading this section, you should know a bit of Python. If you would like to refresh your memory, refer to this <a class="reference external" href="https://docs.python.org/3/tutorial/">Python tutorial</a>.</p>
 <p>First of all, import pyKVFinder package on Python:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyKVFinder</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyKVFinder</span>
 </pre></div>
 </div>
 <section id="cavity-detection-and-characterization">
@@ -145,7 +145,7 @@
 <section id="standard-workflow">
 <h3>Standard workflow<a class="headerlink" href="#standard-workflow" title="Link to this heading"></a></h3>
 <p>The <strong>standard workflow</strong> for cavity detection with spatial and constitutional characterization (volume, area and interface residues) can be run at once with one command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">run_workflow</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
@@ -359,7 +359,7 @@
 <section id="loading-data-from-target-structure">
 <h4>2. Loading data from target structure<a class="headerlink" href="#loading-data-from-target-structure" title="Link to this heading"></a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">pyKVFinder.read_pdb</span></code> takes a target <em>.pdb</em> file and returns a NumPy array (<code class="docutils literal notranslate"><span class="pre">atomic</span></code>) with residue number, chain identifier, residue name, atom name, xyz coordinates and radius, considering a van der Waals radii dictionary, for each atom.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pdb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;1FMO.pdb&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">atomic</span> <span class="o">=</span> <span class="n">pyKVFinder</span><span class="o">.</span><span class="n">read_pdb</span><span class="p">(</span><span class="n">pdb</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">atomic</span>
@@ -904,7 +904,7 @@
 <ul class="simple">
 <li><p>Four vertices of the box (origin, X-axis, Y-axis and Z-axis):</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">toml</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">toml</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pyKVFinder</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;custom-box.toml&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">toml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">box</span>

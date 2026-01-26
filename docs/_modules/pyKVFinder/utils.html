@@ -5,16 +5,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.utils &mdash; pyKVFinder 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+  <title>pyKVFinder.utils &mdash; pyKVFinder 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=486e5634"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -90,13 +90,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyKVFinder.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;read_vdw&quot;</span><span class="p">,</span>
@@ -113,7 +113,7 @@
 
 <div class="viewcode-block" id="read_vdw">
 <a class="viewcode-back" href="../../package/api_reference/read_vdw.html#pyKVFinder.read_vdw">[docs]</a>
-<span class="k">def</span> <span class="nf">read_vdw</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_vdw</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads van der Waals radii from .dat file.</span>
@@ -220,7 +220,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_process_pdb_line</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_process_pdb_line</span><span class="p">(</span>
     <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts ATOM and HETATM information of PDB line.</span>
@@ -269,7 +269,7 @@
 
 <div class="viewcode-block" id="read_pdb">
 <a class="viewcode-back" href="../../package/api_reference/read_pdb.html#pyKVFinder.read_pdb">[docs]</a>
-<span class="k">def</span> <span class="nf">read_pdb</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_pdb</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -366,7 +366,7 @@
 
 <div class="viewcode-block" id="read_xyz">
 <a class="viewcode-back" href="../../package/api_reference/read_xyz.html#pyKVFinder.read_xyz">[docs]</a>
-<span class="k">def</span> <span class="nf">read_xyz</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_xyz</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">vdw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads XYZ file into numpy.ndarrays.</span>
@@ -467,7 +467,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_read_cavity</span><span class="p">(</span><span class="n">cavity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_cavity</span><span class="p">(</span><span class="n">cavity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads xyz coordinates and labels of a cavities file into numpy.ndarray.</span>
 
 <span class="sd">    Parameters</span>
@@ -480,7 +480,7 @@
 <span class="sd">    xyzl : numpy.ndarray</span>
 <span class="sd">        A numpy.ndarray with xyz coordinates and cavity label for each cavity point.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">_get_cavity_label</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_cavity_label</span>
 
     <span class="c1"># Create xyzl (xyz coordinates and cavity label)</span>
     <span class="n">xyzl</span> <span class="o">=</span> <span class="p">[]</span>
@@ -500,7 +500,7 @@
 
 <div class="viewcode-block" id="read_cavity">
 <a class="viewcode-back" href="../../package/api_reference/read_cavity.html#pyKVFinder.read_cavity">[docs]</a>
-<span class="k">def</span> <span class="nf">read_cavity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_cavity</span><span class="p">(</span>
     <span class="n">cavity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">receptor</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">step</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
@@ -624,9 +624,9 @@
 <span class="sd">        [-1, -1, -1, ..., -1, -1, -1],</span>
 <span class="sd">        [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">_pyKVFinder</span> <span class="kn">import</span> <span class="n">_fill_cavity</span><span class="p">,</span> <span class="n">_fill_receptor</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyKVFinder._pyKVFinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">_fill_cavity</span><span class="p">,</span> <span class="n">_fill_receptor</span>
 
-    <span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">_get_dimensions</span><span class="p">,</span> <span class="n">_get_sincos</span><span class="p">,</span> <span class="n">get_vertices</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_dimensions</span><span class="p">,</span> <span class="n">_get_sincos</span><span class="p">,</span> <span class="n">get_vertices</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavity</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
@@ -742,7 +742,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_process_box</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_process_box</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets xyz coordinates of 3D grid vertices.</span>
 
 <span class="sd">    Parameters</span>
@@ -831,7 +831,7 @@
     <span class="k">return</span> <span class="n">box</span>
 
 
-<span class="k">def</span> <span class="nf">_write_parameters</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_write_parameters</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes parameters used in cavity detection and characterization of</span>
 <span class="sd">    pyKVFinder to TOML-formatted file.</span>
 
@@ -840,7 +840,7 @@
 <span class="sd">    args : argparse.Namespace</span>
 <span class="sd">        Arguments passes by argparser CLI.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">tomlkit</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">tomlkit</span>
 
     <span class="c1"># Parameters filename</span>
     <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">base_name</span><span class="si">}</span><span class="s2">.parameters.toml&quot;</span><span class="p">)</span>
@@ -899,7 +899,7 @@
 
 <div class="viewcode-block" id="calculate_frequencies">
 <a class="viewcode-back" href="../../package/api_reference/calculate_frequencies.html#pyKVFinder.calculate_frequencies">[docs]</a>
-<span class="k">def</span> <span class="nf">calculate_frequencies</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_frequencies</span><span class="p">(</span>
     <span class="n">residues</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate frequencies of residues and class of residues</span>
@@ -1014,7 +1014,7 @@
 
 <div class="viewcode-block" id="plot_frequencies">
 <a class="viewcode-back" href="../../package/api_reference/plot_frequencies.html#pyKVFinder.plot_frequencies">[docs]</a>
-<span class="k">def</span> <span class="nf">plot_frequencies</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_frequencies</span><span class="p">(</span>
     <span class="n">frequencies</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;barplots.pdf&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1074,8 +1074,8 @@
 <span class="sd">        :width: 600</span>
 <span class="sd">        :align: center</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-    <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_pdf</span> <span class="kn">import</span> <span class="n">PdfPages</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backends.backend_pdf</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfPages</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
@@ -1221,7 +1221,7 @@
 
 <div class="viewcode-block" id="write_results">
 <a class="viewcode-back" href="../../package/api_reference/write_results.html#pyKVFinder.write_results">[docs]</a>
-<span class="k">def</span> <span class="nf">write_results</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_results</span><span class="p">(</span>
     <span class="n">fn</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
     <span class="n">ligand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]],</span>
@@ -1361,7 +1361,7 @@
 <span class="sd">    &gt;&gt;&gt; write_results(&#39;results.toml&#39;, input=pdb, ligand=None, output=&#39;cavities.pdb&#39;, volume=volume, area=area, max_depth=max_depth, avg_depth=avg_depth, avg_hydropathy=avg_hydropathy, residues=residues, frequencies=frequencies)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">tomlkit</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">tomlkit</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
