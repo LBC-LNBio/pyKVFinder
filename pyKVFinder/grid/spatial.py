@@ -109,7 +109,9 @@ def spatial(
     ----
     The cavity nomenclature is based on the integer label. The cavity marked
     with 2, the first integer corresponding to a cavity, is KAA, the cavity
-    marked with 3 is KAB, the cavity marked with 4 is KAC and so on.
+    marked with 3 is KAB, the cavity marked with 4 is KAC and so on. After KZZ,
+    the next cavity is Kaa, Kab, and so on. The naming convention supports up to
+    1352 cavities.
 
     Raises
     ------
