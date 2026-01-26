@@ -202,7 +202,6 @@ def get_vertices_from_file(
         Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.
     """
     import tomlkit
-
     from pyKVFinder._pyKVFinder import _filter_pdb
 
     # Check arguments types

@@ -251,7 +251,6 @@ def hydropathy(
        Protein Science. 2006;15.
     """
     import tomlkit
-
     from pyKVFinder._pyKVFinder import _hydropathy
 
     # Check arguments

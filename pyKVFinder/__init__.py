@@ -51,9 +51,11 @@ from .grid import (
     depth as depth,
     detect as detect,
     export as export,
+    export_openings as export_openings,
     get_vertices as get_vertices,
     get_vertices_from_file as get_vertices_from_file,
     hydropathy as hydropathy,
+    openings as openings,
     spatial as spatial,
 )
 
@@ -80,9 +82,11 @@ __all__ = [
     "depth",
     "detect",
     "export",
+    "export_openings",
     "get_vertices",
     "get_vertices_from_file",
     "hydropathy",
+    "openings",
     "spatial",
     # main
     "run_workflow",
