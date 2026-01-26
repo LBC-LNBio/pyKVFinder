@@ -323,7 +323,7 @@ def openings(
         nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose
     )
     if nopenings > 1352:
-        print("Warning: Number of openings exceeds the maximum supported (1352). ")
+        print("Warning: The number of openings exceeds the maximum supported (1352). ")
 
     # Reshape openings
     openings = openings.reshape(nx, ny, nz)
