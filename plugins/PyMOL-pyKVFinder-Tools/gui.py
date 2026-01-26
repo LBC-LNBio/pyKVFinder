@@ -54,6 +54,9 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Initialize GUI
         self._initialize_gui()
 
+        # Set case sensitive
+        cmd.set("ignore_case", 0)
+
         # Restore default values
         self._startup()
 
