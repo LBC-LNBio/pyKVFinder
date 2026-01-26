@@ -1,7 +1,6 @@
 name: Build and deploy
 
 on:
-  push:
   release:
     types: [published]
   workflow_dispatch: 
@@ -106,7 +105,7 @@ jobs:
           pattern: artifacts-*
           merge-multiple: true
 
-      # - name: Publish package distributions to PyPI
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   with:
-      #     password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
