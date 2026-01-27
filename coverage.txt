@@ -1,9 +1,10 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests/integration, tests/unit
-plugins: cov-7.0.0
+plugins: benchmark-5.2.3, cov-7.0.0
 collected 317 items
 
 tests/integration/test_cli.py ................                           [  5%]
@@ -34,4 +35,4 @@ pyKVFinder/main.py                    365    365     0%   1-1832
 pyKVFinder/utils.py                   334    334     0%   1-1341
 -----------------------------------------------------------------
 TOTAL                                1499   1499     0%
-======================== 317 passed in 76.89s (0:01:16) ========================
+======================== 317 passed in 93.35s (0:01:33) ========================
