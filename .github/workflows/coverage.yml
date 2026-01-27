@@ -19,10 +19,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov
 
       - name: Build pyKVFinder
-        run: pip install .
+        run: pip install -e .[dev]
 
       - name: Build coverage file
         run: |
