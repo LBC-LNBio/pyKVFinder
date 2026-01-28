@@ -31,4 +31,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest tests/integration -v
+          pytest tests/integration -v --import-mode=importlib

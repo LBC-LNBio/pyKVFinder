@@ -30,4 +30,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest tests/unit -v
+          pytest tests/unit -v --import-mode=importlib
