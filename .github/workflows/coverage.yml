@@ -2,7 +2,6 @@ name: Pytest Coverage
 
 on:
   push:
-    branches: [master]
 
 jobs:
   coverage:
@@ -23,10 +22,16 @@ jobs:
       - name: Build pyKVFinder
         run: pip install -e .[dev]
 
-      - name: Build coverage file
+      - name: Run test coverage
         run: |
-          pip install -U "setuptools<81" coverage-badge
-          pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage.txt
+          pytest pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage.txt
+          coverage report -m
+          coverage xml
+
+      - name: Coverage Badge
+        run: |
+          pip install -U genbadge
+          genbadge coverage -i  coverage.xml -o coverage.svg
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
@@ -34,11 +39,6 @@ jobs:
           pytest-coverage-path: coverage.txt
           default-branch: master
           remove-link-from-badge: true
-
-      - name: Coverage Bagdge
-        uses: tj-actions/coverage-badge-py@v2
-        with:
-          output: coverage.svg
 
       - name: Move report to coverage directory
         run: |
