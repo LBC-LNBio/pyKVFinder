@@ -1,10 +1,10 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0
+platform linux -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0
 benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests/integration, tests/unit
-plugins: benchmark-5.2.3, cov-7.0.0
+plugins: cov-7.1.0, benchmark-5.2.3
 collected 317 items
 
 tests/integration/test_cli.py ................                           [  5%]
@@ -17,7 +17,7 @@ tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
 ================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.11.14-final-0 _______________
+_______________ coverage: platform linux, python 3.11.15-final-0 _______________
 
 Name                                Stmts   Miss  Cover   Missing
 -----------------------------------------------------------------
@@ -25,14 +25,14 @@ pyKVFinder/grid/__init__.py            10      0   100%
 pyKVFinder/grid/cavity.py              27      0   100%
 pyKVFinder/grid/constitutional.py      84      0   100%
 pyKVFinder/grid/depth.py               51      0   100%
-pyKVFinder/grid/detect.py             102      2    98%   351, 355
+pyKVFinder/grid/detect.py             102      2    98%   362, 366
 pyKVFinder/grid/export.py             136     54    60%   283-308, 409-478
 pyKVFinder/grid/geometry.py           157      1    99%   274
 pyKVFinder/grid/hydropathy.py          95      0   100%
 pyKVFinder/grid/openings.py            87     61    30%   106-126, 263-342
 pyKVFinder/grid/spatial.py             51      0   100%
-pyKVFinder/main.py                    365     71    81%   93, 97, 105, 114, 142-148, 184, 499, 664, 1067, 1074, 1084, 1095, 1114, 1119-1120, 1142, 1350, 1355, 1361, 1368, 1371-1374, 1378-1383, 1395, 1405, 1434-1435, 1440-1441, 1446-1447, 1507-1512, 1518, 1523-1528, 1588, 1590, 1603, 1714, 1716, 1722, 1724, 1730, 1735, 1739, 1792-1802, 1828
+pyKVFinder/main.py                    365     71    81%   93, 97, 105, 114, 142-148, 184, 499, 664, 1078, 1085, 1095, 1106, 1125, 1130-1131, 1153, 1361, 1366, 1372, 1379, 1382-1385, 1389-1394, 1406, 1416, 1445-1446, 1451-1452, 1457-1458, 1518-1523, 1529, 1534-1539, 1599, 1601, 1614, 1725, 1727, 1733, 1735, 1741, 1746, 1750, 1803-1813, 1839
 pyKVFinder/utils.py                   334      6    98%   571, 603, 606-608, 630
 -----------------------------------------------------------------
 TOTAL                                1499    195    87%
-======================== 317 passed in 96.19s (0:01:36) ========================
+======================== 317 passed in 95.09s (0:01:35) ========================
