@@ -857,6 +857,17 @@ def run_workflow(
 
     * Non-standard (RX): Non-standard residues.
 
+    Warning
+    -------
+    pyKVFinder considers all atoms present in the input structure during
+    cavity detection, including both ``ATOM`` and ``HETATM`` records.
+    Therefore, ligands present in the structure may occupy the binding-site
+    volume and partially or completely prevent cavity detection in that region.
+
+    For cavity detection, we recommend removing the ligand from the structure
+    used for cavity detection. For ligand-guided cavity detection, the ligand
+    should also be provided separately through the ``ligand`` parameter.
+
     See Also
     --------
     pyKVFinderResults

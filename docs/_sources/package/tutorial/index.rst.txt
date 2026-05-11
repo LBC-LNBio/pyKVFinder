@@ -15,14 +15,26 @@ First of all, import pyKVFinder package on Python:
 Cavity detection and characterization
 =====================================
 
-All files used on this tutorial can be found in our package and in our `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>`_:
+All files used in this tutorial can be found in our package and in our `GitHub repository <https://github.com/LBC-LNBio/pyKVFinder>`_:
 
 * `1FMO.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/1FMO.pdb>`_
 * `ADN.pdb <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/tests/ADN.pdb>`_
 
-In this tutorial, we will use pyKVFinder on a catalytic subunit of a cAMP-dependent protein kinase (cADK) to identify and characterize its cavities.
+In this tutorial, we will use pyKVFinder on the catalytic subunit of a cAMP-dependent protein kinase (cADK) to identify and characterize its cavities.
 
 pyKVFinder can be imported as a Python package in Python environment and users can decide to run the full pyKVFinder `workflow <index.html#workflows>`_ through the single pyKVFinder function or run pyKVFinder functions in a `stepwise <index.html#separated-steps>`_ fashion.
+
+.. warning::
+
+   pyKVFinder considers all atoms present in the input structure during
+   cavity detection, including both ``ATOM`` and ``HETATM`` records.
+   Therefore, ligands present in the structure may occupy the binding-site
+   volume and partially or completely prevent cavity detection in that region.
+
+   For cavity detection, we recommend removing the ligand from the structure
+   used for cavity detection. For ligand-guided cavity detection, the ligand
+   should also be provided separately through the ``ligand`` parameter in
+   ``run_workflow`` or the ``latomic`` parameter in ``detect``.
 
 Standard workflow
 -----------------
@@ -340,6 +352,19 @@ The pyKVFinder 3D grid must be calculated based on the target *.pdb* or *.xyz* f
         [-1, -1, -1, ..., -1, -1, -1],
         [-1, -1, -1, ..., -1, -1, -1],
         [-1, -1, -1, ..., -1, -1, -1]]], dtype=int32)
+
+.. warning::
+
+   pyKVFinder considers all atoms present in the input structure during
+   cavity detection, including both ``ATOM`` and ``HETATM`` records.
+   Therefore, ligands present in the structure may occupy the binding-site
+   volume and partially or completely prevent cavity detection in that region.
+
+   For cavity detection, we recommend removing the ligand from the structure
+   used for cavity detection. For ligand-guided cavity detection, the ligand
+   should also be provided separately through the ``latomic`` parameter 
+   in ``detect``.
+
   
 .. note::
 
