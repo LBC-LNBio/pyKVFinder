@@ -25,6 +25,7 @@ jobs:
 
       - name: Build coverage file
         run: |
+          pip install -U "setuptools<81" coverage-badge
           pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage.txt
 
       - name: Pytest coverage comment

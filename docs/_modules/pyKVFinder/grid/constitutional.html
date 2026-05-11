@@ -1,21 +1,23 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid.constitutional &mdash; pyKVFinder 0.9.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+  <title>pyKVFinder.grid.constitutional &mdash; pyKVFinder 0.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
   
     <link rel="shortcut icon" href="../../../_static/icon.ico"/>
-      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=9dc39874"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,6 +35,9 @@
             pyKVFinder
               <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                0.9
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -90,15 +95,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyKVFinder.grid.constitutional</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.cavity</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_cavity_label</span><span class="p">,</span> <span class="n">_get_cavity_name</span><span class="p">,</span> <span class="n">_select_cavities</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_sincos</span>
+<span class="kn">from</span> <span class="nn">.cavity</span> <span class="kn">import</span> <span class="n">_get_cavity_label</span><span class="p">,</span> <span class="n">_get_cavity_name</span><span class="p">,</span> <span class="n">_select_cavities</span>
+<span class="kn">from</span> <span class="nn">.geometry</span> <span class="kn">import</span> <span class="n">_get_sincos</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_process_residues</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_process_residues</span><span class="p">(</span>
     <span class="n">raw</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes raw list of residues from _constitutional to a list of</span>
@@ -119,7 +124,7 @@
 <span class="sd">        A dictionary with a list of interface residues for each detected</span>
 <span class="sd">        cavity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">groupby</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
 
     <span class="n">residues</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -142,7 +147,7 @@
 
 <div class="viewcode-block" id="constitutional">
 <a class="viewcode-back" href="../../../package/api_reference/constitutional.html#pyKVFinder.constitutional">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">constitutional</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">constitutional</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
@@ -281,7 +286,7 @@
 <span class="sd">    &gt;&gt;&gt; residues</span>
 <span class="sd">    {&#39;KAA&#39;: [[&#39;15&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;19&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;100&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;152&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;155&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;292&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;302&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;303&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;306&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAB&#39;: [[&#39;18&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;22&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;25&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;26&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;29&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;156&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAC&#39;: [[&#39;144&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;145&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;148&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;299&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;300&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;305&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;310&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;311&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;313&#39;, &#39;E&#39;, &#39;PRO&#39;]], &#39;KAD&#39;: [[&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;124&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;176&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;318&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAE&#39;: [[&#39;98&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;99&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;103&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;105&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAF&#39;: [[&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;175&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;181&#39;, &#39;E&#39;, &#39;GLN&#39;]], &#39;KAG&#39;: [[&#39;34&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;37&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;106&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;109&#39;, &#39;E&#39;, &#39;SER&#39;]], &#39;KAH&#39;: [[&#39;49&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;53&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;54&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;57&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;70&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;72&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;74&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;84&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;87&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;88&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;91&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;104&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;120&#39;, &#39;E&#39;, &#39;MET&#39;], [&#39;122&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;123&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;168&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;170&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;171&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;173&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;183&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;184&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;187&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAI&#39;: [[&#39;131&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;138&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;142&#39;, &#39;E&#39;, &#39;HIS&#39;], [&#39;146&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;174&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;314&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAJ&#39;: [[&#39;33&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;89&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;92&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;93&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;96&#39;, &#39;E&#39;, &#39;GLN&#39;], [&#39;349&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;350&#39;, &#39;E&#39;, &#39;PHE&#39;]], &#39;KAK&#39;: [[&#39;157&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;162&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;164&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;185&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;188&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAL&#39;: [[&#39;127&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;129&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;130&#39;, &#39;E&#39;, &#39;SER&#39;], [&#39;327&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;328&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAM&#39;: [[&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;73&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;115&#39;, &#39;E&#39;, &#39;ASN&#39;], [&#39;335&#39;, &#39;E&#39;, &#39;ILE&#39;]], &#39;KAN&#39;: [[&#39;165&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;166&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;167&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;201&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;204&#39;, &#39;E&#39;, &#39;TYR&#39;], [&#39;205&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;206&#39;, &#39;E&#39;, &#39;ALA&#39;], [&#39;209&#39;, &#39;E&#39;, &#39;ILE&#39;], [&#39;219&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;220&#39;, &#39;E&#39;, &#39;ASP&#39;], [&#39;223&#39;, &#39;E&#39;, &#39;ALA&#39;]], &#39;KAO&#39;: [[&#39;48&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;51&#39;, &#39;E&#39;, &#39;THR&#39;], [&#39;56&#39;, &#39;E&#39;, &#39;ARG&#39;], [&#39;330&#39;, &#39;E&#39;, &#39;TYR&#39;]], &#39;KAP&#39;: [[&#39;222&#39;, &#39;E&#39;, &#39;TRP&#39;], [&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;273&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAQ&#39;: [[&#39;207&#39;, &#39;E&#39;, &#39;PRO&#39;], [&#39;208&#39;, &#39;E&#39;, &#39;GLU&#39;], [&#39;211&#39;, &#39;E&#39;, &#39;LEU&#39;], [&#39;213&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;277&#39;, &#39;E&#39;, &#39;LEU&#39;]], &#39;KAR&#39;: [[&#39;238&#39;, &#39;E&#39;, &#39;PHE&#39;], [&#39;249&#39;, &#39;E&#39;, &#39;LYS&#39;], [&#39;255&#39;, &#39;E&#39;, &#39;VAL&#39;], [&#39;256&#39;, &#39;E&#39;, &#39;ARG&#39;]]}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">pyKVFinder._pyKVFinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">_constitutional</span>
+    <span class="kn">from</span> <span class="nn">pyKVFinder._pyKVFinder</span> <span class="kn">import</span> <span class="n">_constitutional</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
