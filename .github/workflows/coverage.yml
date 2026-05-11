@@ -24,7 +24,7 @@ jobs:
 
       - name: Run test coverage
         run: |
-          pytest pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage.txt
+          pytest --cov=pyKVFinder --cov-report=term-missing | tee coverage.txt
           coverage report -m
           coverage xml
 
