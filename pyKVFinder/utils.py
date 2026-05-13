@@ -265,10 +265,10 @@ def read_pdb(
             if keep:
                 if line[:4] == "ATOM" or line[:6] == "HETATM":
                     atomic.append(_process_pdb_line(line, vdw))
-                if line[:6] == "HETATM":
-                    flag_hetatm = True
-                if line[16]:
-                    flag_altloc = True
+                    if line[16] != ' ':
+                        flag_altloc = True
+                    if line[:6] == "HETATM":
+                        flag_hetatm = True
 
     if flag_hetatm:
         msg = f"{fn} contains non-standard residues (HETATM)."
