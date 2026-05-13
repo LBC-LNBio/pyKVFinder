@@ -2,6 +2,7 @@ import argparse
 import logging
 import os
 import pathlib
+import warnings
 from typing import Dict, List, Optional, Union
 
 import numpy
@@ -253,6 +254,8 @@ def read_pdb(
     keep = True if model is None else False
 
     # Read file and process atoms
+    flag_hetatm = False
+    flag_altloc = False
     with open(fn, "r") as f:
         for line in f.readlines():
             if model is not None:
@@ -262,6 +265,14 @@ def read_pdb(
             if keep:
                 if line[:4] == "ATOM" or line[:6] == "HETATM":
                     atomic.append(_process_pdb_line(line, vdw))
+                if line[:6] == "HETATM":
+                    flag_hetatm = True
+
+    if flag_hetatm:
+        msg = f"{fn} contains non-standard residues (HETATM)."
+        msg += " If these correspond to ligands, then pyKVFinder may fail to correctly identify the cavity they are bound to."
+        msg += " HETATM records can be removed with external tools such as PyMOL, pdb-tools, or biotite."
+        warnings.warn(msg)
 
     return numpy.asarray(atomic)
 
