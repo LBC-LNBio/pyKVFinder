@@ -267,11 +267,19 @@ def read_pdb(
                     atomic.append(_process_pdb_line(line, vdw))
                 if line[:6] == "HETATM":
                     flag_hetatm = True
+                if line[16]:
+                    flag_altloc = True
 
     if flag_hetatm:
         msg = f"{fn} contains non-standard residues (HETATM)."
         msg += " If these correspond to ligands, then pyKVFinder may fail to correctly identify the cavity they are bound to."
         msg += " HETATM records can be removed with external tools such as PyMOL, pdb-tools, or biotite."
+        warnings.warn(msg)
+    if flag_altloc:
+        msg = f"{fn} likely contains altloc records."
+        msg += " These indicate, where an atomic structure contains multiple different positions for the same set of atoms."
+        msg += " They often reflect the functional, dynamic motions of the protein, that occur during catalysis, ligand-binding, or allosteric regulation."
+        msg += " As these can alter the geometry of protein cavities, altloc records should be carefully reviewed and then removed with external tools such as PyMOL, pdb-tools, or biotite."
         warnings.warn(msg)
 
     return numpy.asarray(atomic)
