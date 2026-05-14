@@ -325,7 +325,7 @@ def openings(
     )
     if nopenings > 1352:
         warnings.warn(
-            f"The number of openings exceeds ({nopenings}) the maximum supported (1352). ",
+            f"The number of openings exceeds ({nopenings}) the maximum supported (1352). "
             "Cavity labels in the grid may not be unique.",
             UserWarning
         )
