@@ -1,4 +1,5 @@
 import os
+import warnings
 
 import numpy
 
@@ -323,7 +324,11 @@ def openings(
         nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose
     )
     if nopenings > 1352:
-        print("Warning: The number of openings exceeds the maximum supported (1352). ")
+        warnings.warn(
+            f"The number of openings exceeds ({nopenings}) the maximum supported (1352). ",
+            "Cavity labels in the grid may not be unique.",
+            UserWarning
+        )
 
     # Reshape openings
     openings = openings.reshape(nx, ny, nz)

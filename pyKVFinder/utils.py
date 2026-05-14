@@ -158,12 +158,12 @@ def _process_pdb_line(
         radius = vdw[resname][atom]
     else:
         radius = vdw["GEN"][atom_symbol]
-        logging.info(
-            f"Warning: Atom {atom} of residue {resname} \
+        logging.warning(
+            f"Atom {atom} of residue {resname} \
 not found in dictionary."
         )
-        logging.info(
-            f"Warning: Using generic atom {atom_symbol} \
+        logging.warning(
+            f"Using generic atom {atom_symbol} \
 radius: {radius} \u00c5."
         )
 
@@ -250,37 +250,63 @@ def read_pdb(
     # Create lists
     atomic = []
 
+    # Flags for warnings
+    has_hetatm = False
+    has_altloc = False
+
     # Keep all models
     keep = True if model is None else False
 
     # Read file and process atoms
-    flag_hetatm = False
-    flag_altloc = False
     with open(fn, "r") as f:
+        
         for line in f.readlines():
+            record = line[:6].strip()
+            
+            # Handle MODEL records
             if model is not None:
-                if line[:5] == "MODEL":
+                if record == "MODEL":
                     nmodel = int(line[5:].replace(" ", "").rstrip("\n"))
                     keep = True if model == nmodel else False
+            
             if keep:
-                if line[:4] == "ATOM" or line[:6] == "HETATM":
+                # Process ATOM/HETATM records
+                if record == "ATOM" or record == "HETATM":
                     atomic.append(_process_pdb_line(line, vdw))
-                    if line[16] != ' ':
-                        flag_altloc = True
-                    if line[:6] == "HETATM":
-                        flag_hetatm = True
+                    
+                    # Is HETATM
+                    if record == "HETATM":
+                        has_hetatm = True
 
-    if flag_hetatm:
-        msg = f"{fn} contains non-standard residues (HETATM)."
-        msg += " If these correspond to ligands, then pyKVFinder may fail to correctly identify the cavity they are bound to."
-        msg += " HETATM records can be removed with external tools such as PyMOL, pdb-tools, or biotite."
-        warnings.warn(msg)
-    if flag_altloc:
-        msg = f"{fn} likely contains altloc records."
-        msg += " These indicate, where an atomic structure contains multiple different positions for the same set of atoms."
-        msg += " They often reflect the functional, dynamic motions of the protein, that occur during catalysis, ligand-binding, or allosteric regulation."
-        msg += " As these can alter the geometry of protein cavities, altloc records should be carefully reviewed and then removed with external tools such as PyMOL, pdb-tools, or biotite."
-        warnings.warn(msg)
+                    # Has altloc
+                    if line[16] != ' ':
+                        has_altloc = True
+
+    # Warnings
+    if has_hetatm:
+        warnings.warn(
+            (
+                f"{fn} contains non-standard residues (HETATM) records. "
+                "These atoms are treated as occupied space during cavity detection and may "
+                "interfere with cavity identification when used directly in `detect()`. "
+                "However, they are appropriate for ligand-guided detection with `latomic`. "
+                "We recommend reviewing HETATM records and removing non-relevant ones before analysis " 
+                "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
+            ),
+            UserWarning,
+        )
+
+    if has_altloc:
+        warnings.warn(
+            (
+                f"{fn} contains alternate location (altLoc) records. "
+                "These represent multiple conformations for the same atoms and may alter "
+                "cavity geometry and volume estimation. "
+                "We recommend reviewing and resolving altLoc records before analysis "
+                "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite.",
+            ),    
+            UserWarning
+        )
 
     return numpy.asarray(atomic)
 
@@ -346,7 +372,6 @@ def read_xyz(
 
     .. warning::
         The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when the ``vdw`` argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with ``read_vdw`` as shown earlier and pass it as ``read_xyz(xyz, vdw=vdw)``.
-
     """
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:

@@ -292,7 +292,7 @@ class TestCLI(unittest.TestCase):
         # $ pyKVFinder <.pdb> --depth
         with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
             self.assertEqual(pyKVFinder.main.cli(), 0)
-        self.assertEqual(stdout.getvalue().split("\n")[1], "> No cavities detected!")
+        self.assertEqual(stdout.getvalue().split("\n")[1], "> No cavities were detected!")
 
     @mock.patch(
         "argparse.ArgumentParser.parse_args",

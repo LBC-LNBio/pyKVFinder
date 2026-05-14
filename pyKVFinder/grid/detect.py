@@ -1,4 +1,5 @@
 import os
+import warnings
 from typing import Optional
 
 import numpy
@@ -420,6 +421,16 @@ def detect(
             surface,
             nthreads,
             verbose,
+        )
+
+    if ncav == 0:
+        print("> No cavities were detected!")
+
+    if ncav > 1352:
+        warnings.warn(
+            f"The number of cavities ({ncav}) exceeds the maximum supported (1352). "
+            "Cavity labels in the grid may not be unique.",
+            UserWarning,
         )
 
     return ncav, cavities.reshape(nx, ny, nz)
