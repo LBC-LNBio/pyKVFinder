@@ -268,6 +268,8 @@ def cli() -> None:
 
         # Write parameters
         _write_parameters(args)
+    else:
+        print("> No cavities were detected!")
 
     # Elapsed time
     elapsed_time = time.time() - start_time
@@ -1184,6 +1186,7 @@ def run_workflow(
         else:
             scales, avg_hydropathy = None, None
     else:
+        print("> No cavities were detected, returning None!")
         return None
 
     # Return dict

@@ -423,12 +423,6 @@ def detect(
             verbose,
         )
 
-    if ncav == 0:
-        warnings.warn(
-            "No cavities were detected!",
-            UserWarning,
-        )
-
     if ncav > 1352:
         warnings.warn(
             f"The number of cavities ({ncav}) exceeds the maximum supported (1352). "
