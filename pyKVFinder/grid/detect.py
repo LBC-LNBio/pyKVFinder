@@ -426,7 +426,7 @@ def detect(
     if ncav > 1352:
         warnings.warn(
             f"The number of cavities ({ncav}) exceeds the maximum supported (1352). "
-            "Cavity labels in the grid may not be unique.",
+            "Cavity labels may not be unique.",
             UserWarning,
         )
 
