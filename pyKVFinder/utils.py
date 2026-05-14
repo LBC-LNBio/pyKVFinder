@@ -304,9 +304,10 @@ def read_pdb(
                 "These represent multiple conformations for the same atoms and may alter "
                 "cavity geometry and volume estimation. "
                 "We recommend reviewing and resolving altLoc records before analysis "
-                "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite.",
-            ),    
-            UserWarning
+                "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
+            ),
+            UserWarning,
+            stacklevel=2
         )
 
     return numpy.asarray(atomic)
