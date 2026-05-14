@@ -159,11 +159,11 @@ def _process_pdb_line(
     else:
         radius = vdw["GEN"][atom_symbol]
         logging.warning(
-            f"Atom {atom} of residue {resname} \
+            f"Warning: Atom {atom} of residue {resname} \
 not found in dictionary."
         )
         logging.warning(
-            f"Using generic atom {atom_symbol} \
+            f"Warning: Using generic atom {atom_symbol} \
 radius: {radius} \u00c5."
         )
 
@@ -294,6 +294,7 @@ def read_pdb(
                 "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
             ),
             UserWarning,
+            stacklevel=2
         )
 
     if has_altloc:
