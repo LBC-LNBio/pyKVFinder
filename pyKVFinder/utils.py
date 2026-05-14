@@ -294,7 +294,6 @@ def read_pdb(
                 "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
             ),
             UserWarning,
-            stacklevel=2
         )
 
     if has_altloc:
@@ -307,7 +306,6 @@ def read_pdb(
                 "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
             ),
             UserWarning,
-            stacklevel=2
         )
 
     return numpy.asarray(atomic)

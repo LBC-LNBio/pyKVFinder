@@ -1,10 +1,9 @@
 import argparse
-import io
 import os
 import unittest
+import warnings
 from unittest import mock
 
-import numpy
 import tomlkit
 
 import pyKVFinder
@@ -288,11 +287,13 @@ class TestCLI(unittest.TestCase):
         ),
     )
     def test_no_cavities_detected(self, _):
-        # Run pyKVFinder CLI with depth mode
-        # $ pyKVFinder <.pdb> --depth
-        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+        # Run pyKVFinder CLI
+        # $ pyKVFinder <.pdb>
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
             self.assertEqual(pyKVFinder.main.cli(), 0)
-        self.assertEqual(stdout.getvalue().split("\n")[1], "> No cavities were detected!")
+            messages = [str(warning.message) for warning in w]
+            self.assertIn("No cavities were detected!", messages)
 
     @mock.patch(
         "argparse.ArgumentParser.parse_args",

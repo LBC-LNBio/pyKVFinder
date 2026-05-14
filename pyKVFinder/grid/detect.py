@@ -427,7 +427,6 @@ def detect(
         warnings.warn(
             "No cavities were detected!",
             UserWarning,
-            stacklevel=2,
         )
 
     if ncav > 1352:
