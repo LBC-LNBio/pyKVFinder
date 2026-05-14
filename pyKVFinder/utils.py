@@ -251,7 +251,6 @@ def read_pdb(
     atomic = []
 
     # Flags for warnings
-    has_hetatm = False
     has_altloc = False
 
     # Keep all models
@@ -273,29 +272,12 @@ def read_pdb(
                 # Process ATOM/HETATM records
                 if record == "ATOM" or record == "HETATM":
                     atomic.append(_process_pdb_line(line, vdw))
-                    
-                    # Is HETATM
-                    if record == "HETATM":
-                        has_hetatm = True
 
                     # Has altloc
                     if line[16] != ' ':
                         has_altloc = True
 
     # Warnings
-    if has_hetatm:
-        warnings.warn(
-            (
-                f"{fn} contains non-standard residues (HETATM) records. "
-                "These atoms are treated as occupied space during cavity detection and may "
-                "interfere with cavity identification when used directly in `detect()`. "
-                "However, they are appropriate for ligand-guided detection with `latomic`. "
-                "We recommend reviewing HETATM records and removing non-relevant ones before analysis " 
-                "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
-            ),
-            UserWarning,
-        )
-
     if has_altloc:
         warnings.warn(
             (
