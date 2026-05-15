@@ -280,13 +280,10 @@ def read_pdb(
     # Warnings
     if has_altloc:
         warnings.warn(
-            (
-                f"{fn} contains alternate location (altLoc) records. "
-                "These represent multiple conformations for the same atoms and may alter "
-                "cavity geometry and volume estimation. "
-                "We recommend reviewing and resolving altLoc records before analysis "
-                "using external tools such as PyMOL, pdb-tools, ChimeraX, or biotite."
-            ),
+            f"{fn} contains alternate location (altLoc) records, indicating multiple "
+            "conformations for the same atoms. These records may affect cavity geometry "
+            "and volume estimation. Please resolve them before analysis using external "
+            "tools (e.g., PyMOL, ChimeraX, pdb-tools, or biotite).",
             UserWarning,
         )
 
