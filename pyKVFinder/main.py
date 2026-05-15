@@ -179,10 +179,6 @@ def cli() -> None:
 
     # Cavities were found
     if ncav > 0:
-        # Warn if number of cavities exceeds maximum supported number
-        if ncav > 1352:
-            print("Warning: The number of detected cavities exceeds the supported limit (1352).")
-
         # Spatial characterization
         surface, volume, area = spatial(
             cavities, args.step, None, args.nthreads, args.verbose
@@ -273,7 +269,7 @@ def cli() -> None:
         # Write parameters
         _write_parameters(args)
     else:
-        print("> No cavities detected!")
+        print("> No cavities were detected!")
 
     # Elapsed time
     elapsed_time = time.time() - start_time
@@ -1148,10 +1144,6 @@ def run_workflow(
     )
 
     if ncav > 0:
-        # Warn if number of cavities exceeds maximum supported number
-        if ncav > 1352:
-            print("Warning: The number of detected cavities exceeds the supported limit (1352).")
-
         # Spatial characterization
         surface, volume, area = spatial(cavities, step, None, nthreads, verbose)
 
@@ -1194,7 +1186,7 @@ def run_workflow(
         else:
             scales, avg_hydropathy = None, None
     else:
-        print("Warning: No cavities detected, returning None!")
+        print("> No cavities were detected, returning None!")
         return None
 
     # Return dict

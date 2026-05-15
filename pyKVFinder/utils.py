@@ -2,6 +2,7 @@ import argparse
 import logging
 import os
 import pathlib
+import warnings
 from typing import Dict, List, Optional, Union
 
 import numpy
@@ -157,11 +158,11 @@ def _process_pdb_line(
         radius = vdw[resname][atom]
     else:
         radius = vdw["GEN"][atom_symbol]
-        logging.info(
+        logging.warning(
             f"Warning: Atom {atom} of residue {resname} \
 not found in dictionary."
         )
-        logging.info(
+        logging.warning(
             f"Warning: Using generic atom {atom_symbol} \
 radius: {radius} \u00c5."
         )
@@ -249,19 +250,42 @@ def read_pdb(
     # Create lists
     atomic = []
 
+    # Flags for warnings
+    has_altloc = False
+
     # Keep all models
     keep = True if model is None else False
 
     # Read file and process atoms
     with open(fn, "r") as f:
+        
         for line in f.readlines():
+            record = line[:6].strip()
+            
+            # Handle MODEL records
             if model is not None:
-                if line[:5] == "MODEL":
+                if record == "MODEL":
                     nmodel = int(line[5:].replace(" ", "").rstrip("\n"))
                     keep = True if model == nmodel else False
+            
             if keep:
-                if line[:4] == "ATOM" or line[:6] == "HETATM":
+                # Process ATOM/HETATM records
+                if record == "ATOM" or record == "HETATM":
                     atomic.append(_process_pdb_line(line, vdw))
+
+                    # Has altloc
+                    if line[16] != ' ':
+                        has_altloc = True
+
+    # Warnings
+    if has_altloc:
+        warnings.warn(
+            f"{fn} contains alternate location (altLoc) records, indicating multiple "
+            "conformations for the same atoms. These records may affect cavity geometry "
+            "and volume estimation. Please resolve them before analysis using external "
+            "tools (e.g., PyMOL, ChimeraX, pdb-tools, or biotite).",
+            UserWarning,
+        )
 
     return numpy.asarray(atomic)
 
@@ -327,7 +351,6 @@ def read_xyz(
 
     .. warning::
         The function takes the `built-in dictionary <https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat>`_ when the ``vdw`` argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with ``read_vdw`` as shown earlier and pass it as ``read_xyz(xyz, vdw=vdw)``.
-
     """
     # Check arguments
     if type(fn) not in [str, pathlib.Path]:

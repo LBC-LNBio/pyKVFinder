@@ -279,8 +279,8 @@ class TestCLI(unittest.TestCase):
             removal_distance=2.4,
             surface="SES",
             ignore_backbone=False,
-            depth=True,
-            plot_frequencies=True,
+            depth=False,
+            plot_frequencies=False,
             hydropathy=False,
             box=None,
             ligand=None,
@@ -288,11 +288,11 @@ class TestCLI(unittest.TestCase):
         ),
     )
     def test_no_cavities_detected(self, _):
-        # Run pyKVFinder CLI with depth mode
-        # $ pyKVFinder <.pdb> --depth
+        # Run pyKVFinder CLI
+        # $ pyKVFinder <.pdb>
         with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
             self.assertEqual(pyKVFinder.main.cli(), 0)
-        self.assertEqual(stdout.getvalue().split("\n")[1], "> No cavities detected!")
+        self.assertEqual(stdout.getvalue().split("\n")[1], "> No cavities were detected!")
 
     @mock.patch(
         "argparse.ArgumentParser.parse_args",
