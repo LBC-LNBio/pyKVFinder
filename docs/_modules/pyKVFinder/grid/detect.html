@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid.detect &mdash; pyKVFinder 0.9.1 documentation</title>
+  <title>pyKVFinder.grid.detect &mdash; pyKVFinder 0.9.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=9dc39874"></script>
+        <script src="../../../_static/documentation_options.js?v=aa3b121e"></script>
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -96,6 +96,7 @@
              
   <h1>Source code for pyKVFinder.grid.detect</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -519,6 +520,13 @@
             <span class="n">surface</span><span class="p">,</span>
             <span class="n">nthreads</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ncav</span> <span class="o">&gt;</span> <span class="mi">1352</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The number of cavities (</span><span class="si">{</span><span class="n">ncav</span><span class="si">}</span><span class="s2">) exceeds the maximum supported (1352). &quot;</span>
+            <span class="s2">&quot;Cavity labels may not be unique.&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">cavities</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span></div>

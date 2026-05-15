@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.utils &mdash; pyKVFinder 0.9.1 documentation</title>
+  <title>pyKVFinder.utils &mdash; pyKVFinder 0.9.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=9dc39874"></script>
+        <script src="../../_static/documentation_options.js?v=aa3b121e"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -99,6 +99,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -257,11 +258,11 @@
         <span class="n">radius</span> <span class="o">=</span> <span class="n">vdw</span><span class="p">[</span><span class="n">resname</span><span class="p">][</span><span class="n">atom</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="n">vdw</span><span class="p">[</span><span class="s2">&quot;GEN&quot;</span><span class="p">][</span><span class="n">atom_symbol</span><span class="p">]</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Warning: Atom </span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2"> of residue </span><span class="si">{</span><span class="n">resname</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
 <span class="s2">not found in dictionary.&quot;</span>
         <span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Warning: Using generic atom </span><span class="si">{</span><span class="n">atom_symbol</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
 <span class="s2">radius: </span><span class="si">{</span><span class="n">radius</span><span class="si">}</span><span class="s2"> </span><span class="se">\u00c5</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
@@ -351,19 +352,42 @@
     <span class="c1"># Create lists</span>
     <span class="n">atomic</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="c1"># Flags for warnings</span>
+    <span class="n">has_altloc</span> <span class="o">=</span> <span class="kc">False</span>
+
     <span class="c1"># Keep all models</span>
     <span class="n">keep</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
     <span class="c1"># Read file and process atoms</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            
+            <span class="c1"># Handle MODEL records</span>
             <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;MODEL&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">record</span> <span class="o">==</span> <span class="s2">&quot;MODEL&quot;</span><span class="p">:</span>
                     <span class="n">nmodel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
                     <span class="n">keep</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="n">nmodel</span> <span class="k">else</span> <span class="kc">False</span>
+            
             <span class="k">if</span> <span class="n">keep</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ATOM&quot;</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HETATM&quot;</span><span class="p">:</span>
+                <span class="c1"># Process ATOM/HETATM records</span>
+                <span class="k">if</span> <span class="n">record</span> <span class="o">==</span> <span class="s2">&quot;ATOM&quot;</span> <span class="ow">or</span> <span class="n">record</span> <span class="o">==</span> <span class="s2">&quot;HETATM&quot;</span><span class="p">:</span>
                     <span class="n">atomic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_process_pdb_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vdw</span><span class="p">))</span>
+
+                    <span class="c1"># Has altloc</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+                        <span class="n">has_altloc</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Warnings</span>
+    <span class="k">if</span> <span class="n">has_altloc</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2"> contains alternate location (altLoc) records, indicating multiple &quot;</span>
+            <span class="s2">&quot;conformations for the same atoms. These records may affect cavity geometry &quot;</span>
+            <span class="s2">&quot;and volume estimation. Please resolve them before analysis using external &quot;</span>
+            <span class="s2">&quot;tools (e.g., PyMOL, ChimeraX, pdb-tools, or biotite).&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span></div>
 
@@ -432,7 +456,6 @@
 
 <span class="sd">    .. warning::</span>
 <span class="sd">        The function takes the `built-in dictionary &lt;https://github.com/LBC-LNBio/pyKVFinder/blob/master/pyKVFinder/data/vdw.dat&gt;`_ when the ``vdw`` argument is not specified. If you wish to use a custom van der Waals radii file, you must read it with ``read_vdw`` as shown earlier and pass it as ``read_xyz(xyz, vdw=vdw)``.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
