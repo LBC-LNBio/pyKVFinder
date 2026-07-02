@@ -1,6 +1,7 @@
 import os
 
 import numpy
+import warnings
 
 from .cavity import _get_cavity_label, _get_cavity_name, _select_cavities
 from .geometry import _get_sincos
@@ -104,6 +105,11 @@ def constitutional(
     residues: dict[str, list[list[str]]]
         A dictionary with a list of interface residues for each detected
         cavity.
+
+    Warnings
+    --------
+    UserWarning
+        No cavities detected. Returning an empty dictionary.
 
     Raises
     ------
@@ -261,6 +267,13 @@ def constitutional(
 
     # Get number of cavities
     ncav = int(cavities.max() - 1)
+
+    if ncav == 0:
+        warnings.warn(
+            "No cavities detected. Returning an empty dictionary.",
+            UserWarning,
+        )
+        return {}
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)
     sincos = _get_sincos(vertices)
