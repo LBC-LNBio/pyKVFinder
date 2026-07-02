@@ -268,7 +268,7 @@ def constitutional(
     # Get number of cavities
     ncav = int(cavities.max() - 1)
 
-    if ncav == 0:
+    if ncav < 1:
         warnings.warn(
             "No cavities detected. Returning an empty dictionary.",
             UserWarning,
