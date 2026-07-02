@@ -4,7 +4,7 @@ benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests/integration, tests/unit
-plugins: cov-7.1.0, benchmark-5.2.3
+plugins: benchmark-5.2.3, cov-7.1.0
 collected 317 items
 
 tests/integration/test_cli.py ................                           [  5%]
@@ -23,7 +23,7 @@ Name                                Stmts   Miss  Cover   Missing
 -----------------------------------------------------------------
 pyKVFinder/grid/__init__.py            10      0   100%
 pyKVFinder/grid/cavity.py              27      0   100%
-pyKVFinder/grid/constitutional.py      84      0   100%
+pyKVFinder/grid/constitutional.py      88      2    98%   272-276
 pyKVFinder/grid/depth.py               51      0   100%
 pyKVFinder/grid/detect.py             105      3    97%   363, 367, 427
 pyKVFinder/grid/export.py             136     54    60%   283-308, 409-478
@@ -34,5 +34,5 @@ pyKVFinder/grid/spatial.py             51      0   100%
 pyKVFinder/main.py                    361     69    81%   93, 97, 105, 114, 142-148, 495, 660, 1074, 1081, 1091, 1102, 1121, 1126-1127, 1353, 1358, 1364, 1371, 1374-1377, 1381-1386, 1398, 1408, 1437-1438, 1443-1444, 1449-1450, 1510-1515, 1521, 1526-1531, 1591, 1593, 1606, 1717, 1719, 1725, 1727, 1733, 1738, 1742, 1795-1805, 1831
 pyKVFinder/utils.py                   341      8    98%   278, 282, 594, 626, 629-631, 653
 -----------------------------------------------------------------
-TOTAL                                1506    196    87%
-======================== 317 passed in 95.73s (0:01:35) ========================
+TOTAL                                1510    198    87%
+======================== 317 passed in 96.15s (0:01:36) ========================
