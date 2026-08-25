@@ -1,10 +1,9 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
-benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0
 rootdir: /home/runner/work/pyKVFinder/pyKVFinder
 configfile: pyproject.toml
 testpaths: tests/integration, tests/unit
-plugins: benchmark-5.2.3, cov-7.1.0
+plugins: cov-7.1.0
 collected 317 items
 
 tests/integration/test_cli.py ................                           [  5%]
@@ -17,7 +16,7 @@ tests/unit/test_utils.py ............................................... [ 95%]
 ..............                                                           [100%]
 
 ================================ tests coverage ================================
-_______________ coverage: platform linux, python 3.11.15-final-0 _______________
+_______________ coverage: platform linux, python 3.11.16-final-0 _______________
 
 Name                                Stmts   Miss  Cover   Missing
 -----------------------------------------------------------------
@@ -35,4 +34,4 @@ pyKVFinder/main.py                    361     69    81%   93, 97, 105, 114, 142-
 pyKVFinder/utils.py                   341      8    98%   278, 282, 594, 626, 629-631, 653
 -----------------------------------------------------------------
 TOTAL                                1510    198    87%
-======================== 317 passed in 94.63s (0:01:34) ========================
+======================== 317 passed in 89.34s (0:01:29) ========================
