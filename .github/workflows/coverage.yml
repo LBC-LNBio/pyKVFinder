@@ -21,7 +21,9 @@ jobs:
           python -m pip install --upgrade pip
 
       - name: Build pyKVFinder
-        run: pip install -e .[dev]
+        run: |
+          pip install -e .
+          pip install "pytest>=9.0.0,<9.2.0" "pytest-cov>=7.0.0,<7.2.0"
 
       - name: Run test coverage
         run: |
