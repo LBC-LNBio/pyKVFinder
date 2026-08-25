@@ -30,7 +30,7 @@ See also
 * Documentation: https://lbc-lnbio.github.io/pyKVFinder
 """
 
-__version__ = "0.9.3"
+__version__ = "0.9.4"
 __license__ = "GPL-3.0-or-later"
 
 from .utils import (
