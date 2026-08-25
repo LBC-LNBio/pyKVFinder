@@ -65,7 +65,7 @@ dependencies = [
 ]
 dynamic = ["version"]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=9.0.0,<9.2.0",
     "pytest-cov>=7.0.0,<7.2.0",
@@ -87,6 +87,9 @@ issues = "https://github.com/LBC-LNBio/pyKVFinder/issues"
 
 [project.scripts]
 pyKVFinder = "pyKVFinder.main:cli"
+
+[tool.uv.dependency-groups]
+docs = {requires-python = ">=3.12"}
 
 [tool.setuptools]
 packages = ["pyKVFinder", "pyKVFinder.grid", "pyKVFinder.data", "pyKVFinder.data.tests"]

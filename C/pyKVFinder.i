@@ -136,7 +136,7 @@ char **
             break;
 
         /* Convert C string to Python string */
-        tmp = PyString_FromString( $1[nPy] );
+        tmp = PyUnicode_FromString( $1[nPy] );
         if (!tmp) 
             return NULL;
 
