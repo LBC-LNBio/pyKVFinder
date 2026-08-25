@@ -2,7 +2,7 @@ name: Pytest Coverage
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   coverage:
@@ -38,7 +38,7 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: coverage.txt
-          default-branch: master
+          default-branch: main
           remove-link-from-badge: true
 
       - name: Move report to coverage directory
