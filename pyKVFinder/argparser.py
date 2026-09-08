@@ -319,8 +319,9 @@ residues. (default: %(default)s)",
         action="store_true",
         default=False,
         help="Depth characterization of the detected cavities. \
-Map depth in B-factor in the cavity PDB file and maximum and average depth of \
-the detected cavities. (default: %(default)s)",
+Map depth in B-factor (temperature factor) in the cavity PDB file \
+and maximum and average depth of the detected cavities. (default: \
+%(default)s)",
     )
     extra_modes.add_argument(
         "--plot_frequencies",
@@ -338,10 +339,10 @@ RadzickaWolfenden, WimleyWhite, ZhaoLondon, <.toml>}",
         const="EisenbergWeiss",
         default=False,
         help="Hydropathy characterization of the detected cavities. Map \
-hydrophobicity scale values as B-factor at surface points of detected \
-cavities. Hydrophobicity scales options: %(metavar)s. A custom hydrophobicity \
-scale can be defined via a TOML-formatted file. (default: %(default)s) \
-(constant: %(const)s)",
+hydrophobicity scale values as Q-factor (occupancy) at surface points of \
+detected cavities. Hydrophobicity scales options: %(metavar)s. A custom \
+hydrophobicity scale can be defined via a TOML-formatted file. (default: \
+%(default)s) (constant: %(const)s)",
     )
 
     # Create argument group
