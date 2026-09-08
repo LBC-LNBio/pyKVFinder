@@ -679,7 +679,7 @@ def run_workflow(
     model: int | None = None,
     nthreads: int | None = None,
     verbose: bool = False,
-) -> pyKVFinderResults:
+) -> pyKVFinderResults | None:
     """Detects and characterizes cavities (volume, area, depth [optional],
     hydropathy [optional] and interface residues).
 
