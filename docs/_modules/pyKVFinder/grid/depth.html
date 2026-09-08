@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid.depth &mdash; pyKVFinder 0.9.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+  <title>pyKVFinder.grid.depth &mdash; pyKVFinder 0.9.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../../../_static/icon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=aa3b121e"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=61b282d3"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -35,9 +33,6 @@
             pyKVFinder
               <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.9
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -95,20 +90,20 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyKVFinder.grid.depth</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
-<span class="kn">from</span> <span class="nn">.cavity</span> <span class="kn">import</span> <span class="n">_get_cavity_label</span><span class="p">,</span> <span class="n">_get_cavity_name</span><span class="p">,</span> <span class="n">_select_cavities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cavity</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_cavity_label</span><span class="p">,</span> <span class="n">_get_cavity_name</span><span class="p">,</span> <span class="n">_select_cavities</span>
 
 
-<span class="k">def</span> <span class="nf">_process_depth</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_process_depth</span><span class="p">(</span>
     <span class="n">raw_max_depth</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">raw_avg_depth</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes arrays of maximum and average depths.</span>
+<span class="w">    </span><span class="sd">"""Processes arrays of maximum and average depths.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -127,7 +122,7 @@
 <span class="sd">        A dictionary with maximum depth of each detected cavity.</span>
 <span class="sd">    avg_depth : dict[str, float]</span>
 <span class="sd">        A dictionary with average depth of each detected cavity.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">max_depth</span><span class="p">,</span> <span class="n">avg_depth</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
 
     <span class="c1"># Prepare maximum and average depth dictionary</span>
@@ -150,14 +145,14 @@
 
 <div class="viewcode-block" id="depth">
 <a class="viewcode-back" href="../../../package/api_reference/depth.html#pyKVFinder.depth">[docs]</a>
-<span class="k">def</span> <span class="nf">depth</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">depth</span><span class="p">(</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Characterization of the depth of the detected cavities, including depth</span>
+<span class="w">    </span><span class="sd">"""Characterization of the depth of the detected cavities, including depth</span>
 <span class="sd">    per cavity point and maximum and average depths of detected cavities.</span>
 
 <span class="sd">    Parameters</span>
@@ -253,21 +248,21 @@
 <span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="sd">            [0., 0., 0., ..., 0., 0., 0.]]])</span>
 <span class="sd">    &gt;&gt;&gt; max_depth</span>
-<span class="sd">    {&#39;KAA&#39;: 3.79, &#39;KAB&#39;: 2.68, &#39;KAC&#39;: 2.62, &#39;KAD&#39;: 0.85, &#39;KAE&#39;: 3.0, &#39;KAF&#39;: 0.85, &#39;KAG&#39;: 0.6, &#39;KAH&#39;: 10.73, &#39;KAI&#39;: 0.0, &#39;KAJ&#39;: 2.24, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 3.0, &#39;KAM&#39;: 1.2, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 1.04, &#39;KAP&#39;: 2.08, &#39;KAQ&#39;: 0.85, &#39;KAR&#39;: 0.6}</span>
+<span class="sd">    {'KAA': 3.79, 'KAB': 2.68, 'KAC': 2.62, 'KAD': 0.85, 'KAE': 3.0, 'KAF': 0.85, 'KAG': 0.6, 'KAH': 10.73, 'KAI': 0.0, 'KAJ': 2.24, 'KAK': 0.0, 'KAL': 3.0, 'KAM': 1.2, 'KAN': 0.0, 'KAO': 1.04, 'KAP': 2.08, 'KAQ': 0.85, 'KAR': 0.6}</span>
 <span class="sd">    &gt;&gt;&gt; avg_depth</span>
-<span class="sd">    {&#39;KAA&#39;: 1.35, &#39;KAB&#39;: 0.91, &#39;KAC&#39;: 0.68, &#39;KAD&#39;: 0.32, &#39;KAE&#39;: 0.99, &#39;KAF&#39;: 0.24, &#39;KAG&#39;: 0.1, &#39;KAH&#39;: 3.91, &#39;KAI&#39;: 0.0, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: 0.0, &#39;KAL&#39;: 1.07, &#39;KAM&#39;: 0.24, &#39;KAN&#39;: 0.0, &#39;KAO&#39;: 0.29, &#39;KAP&#39;: 0.7, &#39;KAQ&#39;: 0.22, &#39;KAR&#39;: 0.12}</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pyKVFinder._pyKVFinder</span> <span class="kn">import</span> <span class="n">_depth</span>
+<span class="sd">    {'KAA': 1.35, 'KAB': 0.91, 'KAC': 0.68, 'KAD': 0.32, 'KAE': 0.99, 'KAF': 0.24, 'KAG': 0.1, 'KAH': 3.91, 'KAI': 0.0, 'KAJ': 0.96, 'KAK': 0.0, 'KAL': 1.07, 'KAM': 0.24, 'KAN': 0.0, 'KAO': 0.29, 'KAP': 0.7, 'KAQ': 0.22, 'KAR': 0.12}</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyKVFinder._pyKVFinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">_depth</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cavities</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`cavities` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`cavities` must be a numpy.ndarray."</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`cavities` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`cavities` has the incorrect shape. It must be (nx, ny, nz)."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`step` must be a positive real number."</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`step` must be a positive real number."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
@@ -276,27 +271,27 @@
             <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
+                <span class="s2">"`selection` must be a list of strings (cavity names) or integers (cavity labels)."</span>
             <span class="p">)</span>
         <span class="c1"># Check if selection includes valid cavity labels</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`nthreads` must be a positive integer."</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">nthreads</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`nthreads` must be a positive integer."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`verbose` must be a boolean.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`verbose` must be a boolean."</span><span class="p">)</span>
 
     <span class="c1"># Convert types</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
 
     <span class="c1"># Check numpy.ndarray data types</span>
-    <span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cavities</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">cavities</span>
+    <span class="n">cavities</span> <span class="o">=</span> <span class="n">cavities</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"int32"</span><span class="p">)</span> <span class="k">if</span> <span class="n">cavities</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">"int32"</span> <span class="k">else</span> <span class="n">cavities</span>
 
     <span class="c1"># Get number of cavities</span>
     <span class="n">ncav</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cavities</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>

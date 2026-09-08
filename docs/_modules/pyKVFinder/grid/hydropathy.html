@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyKVFinder.grid.hydropathy &mdash; pyKVFinder 0.9.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+  <title>pyKVFinder.grid.hydropathy &mdash; pyKVFinder 0.9.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="shortcut icon" href="../../../_static/icon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=aa3b121e"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=61b282d3"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -35,9 +33,6 @@
             pyKVFinder
               <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.9
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -95,20 +90,20 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyKVFinder.grid.hydropathy</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">resources</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">resources</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
-<span class="kn">from</span> <span class="nn">.cavity</span> <span class="kn">import</span> <span class="n">_get_cavity_label</span><span class="p">,</span> <span class="n">_get_cavity_name</span><span class="p">,</span> <span class="n">_select_cavities</span>
-<span class="kn">from</span> <span class="nn">.geometry</span> <span class="kn">import</span> <span class="n">_get_sincos</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cavity</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_cavity_label</span><span class="p">,</span> <span class="n">_get_cavity_name</span><span class="p">,</span> <span class="n">_select_cavities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_sincos</span>
 
 
-<span class="k">def</span> <span class="nf">_process_hydropathy</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_process_hydropathy</span><span class="p">(</span>
     <span class="n">raw_avg_hydropathy</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ncav</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes array of average hydropathy.</span>
+<span class="w">    </span><span class="sd">"""Processes array of average hydropathy.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -123,7 +118,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    avg_hydropathy : dict[str, float]</span>
 <span class="sd">        A dictionary with average hydropathy per detected cavity.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncav</span><span class="p">):</span>
@@ -143,19 +138,19 @@
 
 <div class="viewcode-block" id="hydropathy">
 <a class="viewcode-back" href="../../../package/api_reference/hydropathy.html#pyKVFinder.hydropathy">[docs]</a>
-<span class="k">def</span> <span class="nf">hydropathy</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hydropathy</span><span class="p">(</span>
     <span class="n">surface</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">atomic</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]],</span>
     <span class="n">vertices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
-    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
-    <span class="n">probe_in</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
-    <span class="n">hydrophobicity_scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s2">&quot;EisenbergWeiss&quot;</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">probe_in</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
+    <span class="n">hydrophobicity_scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s2">"EisenbergWeiss"</span><span class="p">,</span>
     <span class="n">ignore_backbone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">selection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hydropathy characterization of the detected cavities.</span>
+<span class="w">    </span><span class="sd">"""Hydropathy characterization of the detected cavities.</span>
 
 <span class="sd">    Map a target hydrophobicity scale per surface point and calculate average hydropathy of detected cavities.</span>
 
@@ -296,7 +291,7 @@
 <span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="sd">            [0., 0., 0., ..., 0., 0., 0.]]])</span>
 <span class="sd">    &gt;&gt;&gt; avg_hydropathy</span>
-<span class="sd">    {&#39;KAA&#39;: -0.73, &#39;KAB&#39;: -0.05, &#39;KAC&#39;: -0.07, &#39;KAD&#39;: -0.62, &#39;KAE&#39;: -0.81, &#39;KAF&#39;: -0.14, &#39;KAG&#39;: -0.33, &#39;KAH&#39;: -0.16, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.62, &#39;KAK&#39;: -0.99, &#39;KAL&#39;: 0.36, &#39;KAM&#39;: -0.33, &#39;KAN&#39;: 0.18, &#39;KAO&#39;: 0.88, &#39;KAP&#39;: -0.96, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: 0.24, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
+<span class="sd">    {'KAA': -0.73, 'KAB': -0.05, 'KAC': -0.07, 'KAD': -0.62, 'KAE': -0.81, 'KAF': -0.14, 'KAG': -0.33, 'KAH': -0.16, 'KAI': -0.4, 'KAJ': 0.62, 'KAK': -0.99, 'KAL': 0.36, 'KAM': -0.33, 'KAN': 0.18, 'KAO': 0.88, 'KAP': -0.96, 'KAQ': 0.48, 'KAR': 0.24, 'EisenbergWeiss': [-1.42, 2.6]}</span>
 
 <span class="sd">    However, users may opt to ignore backbones contacts (C, CA, N, O) with the cavity when mapping hydrophobicity scales on surface points. Then, users must set ``ignore_backbone`` flag to ``True``.</span>
 
@@ -319,7 +314,7 @@
 <span class="sd">            [0., 0., 0., ..., 0., 0., 0.],</span>
 <span class="sd">            [0., 0., 0., ..., 0., 0., 0.]]])</span>
 <span class="sd">    &gt;&gt;&gt; avg_hydropathy</span>
-<span class="sd">    {&#39;KAA&#39;: -0.7, &#39;KAB&#39;: 0.12, &#39;KAC&#39;: -0.08, &#39;KAD&#39;: -0.56, &#39;KAE&#39;: -0.28, &#39;KAF&#39;: -0.25, &#39;KAG&#39;: -0.28, &#39;KAH&#39;: -0.09, &#39;KAI&#39;: -0.4, &#39;KAJ&#39;: 0.96, &#39;KAK&#39;: -0.87, &#39;KAL&#39;: 0.23, &#39;KAM&#39;: 0.06, &#39;KAN&#39;: -0.1, &#39;KAO&#39;: 0.99, &#39;KAP&#39;: -1.04, &#39;KAQ&#39;: 0.48, &#39;KAR&#39;: -0.84, &#39;EisenbergWeiss&#39;: [-1.42, 2.6]}</span>
+<span class="sd">    {'KAA': -0.7, 'KAB': 0.12, 'KAC': -0.08, 'KAD': -0.56, 'KAE': -0.28, 'KAF': -0.25, 'KAG': -0.28, 'KAH': -0.09, 'KAI': -0.4, 'KAJ': 0.96, 'KAK': -0.87, 'KAL': 0.23, 'KAM': 0.06, 'KAN': -0.1, 'KAO': 0.99, 'KAP': -1.04, 'KAQ': 0.48, 'KAR': -0.84, 'EisenbergWeiss': [-1.42, 2.6]}</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -350,37 +345,36 @@
 <span class="sd">       approaches the theoretical limit to accuracy for prediction of</span>
 <span class="sd">       transmembrane helices: Relationship to biological hydrophobicity.</span>
 <span class="sd">       Protein Science. 2006;15.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">tomlkit</span>
-    <span class="kn">from</span> <span class="nn">pyKVFinder._pyKVFinder</span> <span class="kn">import</span> <span class="n">_hydropathy</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">tomlkit</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyKVFinder._pyKVFinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">_hydropathy</span>
 
     <span class="c1"># Check arguments</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`surface` must be a numpy.ndarray.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`surface` must be a numpy.ndarray."</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`surface` has the incorrect shape. It must be (nx, ny, nz).&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`surface` has the incorrect shape. It must be (nx, ny, nz)."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`atomic` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atomic` has incorrect shape. It must be (n, 8).&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`atomic` must be a list or a numpy.ndarray."</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atomic</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`atomic` has incorrect shape. It must be (n, 8)."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`vertices` must be a list or a numpy.ndarray.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`vertices` must be a list or a numpy.ndarray."</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`vertices` has incorrect shape. It must be (4, 3).&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`vertices` has incorrect shape. It must be (4, 3)."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`step` must be a positive real number."</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`step` must be a positive real number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`step` must be a positive real number."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">probe_in</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`probe_in` must be a non-negative real number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`probe_in` must be a non-negative real number."</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">probe_in</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`probe_in` must be a non-negative real number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`probe_in` must be a non-negative real number."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">hydrophobicity_scale</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`hydrophobicity_scale` must be a string or a pathlib.Path.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`hydrophobicity_scale` must be a string or a pathlib.Path."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ignore_backbone</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`ignore_backbone` must be a boolean.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`ignore_backbone` must be a boolean."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Check selection types</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
@@ -389,20 +383,20 @@
             <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_cavity_label</span><span class="p">(</span><span class="n">sele</span><span class="p">)</span> <span class="k">for</span> <span class="n">sele</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;`selection` must be a list of strings (cavity names) or integers (cavity labels).&quot;</span>
+                <span class="s2">"`selection` must be a list of strings (cavity names) or integers (cavity labels)."</span>
             <span class="p">)</span>
         <span class="c1"># Check if selection includes valid cavity labels</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid `selection`: </span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nthreads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`nthreads` must be a positive integer."</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">nthreads</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`nthreads` must be a positive integer.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`nthreads` must be a positive integer."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`verbose` must be a boolean.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"`verbose` must be a boolean."</span><span class="p">)</span>
 
     <span class="c1"># Convert types</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -415,12 +409,12 @@
         <span class="n">probe_in</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">probe_in</span><span class="p">)</span>
 
     <span class="c1"># Convert numpy.ndarray data types</span>
-    <span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">surface</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int32&quot;</span> <span class="k">else</span> <span class="n">surface</span>
-    <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">vertices</span>
+    <span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"int32"</span><span class="p">)</span> <span class="k">if</span> <span class="n">surface</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">"int32"</span> <span class="k">else</span> <span class="n">surface</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float64"</span><span class="p">)</span> <span class="k">if</span> <span class="n">vertices</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">"float64"</span> <span class="k">else</span> <span class="n">vertices</span>
 
     <span class="c1"># Extract atominfo from atomic</span>
     <span class="n">atominfo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
-        <span class="p">([[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atom</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]])</span>
+        <span class="p">[[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">atom</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atomic</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]]</span>
     <span class="p">)</span>
 
     <span class="c1"># Extract xyzr from atomic</span>
@@ -442,18 +436,18 @@
 
     <span class="c1"># Load hydrophobicity scales</span>
     <span class="k">if</span> <span class="n">hydrophobicity_scale</span> <span class="ow">in</span> <span class="p">[</span>
-        <span class="s2">&quot;EisenbergWeiss&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;HessaHeijne&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;KyteDoolittle&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;MoonFleming&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;RadzickaWolfenden&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;WimleyWhite&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;ZhaoLondon&quot;</span><span class="p">,</span>
+        <span class="s2">"EisenbergWeiss"</span><span class="p">,</span>
+        <span class="s2">"HessaHeijne"</span><span class="p">,</span>
+        <span class="s2">"KyteDoolittle"</span><span class="p">,</span>
+        <span class="s2">"MoonFleming"</span><span class="p">,</span>
+        <span class="s2">"RadzickaWolfenden"</span><span class="p">,</span>
+        <span class="s2">"WimleyWhite"</span><span class="p">,</span>
+        <span class="s2">"ZhaoLondon"</span><span class="p">,</span>
     <span class="p">]:</span>
         <span class="n">hydrophobicity_scale</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;pyKVFinder.data&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hydrophobicity_scale</span><span class="si">}</span><span class="s2">.toml&quot;</span>
+            <span class="n">resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">"pyKVFinder.data"</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hydrophobicity_scale</span><span class="si">}</span><span class="s2">.toml"</span>
         <span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hydrophobicity_scale</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hydrophobicity_scale</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
     <span class="n">data</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">resn</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
@@ -464,16 +458,16 @@
     <span class="c1"># Remove backbone from atominfo</span>
     <span class="k">if</span> <span class="n">ignore_backbone</span><span class="p">:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;CA&quot;</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;N&quot;</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"C"</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"CA"</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"N"</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"O"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">atominfo</span> <span class="o">=</span> <span class="n">atominfo</span><span class="p">[</span><span class="n">mask</span><span class="p">[</span><span class="mi">0</span><span class="p">],]</span>
         <span class="n">xyzr</span> <span class="o">=</span> <span class="n">xyzr</span><span class="p">[</span><span class="n">mask</span><span class="p">[</span><span class="mi">0</span><span class="p">],]</span>
 
     <span class="c1"># Get residue name from atominfo</span>
-    <span class="n">resname</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
+    <span class="n">resname</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="n">atominfo</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
 
     <span class="c1"># Get hydrophobicity scales in 3D grid and average hydropathy</span>
     <span class="n">scales</span><span class="p">,</span> <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">_hydropathy</span><span class="p">(</span>
@@ -492,7 +486,7 @@
         <span class="n">verbose</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">avg_hydropathy</span> <span class="o">=</span> <span class="n">_process_hydropathy</span><span class="p">(</span><span class="n">avg_hydropathy</span><span class="p">,</span> <span class="n">ncav</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
-    <span class="n">avg_hydropathy</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">scale</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale</span><span class="o">.</span><span class="n">max</span><span class="p">())]</span>
+    <span class="n">avg_hydropathy</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">scale</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale</span><span class="o">.</span><span class="n">max</span><span class="p">())]</span>
 
     <span class="k">return</span> <span class="n">scales</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">),</span> <span class="n">avg_hydropathy</span></div>
 
