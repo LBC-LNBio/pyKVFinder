@@ -1,6 +1,5 @@
 import os
 import unittest
-from unittest import mock
 
 import numpy
 import tomlkit
@@ -10,8 +9,8 @@ from pyKVFinder.grid import (
     _get_cavity_label,
     _get_cavity_name,
     _get_dimensions,
-    _get_opening_name,
     _get_opening_label,
+    _get_opening_name,
     _get_sincos,
     _get_vertices_from_box,
     _get_vertices_from_residues,
@@ -64,7 +63,7 @@ class TestGetVerticesFromResidues(unittest.TestCase):
         # Prepare data
         atomic = read_pdb(os.path.join(DATADIR, "tests", "1FMO.pdb"))
         atominfo = numpy.asarray(
-            ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+            [[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]]
         )
         xyzr = atomic[:, 4:].astype(numpy.float64)
         with open(os.path.join(DATADIR, "tests", "residues-box.toml"), "r") as f:
@@ -539,28 +538,6 @@ class TestGetSincos(unittest.TestCase):
             [[[1.0, 1.0, 1.0]]],  # shape (1, 1, 3)
         ]:
             self.assertRaises(ValueError, _get_sincos, vertices)
-
-
-class TestProcessSpatial(unittest.TestCase):
-    def test_raw_data(self):
-        # Dummy volume and area
-        volume = numpy.array([1.0, 2.0, 3.0])
-        area = numpy.array([1.0, 2.0, 3.0])
-        # Process volume and area
-        volume, area = _process_spatial(volume, area, len(volume), None)
-        # Assert results
-        self.assertDictEqual(volume, {"KAA": 1.0, "KAB": 2.0, "KAC": 3.0})
-        self.assertDictEqual(area, {"KAA": 1.0, "KAB": 2.0, "KAC": 3.0})
-
-    def test_selection(self):
-        # Dummy volume and area
-        volume = numpy.array([1.0, 2.0, 3.0])
-        area = numpy.array([1.0, 2.0, 3.0])
-        # Process volume and area
-        volume, area = _process_spatial(volume, area, len(volume), selection=[2])
-        # Assert results
-        self.assertDictEqual(volume, {"KAA": 1.0})
-        self.assertDictEqual(area, {"KAA": 1.0})
 
 
 class TestProcessSpatial(unittest.TestCase):
@@ -1088,7 +1065,7 @@ class TestSpatial(unittest.TestCase):
 
     def test_invalid_cavities(self):
         for cavities in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -1193,7 +1170,7 @@ class TestDepth(unittest.TestCase):
 
     def test_invalid_cavities(self):
         for cavities in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -1331,7 +1308,7 @@ class TestConstitutional(unittest.TestCase):
 
     def test_invalid_cavities(self):
         for cavities in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -1600,7 +1577,7 @@ class TestHydropathy(unittest.TestCase):
 
     def test_invalid_surface(self):
         for surface in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -1899,7 +1876,7 @@ class TestExport(unittest.TestCase):
             with open("tests/cavities.pdb", "r") as f:
                 self.assertEqual(
                     f.read(),
-                    f"ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  0.00\n",
+                    "ATOM      1  HA  KAA   259       0.000   0.000   0.000  1.00  0.00\n",
                 )
             os.remove("tests/cavities.pdb")
 
@@ -1916,7 +1893,7 @@ class TestExport(unittest.TestCase):
             with open("tests/cavities.pdb", "r") as f:
                 self.assertEqual(
                     f.read(),
-                    f"",
+                    "",
                 )
             os.remove("tests/cavities.pdb")
 
@@ -1967,7 +1944,7 @@ class TestExport(unittest.TestCase):
 
     def test_invalid_cavities(self):
         for cavities in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -1983,7 +1960,7 @@ class TestExport(unittest.TestCase):
 
     def test_invalid_surface(self):
         for surface in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -2060,7 +2037,7 @@ class TestExport(unittest.TestCase):
 
     def test_invalid_B(self):
         for B in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:
@@ -2088,7 +2065,7 @@ class TestExport(unittest.TestCase):
 
     def test_invalid_scales(self):
         for scales in [
-            numpy.zeros((1)),  # shape (1,)
+            numpy.zeros(1),  # shape (1,)
             numpy.zeros((1, 1)),  # shape (1, 1)
             numpy.zeros((1, 1, 1, 1)),  # shape (1, 1, 1, 1)
         ]:

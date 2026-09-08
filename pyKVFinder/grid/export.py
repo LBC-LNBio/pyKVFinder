@@ -14,7 +14,7 @@ def export(
     cavities: numpy.ndarray,
     surface: numpy.ndarray | None,
     vertices: numpy.ndarray | list[list[float]],
-    step: float | int = 0.6,
+    step: float = 0.6,
     B: numpy.ndarray | None = None,
     Q: numpy.ndarray | None = None,
     selection: list[int] | list[str] | None = None,
@@ -279,7 +279,7 @@ def export(
     ncav = int(cavities.max() - 1)
 
     # Export cavities
-    if isinstance(fn, type(None)):
+    if fn is None:
         with tempfile.NamedTemporaryFile(delete=False) as temp:
             _export(
                 temp.name,
@@ -316,7 +316,7 @@ def export_openings(
     fn: str | pathlib.Path | None,
     openings: numpy.ndarray,
     vertices: numpy.ndarray | list[list[float]],
-    step: float | int = 0.6,
+    step: float = 0.6,
     selection: list[int] | list[str] | None = None,
     nthreads: int | None = None,
     append: bool = False,

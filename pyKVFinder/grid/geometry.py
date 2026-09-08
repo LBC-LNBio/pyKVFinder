@@ -6,8 +6,8 @@ import numpy
 
 def get_vertices(
     atomic: numpy.ndarray | list[list[str | float | int]],
-    probe_out: float | int = 4.0,
-    step: float | int = 0.6,
+    probe_out: float = 4.0,
+    step: float = 0.6,
 ) -> numpy.ndarray:
     """Gets 3D grid vertices.
 
@@ -66,9 +66,7 @@ def get_vertices(
     # Check arguments types
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atomic).shape) != 2:
-        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
-    elif numpy.asarray(atomic).shape[1] != 8:
+    elif len(numpy.asarray(atomic).shape) != 2 or numpy.asarray(atomic).shape[1] != 8:
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(probe_out) not in [int, float, numpy.float64]:
         raise TypeError("`probe_out` must be a non-negative real number.")
@@ -102,9 +100,9 @@ def get_vertices(
 def get_vertices_from_file(
     fn: str | pathlib.Path,
     atomic: numpy.ndarray | list[list[str | float | int]],
-    step: float | int = 0.6,
-    probe_in: float | int = 1.4,
-    probe_out: float | int = 4.0,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
     nthreads: int | None = None,
 ) -> tuple[numpy.ndarray, numpy.ndarray | list[list[str | float | int]]]:
     """Gets 3D grid vertices from box configuration file or parKVFinder
@@ -202,6 +200,7 @@ def get_vertices_from_file(
         Custom box coordinates adds Probe Out size in each direction to create the coordinates of grid vertices.
     """
     import tomlkit
+
     from pyKVFinder._pyKVFinder import _filter_pdb
 
     # Check arguments types
@@ -209,9 +208,7 @@ def get_vertices_from_file(
         raise TypeError("`fn` must be a string or a pathlib.Path.")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atomic).shape) != 2:
-        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
-    elif numpy.asarray(atomic).shape[1] != 8:
+    elif len(numpy.asarray(atomic).shape) != 2 or numpy.asarray(atomic).shape[1] != 8:
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(step) not in [float, int]:
         raise TypeError("`step` must be a positive real number.")
@@ -241,7 +238,7 @@ def get_vertices_from_file(
 
     # Extract atominfo from atomic
     atominfo = numpy.asarray(
-        ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+        [[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]]
     )
 
     # Extract xyzr from atomic
@@ -443,7 +440,7 @@ def _get_vertices_from_residues(
 
 
 def _get_dimensions(
-    vertices: numpy.ndarray | list[list[float]], step: float | int = 0.6
+    vertices: numpy.ndarray | list[list[float]], step: float = 0.6
 ) -> tuple[int, int, int]:
     """Gets dimensions of 3D grid from vertices.
 

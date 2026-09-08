@@ -4,7 +4,6 @@ import os
 import unittest
 from unittest import mock
 
-import numpy
 import tomlkit
 
 import pyKVFinder

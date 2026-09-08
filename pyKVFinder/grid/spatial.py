@@ -53,7 +53,7 @@ def _process_spatial(
 
 def spatial(
     cavities: numpy.ndarray,
-    step: float | int = 0.6,
+    step: float = 0.6,
     selection: list[int] | list[str] | None = None,
     nthreads: int | None = None,
     verbose: bool = False,

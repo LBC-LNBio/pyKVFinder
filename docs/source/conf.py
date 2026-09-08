@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -25,6 +24,7 @@ author = "LBC-LNBio"
 
 # The short X.Y version
 from pyKVFinder import __version__
+
 version = ".".join(__version__.split('.')[0:2])
 # The full version, including alpha/beta/rc tags
 release = __version__

@@ -204,10 +204,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         if surface == "vdW":
             self.probe_in.setValue(0.0)
             self.probe_in.setEnabled(False)
-        elif surface == "SES":
-            self.probe_in.setValue(1.4)
-            self.probe_in.setEnabled(True)
-        elif surface == "SAS":
+        elif surface == "SES" or surface == "SAS":
             self.probe_in.setValue(1.4)
             self.probe_in.setEnabled(True)
 
@@ -489,13 +486,13 @@ class PyMOLpyKVFinderTools(QMainWindow):
         if "INPUT" in results["FILES"].keys():
             self.input_file_entry.setText(f"{results['FILES']['INPUT']}")
         else:
-            self.input_file_entry.setText(f"")
+            self.input_file_entry.setText("")
 
         # Ligand File
         if "LIGAND" in results["FILES"].keys():
             self.ligand_file_entry.setText(f"{results['FILES']['LIGAND']}")
         else:
-            self.ligand_file_entry.setText(f"")
+            self.ligand_file_entry.setText("")
 
         # Cavities File
         self.cavities_file_entry.setText(f"{results['FILES']['OUTPUT']}")
@@ -511,16 +508,16 @@ class PyMOLpyKVFinderTools(QMainWindow):
         of pyKVFinder into PyMOL. It will clear the lists in the results tab.
         """
         # Input File
-        self.input_file_entry.setText(f"")
+        self.input_file_entry.setText("")
 
         # Ligand File
-        self.ligand_file_entry.setText(f"")
+        self.ligand_file_entry.setText("")
 
         # Cavities File
-        self.cavities_file_entry.setText(f"")
+        self.cavities_file_entry.setText("")
 
         # Step Size
-        self.step_size_entry.setText(f"")
+        self.step_size_entry.setText("")
 
         # Volume
         self.volume_list.clear()
@@ -566,13 +563,7 @@ class PyMOLpyKVFinderTools(QMainWindow):
         # Model the surface
         if parameters["surface"] == "vdW":
             surface.vdw(step=parameters["step"])
-        elif parameters["surface"] == "SES":
-            surface.surface(
-                step=parameters["step"],
-                probe=parameters["probe_in"],
-                surface=parameters["surface"],
-            )
-        elif parameters["surface"] == "SAS":
+        elif parameters["surface"] == "SES" or parameters["surface"] == "SAS":
             surface.surface(
                 step=parameters["step"],
                 probe=parameters["probe_in"],
