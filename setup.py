@@ -1,7 +1,8 @@
 import os
 import sys
-from setuptools import Extension, setup
+
 import numpy
+from setuptools import Extension, setup
 
 
 class GetNumpyInclude:

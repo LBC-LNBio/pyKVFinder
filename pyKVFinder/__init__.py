@@ -30,39 +30,77 @@ See also
 * Documentation: https://lbc-lnbio.github.io/pyKVFinder
 """
 
-__version__ = "0.9.4"
+__version__ = "0.9.5"
 __license__ = "GPL-3.0-or-later"
-
-from .utils import (
-    _write_parameters as _write_parameters,
-    calculate_frequencies as calculate_frequencies,
-    plot_frequencies as plot_frequencies,
-    read_cavity as read_cavity,
-    read_pdb as read_pdb,
-    read_vdw as read_vdw,
-    read_xyz as read_xyz,
-    write_results as write_results,
-)
 
 from .grid import (
     _get_dimensions as _get_dimensions,
+)
+from .grid import (
     _get_sincos as _get_sincos,
+)
+from .grid import (
     constitutional as constitutional,
+)
+from .grid import (
     depth as depth,
+)
+from .grid import (
     detect as detect,
+)
+from .grid import (
     export as export,
+)
+from .grid import (
     export_openings as export_openings,
+)
+from .grid import (
     get_vertices as get_vertices,
+)
+from .grid import (
     get_vertices_from_file as get_vertices_from_file,
+)
+from .grid import (
     hydropathy as hydropathy,
+)
+from .grid import (
     openings as openings,
+)
+from .grid import (
     spatial as spatial,
 )
-
+from .main import (
+    Molecule as Molecule,
+)
+from .main import (
+    pyKVFinderResults as pyKVFinderResults,
+)
 from .main import (
     run_workflow as run_workflow,
-    pyKVFinderResults as pyKVFinderResults,
-    Molecule as Molecule,
+)
+from .utils import (
+    _write_parameters as _write_parameters,
+)
+from .utils import (
+    calculate_frequencies as calculate_frequencies,
+)
+from .utils import (
+    plot_frequencies as plot_frequencies,
+)
+from .utils import (
+    read_cavity as read_cavity,
+)
+from .utils import (
+    read_pdb as read_pdb,
+)
+from .utils import (
+    read_vdw as read_vdw,
+)
+from .utils import (
+    read_xyz as read_xyz,
+)
+from .utils import (
+    write_results as write_results,
 )
 
 __all__ = [

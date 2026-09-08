@@ -25,9 +25,7 @@ def _check_pdb_xyz(x: str) -> str:
     argparse.ArgumentTypeError
         `x` must have .pdb or .xyz extension.
     """
-    if x.endswith(".pdb"):
-        x = os.path.abspath(x)
-    elif x.endswith(".xyz"):
+    if x.endswith(".pdb") or x.endswith(".xyz"):
         x = os.path.abspath(x)
     else:
         raise (argparse.ArgumentTypeError("%r must have .pdb or .xyz extension." % x))
@@ -168,7 +166,7 @@ def argparser() -> argparse.ArgumentParser:
         def add_usage(self, usage, actions, groups, prefix=None):
             if prefix is None:
                 prefix = "Usage: "
-            return super(CapitalisedHelpFormatter, self).add_usage(
+            return super().add_usage(
                 usage, actions, groups, prefix
             )
 

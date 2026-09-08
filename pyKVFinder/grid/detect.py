@@ -1,6 +1,5 @@
+import logging
 import os
-import warnings
-from typing import Optional
 
 import numpy
 
@@ -12,13 +11,13 @@ from .geometry import _get_dimensions, _get_sincos
 def detect(
     atomic: numpy.ndarray | list[list[str | float | int]],
     vertices: numpy.ndarray | list[list[float]],
-    step: float | int = 0.6,
-    probe_in: float | int = 1.4,
-    probe_out: float | int = 4.0,
-    removal_distance: float | int = 2.4,
-    volume_cutoff: float | int = 5.0,
-    latomic: Optional[numpy.ndarray | list[list[float]]] = None,
-    ligand_cutoff: float | int = 5.0,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
+    removal_distance: float = 2.4,
+    volume_cutoff: float = 5.0,
+    latomic: numpy.ndarray | list[list[float]] | None = None,
+    ligand_cutoff: float = 5.0,
     box_adjustment: bool = False,
     surface: str = "SES",
     nthreads: int | None = None,
@@ -267,9 +266,7 @@ def detect(
     # Check arguments
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atomic).shape) != 2:
-        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
-    elif numpy.asarray(atomic).shape[1] != 8:
+    elif len(numpy.asarray(atomic).shape) != 2 or numpy.asarray(atomic).shape[1] != 8:
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(vertices) not in [numpy.ndarray, list]:
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
@@ -300,9 +297,7 @@ def detect(
     if latomic is not None:
         if type(latomic) not in [numpy.ndarray, list]:
             raise TypeError("`latomic` must be a list, a numpy.ndarray or None.")
-        if len(numpy.asarray(latomic).shape) != 2:
-            raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
-        elif numpy.asarray(latomic).shape[1] != 8:
+        if len(numpy.asarray(latomic).shape) != 2 or numpy.asarray(latomic).shape[1] != 8:
             raise ValueError("`latomic` has incorrect shape. It must be (n, 8).")
     if type(ligand_cutoff) not in [float, int]:
         raise TypeError("`ligand_cutoff` must be a positive real number.")
@@ -424,10 +419,9 @@ def detect(
         )
 
     if ncav > 1352:
-        warnings.warn(
+        logging.warning(
             f"The number of cavities ({ncav}) exceeds the maximum supported (1352). "
-            "Cavity labels may not be unique.",
-            UserWarning,
+            "Cavity labels may not be unique."
         )
 
     return ncav, cavities.reshape(nx, ny, nz)

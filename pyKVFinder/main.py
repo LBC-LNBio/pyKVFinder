@@ -3,7 +3,7 @@ import os
 import pathlib
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Tuple, Optional, Union
+from typing import Any
 
 import numpy
 
@@ -30,7 +30,7 @@ from .utils import (
     write_results,
 )
 
-__all__ = ["run_workflow", "pyKVFinderResults", "Molecule"]
+__all__ = ["Molecule", "pyKVFinderResults", "run_workflow"]
 
 VDW = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
@@ -279,7 +279,7 @@ def cli() -> None:
     return 0
 
 
-class pyKVFinderResults(object):
+class pyKVFinderResults:
     """A class containing pyKVFinder detection and characterization results.
 
     Parameters
@@ -409,19 +409,19 @@ class pyKVFinderResults(object):
         self,
         cavities: numpy.ndarray,
         surface: numpy.ndarray,
-        depths: Optional[numpy.ndarray],
-        scales: Optional[numpy.ndarray],
-        volume: Dict[str, float],
-        area: Dict[str, float],
-        max_depth: Optional[Dict[str, float]],
-        avg_depth: Optional[Dict[str, float]],
-        avg_hydropathy: Optional[Dict[str, float]],
-        residues: Dict[str, List[List[str]]],
-        frequencies: Optional[Dict[str, Dict[str, Dict[str, int]]]],
+        depths: numpy.ndarray | None,
+        scales: numpy.ndarray | None,
+        volume: dict[str, float],
+        area: dict[str, float],
+        max_depth: dict[str, float] | None,
+        avg_depth: dict[str, float] | None,
+        avg_hydropathy: dict[str, float] | None,
+        residues: dict[str, list[list[str]]],
+        frequencies: dict[str, dict[str, dict[str, int]]] | None,
         _vertices: numpy.ndarray,
-        _step: Union[float, int],
-        _input: Optional[Union[str, pathlib.Path]] = None,
-        _ligand: Optional[Union[str, pathlib.Path]] = None,
+        _step: float,
+        _input: str | pathlib.Path | None = None,
+        _ligand: str | pathlib.Path | None = None,
     ):
         self.cavities = cavities
         self.surface = surface
@@ -445,9 +445,9 @@ class pyKVFinderResults(object):
 
     def export(
         self,
-        output: Union[str, pathlib.Path] = "cavity.pdb",
-        nthreads: Optional[int] = None,
-    ) -> Optional[str]:
+        output: str | pathlib.Path = "cavity.pdb",
+        nthreads: int | None = None,
+    ) -> str | None:
         """Exports cavitiy (H) and surface (HA) points to PDB-formatted file
         with a variable (B; optional) in B-factor column, and hydropathy to
         PDB-formatted file in B-factor column at surface points (HA).
@@ -496,8 +496,8 @@ class pyKVFinderResults(object):
 
     def write(
         self,
-        fn: Union[str, pathlib.Path] = "results.toml",
-        output: Optional[Union[str, pathlib.Path]] = None,
+        fn: str | pathlib.Path = "results.toml",
+        output: str | pathlib.Path | None = None,
     ) -> None:
         """
         Writes file paths and cavity characterization to TOML-formatted file
@@ -541,7 +541,7 @@ class pyKVFinderResults(object):
             self._step,
         )
 
-    def plot_frequencies(self, pdf: Union[str, pathlib.Path] = "barplots.pdf"):
+    def plot_frequencies(self, pdf: str | pathlib.Path = "barplots.pdf"):
         """Plot bar charts of frequencies (residues and classes of residues) in
         a PDF file.
 
@@ -585,11 +585,11 @@ class pyKVFinderResults(object):
 
     def export_all(
         self,
-        fn: Union[str, pathlib.Path] = "results.toml",
-        output: Union[str, pathlib.Path] = "cavity.pdb",
+        fn: str | pathlib.Path = "results.toml",
+        output: str | pathlib.Path = "cavity.pdb",
         include_frequencies_pdf: bool = False,
-        pdf: Union[str, pathlib.Path] = "barplots.pdf",
-        nthreads: Optional[int] = None,
+        pdf: str | pathlib.Path = "barplots.pdf",
+        nthreads: int | None = None,
     ) -> None:
         """Exports cavities and characterization to PDB-formatted files,
         writes file paths and characterization to a TOML-formatted file, and
@@ -661,23 +661,23 @@ class pyKVFinderResults(object):
 
 
 def run_workflow(
-    input: Union[str, pathlib.Path],
-    ligand: Optional[Union[str, pathlib.Path]] = None,
-    vdw: Optional[Union[str, pathlib.Path]] = None,
-    box: Optional[Union[str, pathlib.Path]] = None,
-    step: Union[float, int] = 0.6,
-    probe_in: Union[float, int] = 1.4,
-    probe_out: Union[float, int] = 4.0,
-    removal_distance: Union[float, int] = 2.4,
-    volume_cutoff: Union[float, int] = 5.0,
-    ligand_cutoff: Union[float, int] = 5.0,
+    input: str | pathlib.Path,
+    ligand: str | pathlib.Path | None = None,
+    vdw: str | pathlib.Path | None = None,
+    box: str | pathlib.Path | None = None,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
+    removal_distance: float = 2.4,
+    volume_cutoff: float = 5.0,
+    ligand_cutoff: float = 5.0,
     include_depth: bool = False,
     include_hydropathy: bool = False,
-    hydrophobicity_scale: Union[str, pathlib.Path] = "EisenbergWeiss",
+    hydrophobicity_scale: str | pathlib.Path = "EisenbergWeiss",
     surface: str = "SES",
     ignore_backbone: bool = False,
-    model: Optional[int] = None,
-    nthreads: Optional[int] = None,
+    model: int | None = None,
+    nthreads: int | None = None,
     verbose: bool = False,
 ) -> pyKVFinderResults:
     """Detects and characterizes cavities (volume, area, depth [optional],
@@ -1186,7 +1186,7 @@ def run_workflow(
         else:
             scales, avg_hydropathy = None, None
     else:
-        print("> No cavities were detected, returning None!")
+        logging.warning("No cavities were detected!")
         return None
 
     # Return dict
@@ -1211,7 +1211,7 @@ def run_workflow(
     return results
 
 
-class Molecule(object):
+class Molecule:
     """A class for representing molecular structures.
 
     Parameters
@@ -1304,10 +1304,10 @@ class Molecule(object):
 
     def __init__(
         self,
-        molecule: Union[str, pathlib.Path],
-        radii: Union[str, pathlib.Path, Dict[str, Any]] = None,
-        model: Optional[int] = None,
-        nthreads: Optional[int] = None,
+        molecule: str | pathlib.Path,
+        radii: str | pathlib.Path | dict[str, Any] = None,
+        model: int | None = None,
+        nthreads: int | None = None,
         verbose: bool = False,
     ):
         """Initialize the Molecule object with molecule, radii, model, nthreads and verbose.
@@ -1393,7 +1393,7 @@ class Molecule(object):
         return self._atomic
 
     @property
-    def dim(self) -> Tuple[int, int, int]:
+    def dim(self) -> tuple[int, int, int]:
         """Get _dim attribute"""
         return self._dim
 
@@ -1403,7 +1403,7 @@ class Molecule(object):
         return self._grid
 
     @property
-    def molecule(self) -> Union[str, pathlib.Path]:
+    def molecule(self) -> str | pathlib.Path:
         """Get _molecule attribute."""
         return self._molecule
 
@@ -1460,7 +1460,7 @@ class Molecule(object):
         return self._probe
 
     @property
-    def radii(self) -> Dict[str, Any]:
+    def radii(self) -> dict[str, Any]:
         """Get _radii attribute."""
         return self._radii
 
@@ -1490,7 +1490,7 @@ class Molecule(object):
         """Get xyz coordinates and radius of molecule atoms."""
         return self._atomic[:, 4:].astype(numpy.float64)
 
-    def _set_grid(self, padding: Optional[float] = None) -> None:
+    def _set_grid(self, padding: float | None = None) -> None:
         """Define the 3D grid for the target molecule.
 
         Parameters
@@ -1543,7 +1543,7 @@ class Molecule(object):
             padding += self._probe
         return float(padding.round(decimals=1))
 
-    def vdw(self, step: float = 0.6, padding: Optional[float] = None) -> None:
+    def vdw(self, step: float = 0.6, padding: float | None = None) -> None:
         """Fill the 3D grid with the molecule as the van der Waals surface representation.
 
         Parameters
@@ -1624,7 +1624,7 @@ class Molecule(object):
         step: float = 0.6,
         probe: float = 1.4,
         surface: str = "SES",
-        padding: Optional[float] = None,
+        padding: float | None = None,
     ) -> None:
         """Fill the 3D grid with the molecule as the van der Waals surface representation.
 
@@ -1806,7 +1806,7 @@ class Molecule(object):
 
     def export(
         self,
-        fn: Union[str, pathlib.Path] = "molecule.pdb",
+        fn: str | pathlib.Path = "molecule.pdb",
     ) -> None:
         """Export molecule points (H) to a PDB-formatted file.
 

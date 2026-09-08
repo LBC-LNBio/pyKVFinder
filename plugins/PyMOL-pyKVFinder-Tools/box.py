@@ -17,7 +17,7 @@ from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QDoubleSpinBox, QMainWindow, QMessageBox, QPushButton
 
 
-class Box(object):
+class Box:
 
     def __init__(self):
         self.x = 0
