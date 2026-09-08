@@ -1,5 +1,5 @@
+import logging
 import os
-import warnings
 
 import numpy
 
@@ -117,7 +117,7 @@ def _process_openings(
         cavity = _get_cavity_name(opening2cavity[index])
 
         # Save opening area
-        if cavity not in area.keys():
+        if cavity not in area:
             area[cavity] = {}
         area[cavity][opening] = float(round(raw_openings[index], 2))
 
@@ -130,7 +130,7 @@ def _process_openings(
 def openings(
     cavities: numpy.ndarray,
     depths: numpy.ndarray | None = None,
-    step: float | int = 0.6,
+    step: float = 0.6,
     openings_cutoff: int = 1,
     selection: list[int] | list[str] | None = None,
     nthreads: int | None = None,
@@ -324,10 +324,9 @@ def openings(
         nx * ny * nz, cavities, depths, ncav, openings_cutoff, step, nthreads, verbose
     )
     if nopenings > 1352:
-        warnings.warn(
+        logging.warning(
             f"The number of openings ({nopenings}) exceeds the maximum supported (1352). "
-            "Openings labels may not be unique.",
-            UserWarning
+            "Openings labels may not be unique."
         )
 
     # Reshape openings

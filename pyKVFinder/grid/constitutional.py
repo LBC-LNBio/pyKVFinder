@@ -1,7 +1,7 @@
+import logging
 import os
 
 import numpy
-import warnings
 
 from .cavity import _get_cavity_label, _get_cavity_name, _select_cavities
 from .geometry import _get_sincos
@@ -53,8 +53,8 @@ def constitutional(
     cavities: numpy.ndarray,
     atomic: numpy.ndarray | list[list[str | float | int]],
     vertices: numpy.ndarray | list[list[float]],
-    step: float | int = 0.6,
-    probe_in: float | int = 1.4,
+    step: float = 0.6,
+    probe_in: float = 1.4,
     ignore_backbone: bool = False,
     selection: list[int] | list[str] | None = None,
     nthreads: int | None = None,
@@ -106,10 +106,9 @@ def constitutional(
         A dictionary with a list of interface residues for each detected
         cavity.
 
-    Warnings
-    --------
-    UserWarning
-        No cavities detected. Returning an empty dictionary.
+    Warning
+    -------
+        If no cavities are detected, a warning message will be logged and an empty dictionary will be returned.
 
     Raises
     ------
@@ -202,9 +201,7 @@ def constitutional(
         raise ValueError("`cavities` has the incorrect shape. It must be (nx, ny, nz).")
     if type(atomic) not in [numpy.ndarray, list]:
         raise TypeError("`atomic` must be a list or a numpy.ndarray.")
-    elif len(numpy.asarray(atomic).shape) != 2:
-        raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
-    elif numpy.asarray(atomic).shape[1] != 8:
+    elif len(numpy.asarray(atomic).shape) != 2 or numpy.asarray(atomic).shape[1] != 8:
         raise ValueError("`atomic` has incorrect shape. It must be (n, 8).")
     if type(vertices) not in [numpy.ndarray, list]:
         raise TypeError("`vertices` must be a list or a numpy.ndarray.")
@@ -259,7 +256,7 @@ def constitutional(
 
     # Extract atominfo from atomic
     atominfo = numpy.asarray(
-        ([[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]])
+        [[f"{atom[0]}_{atom[1]}_{atom[2]}", atom[3]] for atom in atomic[:, :4]]
     )
 
     # Extract xyzr from atomic
@@ -269,10 +266,7 @@ def constitutional(
     ncav = int(cavities.max() - 1)
 
     if ncav < 1:
-        warnings.warn(
-            "No cavities detected. Returning an empty dictionary.",
-            UserWarning,
-        )
+        logging.warning("No cavities detected. Returning an empty dictionary.")
         return {}
 
     # Get sincos: sine and cossine of the grid rotation angles (sina, cosa, sinb, cosb)

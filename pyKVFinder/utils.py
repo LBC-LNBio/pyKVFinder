@@ -2,18 +2,16 @@ import argparse
 import logging
 import os
 import pathlib
-import warnings
-from typing import Dict, List, Optional, Union
 
 import numpy
 
 __all__ = [
-    "read_vdw",
-    "read_pdb",
-    "read_xyz",
-    "read_cavity",
     "calculate_frequencies",
     "plot_frequencies",
+    "read_cavity",
+    "read_pdb",
+    "read_vdw",
+    "read_xyz",
     "write_results",
 ]
 
@@ -21,8 +19,8 @@ VDW = os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/vdw.dat")
 
 
 def read_vdw(
-    fn: Optional[Union[str, pathlib.Path]] = None,
-) -> Dict[str, Dict[str, float]]:
+    fn: str | pathlib.Path | None = None,
+) -> dict[str, dict[str, float]]:
     """Reads van der Waals radii from .dat file.
 
     Parameters
@@ -127,8 +125,8 @@ an atom."
 
 
 def _process_pdb_line(
-    line: str, vdw: Dict[str, Dict[str, float]]
-) -> List[Union[str, float, int]]:
+    line: str, vdw: dict[str, dict[str, float]]
+) -> list[str | float | int]:
     """Extracts ATOM and HETATM information of PDB line.
 
     Parameters
@@ -142,6 +140,11 @@ def _process_pdb_line(
     -------
     atomic : List[Union[str, float, int]]
         A list with resnum, chain, resname, atom name, xyz coordinates and radius.
+
+    Warning
+    -------
+    If the atom is not found in the vdw dictionary, it will use a generic atom
+    radius based on the atom type and log a warning message.
     """
     # Get PDB infomation
     atom = line[12:16].strip()
@@ -154,16 +157,16 @@ def _process_pdb_line(
     atom_symbol = line[76:78].strip().upper()
 
     # Get atom and radius from vdw
-    if resname in vdw.keys() and atom in vdw[resname].keys():
+    if resname in vdw and atom in vdw[resname].keys():
         radius = vdw[resname][atom]
     else:
         radius = vdw["GEN"][atom_symbol]
         logging.warning(
-            f"Warning: Atom {atom} of residue {resname} \
+            f"Atom {atom} of residue {resname} \
 not found in dictionary."
         )
         logging.warning(
-            f"Warning: Using generic atom {atom_symbol} \
+            f"Using generic atom {atom_symbol} \
 radius: {radius} \u00c5."
         )
 
@@ -174,9 +177,9 @@ radius: {radius} \u00c5."
 
 
 def read_pdb(
-    fn: Union[str, pathlib.Path],
-    vdw: Optional[Dict[str, Dict[str, float]]] = None,
-    model: Optional[int] = None,
+    fn: str | pathlib.Path,
+    vdw: dict[str, dict[str, float]] | None = None,
+    model: int | None = None,
 ) -> numpy.ndarray:
     """Reads PDB file into numpy.ndarrays.
 
@@ -199,6 +202,13 @@ def read_pdb(
     ------
     TypeError
         `fn` must be a string or a pathlib.Path.
+    
+    Warning
+    -------
+    If the PDB file contains alternate location (altLoc) records, a warning will be
+    issued indicating that these records may affect cavity geometry and volume estimation.
+    It is recommended to resolve them before analysis using external tools (e.g., PyMOL,
+    ChimeraX, pdb-tools, or biotite).
 
     Note
     ----
@@ -259,7 +269,7 @@ def read_pdb(
     # Read file and process atoms
     with open(fn, "r") as f:
         
-        for line in f.readlines():
+        for line in f:
             record = line[:6].strip()
             
             # Handle MODEL records
@@ -279,19 +289,18 @@ def read_pdb(
 
     # Warnings
     if has_altloc:
-        warnings.warn(
+        logging.warning(
             f"{fn} contains alternate location (altLoc) records, indicating multiple "
             "conformations for the same atoms. These records may affect cavity geometry "
             "and volume estimation. Please resolve them before analysis using external "
-            "tools (e.g., PyMOL, ChimeraX, pdb-tools, or biotite).",
-            UserWarning,
+            "tools (e.g., PyMOL, ChimeraX, pdb-tools, or biotite)."
         )
 
     return numpy.asarray(atomic)
 
 
 def read_xyz(
-    fn: Union[str, pathlib.Path], vdw: Optional[Dict[str, Dict[str, float]]] = None
+    fn: str | pathlib.Path, vdw: dict[str, dict[str, float]] | None = None
 ) -> numpy.ndarray:
     """Reads XYZ file into numpy.ndarrays.
 
@@ -368,7 +377,7 @@ def read_xyz(
 
     # Read XYZ file
     with open(fn, "r") as f:
-        for line in f.readlines():
+        for line in f:
             line = line.split()
             if len(line) == 4:
                 # Get PDB information
@@ -389,7 +398,7 @@ def read_xyz(
     return numpy.asarray(atomic)
 
 
-def _read_cavity(cavity: Union[str, pathlib.Path]) -> numpy.ndarray:
+def _read_cavity(cavity: str | pathlib.Path) -> numpy.ndarray:
     """Reads xyz coordinates and labels of a cavities file into numpy.ndarray.
 
     Parameters
@@ -409,7 +418,7 @@ def _read_cavity(cavity: Union[str, pathlib.Path]) -> numpy.ndarray:
 
     # Read cavity file into list
     with open(cavity, "r") as f:
-        for line in f.readlines():
+        for line in f:
             if line[:4] == "ATOM" or line[:6] == "HETATM":
                 x = float(line[30:38])
                 y = float(line[38:46])
@@ -421,14 +430,14 @@ def _read_cavity(cavity: Union[str, pathlib.Path]) -> numpy.ndarray:
 
 
 def read_cavity(
-    cavity: Union[str, pathlib.Path],
-    receptor: Union[str, pathlib.Path],
-    step: Union[float, int] = 0.6,
-    probe_in: Union[float, int] = 1.4,
-    probe_out: Union[float, int] = 4.0,
+    cavity: str | pathlib.Path,
+    receptor: str | pathlib.Path,
+    step: float = 0.6,
+    probe_in: float = 1.4,
+    probe_out: float = 4.0,
     surface: str = "SES",
-    vdw: Optional[Dict[str, Dict[str, float]]] = None,
-    nthreads: Optional[int] = None,
+    vdw: dict[str, dict[str, float]] | None = None,
+    nthreads: int | None = None,
     verbose: bool = False,
 ) -> numpy.ndarray:
     """Read cavities and receptor inside a 3D grid.
@@ -661,7 +670,7 @@ def read_cavity(
     return grid
 
 
-def _process_box(args: argparse.Namespace) -> Dict[str, List[float]]:
+def _process_box(args: argparse.Namespace) -> dict[str, list[float]]:
     """Gets xyz coordinates of 3D grid vertices.
 
     Parameters
@@ -817,8 +826,8 @@ def _write_parameters(args: argparse.Namespace) -> None:
 
 
 def calculate_frequencies(
-    residues: Dict[str, List[List[str]]],
-) -> Dict[str, Dict[str, Dict[str, int]]]:
+    residues: dict[str, list[list[str]]],
+) -> dict[str, dict[str, dict[str, int]]]:
     """Calculate frequencies of residues and class of residues
     (R1, R2, R3, R4 and R5) for detected cavities.
 
@@ -929,8 +938,8 @@ def calculate_frequencies(
 
 
 def plot_frequencies(
-    frequencies: Dict[str, Dict[str, Dict[str, int]]],
-    fn: Union[str, pathlib.Path] = "barplots.pdf",
+    frequencies: dict[str, dict[str, dict[str, int]]],
+    fn: str | pathlib.Path = "barplots.pdf",
 ) -> None:
     """Plot bar charts of calculated frequencies (residues and classes of
     residues) for each detected cavity in a target PDF file.
@@ -1025,19 +1034,18 @@ def plot_frequencies(
     with PdfPages(fn) as pdf:
         # Standardize data
         ymax = 0
-        for cavity_tag in frequencies.keys():
+        for cavity_tag in frequencies:
             # Include missing residues
             frequencies[cavity_tag]["RESIDUES"] = {
                 **tmp,
                 **frequencies[cavity_tag]["RESIDUES"],
             }
             # Get y maximum
-            if ymax < max(frequencies[cavity_tag]["CLASS"].values()):
-                ymax = max(frequencies[cavity_tag]["CLASS"].values())
+            ymax = max(ymax, max(frequencies[cavity_tag]["CLASS"].values()))
         ymax += 1
 
         # Pdf plots
-        for cavity_tag in frequencies.keys():
+        for cavity_tag in frequencies:
             # Create page
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 9), dpi=300)
             fig.suptitle(r"Cavity " + f"{cavity_tag}", fontsize=30)
@@ -1133,18 +1141,18 @@ def plot_frequencies(
 
 
 def write_results(
-    fn: Union[str, pathlib.Path],
-    input: Optional[Union[str, pathlib.Path]],
-    ligand: Optional[Union[str, pathlib.Path]],
-    output: Optional[Union[str, pathlib.Path]],
-    volume: Optional[Dict[str, float]] = None,
-    area: Optional[Dict[str, float]] = None,
-    max_depth: Optional[Dict[str, float]] = None,
-    avg_depth: Optional[Dict[str, float]] = None,
-    avg_hydropathy: Optional[Dict[str, float]] = None,
-    residues: Optional[Dict[str, List[List[str]]]] = None,
-    frequencies: Optional[Dict[str, Dict[str, Dict[str, int]]]] = None,
-    step: Union[float, int] = 0.6,
+    fn: str | pathlib.Path,
+    input: str | pathlib.Path | None,
+    ligand: str | pathlib.Path | None,
+    output: str | pathlib.Path | None,
+    volume: dict[str, float] | None = None,
+    area: dict[str, float] | None = None,
+    max_depth: dict[str, float] | None = None,
+    avg_depth: dict[str, float] | None = None,
+    avg_hydropathy: dict[str, float] | None = None,
+    residues: dict[str, list[list[str]]] | None = None,
+    frequencies: dict[str, dict[str, dict[str, int]]] | None = None,
+    step: float = 0.6,
 ) -> None:
     """Writes file paths and cavity characterization to TOML-formatted file.
 
