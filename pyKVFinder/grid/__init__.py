@@ -4,12 +4,12 @@ from .depth import _process_depth, depth
 from .detect import detect
 from .export import export, export_openings
 from .geometry import (
-                       _get_dimensions,
-                       _get_sincos,
-                       _get_vertices_from_box,
-                       _get_vertices_from_residues,
-                       get_vertices,
-                       get_vertices_from_file,
+    _get_dimensions,
+    _get_sincos,
+    _get_vertices_from_box,
+    _get_vertices_from_residues,
+    get_vertices,
+    get_vertices_from_file,
 )
 from .hydropathy import _process_hydropathy, hydropathy
 from .openings import _get_opening_label, _get_opening_name, _process_openings, openings
