@@ -60,7 +60,7 @@ classifiers = [
 dependencies = [
     "numpy>=2.0.0,<2.5.0",
     "matplotlib>=3.10.0,<3.11.0",
-    "plotly>=7.0.0,<7.1.0",
+    "plotly>=7.0.0,<7.2.0",
     "tomlkit>=0.14.0,<0.16.0",
 ]
 dynamic = ["version"]
@@ -71,8 +71,8 @@ dev = [
     "pytest-cov>=7.0.0,<7.2.0",
     "pytest-benchmark>=5.2.0,<5.4.0",
     "black>=26.1.0,<26.12.0",
-    "flake8>=7.3.0,<7.4.0",
-    "ruff>=0.16.0,<0.17.0",
+    "flake8>=7.3.0,<7.5.0",
+    "ruff>=0.16.0,<0.18.0",
 ]
 docs = [
     "sphinx==8.1.3",
