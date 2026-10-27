@@ -968,11 +968,11 @@ def plot_frequencies(
     ----
     The classes of residues are:
 
-    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Methionine, Valine.
+    * Aliphatic apolar (R1): Alanine, Glycine, Isoleucine, Leucine, Proline, Valine.
 
     * Aromatic (R2): Phenylalanine, Tryptophan, Tyrosine.
 
-    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Proline, Serine, Threonine.
+    * Polar Uncharged (R3): Asparagine, Cysteine, Glutamine, Methionine, Serine, Threonine.
 
     * Negatively charged (R4): Aspartate, Glutamate.
 
